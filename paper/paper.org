@@ -1,0 +1,369 @@
+#+Title: District-level male medical and traditional circumcision
+#+Title: coverage and unmet need in sub-Saharan Africa
+#+date: 17th October 2022
+#+bibliography: library.bib 
+#+options: toc:nil num:t d:nil author:nil
+#+startup: latexpreview
+
+# Load latex class, define page and text size
+#+latex_class: article
+#+latex_class_options: [a4paper, 12pt]
+
+# load latex packages
+#+latex_header: \usepackage{authblk} 
+#+latex_header: \usepackage{breakcites}
+#+latex_header: \usepackage{apacite}
+#+latex_header: \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry} % define (reduced) margin size
+#+latex_header: \usepackage[parfill]{parskip} % insert whitespace between new paragraphs
+
+# Don't indent new paragraphs
+#+latex_header: \setlength\parindent{0pt} 
+
+# Don't hyponate words, instead break line
+#+latex_header: \tolerance=9999
+#+latex_header: \emergencystretch=10pt
+#+latex_header: \hyphenpenalty=10000
+#+latex_header: \exhyphenpenalty=100
+
+* Authors & Affiliations                                        :ignore:
+
+# Authors
+#+latex_header: \author[1]{Patrick O'Toole}
+#+latex_header: \author[1,2]{Matthew L. Thomas}
+#+latex_header: \author[1]{Oliver Stevens}
+#+latex_header: \author[1,3]{Kevin Lam}
+#+latex_header: \author[4]{Katherine Kripke}
+#+latex_header: \author[1]{Rachel Esra}
+#+latex_header: \author[5]{Ian Wanyeki}
+#+latex_header: \author[5]{Lycias Zembe}
+#+latex_header: \author[1]{Jeffrey W. Eaton}
+
+# Affiliations
+#+latex_header: \affil[1]{\emph{Imperial College London, London, United Kingdom}} \\
+#+latex_header: \affil[2]{\emph{Joint Centre for Excellence in Environmental Intelligence, University of Exeter and Met Office}} \\
+#+latex_header: \affil[3]{\emph{Department of Statistics, University of British Columbia}} \\
+#+latex_header: \affil[4]{\emph{Avenir Health, Takoma Park, MD, USA}} \\
+#+latex_header: \affil[5]{\emph{Joint United Nations Programme on HIV/AIDS (UNAIDS)}} \\
+
+# Break page
+#+latex: \clearpage
+
+* Abstract                                                         :ignore:
+
+#+begin_src latex :results output
+  \begin{abstract}
+    \noindent \textbf{Background} \\
+    \noindent In 2016, UNAIDS developed a Fast-Track strategy that targeted 90\% coverage
+    male circumcision (MC) among men aged 10-29 years by 2021 in priority countries in sub-Saharan 
+    Africa (SSA) to reduce HIV incidence. There is substantial variation across subnational 
+    regions within countries in both traditional male circumcision (TMC) practices and progress
+    towards implementation of voluntary medical male circumcision (VMMC). Tracking progress and
+    remaining gaps towards VMMC HIV prevention targets requires detailed district-level circumcision
+    coverage data.
+
+    \noindent \textbf{Methods} \\
+    \noindent We analysed self-reported data on male circumcision from x nationally representative household
+    surveys conducted in x SSA countries between 2006-2020. A spatio-temporal Bayesian
+    competing-risks time-to-event model was used to estimate rates of traditional and medical
+    circumcision by age, location, and time. Circumcision coverage in 2020 was projected assuming
+    continuation of estimated age-specific rates, with probabilistic uncertainty.
+
+    \noindent \textbf{Results} \\
+    \noindent Across x countries, from 2010 to 2020 an estimated x million men (x\% CI x-x million)
+    were newly circumcised, of whom x million (x - x million) were medically circumcised, and
+    x million (x - x million) traditionally circumcised. In 2020, MC coverage among men 10-29
+    years ranged from x\% (x\% - x\%) in Zimbabwe (?) to x\% (x\%-x\%) in Togo. MMC coverage
+    ranged from x\% (x\%-x\%) in Malawi to x\% (x\%-x\%) in Tanzania, and TMC coverage
+    from x\% (x\%-x\%) in Eswatini to x\% (x\%-x\%) in Ethiopia. The largest increase in MMC
+    coverage was in Lesotho from x\% to x\%. Within countries, the median difference in MC
+    coverage between the districts with lowest and highest coverage was x\%, with the smallest
+    variation in Eswatini (x\% to x\%) and largest in Zambia (x\% to x\%). x million men aged
+    10-29 need to be circumcised to reach 90\% coverage in all countries.
+
+    \noindent \textbf{Conclusions} \\
+    \noindent VMMC programmes have made substantial, but uneven, progress towards male circumcision targets. Granular district and age-stratified data provide information for focusing further programme implementation.
+
+  \end{abstract}
+#+end_src
+
+#+latex: \newpage
+
+* Background
+
+** Plan                                                            :noexport:
+
+Look at other similar circumcision papers to understand this
+
+- Something about HIV
+- Something about circumcisions
+- Something about existing efforts to estimate circumcision
+
+** Text                                                              :ignore:
+
+# HIV 
+HIV remains the single largest cause of years of life lost among adolescent boys and men of reproductive age in eastern and southern Africa.
+
+# Circumcision
+Voluntary Male medical circumcision (VMMC) reduces the rate of male-to-female HIV incidence by 60%.
+Efficient, cost-effective, one-time procedure for preventing HIV transmission.
+
+# Existing efforts to estimate circumcision
+Matt's model ... [cite:@thomas_multi-level_2021]
+
+# Anything else?
+
+#+latex: \newpage
+* Data 
+
+** Plan                                                            :noexport:
+
+:fig_1_caption:
+Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points
+are determined by the provider and sample size of each respective survey. Triangular points have
+no information on circumcision type.
+:END:
+
+*** Text from presentation
+
+** Text                                                              :ignore:
+
+120 household surveys conducted in 33 SSA countries 2002-2019
+Self-reported circumcision:
+o Status (MC vs uncircumcised), 
+o Type (MMC vs TMC), 
+o Year, and
+o Age 
+recorded
+Sub-national populations from WorldPop (reference)
+
+Major survey series (DHS, AIS, PHIA, MICS, HSRC in ZAF)
+Individual-level data: self-reported circumcision status  by male respondents
+Respondents located to districts using cluster geocoordinates
+Located to admin 1 (province) where coordinates not available (MICS)
+VMMC programme data not used
+
+Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC
+Otherwise, circumcisions are TMC
+Where no data is present on location or provider, circumcision type  Missing
+
+Individual-level household survey data provide direct estimates of circumcision rates over time and by type for years preceding survey
+
+ Direct estimates of TMC practices, age at circumcision, VMMC impact
+
+
+
+#+latex: \newpage
+
+* Methods 
+
+** Plan                                                            :noexport:
+
+- ?
+
+** Text                                                              :ignore:
+
+*** Model
+
+Bayesian spatio-temporal, competing-risks, time-to-event model
+Stratified by age, location and time
+Rates of TMC and medical male circumcision (MMC) estimated
+Coverage in 2020 projected assuming continuation of estimated age-specific rates with probabilistic uncertainty
+Important assumption: Probability of traditional male initiation ceremonies (TMICs) constant over time (needed? Might lead to a lot of questions!) 
+
+Model stratified by:
+Age
+District
+circumcision type (traditional / medical)
+
+TMC & MMC rates estimated (by age, district, and time)
+Spatial smoothing allows for district level estimates
+
+Circumcision coverage since most recent HH survey: projected assuming continuation of estimated age-specific rates, with probabilistic uncertainty
+
+Important assumption: TMC rate assumed constant over time
+
+
+#+latex: \newpage
+
+*** Aggregations                                                     :ignore:
+
+# Should definitely steal some of Matt's write up for this
+
+Samples drawn from model fit, weighted by population and aggregated, to produce estimates for less granular regions (e.g. District to Province aggregation).
+Computed posterior summary statistics for coverage, circumcision incidence and probability of being circumcised. 
+Done for all strata, for both discrete ages and “binned” age groups.
+
+
+
+* Results 
+
+** Plan                                                            :noexport:
+** Text                                                              :ignore:
+
+#+latex \newpage
+
+* Discussion
+
+** Plan                                                            :noexport:
+** Text                                                              :ignore:
+
+*Challenges*
+Inconsistent MC self-reporting by same cohort in successive surveys
+E.g. in 2017 survey, men 30-34 report higher % circumcised in 2012 than ‘same’ men age 25-29 in 2012 survey
+Affects circumcision level, and distribution by type
+
+‘Replacement’ of traditional circumcision by medical circumcision
+Evidence of this in surveys from several countries; work in progress
+Also not fully accounted for in DMPPT2 baseline coverage inputs
+
+Surveys imply different level of scale-up than programme data
+Several countries: surveys suggest fewer VMMCs conducted than programme data
+
+#+latex \newpage
+
+* References 
+
+#+PRINT_BIBLIOGRAPHY
+
+* Additional                                                       :noexport:
+** TODOS                                                           :noexport:
+
+*** Important Initial Setup
+**** DONE Setup autocompilation with latex (code actually makes a lot of sense!)
+CLOSED: [2022-10-19 Wed 15:10]
+https://www.reddit.com/r/orgmode/comments/n74ehs/orgmode_export_to_pdf_with_capability_to_preview/
+https://github.com/munen/emacs.d#convenience-functions-when-working-with-pdf-exports
+
+***** DONE Set up `pdf-tools`
+CLOSED: [2022-10-19 Wed 13:00]
+https://github.com/vedang/pdf-tools
+**** TODO Set up bibtex citations (using org-cite?)
+https://kristofferbalintona.me/posts/202206141852/
+***** TODO Setup Zotero
+
+
+**** TODO Copy relevant poster script and text to paper
+**** TODO Copy relevant presentation text to paper
+*** Scripting
+**** TODO Write script which saves plots
+**** TODO Write R code to include here for inline figures, etc
+**** TODO Write Makefile to pull paper together
+
+Makefile will need to:
+- Run script to save plots
+...
+- Use pandoc (or pdflatex?) to convert org to (tex and then) pdf, having pulled everything else in
+
+
+*** Formatting
+**** DONE Remove table of contents
+   CLOSED: [2022-10-17 Mon 11:53]
+**** DONE Don't indent new paragraphs
+CLOSED: [2022-10-19 Wed 15:46]
+**** DONE Format abstract (see abstract todos section)
+CLOSED: [2022-10-19 Wed 16:13]
+***
+**** DONE Break lines rather than having hyponated words on two lines
+CLOSED: [2022-10-20 Thu 09:42]
+**** DONE Make margins smaller (see Matt's latex code)
+CLOSED: [2022-10-20 Thu 09:51]
+**** DONE Insert whitespace between new paragraphs
+CLOSED: [2022-10-20 Thu 09:51]
+*** Title Page 
+**** TODO Think of better title (Ask Jeff about this)
+May be fine? But not very different to other examples
+**** TODO Add full affiliated institution name to (formatted) authors
+***  Abstract 
+**** DONE Format abstract correctly
+   CLOSED: [2022-10-17 Mon 13:54]
+
+   Had to use pure latex to achieve this, but looks good now
+
+**** TODO Rewrite abstract (slightly rewritten in poster script, need to rewrite arís)
+***** TODO Add about comparison to survey and DMPPT2 estimates
+
+***** TODO Add about (i) hyperpar/prior investigation and (ii) treatment of TMC and paediatric MMC
+Can call this "model calibration" and specification
+
+For (i), something like:
+The model was calibrated ... pooled MMC variance covariance hyperparameters ... using forecast
+for withheld survey. 
+
+    
+***** TODO Add something about different ages
+
+*** Background
+*** Data 
+*** Methods
+*** Results
+*** Discussion
+*** References
+** Links                                                           :noexport:
+*** Papers 
+- [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25788][Naomi]]
+- [[https://apps.who.int/iris/bitstream/handle/10665/246234/WHO-%AD%20HIV-%AD%202016.17-%AD%20eng.pdf?sequence=1][UNAIDS Framework for VMMC]]
+**** Circumcision Papers, for introduction etc**
+***** [[https://arxiv.org/pdf/2108.09142.pdf][Matt's Paper]]
+***** [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25789][Estimating male circumcision coverage in 15 priority countries in sub-Saharan Africa]]
+***** [[https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156909][DMPPT2, Kripke K]]
+***** [[https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020298][Randomized, Controlled Intervention Trial of Male Circumcision for Reduction of HIV Infection Risk]] (more included in Matt's paper)
+***** [[https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(19)30038-5/fulltext][Benefits of Circumcision for MSM]]
+***** Lit Review on VMMC 
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4777442/
+**** Plosmed papers, for formatting
+***** https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1001245
+- This paper's background includes a background, methods and findings, and conclusions sections, and is written by Jeff, so I should
+have something similar!
+
+
+*** Org-mode Paper Links
+
+- Latex template for ArXiv (may be useful) https://www.overleaf.com/latex/templates/arxiv-slash-biorxiv-template/phncddwqtxpc
+
+- Thesis done in Org-mode
+https://github.com/aidanscannell/phd-thesis/edit/master/phd-thesis.org
+
+** Notes                                                           :noexport:  
+*** Plan, Questions, etc
+
+Need to include sections on: 
+- Comparison of models with different treatments of TMC and paediatric MMC
+- Comparison of temporal priors and MMC variance/covariance hyperparameters
+- Comparison to DMPPT2 data
+- Comparison to survey data 
+(not necessarily in this order!)
+
+Will these be included in all of methods, results, discussion? 
+
+** Settings                                                        :noexport:
+
+***  macros                                                        :noexport:
+**** Old 
+#+name: auth_and_affil
+#+begin_src latex :tangle auth_and_affil.sty :session
+  \newcommand{\somemacro_1}{
+
+    \usepackage{authblk}
+
+    % authors
+    \author[1]{Patrick O'Toole}
+    \author[1,2]{Matthew L. Thomas}
+    \author[1]{Oliver Stevens}
+    \author[1,3]{Kevin Lam}
+    \author[4]{Katherine Kripke}
+    % \author[1]{Rachel Esra}
+    % \author[5]{Ian Wanyeki}
+    % \author[5]{Lycias Zembe}
+    % \author[1]{Jeffrey W. Eaton}
+
+    % % author affiliations
+    % \affil[1]{\emph{Imperial College London, London, United Kingdom}} \\
+    % \affil[2]{\emph{Joint Centre for Excellence in Environmental Intelligence, Uniersity of Exeter and Met Office}} \\
+    % \affil[3]{\emph{Department of Statistics, University of British Columbia}} \\
+    % \affil[4]{\emph{Avenir Health, Takoma Park, MD, USA}} \\
+    % \affil[5]{\emph{Join United Nations Programme on HIV/AIDS (UNAIDS)}} \\
+
+    \newpage
+  }
+#+end_src
+
