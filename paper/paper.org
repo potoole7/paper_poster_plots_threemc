@@ -113,23 +113,43 @@ Look at other similar circumcision papers to understand this
 
 ** Text                                                              :ignore:
 
+*** Sections                                                        :ignore:
+
 # HIV 
-HIV remains the single largest cause of years of life lost among adolescent boys and men of reproductive age in eastern and southern Africa.
+HIV remains the single largest cause of years of life lost among adolescent boys and men of reproductive age in eastern and southern Africa (ref). 
 
 # Circumcision
+Voluntary 
 Voluntary Male medical circumcision (VMMC) reduces the rate of male-to-female HIV incidence by 60%.
-Efficient, cost-effective, one-time procedure for preventing HIV transmission.
+Efficient, cost-effective, one-time procedure for preventing HIV transmission (references). 
+
 
 # Existing efforts to estimate circumcision
-Matt's model ... [cite:@thomas_multi-level_2021]
+Matt's model ... [cite:@thomas_multi-level_2021], DMPPT2
 
 # Anything else?
 
 #+latex: \newpage
-* Data 
+*** Research Questions                                         :ignore:
+
+There were several key research questions which we hoped to answer with this analysis:
+1. How has circumcision coverage varied subnationally across the SSA region?
+2. How have patterns in circumcision coverage subnational vary for different ages? (Can word this better)
+3. How in particular have patterns in TMC changed over time in response to VMMC programme implementation, and more generally across the SSA region
+4. How have efforts to meet UNAIDS goals in VMMC target countries progressed, and if not met, how
+   many circumcisions .. remain (??)
+   (Can also word this better!!)
+5. How do our results compare to those of the DMPPT2 model?
+
+Word this better!
+
+* Methods 
 
 ** Plan                                                            :noexport:
 
+See [[file:outline/paper_outline.org][paper outline]]
+
+For data:
 :fig_1_caption:
 Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points
 are determined by the provider and sample size of each respective survey. Triangular points have
