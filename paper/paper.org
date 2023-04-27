@@ -442,7 +442,12 @@ Several countries: surveys suggest fewer VMMCs conducted than programme data
 
 #+PRINT_BIBLIOGRAPHY
 
+* Appendix
 * Additional                                                       :noexport:
+** Acronyms
+
+Male Circumcision - MC
+
 ** TODOS                                                           :noexport:
 
 *** Important Initial Setup
