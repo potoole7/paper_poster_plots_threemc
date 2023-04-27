@@ -5,7 +5,11 @@
 # This script also contains info on missing values etc which may be of 
 # interest in our appendices
 
+# TODO: Check number of surveys, seems very low
+# TODO: Remove BWA from plot
+
 # stopifnot(dirname(getwd()) == "threemc-orderly")
+while(basename(getwd()) != "threemc-orderly") setwd("../.")
 
 #### Libs ####
 library(dplyr, warn.conflicts = FALSE)
@@ -45,6 +49,9 @@ ssa_iso3 <- sort(c(
   "SEN", "SLE", "SWZ", "TCD", "TGO", "TZA", "UGA", "ZAF", "ZMB", "ZWE"
 ))
 
+# countries for which we have no results
+no_mod_iso3 <- c("BWA", "CAF", "GNB")
+
 ssa_countries <- countrycode::countrycode(ssa_iso3, "iso3c", "country.name")
 ssa_countries <- dplyr::case_when(
   ssa_countries == "Congo - Kinshasa"    ~ "DR Congo",
@@ -53,6 +60,7 @@ ssa_countries <- dplyr::case_when(
   ssa_countries == "Gambia"              ~ "The Gambia",
   TRUE                                   ~ ssa_countries
 )
+
 
 #### Load Data ####
 
@@ -96,12 +104,14 @@ areas <- load_archive(
 )
 
 # pull surveys
-survey_circumcision <- load_archive(
+survey_circumcision_orig <- survey_circumcision <- load_archive(
   "00b3_survey_join", 
   orderly_root, 
   "survey_circumcision.csv.gz", 
   query = "latest(parameter:is_paper == TRUE)"
-)
+) %>% 
+  filter(!iso3 %in% no_mod_iso3)
+
 # pull agegroup populations
 populations <- load_archive(
   "00c4_pops_aggregate", 
@@ -139,7 +149,7 @@ provider_key <- tibble::tribble(
   "DHS",     "Demographic and Health Survey",
   "PHIA",    "Population-Based HIV Impact Assessment",
   "HSRC",    "Human Sciences Research Council",
-  "BAIS",    "Botswana Aids Impact Survey",
+  # "BAIS",    "Botswana Aids Impact Survey",
   "MICS",    "Multiple Indicator Cluster Survey",
   "SBS",     "Sexual Behavior Survey"
 )
@@ -187,10 +197,10 @@ types_tbl <- survey_circumcision %>%
 missing_tbl <- tribble(
   ~iso3, ~survey_id,    ~year,  ~provider,
   # "BEN", "BEN2014MICS", 2014,   "MICS",
-  "BWA", "BWA2001AIS",  2001,   "AIS",
-  "BWA", "BWA2004AIS",  2004,   "AIS",
-  "BWA", "BWA2008AIS",  2008,   "AIS",
-  "BWA", "BWA2013AIS",  2013,   "AIS",
+  # "BWA", "BWA2001AIS",  2001,   "AIS",
+  # "BWA", "BWA2004AIS",  2004,   "AIS",
+  # "BWA", "BWA2008AIS",  2008,   "AIS",
+  # "BWA", "BWA2013AIS",  2013,   "AIS",
   # "CAF", "CAF2006MICS", 2006,   "MICS",
   "CIV", "CIV2005AIS",  2005,   "AIS",
   # "COG", "COG2014MICS", 2014,   "MICS",
@@ -327,7 +337,7 @@ p1 <- fig1data %>%
     fontface = "bold",
     size = 6
   ) +
-  geom_point(stroke = 1) +
+  geom_point(stroke = 3) +
   # specify x and y labels, subbing country name for country_idx
   scale_x_continuous(
     "Survey Year", 
@@ -341,7 +351,7 @@ p1 <- fig1data %>%
     minor_breaks = NULL,
     labels = country_labels$country,
     position = "left",
-    expand = expand_scale(add = 0.6)
+    expand = expansion(add = 0.6)
   ) +
   # New England Journal of Medicine colourscheme
   ggsci::scale_colour_nejm() +
@@ -373,4 +383,17 @@ p1 <- fig1data %>%
     plot.margin = margin(0.25, 1, 0, 0, "cm") 
   ) +
   coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
-p1
+# p1
+
+# save plot
+saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
+
+# values of interest 
+data_inlines <- list(
+  "n_surveys" = length(unique(survey_circumcision$survey_id)) , 
+  "n_iso3"    = length(unique(survey_circumcision$iso3)), 
+  "min_year"  = min(survey_circumcision$year), 
+  "max_year"  = max(survey_circumcision$year)
+)
+
+saveRDS(data_inlines, "paper_poster_plots/paper/data/01_data_inlines.RDS")
