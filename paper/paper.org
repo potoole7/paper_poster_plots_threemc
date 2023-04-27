@@ -123,8 +123,6 @@ are determined by the provider and sample size of each respective survey. Triang
 no information on circumcision type.
 :END:
 
-*** Text from presentation
-
 ** Text                                                              :ignore:
 
 120 household surveys conducted in 33 SSA countries 2002-2019
@@ -149,7 +147,7 @@ Where no data is present on location or provider, circumcision type  Missing
 Individual-level household survey data provide direct estimates of circumcision rates over time and by type for years preceding survey
 
  Direct estimates of TMC practices, age at circumcision, VMMC impact
-
+Include participation rates from surveys in paper!
 
 
 #+latex: \newpage
@@ -302,12 +300,14 @@ for withheld survey.
 *** Papers 
 - [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25788][Naomi]]
 - [[https://apps.who.int/iris/bitstream/handle/10665/246234/WHO-%AD%20HIV-%AD%202016.17-%AD%20eng.pdf?sequence=1][UNAIDS Framework for VMMC]]
+- https://spiral.imperial.ac.uk/bitstream/10044/1/75693/6/application-pdf%20%281%29.pdf (EPP-ASM paper, has lots on calibrating models)
 **** Circumcision Papers, for introduction etc**
 ***** [[https://arxiv.org/pdf/2108.09142.pdf][Matt's Paper]]
 ***** [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25789][Estimating male circumcision coverage in 15 priority countries in sub-Saharan Africa]]
 ***** [[https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156909][DMPPT2, Kripke K]]
 ***** [[https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020298][Randomized, Controlled Intervention Trial of Male Circumcision for Reduction of HIV Infection Risk]] (more included in Matt's paper)
 ***** [[https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(19)30038-5/fulltext][Benefits of Circumcision for MSM]]
+***** [[https://www.researchgate.net/publication/354752731_Estimating_male_circumcision_coverage_in_15_priority_countries_in_sub-Saharan_Africa/fulltext/614b20f1a3df59440ba1a359/Estimating-male-circumcision-coverage-in-15-priority-countries-in-sub-Saharan-Africa.pdf?origin=publication_detail][DMPPT2 paper]] (applied here)
 ***** Lit Review on VMMC 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4777442/
 **** Plosmed papers, for formatting
