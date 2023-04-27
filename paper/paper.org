@@ -158,12 +158,74 @@ no information on circumcision type.
 
 ** Text                                                              :ignore:
 
+*** Data 
+
+**** Surveys                                                         :ignore:
+
+#+name: survey_inlines
+#+begin_src R :results output :session :exports results
+data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
+#+end_src
+
+#+RESULTS: survey_inlines
+
+Our data consisted of src_R[:exports results :session :results raw]{data_inlines$n_surveys}  
+nationally representative household surveys conducted in
+src_R[:exports results :session :results raw]{data_inlines$n_iso3} SSA countries
+between src_R[:exports results :session :results raw]{data_inlines$min_year} and src_R[:exports results :session :results raw]{data_inlines$max_year}.
+These included several major survey series, namely the Demographic and Health Surveys
+(DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys,
+Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa,
+Human Sciences Research Council (HSRC) surveys.
+Any surveys including a question on MC status were included. 
+
+These surveys provided individual-level data on self-reported circumcision status by male
+respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
+- The circumcision status of the male individual,
+- The circumcision provider: whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown,
+- The circumcision location: whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown
+- The circumcision year, and
+- The age at circumcision.
+
+PHIA surveys do not include a question for circumcision location. Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC. Otherwise, circumcisions are TMC. Where no data is present on location or provider, circumcision type is treated as "Missing". Refer to section x of the appendix to see specific questions asked in each survey.
+
+#+begin_comment
+Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
+#+end_comment
+
+Respondents were located to their districts using masked cluster geocoordinates. Where these
+coordinates were unavailable, as in several MICS surveys, respondents were located to their admin
+level 1 area hierarchy, most often corresponding to a province. 
+
+Participation rates for each survey can be found in section x of the appendix. 
+
+#+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
+#+NAME: fig1
+#+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
+# source("paper_poster_plots/scripts/02_methods_data.R")
+# p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+p1 <- readRDS("./plots/01_survey_table.RDS")
+print(p1)
+#+end_src
+
+#+RESULTS: fig1
+[[file:plots/01_survey_table.pdf]]
+
+/Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
+
+
+**** Populations                                      ::noexport:
+
+- Sub-national populations from WorldPop (reference) were used to infer circumcision coverage from rate estimates. 
+
+**** Old                                                           :noexport:
+
 120 household surveys conducted in 33 SSA countries 2002-2019
 Self-reported circumcision:
-o Status (MC vs uncircumcised), 
-o Type (MMC vs TMC), 
-o Year, and
-o Age 
+- Status (MC vs uncircumcised), 
+- Type (MMC vs TMC), 
+- Year, and
+- Age 
 recorded
 Sub-national populations from WorldPop (reference)
 
