@@ -295,14 +295,121 @@ Important assumption: TMC rate assumed constant over time
 
 #+latex: \newpage
 
-*** Aggregations                                                     :ignore:
 
-# Should definitely steal some of Matt's write up for this
 
-Samples drawn from model fit, weighted by population and aggregated, to produce estimates for less granular regions (e.g. District to Province aggregation).
-Computed posterior summary statistics for coverage, circumcision incidence and probability of being circumcised. 
-Done for all strata, for both discrete ages and “binned” age groups.
+*** Model Specification
 
+**** Notes                                                         :noexport:
+Jeff:
+- Model selection: particularly interested in  
+- (1) Model specification for time trends in TMC and paediatric circumcision -> in sample fit 
+- (2) Short-term future projections; ensuring appropriate future uncertainty in all countries
+   -> out-of-sample prediction withholding the final survey (and any survey in the one year previous) 
+
+- Choose best model specification (i.e. which terms to include (TMC, paediatric MMC, etc)) for
+  each country using within-sample validation.
+- Include figures comparing models for each country in appendix, refer to them here.
+#+begin_comment
+Here describe the method used for the comparison (out of sample prediction process) and
+metrics used for comparison. Report the results of the model selection in the appendix.
+#+end_comment
+- Credible interval coverage, ELPD, CRPS and fit statistics (ME, MSE, RMSE) used to inform
+  decision. 
+
+**** Rough draft (w/out figures & conclusions) (May go to appendix)  :ignore:
+
+In our choice of model specification, we were interested in two main assumptions/features of the
+model:
+- How we should treat TMC, in terms of whether to continue to assume a constant rate of TMC over time, or to reject that assumption,
+- How to model paediatric MMC, which should be minimal in at least the VMMC target countries.
+
+***** Qualitative                                         :ignore:
+Qualitatively, we have made some presumptions about certain countries and their circumcision patterns.
+
+In non-VMMC SSA countries, concentrated in Western and Central Africa (WCA), TMC has historically made up the bulk of MCs.
+Therefore, most MMCs in non-VMMC countries are likely to have superseded TMCs performed as part of traditional male initiation ceremonies. This suggests that MMCs in these countries are likely to be on paediatric individuals in traditional settings, so the assumption of constant and
+negligible paedaitric MMC could be a poor one. 
+Because any increases in MMC will come at the expense of TMC in our "competing-risks" model, it is also plausible that the assumption that TMC rates in these countries have been relatively constant may be unrealistic.
+It is therefore likely that the inclusion of a time effect for TMC and not partitioning MMC into
+adult and time-invariant paediatric rates will be a more realistic reflection of circumcision
+patterns in non-VMMC countries. 
+
+# Since changes to MMC in non-VMMC programmes will not have been as a result of VMMC programmes, it is likely that circumcision patterns have undergone a generational change as a result of general development in their countries. As such, a time effect for TMC in non-VMMC countries is very important for accurately modelling and understanding their circumcision patterns, particularly in how the relative makeup of M
+
+# (Note: would be a good idea to look into surveys for these countries to see if this checks out! I.e. for non-VMMC and VMMC surveys, it might be a good idea to compare the number of people with different circumcision types for location and provider,  to substantiate this assumption)
+
+Conversely, in VMMC priority countries changes (i.e. increases) in circumcision patterns have largely been driven by VMMC programmes.
+As such, it is more realistic to assume that paediatric MMCs are minimal, in line with UNAIDS VMMC policy.
+It is more difficult to say whether the rate of TMC will be constant over time in non-VMMC
+countries. Historical TMC patterns in these countries differ significantly, and so it is
+difficult to come up with an assumption for all countries. It may therefore be more realistic to
+also allow TMC to vary over time in VMMC countries. In countries where the rate of TMC is stable
+over time, the model will simply capture this behaviour, while in countries where TMC varies over
+time, the inclusion of a time effect for TMC will provide the model with the additional required
+flexibility to reflect this trend. We would also prefer to not have to treat every VMMC prioirity
+country separately with regards to their model specification, so including a time effect for TMC
+in the models for these countries seems like a logical choice. 
+
+***** Quantitative                                                   :ignore:
+
+We have also performed a quantitative analysis of the different model specifications available
+to us. A more detailed treatment of this can be found in section x of the appendix. 
+
+- Explain why within-sample comparison performed here
+- Describe posterior predictive comparison between model fit and empirical survey coverage estimates
+- For "For x / y SSA countries" the model with .. parameters had better model fit (quote some stats)
+- "For x / y non-VMMC countries, the model with ...
+- "For x / y VMMC countries, the model with ...
+- Therefore, our quantitative analysis reinforces what we expected to be the best model
+  specifications for VMMC and non-VMMC countries from our quantitative arguments. 
+
+*** Model Calibration and Choice of Temporal Prior
+
+**** Notes                                                         :noexport:
+- Calibrated MMC-related variance hyperparameters using grid search. Idea is to use information
+  from countries with more surveys to inform variance (which was suspected to be underestimated)
+  in countries with fewer surveys, analagous to using a model with partial pooling for each
+  country in the Sub-Saharan region, which would be much too computationally expensive to fit. 
+
+**** Another very rough draft  (not sure if everything here is appropriate for this section) (much of this will probably go to the appendix as well!) :ignore:
+
+For some VMMC priority countries, we do not have access to more recent survey data. 
+One particular country where this is the case is Tanzania, whose most recent survey is a 2016 PHIA survey.
+In these circumstances, VMMC programme data is an available source of more recent data.
+The DMPPT2 model explicitly uses this data to estimate MMC. 
++Putting aside suspected problems associated with the programme data, such as individuals availing of VMMC in districts in which they are not residents, and suspected reporting biases with countries like TZA and Zimbabwe,+ the results of DMPPT2, particularly at the national level, where travel between districts is ignored, suggest that VMMC may have scaled up at a rate not anticipated by threemc where only these older surveys are available. 
++This is consistent with the out-of-sample (OOS) evaluations of our model fit to countries like ZWE, where removing access to the most recent (2018 DHS) survey similarly+
++underestimates VMMC scale up (include plot here?).+
+Hence, we feel that our model likely underestimates it's own uncertainty with regards to predicting circumcision coverage for progressively later years than our last
+available surveys, particularly in the case of VMMC priority countries which started with a low circumcision coverage. What we desire is a more dramatic "fanning" out of
+our prediction interval as we forecast further from the last available survey data, again, particularly for VMMC countries in which there may have been a large scale up
+in circumcision coverage since the last available survey, representing an intervention via VMMC programmes which our model, fit for each country separately, is not equipped to
+handle.
+
+Due to computational constraints, we cannot model each country together as one singular area hierarchy, which, through the neighbourhood correlation structure inherent in the model,
+would allow the model to borrow information from countries with a large amount of available data to inform predictions in countries with older and/or fewer surveys (i.e. some partial pooling
+between countries would take place).
+One alternative to using a partially-pooled model is to use the uncertainty estimates which produce the best predictions for countries with more recent data to inform our uncertainty estimates in countries with less recent survey data available. 
+
+To quantitatively explore this hypothesis, we performed an out of survey (OOS) evaluation of the model fit to each country, removing their most recent survey data and comparing posterior predictions to the survey-estimated circumcision coverage. 
+(Something about this incorporating survey design/effective sample sizes etc should probably be here)
+These comparisons consisted of comparisons of mean predictions, using ELPD and CRPS scores, as well as error statistics such as the ME, RME and RMSE, and evaluations of the
+"calibration" of our model with regards to it's posterior predictive uncertainty for each unique region-year-age-type (what does Matt use for this) stratum of our data. 
+
+This involved comparing survey estimates of circumcision coverage with the 50%, 80% and 95% credible intervals (CI) coverage of our posterior predictive distribution. A "good" calibration
+was regarded as one in which roughly 50% of (training) survey observations fell within the 50% CI range, 85% within the 85% CI range, and 95% within the 95% range.
+
+Two principal components of the model largely determine how the uncertainty of our model predicitions scale up over time: 
+1. *The choice of temporal prior*: threemc uses an AR 1 temporal prior. However, this is easily replaceable with, for example, a random walk (RW) prior. These temporal priors
+   differ consireably in how they use previous estimates to inform future predictions, and so we appraised a number of choices for our temporal prior to determine if there
+   was a preferable alternative to our default AR 1 temporal prior, with regards to the particular context of increasing year-on-year uncertainty bounds.
+   The choice of temporal prior was included in this OOS analysis, rather than in our
+   previous within-sample parameter chioce, as the main effect of the temporal prior is in
+   determining our temporal forecast. As such, an OOS validation would prove to be more informative in determining the optimal temporal prior for the largest number of countries. 
+2. *The choice of (log) variance hyperparameters*: The "unpooled" optimised time-related variance hyperparameters for each respective country varied significantly, but in general certain patterns and values for these hyperparameters could be associated with a greater "fanning" out of our uncertainty bounds for successive prediction years.
+
+/For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were/
+/ignored in our calibration efforts with this model/ ()
 
 
 * Results 
