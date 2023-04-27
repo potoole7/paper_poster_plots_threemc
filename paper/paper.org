@@ -25,6 +25,19 @@
 #+latex_header: \hyphenpenalty=10000
 #+latex_header: \exhyphenpenalty=100
 
+* R                                                                :ignore:
+
+#+name: setwd
+#+begin_src R :results output :session :exports results
+# set directory to top of git repo (assume paper_poster_plots in threemc-orderly)
+# dir <- dirname(system("git rev-parse --show-toplevel", intern = TRUE))
+dir <- "~/imperial_repos/threemc-orderly/"
+setwd(dir)
+#+end_src
+
+#+RESULTS: setwd
+: [1] "/home/paddy7wb/imperial_repos/threemc-orderly"
+
 * Authors & Affiliations                                        :ignore:
 
 # Authors
