@@ -1,0 +1,4 @@
+# ignore Windows exports
+*.odt
+*.doc
+*.docx
