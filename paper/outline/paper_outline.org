@@ -63,7 +63,6 @@ Could also split 1 into (i) MC/MMC and (ii) TMC (showing decrease in TMC over ti
 Jeff: Just the source (referencing UNAIDS) and definition that we use 'health districts'
 #+end_comment
 
-
 ** Surveys
 
 - 120 household surveys conducted in 33 SSA countries 2002-2019
@@ -341,3 +340,51 @@ Include (non-exhaustively):
   - Calibration plots: Boxplots (and/or violin plots?), possibly 3D plots such as 3d dot plot  and/or ternary plot
 - Country-specific plots from Matt's paper
 - Country-specific comparison plots to survey and DMPPT2 results
+
+* Meeting with Jeff on outline 
+
+Paper Outline: 
+
+- Could compare to programmatic data, not just DMPPT2 results (i.e. "x number of circs between 2010 and 2020" can be compared to program data estimates)
+  At the last UNAIDS meeting we had something on this, need to ask Katherine about it perhaps?
+- In Appendix, copy text in DHS and PHIA surveys, show how medical/traditional circumcision distinction is made from these surveys
+- Model selection: particularly interested in the short term future projections, and that informed how we performed model selection
+Two choices, include table of comparisons for these models 
+- Model selection and calibration: Have brief/high-level summary, include in results (go back to EPP-ASM paper), often seen in GBD papers
+  Leave more numerical stuff for appendix
+- Include how we also withheld surveys from the year before the last survey year
+- Drop mention of MMC-T & MMC-nT, we model this as temporal changes in TMC
+- Programme data & DMPPT2 comparisons will be in Discussion
+- Just mention that package exists and about code availability as brief note at the end of paper, like in Tim's paper (also mention orderly)
+- First section of results should be some summary statistics of the data
+- No need for results on each country, we want multi-country results
+- At the end of the background section, we want a list of aims/research questions
+- Move changes in traditional circumcision to separate section/research question, interesting and novel observation
+Can show replacement of TMC by MMC, that's fine. 
+- Progress towards VMMC targets may be covered 
+- Would be nice to show uncircumcised populations by age ("age pyramid" plot), maybe with VMMC targets
+
+Aim to have a table with a summary 
+Might be nice to include range and coefficent across districts
+
+- Discussion: 
+- Have geofaceted plot (or at least *something on rates*!!) for medical and traditional circumcsiion
+- See Jeff's notes on discussion
+- For paper figures, want to have an idea
+- *For the questions I want to answer in this paper, what are our findings?*
+- What is important for the reader to know about that (e.g. broad patterns in survey comparisons)?
+- In model selection, mention briefly about coverage stats etc
+  
+*Put research questions in, mock up figures and tables*
+
+ETH: Fit to just Addis and see how that goes!
+
+Calibration: 
+Doesn't like 3D dotplot, really likes ternary plot, if I can just work out the details!
+
+Questions: 
+- Tim said that scaling year often helps in modelling (particularly in TMB), should we be doing that?
+  
+Aim to check in Tuesday/Wednesday before I head off
+Consolidate where we're at before holiday!
+
