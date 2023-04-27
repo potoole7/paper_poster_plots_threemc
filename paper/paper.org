@@ -514,17 +514,45 @@ for withheld survey.
     
 ***** TODO Add something about different ages
 
+**** TODO Write script to pull in variables for abstract figures
 *** Background
 *** Data 
+**** TODO Rewrite to pull in survey info with inline code
+
+
+**** TODO Insert plots
+***** TODO Survey series plots
+***** TODO Circumcision type plots
 *** Methods
 *** Results
 *** Discussion
 *** References
 ** Links                                                           :noexport:
 *** Papers 
+
+TODO: Reference these!
+
 - [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25788][Naomi]]
 - [[https://apps.who.int/iris/bitstream/handle/10665/246234/WHO-%AD%20HIV-%AD%202016.17-%AD%20eng.pdf?sequence=1][UNAIDS Framework for VMMC]]
 - https://spiral.imperial.ac.uk/bitstream/10044/1/75693/6/application-pdf%20%281%29.pdf (EPP-ASM paper, has lots on calibrating models)
+References for DHS, AIS & PHIA here https://www.medrxiv.org/content/10.1101/2022.07.12.22277551v1.full.pdf   
+[[https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0020298][Randomized, Controlled Intervention Trial of Male Circumcision for Reduction of HIV Infection Risk]]
+[[https://www.thelancet.com/journals/langlo/article/PIIS2214-109X(19)30038-5/fulltext][Benefits of Circumcision for MSM]] 
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4539243/ (another paper on circs referenced here)
+
+Cork paper https://ora.ox.ac.uk/objects/uuid:677ccf82-44b7-4495-b304-b2a0c9db9e3b
+
+[[https://www.nature.com/articles/nrdp201535][HIV Infection, Nature]]
+[[https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)31311-4/fulltext][HIV, The Lancet]]
+
+
+**** Paper Examples
+
+- DMPPT2 Paper https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156909
+- Matt's paper https://arxiv.org/pdf/2108.09142.pdf (ask for diagram of data sources)
+- Naomi paper https://spiral.imperial.ac.uk/bitstream/10044/1/90881/12/jia2.25788.pdf
+- Paper by Kinh and Jeff which also covers SSA https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-022-13451-y#availability-of-data-and-materials
+
 **** Circumcision Papers, for introduction etc**
 ***** [[https://arxiv.org/pdf/2108.09142.pdf][Matt's Paper]]
 ***** [[https://onlinelibrary.wiley.com/doi/10.1002/jia2.25789][Estimating male circumcision coverage in 15 priority countries in sub-Saharan Africa]]
