@@ -237,26 +237,43 @@ VMMC programme data not used
 
 Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC
 Otherwise, circumcisions are TMC
-Where no data is present on location or provider, circumcision type  Missing
+Where no data is present on location or provider, circumcision type == Missing
 
 Individual-level household survey data provide direct estimates of circumcision rates over time and by type for years preceding survey
 
- Direct estimates of TMC practices, age at circumcision, VMMC impact
+- Direct estimates of TMC practices, age at circumcision, VMMC impact
 Include participation rates from surveys in paper!
 
 
 #+latex: \newpage
 
-* Methods 
-
-** Plan                                                            :noexport:
-
-- ?
-
-** Text                                                              :ignore:
-
 *** Model
 
+"threemc" (Matt's model for male circumcision) (or "Multi-level model for male circumcision"?) is
+a Bayesian, spatio-temporal, competing-risks, time-to-event model (reference). We have extended
+this model from its initial application in South Africa to
+src_R[:exports results :session :results raw]{data_inlines$n_iso3}
+countries within the SSA region. The model produces estimates of circumcision rates, incidence and coverage (i.e. cumulative indidence), with associated uncertainty bounds, stratified by type, year, age and location. Circumcision rates are projected after their most recent household survey
+assuming continuation of estimated age-specific rates, with probabilistic uncertainty. Estimates
+for single ages were binned into 5-year age groups from 0-4 to 54-59, and other age groups of interest, such as 15-29 year-olds.
+
+An assumption of threemc was that TMC was constant over time, due to the perceived intransigence
+in TMC practises and traditional male initiation ceremonies to tribal and other cultural or religious groups that have developed over time. MMCs amongst the paediatric (defined as
+those under 10) were also assumed to be constant over time, as VMMC programmes, the 
+main force behind the adoption of MMC in much of SSA, do not targets males below 10 (reference).
+
+Countries were modelled at their respective PSNU area level, or the most granular level available in surveys. Model estimates were weighted by population and post-stratified to produce estimates
+for their "parent" regions. 
+
+Some additional features were added to the threemc model during the course of this analysis: 
+- Where no information on circumcision type was available for every survey in a given country, a type-agnostic version of the model was used,
+- Survey estimates for less granular areas were used to inform likelihood estimation for their
+  "child" areas, where previously they were ignored,
+- optional addition of a temporal effect for TMC, due to the suggestion of survey estimates that
+  TMC practices may be changing, even in non-VMMC target countries, over time, and
+- an optional random walk (RW) temporal prior was implemented, where previously only an auto-regressive (AR1) temporal prior was available.
+
+**** Old                                                           :noexport:
 Bayesian spatio-temporal, competing-risks, time-to-event model
 Stratified by age, location and time
 Rates of TMC and medical male circumcision (MMC) estimated
