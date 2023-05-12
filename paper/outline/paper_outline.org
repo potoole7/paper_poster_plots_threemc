@@ -46,15 +46,13 @@ VMMC programmes have made substantial, but uneven, progress towards male circumc
 
 *** Research Questions
 
-1. How does total, medical and traditional subnational circumcision coverage vary across SSA
-   region?
-2. How do patterns in total, medical and traditional subnational circumcision coverage vary for different ages? (Can word this better)
-3. How have efforts to meet UNAIDS goals in VMMC target countries progressed, and if not met, how
-   many circumcisions .. remain (??)
-   (Can also word this better!!)
-4. How do our results compare to those of the DMPPT2 model?
-
-Could also split 1 into (i) MC/MMC and (ii) TMC (showing decrease in TMC over time)
+There were several key research questions which we hoped to answer with this analysis:
+1. How does total, medical and traditional circumcision coverage vary subnationally across the SSA region? How has this changed over time?
+2. How have subnational patterns in circumcision coverage vary across different ages and age groups?
+3. Has TMC decreased, both in response to VMMC programme implementation in target countries, and more generally across the entire SSA region?
+4. How have efforts to meet UNAIDS goals in VMMC target countries progressed? If these targets
+   have not been met, how many additional
+5. How do our results compare to those of the DMPPT2 model?
 
 * Data 
 
