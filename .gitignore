@@ -3,5 +3,8 @@
 *.doc
 *.docx
 
+# ignore tex files
+*.tex
+
 # ignore datafiles
 paper/data/

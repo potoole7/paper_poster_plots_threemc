@@ -2,7 +2,7 @@
 #+Title: coverage and unmet need in sub-Saharan Africa
 #+date: 17th October 2022
 #+bibliography: library.bib 
-#+options: toc:nil num:t d:nil author:nil
++options: toc:nil num:t d:nil author:nil
 #+startup: latexpreview
 
 # Load latex class, define page and text size
@@ -101,7 +101,7 @@ setwd(dir)
 
 #+latex: \newpage
 
-* Background
+* Background                                                         :noexport:
 
 ** Plan                                                            :noexport:
 
@@ -132,16 +132,65 @@ Matt's model ... [cite:@thomas_multi-level_2021], DMPPT2
 #+latex: \newpage
 *** Research Questions                                         :ignore:
 
+#+begin_comment
+May want to re-phrase these a bit?
+#+end_comment
+
 There were several key research questions which we hoped to answer with this analysis:
-1. How has circumcision coverage varied subnationally across the SSA region?
-2. How have patterns in circumcision coverage subnational vary for different ages? (Can word this better)
-3. How in particular have patterns in TMC changed over time in response to VMMC programme implementation, and more generally across the SSA region
-4. How have efforts to meet UNAIDS goals in VMMC target countries progressed, and if not met, how
-   many circumcisions .. remain (??)
-   (Can also word this better!!)
+1. How does total, medical and traditional circumcision coverage vary subnationally across the SSA region? How has this changed over time?
+2. How have subnational patterns in circumcision coverage vary across different ages and age groups?
+3. Has TMC decreased, both in response to VMMC programme implementation in target countries, and more generally across the entire SSA region?
+4. How have efforts to meet UNAIDS goals in VMMC target countries progressed? If these targets
+   have not been met, how many additional
 5. How do our results compare to those of the DMPPT2 model?
 
-Word this better!
+**** Results summaries for these research questions
+
+1. How does total, medical and traditional circumcision coverage vary subnationally across the SSA region? How has this changed over time? 
+
+Result: Broadly speaking, WCA has much higher circumcision coverage, in line with greater cultural practice of TMC associated with these countries, while in ESA TMC and MC coverage is much lower, although this varies quite a lot, both nationally and sub-nationally. 
+
+Figure 2: Map plot
+caption:
+Figure x: Estimated percentage of men aged 10-29 years who were circumcised sub-nationally in 33 SSA countries. Missing from map: Guinea-Bissau, Equitorial Guinea, Central African Republic and Botswana
+Another useful figure here: plot of district level MC coverage coloured by ESA/WCA and size given by population of each
+Caption:
+Figure x: District-level median percentage of men aged 10-29 years who were circumcised in 2020 in 33 SSA countries. Each point is a district, sized by district population relative to average district size and coloured by the African region their country falls under (Eastern and Southern Africa (ESA) and Western and Central Africa (WCA), respectively). Each white dot represents the national median. A vertical dotted line signifies the UNAIDS target of 90% national MC.
+
+Also should fit in somewhere: geofaceted plot showing differences in TMC/MMC type coverage
+2010-2020
+Caption:
+Figure x: Percentage of men aged 10-29 years who were medically circumcised and traditionally circumcised over time between 2010 and 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. The lighter shaded area represents projection after the most recent household survey. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+2. How have subnational patterns in circumcision coverage vary across different ages and age groups? 
+
+Result: A circumcised individual is much more likely to have undergone MMC for progressively younger ages, while the converse is true for TMC. (I wonder why this isn't untrue for paediatric TMCs in VMMC countries? Surely TMCs should be higher than MMCs for these ages, at least in VMMC countries?) 
+
+Figure: Geofaceted plot, but by age rather than year, for 2020 (doesn't look too bad, ask Jeff what he thinks)
+Caption:
+Figure x: Projected percentage of men from 0 to 60 years old who were medically circumcised and traditionally circumcised by 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+3. Has TMC decreased, both in response to VMMC programme implementation in target countries, and more generally across the entire SSA region? 
+
+TMC has decreased in VMMC target countries, presumably largely due to the implementation of VMMC programs in districts which traditionally practised TMC. It has also, interestingly, declined (with a lot of variability) in non-VMMC countries, possibly in response to general economic upliftment and development in these countries. 
+
+Plot for this? Can just refer to previous figures perhaps? Or perhaps a table is best?
+
+4. How have efforts to meet UNAIDS goals in VMMC target countries progressed? If these targets have not been met, how many additional circumcisions are required to meet these goals? 
+
+Result: Kenya (and maybe Mozambique?) is the only country expected to have reached the VMMC target of 90% circumcision coverage amongst 10-29 year olds by 2020. In other VMMC countries, significant progress towards this goal has been made, but there still remain a significant number of un-circumised 10-29 year olds. 
+
+Figure: Geofaceted plot showing circumcision coverage increase over time (could do for several of the larger age groups with their associated targets as dashed lines)
+However, probably only interested in VMMC countries here, so table probably more appropriate
+Additional Figure: Some kind of table showing progress towards goals?
+
+5. How do our results compare to those of the DMPPT2 model? 
+
+Result: In many VMMC countries, threemc results and DMPPT2 results largely agree. However, for several countries, such as Tanzania, Zimbabwe and parts of Kenya, we can see that DMPPT2 estimates far exceed empirical survey and threemc estimates, and indeed the population of many districts, suggesting that they may be adversely affected by (i) people travelling from their home districts to others to avail of VMMC programmes, and (ii) possible misreporting occurring in programmatic data due to incentives to report higher numbers of circumcisions for VMMC clinics. 
+
+Figure: (For appendix): comparisons between DMPPT2 results, survey estimates and threemc results
+Merely reference these figures in this section
+
 
 * Methods 
 
@@ -178,6 +227,13 @@ These included several major survey series, namely the Demographic and Health Su
 Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa,
 Human Sciences Research Council (HSRC) surveys.
 Any surveys including a question on MC status were included. 
+Unfortunately, no information on age at circumcision was present in the 2004 and 2008 Botswana
+Aids Impact Surveys. This complete left censoring of circumcised individuals meant that we were
+unable to fit our model there. 
+
+#+begin_comment
+Should I include something about how a new DHS is expected for BWA soon?
+#+end_comment
 
 These surveys provided individual-level data on self-reported circumcision status by male
 respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
@@ -207,9 +263,6 @@ Participation rates for each survey can be found in section x of the appendix.
 p1 <- readRDS("./plots/01_survey_table.RDS")
 print(p1)
 #+end_src
-
-#+RESULTS: fig1
-[[file:plots/01_survey_table.pdf]]
 
 /Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
 
@@ -257,10 +310,7 @@ countries within the SSA region. The model produces estimates of circumcision ra
 assuming continuation of estimated age-specific rates, with probabilistic uncertainty. Estimates
 for single ages were binned into 5-year age groups from 0-4 to 54-59, and other age groups of interest, such as 15-29 year-olds.
 
-An assumption of threemc was that TMC was constant over time, due to the perceived intransigence
-in TMC practises and traditional male initiation ceremonies to tribal and other cultural or religious groups that have developed over time. MMCs amongst the paediatric (defined as
-those under 10) were also assumed to be constant over time, as VMMC programmes, the 
-main force behind the adoption of MMC in much of SSA, do not targets males below 10 (reference).
+A key assumption of the original threemc model was that TMC was constant over time, due to the perceived intransigence in TMC practises and traditional male initiation ceremonies to tribal and other cultural or religious groups that have developed over time. MMCs amongst the paediatric (defined as those under 10) were also assumed to be constant over time, as VMMC programmes, the  main force behind the adoption of MMC in much of SSA, do not targets males below 10 (reference).
 
 Countries were modelled at their respective PSNU area level, or the most granular level available in surveys. Model estimates were weighted by population and post-stratified to produce estimates
 for their "parent" regions. 
@@ -351,11 +401,11 @@ country separately with regards to their model specification, so including a tim
 in the models for these countries seems like a logical choice. 
 
 ***** Quantitative                                                   :ignore:
-
+\\
 We have also performed a quantitative analysis of the different model specifications available
 to us. A more detailed treatment of this can be found in section x of the appendix. 
 
-- Explain why within-sample comparison performed here
+- Explain method, why within-sample comparison performed here
 - Describe posterior predictive comparison between model fit and empirical survey coverage estimates
 - For "For x / y SSA countries" the model with .. parameters had better model fit (quote some stats)
 - "For x / y non-VMMC countries, the model with ...
@@ -363,7 +413,9 @@ to us. A more detailed treatment of this can be found in section x of the append
 - Therefore, our quantitative analysis reinforces what we expected to be the best model
   specifications for VMMC and non-VMMC countries from our quantitative arguments. 
 
-*** Model Calibration and Choice of Temporal Prior
+
+
+*** Model Calibration and Choice of Temporal Prior                 :noexport:
 
 **** Notes                                                         :noexport:
 - Calibrated MMC-related variance hyperparameters using grid search. Idea is to use information
@@ -412,14 +464,88 @@ Two principal components of the model largely determine how the uncertainty of o
 /ignored in our calibration efforts with this model/ ()
 
 
-* Results 
+* Results                                                            :noexport:
 
 ** Plan                                                            :noexport:
+
+- First section: summary descriptive statistics about the data 
+- Should I have a section on results of model choice and calibration here first?  
+#+begin_comment
+Yes; 1-2 paragraphs summarising the key decisions. Then referring to appendix for tables and details.
+#+end_comment
+- Will I need a section for each country in my results? Or can I just include plots for
+  each in the appendix  
+- Will probably need some kind of table summarising coverage in different countries  
+- Will I need something on comparison to survey points and/or DMPPT2 results?  
+
+*** Data (Better title than this?)
+
+*** Spatio-temporal trends in Circumcision Coverage in Sub-Saharan Africa
+
+Figure: Map plots of MC, MMC and TMC coverage for 10-29 year olds from 2010 to 2020,
+including change (as in poster & various presentations)
+
+Additional Figure: Geo-faceted plot including MC estimates (split by colour between MMC & TMC)
+for each country from 2010 to 2020. 
+
+*Note: not showing much age variability in these plots!*
+
+Include:
+- Number of (MC/MMC/TMC) circumcisions performed in SSA from 2010-2020
+- Increase in overall circumcision coverage across region 2010-2020
+- Largest increase in coverage was in country x
+- Something about decrease in TMC observed in several countries (particularly non-VMMC), where
+  has this been greatest?
+#+begin_comment
+Jeff: I would make a separate research question/subheading about changes in TMC over time
+#+end_comment
+
+*** Sub-national Spatial Variability
+
+Figure: Plot showing sub-national variation in circumcision coverage in each country from
+poster
+
+- Substantial sub-national variation in circumcision coverage, particularly for ESA countries. 
+- Within countries, the median difference in MC coverage between the districts with the lowest
+  and highest covreage was x%
+- x% in ESA compared to x% in WCA
+- Lowest in country x, highest in country x
+- MC/TMC/MMC coverage in 2020 ranged from x%(x% - x%) in ? to ...
+- Number of districts achieving 90% MC target, highest and lowest country
+
+*** Variability in Age at Circumcision
+
+Figure: Distribution of age at circumcision for different countries
+
+- Talk about patterns in TMC (usually either neonatal or as part of TMIC), how MMC is usually
+  younger in non-VMMC countries (being MMC-T) than VMMC countries (largely MMC-nT). 
+
+- Could also have another geofaceted plot, but this time with age on the x-axis, rather than year?
+  Concerned I'm not including enough about age-related variability here! 
+
+- What figures (i.e. numbers) to include here? Haven't talked much about age variability in
+  coverage in previous presentations etc ...
+  
+*** Progress towards UNAIDS Targets in VMMC countries
+
+#+begin_comment
+Jeff: In this section, show those circumcision by age plots
+#+end_comment
+
+Figure: Table of MC, MMC and TMC coverage for VMMC countries for 10-29 year olds in 2020
+
+- Number of countries which reached UNAIDS targets (likely none)
+- Number of circumcisions performed in VMMC countries from 2010-2020
+- Number of additional circumcisions required to reach goal
+- "This belies large subnational variation, with x% (x-x%) of priority country districts estimated to have achieved x% MC by 2020" 
+
+*** Comparison with DMPPT2?
+
+
+
 ** Text                                                              :ignore:
 
-#+latex \newpage
-
-* Discussion
+* Discussion                                                         :noexport:
 
 ** Plan                                                            :noexport:
 ** Text                                                              :ignore:
@@ -438,11 +564,11 @@ Several countries: surveys suggest fewer VMMCs conducted than programme data
 
 #+latex \newpage
 
-* References 
+* References                                                         :noexport:
 
 #+PRINT_BIBLIOGRAPHY
 
-* Appendix
+* Appendix                                                         :noexport:
 * Additional                                                       :noexport:
 ** Acronyms
 
