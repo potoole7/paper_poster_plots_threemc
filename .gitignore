@@ -2,3 +2,6 @@
 *.odt
 *.doc
 *.docx
+
+# ignore datafiles
+paper/data/
