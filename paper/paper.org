@@ -334,6 +334,42 @@ data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
 
 #+RESULTS: survey_inlines
 
+Several major survey series include questions on male circumcision status, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys.
+Any surveys including a question on MC status were included. 
+
+#+begin_comment
+Should I include something about how a new DHS is expected for BWA soon?
+#+end_comment
+
+These surveys provided individual-level data on self-reported circumcision status by male
+respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
+- The circumcision status of the male individual,
+- The circumcision provider: whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown,
+- The circumcision location: whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown
+- The circumcision year, and
+- The date of birth and age at response and circumcision.
+
+The age of respondents was calculated from the century-month-code (CMC) of birth and interview dates.
+PHIA surveys do not include a question for circumcision location. Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC. Otherwise, circumcisions are TMC. Where no data is present on location or provider, circumcision type is treated as "Missing". 
+#+begin_comment
+Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
+#+end_comment
+Respondents were located to their districts using masked cluster geocoordinates. Where these coordinates were unavailable, as in several MICS surveys, respondents were located to their admin level 1 area hierarchy, most often corresponding to a province. 
+
+**** Populations                                      ::noexport:
+
+- Sub-national populations from WorldPop (reference) were used to infer circumcision coverage from rate estimates. 
+
+**** Old                                                           :noexport:
+***** Surveys (old)                                         :noexport:ignore:
+
+#+name: survey_inlines
+#+begin_src R :results output :session :exports results
+data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
+#+end_src
+
+#+RESULTS: survey_inlines
+
 Our data consisted of src_R[:exports results :session :results raw]{data_inlines$n_surveys}  
 nationally representative household surveys conducted in
 src_R[:exports results :session :results raw]{data_inlines$n_iso3} SSA countries
@@ -382,12 +418,7 @@ print(p1)
 
 /Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
 
-
-**** Populations                                      ::noexport:
-
-- Sub-national populations from WorldPop (reference) were used to infer circumcision coverage from rate estimates. 
-
-**** Old                                                           :noexport:
+***** Older still
 
 120 household surveys conducted in 33 SSA countries 2002-2019
 Self-reported circumcision:
@@ -595,6 +626,17 @@ Yes; 1-2 paragraphs summarising the key decisions. Then referring to appendix fo
 - Will I need something on comparison to survey points and/or DMPPT2 results?  
 
 *** Data (no header required here)                                   :ignore:
+
+Things to add:
+
+- Number of surveys, n countries, years (done)
+- Something about missingness
+  - Amount of left censoring and right censoring of circumcision age,
+  - Amount of unknown circumcision status
+- List countries which we cannot model (BWA, etc), and reasons why
+- Isn't there something wrong with the age at circumcision for these countries as well??
+- "More information on each survey, including participation rates, can be found in section x of the appendix. 
+
 *** Spatio-temporal trends in Circumcision Coverage in Sub-Saharan Africa
 
 Figure: Map plots of MC, MMC and TMC coverage for 10-29 year olds from 2010 to 2020,
