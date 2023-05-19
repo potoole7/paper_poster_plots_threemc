@@ -3,7 +3,7 @@
 # May end up joining this with other scripts or even copying to org file
 
 # This script also contains info on missing values etc which may be of 
-# interest in our appendices
+# interest in the appendix
 
 # TODO: Check number of surveys, seems very low
 # TODO: Remove BWA from plot
@@ -387,6 +387,13 @@ p1 <- fig1data %>%
 
 # save plot
 saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
+ggplot2::ggsave(
+  "paper_poster_plots/paper/plots/01_survey_table.png", 
+  p1, 
+  width = 9, 
+  height = 11,
+  units = "in"
+)
 
 # values of interest 
 data_inlines <- list(
