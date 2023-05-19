@@ -93,7 +93,7 @@ Result: In many VMMC countries, threemc results and DMPPT2 results largely agree
 Figure: (For appendix): comparisons between DMPPT2 results, survey estimates and threemc results
 Merely reference these figures in this section
 
-* Data 
+* +Data+ (moved to methods)                                          :noexport:
 
 - Anything on shapefiles and area boundary classification needed?
 #+begin_comment
@@ -144,6 +144,42 @@ Jeff: In appendix: put section describing the classification and include the spe
 - Something on calculating survey estimates for circumcision coverage? Perhaps Jeff could write
   this. 
 
+** Data  
+Anything on shapefiles and area boundary classification needed?  
+
+*** Surveys  
+
+120 household surveys conducted in 33 SSA countries 2002-2019  
+Self-reported circumcision:  
+Status (MC vs uncircumcised),  
+Type (MMC vs TMC),  
+Year, and
+Age  recorded.  
+
+Major survey series (DHS, AIS, PHIA, MICS, HSRC in ZAF)  
+
+Individual-level data: self-reported circumcision status by male respondents  
+
+Respondents located to districts using masked cluster geocoordinates  
+
+Located to admin 1 (province) where coordinates not available (MICS)  
+
+VMMC programme data not used  
+
+Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC. Otherwise, circumcisions are TMC. Where no data is present on location or provider, circumcision type is treated as "Missing". Note: Can I use Jeff's images of DHS and PHIA survey questions in presentations? Would be useful in explaining this point.  
+
+Individual-level household survey data provide direct estimates of circumcision rates over time and by type for years preceding survey.  
+
+Direct estimates of TMC practices, age at circumcision, VMMC impact  
+
+Also include participation rates from surveys.  
+
+Figure: Figure from poster with surveys of each provider for each country, caption: "Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type."  
+
+*** Populations  
+
+Sub-national populations from WorldPop (reference) (also are they all from WorldPop??) 
+
 ** Model
 - Extended threemc developed in Thomas et. al. to model 33 countries. Circumcision rates, incidence and coverage (i.e. cumulative incidence) estimated, with associated 95% uncertainty bounds.
   Countries modelled at the PSNU area level, or the most granular level used in surveys, and poststratifed to produce estimates for "parent" regions. 
@@ -157,7 +193,7 @@ Jeff: In appendix: put section describing the classification and include the spe
 Jeff: Here is where we mention no survey data
 #+end_comment
    
-** Choice of model specification
+** +Choice of model specification+ (draft)
 
 Jeff:
 - Model selection: particularly interested in  
@@ -197,11 +233,7 @@ Rather than treating each VMMC countries' TMC rate on an individual basis, merel
 
 We have also performed a quantitative analysis on how the choice of including a constant paediatric MMC rate and a constant TMC rate effect the fit of our model, by looking at the within-sample posterior predictive distribution and some error statistics associated with this distribution when compared to our survey estimates of circumcision coverage. (...?)
 
-** Choice of model specification
-
-
-
-** Model Calibration and choice of temporal prior
+** +Model Calibration and choice of temporal prior+ (draft)          :noexport:
 
 - Calibrated MMC-related variance hyperparameters using grid search. Idea is to use information
   from countries with more surveys to inform variance (which was suspected to be underestimated)
@@ -248,7 +280,7 @@ Two principal components of the model largely determine how the uncertainty of o
 /For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were/
 /ignored in our calibration efforts with this model/ ()
 
-** +threemc+
+** +threemc+ (can just have in small code availability section at the end)
 
 +- Section on development of threemc package, which allows for much of this analysis based on freely available survey data to be reproduced.+
 +- Also used `orderly` (link to threemc-orderly) and `didehpc` for much of this work.+
