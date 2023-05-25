@@ -1,4 +1,4 @@
-#### Pull through data and plots required for Data subsection of Methods ####
+#### Pull through data and plots required for Data subsection of Results ####
 
 # May end up joining this with other scripts or even copying to org file
 
@@ -17,6 +17,7 @@ library(forcats)
 library(ggplot2)
 library(reactable)
 library(sf)
+library(purrr)
 library(threemc)
 library(orderly)
 library(ggsci)
@@ -24,6 +25,7 @@ library(geofacet)
 library(glue)
 library(ggtext)
 source("Shiny/src/functions.R") # plotting functions
+source("paper_poster_plots/paper/scripts/00_funs.R") # shared functions
 
 #### Metadata ####
 
@@ -53,46 +55,22 @@ ssa_iso3 <- sort(c(
 no_mod_iso3 <- c("BWA", "CAF", "GNB")
 
 ssa_countries <- countrycode::countrycode(ssa_iso3, "iso3c", "country.name")
-ssa_countries <- dplyr::case_when(
-  ssa_countries == "Congo - Kinshasa"    ~ "DR Congo",
-  ssa_countries == "Congo - Brazzaville" ~ "Congo",
-  grepl("Ivoire", ssa_countries)         ~ "Cote d'Ivoire",
-  ssa_countries == "Gambia"              ~ "The Gambia",
-  TRUE                                   ~ ssa_countries
-)
+country_name_convention <- function(x) {
+  x <- dplyr::case_when(
+    x == "Congo - Kinshasa"    ~ "DR Congo",
+    x == "Congo - Brazzaville" ~ "Congo",
+    grepl("Ivoire", x)         ~ "Cote d'Ivoire",
+    x == "Gambia"              ~ "The Gambia",
+    TRUE                       ~ x
+  )
+}
+ssa_countries <- country_name_convention(ssa_countries)
 
 
 #### Load Data ####
 
 # pull most recent results for age groups
 archives <- orderly::orderly_list_archive()
-
-# function to load data from orderly archive
-load_archive <- function(task, 
-                         orderly_root = here::here(),
-                         file, 
-                         load_fun = readr::read_csv, 
-                         archives = NULL, 
-                         query = NULL, ...) {
-  
-  if (is.null(archives) && !is.null(query)) {
-    dir <- orderly::orderly_search(query = query, name = task, ...)
-  } else if (!is.null(archives)) {
-    dir <- archives %>% 
-      filter(name == task) %>% 
-      slice(n()) %>% 
-      pull(id)
-  } else stop("Please provide one of `archives` or `query` arguments")
-  
-  load_fun(file.path(
-    orderly_root, 
-    "archive",
-    task, 
-    dir,
-    "artefacts", 
-    file 
-  ))
-}
 
 # pull shapefiles
 areas <- load_archive(
@@ -109,7 +87,9 @@ survey_circumcision_orig <- survey_circumcision <- load_archive(
   orderly_root, 
   "survey_circumcision.csv.gz", 
   query = "latest(parameter:is_paper == TRUE)"
-) %>% 
+)
+
+survey_circumcision <- survey_circumcision %>% 
   filter(!iso3 %in% no_mod_iso3)
 
 # pull agegroup populations
@@ -124,10 +104,6 @@ populations <- load_archive(
 # TODO: Update these
 last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
 
-# Additional areas from Oli, so map plot can be for all of SSA
-
-#### Figure 1: Tabulate Surveys ####
-
 # Prepare circ data, normalise survey weights and apply Kish coefficients.
 survey_circumcision <- prepare_survey_data(
   areas               = areas,
@@ -141,6 +117,8 @@ survey_circumcision <- prepare_survey_data(
 )
 
 survey_circumcision <- data.table::rbindlist(survey_circumcision)
+
+#### Figure: Tabulate Surveys ####
 
 # create initial table and find country, provider, year from survey_id
 provider_key <- tibble::tribble(
@@ -238,15 +216,9 @@ survey_tbl <- bind_rows(survey_tbl, missing_tbl) %>%
   left_join(types_tbl, by = "survey_id") %>%
   # translate iso3 to words
   mutate(
-    country = countrycode::countrycode(
+    country = country_name_convention(countrycode::countrycode(
       iso3, origin = "iso3c", destination = "country.name"
-    ),
-    country = case_when(
-      # country == "Congo - Brazzaville" ~ "Republic of the Congo",
-      country == "Congo - Brazzaville" ~ "Congo",
-      # country == "Congo - Kinshasa"    ~ "Democratic Republic of the Congo",
-      country == "Congo - Kinshasa"    ~ "DR Congo",
-      TRUE                             ~ country)
+    ))
   ) %>%
   # re-order surveys and arrange appropriately
   select(
@@ -385,6 +357,252 @@ p1 <- fig1data %>%
   coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
 # p1
 
+#### Data inlines ####
+
+data_inlines <- list(
+  # n surveys, n countries, years
+  "n_surveys_orig" = length(unique(survey_circumcision_orig$survey_id)) , 
+  "n_surveys"      = length(unique(survey_circumcision$survey_id)) , 
+  "n_iso3"         = length(unique(survey_circumcision$iso3)), 
+  "min_year"       = min(survey_circumcision$year), 
+  "max_year"       = max(survey_circumcision$year),
+  "n_respondents"  = nrow(survey_circumcision), 
+  # "min_cohort"     = min(survey_circumcision$year) - 60,
+  "n_cohorts"      = length(unique(survey_circumcision$yob)),
+  "min_cohort"     = min(survey_circumcision$yob),
+  "max_cohort"     = max(survey_circumcision$yob) 
+)
+
+# function to convert survey id to proper print survey name
+survey_id_to_name <- function(survey) {
+  cntry <- countrycode::countrycode(
+    substring(survey, 0, 3), 
+    origin = "iso3c", 
+    destination = "country.name"
+  )
+  cntry <- dplyr::case_when(
+    cntry == "Congo - Kinshasa"    ~ "DR Congo",
+    cntry == "Congo - Brazzaville" ~ "Congo",
+    grepl("Ivoire", cntry)         ~ "Cote d'Ivoire",
+    cntry == "Gambia"              ~ "The Gambia",
+    TRUE                           ~ cntry
+  )
+  survey <- paste(cntry, substring(survey, 4, 7), substring(survey, 8, 11))
+}
+
+# convert decimal to percentage rounded to 3 SF
+dec_to_percs <- function(x) {
+  if (is.numeric(x) && (x >= 0 && x < 1)) {
+    paste0(round(x * 100, 3), "%")
+  } else x
+}
+
+# also need to add surveys with largest and smallest cohorts
+n_repondents <- survey_circumcision %>% 
+  group_by(survey_id) %>% 
+  summarise(n = n(), .groups = "drop")
+max_respondents <- filter(n_repondents, n == max(n))
+min_respondents <- filter(n_repondents, n == min(n))
+  
+survey_sizes <- list(
+  "max_survey_size" = list(
+    "survey" = survey_id_to_name(max_respondents$survey_id),
+    "n"      = max_respondents$n),
+  "min_survey_size" = list(
+    "survey" = survey_id_to_name(min_respondents$survey_id),
+    "n"      = min_respondents$n)
+)
+
+data_inlines <- c(data_inlines, survey_sizes)
+
+
+# function to check various censoring values
+check_cens <- function(survey_circumcision, 
+                       test_col, 
+                       test_val, 
+                       lst_name, 
+                       data_inlines, 
+                       test_fun = `==`) {
+  
+  
+  # average, highest, lowest
+  abs_vals <- survey_circumcision %>% 
+   group_by(survey_id)
+  if (!is.na(test_val)) {
+   abs_vals <- abs_vals %>% 
+    summarise(sum(test_fun(.data[[test_col]], !!test_val)), .groups = "drop")
+  } else {
+    abs_vals <- abs_vals %>% 
+    summarise(sum(is.na(.data[[test_col]])), .groups = "drop")
+  }
+   
+  max_val <- list(
+    "max"       = max(abs_vals[, 2, drop = TRUE]),
+    "survey" = survey_id_to_name(
+      abs_vals[, 1][which.max(abs_vals[, 2, drop = TRUE]), ]
+    )
+  )
+  min_val <- list(
+    "min"       = min(abs_vals[, 2, drop = TRUE]),
+    "survey" = survey_id_to_name(
+      abs_vals[, 1][which.min(abs_vals[, 2, drop = TRUE]), ]
+    )
+  )
+  
+  # as percentage
+  perc <- survey_circumcision %>% 
+    group_by(survey_id)
+  if (!is.na(test_val)) {
+   perc <- perc %>% 
+    summarise(
+      sum(test_fun(.data[[test_col]], !!test_val)) / n(), .groups = "drop"
+    )
+  } else {
+   perc <- perc %>% 
+    summarise(sum(is.na(.data[[test_col]])) / n(), .groups = "drop")
+  }
+  
+  max_perc <- list(
+    "max"       = max(perc[, 2, drop = TRUE]),
+    "survey" = survey_id_to_name(
+      abs_vals[, 1][which.max(perc[, 2, drop = TRUE]), ]
+    )
+  )
+  min_perc <- list(
+    "min"       = min(perc[, 2, drop = TRUE]),
+    "survey" = survey_id_to_name(
+      abs_vals[, 1][which.min(perc[, 2, drop = TRUE]), ]
+    )
+  )
+  
+  n <- length(data_inlines)
+  data_inlines <- c(
+    data_inlines, 
+    round(mean(abs_vals[, 2, drop = TRUE])),
+    list(max_val),
+    list(min_val),
+    mean(perc[, 2, drop = TRUE]),
+    list(max_perc),
+    list(min_perc) 
+  )
+  names(data_inlines)[(n + 1):length(data_inlines)] <- c(
+    paste0("mean_", lst_name),
+    paste0("max_", lst_name),
+    paste0("min_", lst_name),
+    paste0("mean_", lst_name, "_perc"),
+    paste0("max_", lst_name, "_perc"),
+    paste0("min_", lst_name, "_perc")
+  )
+  
+  # convert percentages to three SF with % sign
+  convert_percs <- function(data_inlines) {
+    modify_tree(data_inlines, leaf = dec_to_percs)
+  }
+  data_inlines <- convert_percs(data_inlines)
+  
+  # also of interest, surveys which have > 0.9 & < 0.1 left censoring
+  surveys_lst <- list(
+    "surveys_0.9" = as.vector(
+      abs_vals[, 1][which(perc[, 2, drop = TRUE] >= 0.9), ]
+    )[[1]],
+    "surveys_0.1" = as.vector(
+      abs_vals[, 1][which(perc[, 2, drop = TRUE] <= 0.1), ]
+    )[[1]]
+  )
+  # names(surveys_lst) <- c("surveys_0.9", "surveys_0.1")
+  
+  # convert survey_ids to survey names
+  surveys_lst <- lapply(surveys_lst, function(x) sapply(x, survey_id_to_name))
+  
+  data_inlines <- c(data_inlines, list(surveys_lst))
+  names(data_inlines)[length(data_inlines)] <- paste0(lst_name, "_surveys")
+  
+  return(data_inlines)
+}
+
+# left censoring
+data_inlines <- check_cens(
+  survey_circumcision, "event", 2, "l_cens", data_inlines
+)
+# right censoring
+data_inlines <- check_cens(
+  survey_circumcision, "event", 0, "r_cens", data_inlines
+)
+# no censoring
+data_inlines <- check_cens(
+  survey_circumcision, "event", 0, "r_cens", data_inlines
+)
+# circumcision status unknown
+data_inlines <- check_cens(
+  filter(survey_circumcision_orig, 
+         survey_id %in% survey_circumcision$survey_id), 
+  "circ_status", 
+  NA,
+  "unknown_status", 
+  data_inlines
+)
+# circ age unknown
+data_inlines <- check_cens(
+  filter(survey_circumcision_orig, 
+         survey_id %in% survey_circumcision$survey_id), 
+  "circ_age", 
+  NA,
+  "unknown_circ_age", 
+  data_inlines
+)
+
+# display all figures with commas
+comma_figs <- function(x) {
+  if (is.numeric(x) && !(x > 1900 && x < 2100)) {
+    format(x, big.mark = ",")
+  } else x
+}
+data_inlines <- modify_tree(data_inlines, leaf = comma_figs)
+
+# find countries with no type info
+no_type_iso3 <- survey_circumcision %>% 
+  group_by(iso3) %>% 
+  filter(all(type == "Missing")) %>% 
+  distinct(iso3) %>% 
+  pull()
+
+# average l cens amongst these countries
+l_cens_no_type <- survey_circumcision %>% 
+  filter(iso3 %in% no_type_iso3) %>% 
+  group_by(iso3) %>% 
+  summarise(l_cens_perc = sum(event == 2) / n(), .groups = "drop")
+
+# average circumcision amongst these countries
+circ_no_type <- survey_circumcision %>% 
+  filter(iso3 %in% no_type_iso3) %>% 
+  group_by(iso3) %>% 
+  summarise(circ_perc = sum(circ_status == 1) / n(), .groups = "drop")
+
+# pull country name from iso3 code
+no_type_cntry <- country_name_convention(countrycode::countrycode(
+  no_type_iso3, "iso3c", "country.name"
+))
+# paste names together
+no_type_cntry <- paste(
+  paste(no_type_cntry[1:(length(no_type_iso3) - 1)], collapse = ", "), 
+  last(no_type_cntry), 
+  sep = " and "
+)
+
+data_inlines <- c(
+  data_inlines, 
+  "no_type_iso3" = list(no_type_iso3),
+  "no_type_cntry" = no_type_cntry, 
+  "mean_no_type_cntry_l_cens" = dec_to_percs(mean(l_cens_no_type$l_cens_perc)),
+  "mean_no_type_cntry_circ" = dec_to_percs(mean(circ_no_type$circ_perc))
+)
+
+#### Supplementary Figures ####
+
+# TODO: All!
+
+#### Saving ####
+
 # save plot
 saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
 ggplot2::ggsave(
@@ -395,12 +613,5 @@ ggplot2::ggsave(
   units = "in"
 )
 
-# values of interest 
-data_inlines <- list(
-  "n_surveys" = length(unique(survey_circumcision$survey_id)) , 
-  "n_iso3"    = length(unique(survey_circumcision$iso3)), 
-  "min_year"  = min(survey_circumcision$year), 
-  "max_year"  = max(survey_circumcision$year)
-)
-
+# save data for inlines
 saveRDS(data_inlines, "paper_poster_plots/paper/data/01_data_inlines.RDS")
