@@ -2,7 +2,7 @@
 #+Title: coverage and unmet need in sub-Saharan Africa
 #+date: 17th October 2022
 #+bibliography: library.bib 
-+options: toc:nil num:t d:nil author:nil
+#+options: toc:nil num:t d:nil author:nil
 #+startup: latexpreview
 
 # Load latex class, define page and text size
@@ -25,7 +25,7 @@
 #+latex_header: \hyphenpenalty=10000
 #+latex_header: \exhyphenpenalty=100
 
-* R                                                                :ignore:
+* R & Emacs Lisp                                            :noexport:ignore:
 
 #+name: setwd
 #+begin_src R :results output :session :exports results
@@ -37,6 +37,23 @@ setwd(dir)
 
 #+RESULTS: setwd
 : [1] "/home/paddy7wb/imperial_repos/threemc-orderly"
+
+** Emacs Lisp Functions
+
+Function to remove
+#+begin_src emacs-lisp
+(defun delete-org-comments (backend)
+  (loop for comment in (reverse (org-element-map (org-element-parse-buffer)
+                    'comment 'identity))
+    do
+    (setf (buffer-substring (org-element-property :begin comment)
+                (org-element-property :end comment))
+          "")))
+
+(let ((org-export-before-processing-hook '(delete-org-comments)))
+  (switch-to-buffer (org-latex-export-as-latex)))
+#+end_src
+
 
 * Authors & Affiliations                                        :ignore:
 
@@ -337,12 +354,7 @@ data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
 Several major survey series include questions on male circumcision status, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys.
 Any surveys including a question on MC status were included. 
 
-#+begin_comment
-Should I include something about how a new DHS is expected for BWA soon?
-#+end_comment
-
-These surveys provided individual-level data on self-reported circumcision status by male
-respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
+These surveys provided individual-level data on self-reported circumcision status by male respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
 - The circumcision status of the male individual,
 - The circumcision provider: whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown,
 - The circumcision location: whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown
@@ -355,6 +367,10 @@ PHIA surveys do not include a question for circumcision location. Circumcisions 
 Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
 #+end_comment
 Respondents were located to their districts using masked cluster geocoordinates. Where these coordinates were unavailable, as in several MICS surveys, respondents were located to their admin level 1 area hierarchy, most often corresponding to a province. 
+
+#+begin_comment
+Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
+#+end_comment
 
 **** Populations                                      ::noexport:
 
@@ -410,7 +426,7 @@ Participation rates for each survey can be found in section x of the appendix.
 #+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
 #+NAME: fig1
 #+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
-# source("paper_poster_plots/scripts/02_methods_data.R")
+# source("paper_poster_plots/scripts/03_results_data.R")
 # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
 p1 <- readRDS("./plots/01_survey_table.RDS")
 print(p1)
@@ -611,8 +627,9 @@ Two principal components of the model largely determine how the uncertainty of o
 /ignored in our calibration efforts with this model/ ()
 
 
-* Results                                                            :noexport:
+* Results
 
+** Plan
 ** Plan (pre research questions)                                   :noexport:
 
 - First section: summary descriptive statistics about the data 
@@ -701,8 +718,97 @@ Figure: Table of MC, MMC and TMC coverage for VMMC countries for 10-29 year olds
 
 
 ** Text                                                              :ignore:
-*** Data                                                           :noexport:
-*** Spatial Variation in Total, Medical & Traditional Circumcision 
+
+1. How does total, medical and traditional circumcision coverage vary subnationally across the SSA region? How has this changed over time? 
+
+*** Data                                                             :ignore:
+
+Our data consisted of src_R[:exports results :session :results raw]{data_inlines$n_surveys_orig} nationally representative household surveys conducted in src_R[:exports results :session :results raw]{data_inlines$n_iso3} SSA countries between src_R[:exports results :session :results raw]{data_inlines$min_year} and src_R[:exports results :session :results raw]{data_inlines$max_year}.
+Of these src_R[:exports results :session :results raw]{data_inlines$n_surveys_orig} surveys, src_R[:exports results :session :results raw]{data_inlines$n_surveys} contained sufficent information on circumcision, as outlined in the Methods section of this paper. 
+#+begin_comment
+Want to add here: 
+- Amongst all surveys anaylsed, there was on average x amount of left censoring (ranging from x to x), right censoring (same), unknown circumcision status, (done)
+- The final dataset contained x individual survey respondents for x birth cohorts from 1950 through 2005 (entering adulthood at age 15 between 1965 and 2020). 
+- The sample size per dataset ranged from 1364 (male, Eswatini MICS 2014) to 41,821 (female, Nigeria DHS 2018).
+- Countries with no type info (which also have a lot of left censoring)
+- Countries which could not be modelled, and why. 
+#+end_comment
+These remaining surveys consisted of src_R[:exports results :session :results raw]{data_inlines$n_respondents} individuals respondents from src_R[:exports results :session :results raw]{data_inlines$n_cohorts} birth cohorts from src_R[:exports results :session :results raw]{data_inlines$min_cohort} to src_R[:exports results :session :results raw]{data_inlines$max_cohort}. The sample size per survey ranged from src_R[:exports results :session :results raw]{data_inlines$max_survey_size$n} in the src_R[:exports results :session :results raw]{data_inlines$max_survey_size$survey} survey to src_R[:exports results :session :results raw]{data_inlines$min_survey_size$n} in the src_R[:exports results :session :results raw]{data_inlines$min_survey_size$survey} survey.
+
+There was significant censoring and missing data even in the remaining surveys. 
+Left censoring of circumcision status, analagous to unknown circumcision age, averaged  src_R[:exports results :session :results raw]{data_inlines$mean_l_cens_perc} across all surveys, and ranged from src_R[:exports results :session :results raw]{data_inlines$min_l_cens_perc$min} in the src_R[:exports results :session :results raw]{data_inlines$min_l_cens_perc$survey} survey to src_R[:exports results :session :results raw]{data_inlines$max_l_cens_perc$max} in the src_R[:exports results :session :results raw]{data_inlines$max_l_cens_perc$survey} survey.
+src_R[:exports results :session :results raw]{length(data_inlines$l_cens_surveys$surveys_0.9)} surveys had more than 90% left censoring of circumcision age, with src_R[:exports results :session :results raw]{length(data_inlines$l_cens_surveys$surveys_0.1)} surveys having less than 10% left censoring.
+No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that threemc could not be fit to Botswana. 
+Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged src_R[:exports results :session :results raw]{data_inlines$mean_r_cens_perc} across all surveys, ranging from src_R[:exports results :session :results raw]{data_inlines$min_r_cens_perc$min} in the src_R[:exports results :session :results raw]{data_inlines$min_r_cens_perc$survey} survey to src_R[:exports results :session :results raw]{data_inlines$max_r_cens_perc$max} in the src_R[:exports results :session :results raw]{data_inlines$max_r_cens_perc$survey} survey.
+
+On average across all surveys, src_R[:exports results :session :results raw]{data_inlines$mean_unknown_status_perc} of respondents did not respond to either the circumcision location or provider question, and so had unknown circumcision type. 
+This was lowest in the src_R[:exports results :session :results raw]{data_inlines$min_unknown_status_perc$survey} survey, at src_R[:exports results :session :results raw]{data_inlines$min_unknown_status_perc$min}, and highest in the src_R[:exports results :session :results raw]{data_inlines$max_unknown_status_perc$survey} survey, at src_R[:exports results :session :results raw]{data_inlines$max_unknown_status_perc$max}.
+src_R[:exports results :session :results raw]{length(data_inlines$no_type_iso3)} countries had unknown circumcision type; src_R[:exports results :session :results raw]{data_inlines$no_type_cntry}. 
+Amongst these countries, left censoring averaged src_R[:exports results :session :results raw]{data_inlines$mean_no_type_cntry_l_cens}. 
+However, the mean survey circumcision coverage amongst these same countries was src_R[:exports results :session :results raw]{data_inlines$mean_no_type_cntry_circ}, which may explain the relative lack of circumcision information available in their surveys.
+#+begin_comment
+value for left censoring equals value for circumcision coverage above for countries with no type info, is that correct??
+Also, how could the ZAF survey have lower unknown circumcision type than the countries with no type?! Definitely need to double check that one!
+#+end_comment
+
+In addition to Botswana, Guinea-Bissau, Equitorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit threemc in these countries either. 
+
+More information on individual surveys, including participation rates, can be found in section x of the appendix. 
+
+ #+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
+ #+NAME: fig1
+ #+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
+ # source("paper_poster_plots/scripts/03_results_data.R")
+ # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+ p1 <- readRDS("./plots/01_survey_table.RDS")
+ print(p1)
+ #+end_src
+
+/Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
+
+*** Subnational Variation in Total, Medical & Traditional Circumcision over Time
+
+#+begin_comment
+Include:
+- Number of (MC/MMC/TMC) circumcisions performed in SSA from 2010-2020
+- Increase in overall circumcision coverage across region 2010-2020
+- Largest increase in coverage was in country x
+- Need a lot more than that!
+#+end_comment
+
+Figure 2: Map plot
+caption:
+Figure x: Estimated percentage of men aged 10-29 years who were circumcised sub-nationally in 33 SSA countries. Missing from map: Guinea-Bissau, Equitorial Guinea, Central African Republic and Botswana
+Another useful figure here: plot of district level MC coverage coloured by ESA/WCA and size given by population of each
+Caption:
+Figure x: District-level median percentage of men aged 10-29 years who were circumcised in 2020 in 33 SSA countries. Each point is a district, sized by district population relative to average district size and coloured by the African region their country falls under (Eastern and Southern Africa (ESA) and Western and Central Africa (WCA), respectively). Each white dot represents the national median. A vertical dotted line signifies the UNAIDS target of 90% national MC.
+
+Also should fit in somewhere: geofaceted plot showing differences in TMC/MMC type coverage
+2010-2020
+Caption:
+Figure x: Percentage of men aged 10-29 years who were medically circumcised and traditionally circumcised over time between 2010 and 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. The lighter shaded area represents projection after the most recent household survey. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+
+*** Subnational Variation in Total, Medical & Traditional Circumcision Across Different Ages (working title!)
+
+Figure: Geofaceted plot, but by age rather than year, for 2020 (doesn't look too bad, ask Jeff what he thinks)
+Caption:
+Figure x: Projected percentage of men from 0 to 60 years old who were medically circumcised and traditionally circumcised by 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+
+*** Decrease in TMC in SSA region Over Time
+
+
+
+*** UNAIDS Goals Progress in VMMC Target Countries
+
+Result: Kenya (and maybe Mozambique?) is the only country expected to have reached the VMMC target of 90% circumcision coverage amongst 10-29 year olds by 2020. In other VMMC countries, significant progress towards this goal has been made, but there still remain a significant number of un-circumised 10-29 year olds. 
+
+Figure: Geofaceted plot showing circumcision coverage increase over time (could do for several of the larger age groups with their associated targets as dashed lines)
+However, probably only interested in VMMC countries here, so table probably more appropriate
+Additional Figure: Some kind of table showing progress towards goals?
+
+
 * Discussion                                                         :noexport:
 
 ** Plan                                                            :noexport:
