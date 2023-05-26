@@ -2,7 +2,7 @@
 #+Title: coverage and unmet need in sub-Saharan Africa
 #+date: 17th October 2022
 #+bibliography: library.bib 
-+options: toc:nil num:t d:nil author:nil
+#+options: toc:nil num:t d:nil author:nil
 #+startup: latexpreview
 
 # Load latex class, define page and text size
@@ -25,7 +25,7 @@
 #+latex_header: \hyphenpenalty=10000
 #+latex_header: \exhyphenpenalty=100
 
-* R                                                                :ignore:
+* R & Emacs Lisp                                            :noexport:ignore:
 
 #+name: setwd
 #+begin_src R :results output :session :exports results
@@ -37,6 +37,23 @@ setwd(dir)
 
 #+RESULTS: setwd
 : [1] "/home/paddy7wb/imperial_repos/threemc-orderly"
+
+** Emacs Lisp Functions
+
+Function to remove
+#+begin_src emacs-lisp
+(defun delete-org-comments (backend)
+  (loop for comment in (reverse (org-element-map (org-element-parse-buffer)
+                    'comment 'identity))
+    do
+    (setf (buffer-substring (org-element-property :begin comment)
+                (org-element-property :end comment))
+          "")))
+
+(let ((org-export-before-processing-hook '(delete-org-comments)))
+  (switch-to-buffer (org-latex-export-as-latex)))
+#+end_src
+
 
 * Authors & Affiliations                                        :ignore:
 
@@ -319,13 +336,47 @@ Also for data, could add stuff on:
 - Missing data (& inability to model in some countries) (see Kinh's paper)
 - Mention irregularity with some PHIA surveys?
 - Missing countries, countries with no type, countries with no age info
-- "The final dataset contained 3,088,315 individual survey respondents for 56 birth cohorts from 1950 through 2005 (entering adulthood at age 15 between 1965 and 2020). The sample size per dataset ranged from 1364 (male, Eswatini MICS 2014) to 41,821 (female, Nigeria DHS 2018). Further details are in Supplemental Table S1." (from Kinh's paper, condense)
 
 ** Text                                                              :ignore:
 
 *** Data 
 
 **** Surveys                                                         :ignore:
+
+#+name: survey_inlines
+#+begin_src R :results output :session :exports results
+data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
+#+end_src
+
+#+RESULTS: survey_inlines
+
+Several major survey series include questions on male circumcision status, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys.
+Any surveys including a question on MC status were included. 
+
+These surveys provided individual-level data on self-reported circumcision status by male respondents, and from this we estimated circumcision rates over time and by type for the years proceeding each survey. The following questions were of interest:
+- The circumcision status of the male individual,
+- The circumcision provider: whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown,
+- The circumcision location: whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown
+- The circumcision year, and
+- The date of birth and age at response and circumcision.
+
+The age of respondents was calculated from the century-month-code (CMC) of birth and interview dates.
+PHIA surveys do not include a question for circumcision location. Circumcisions performed by a medical professional and/or in a medical setting are categorised as MMC. Otherwise, circumcisions are TMC. Where no data is present on location or provider, circumcision type is treated as "Missing". 
+#+begin_comment
+Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
+#+end_comment
+Respondents were located to their districts using masked cluster geocoordinates. Where these coordinates were unavailable, as in several MICS surveys, respondents were located to their admin level 1 area hierarchy, most often corresponding to a province. 
+
+#+begin_comment
+Should I include something about how (some?) PHIA surveys censor over 35 circumcisions?
+#+end_comment
+
+**** Populations                                      ::noexport:
+
+- Sub-national populations from WorldPop (reference) were used to infer circumcision coverage from rate estimates. 
+
+**** Old                                                           :noexport:
+***** Surveys (old)                                         :noexport:ignore:
 
 #+name: survey_inlines
 #+begin_src R :results output :session :exports results
@@ -374,7 +425,7 @@ Participation rates for each survey can be found in section x of the appendix.
 #+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
 #+NAME: fig1
 #+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
-# source("paper_poster_plots/scripts/02_methods_data.R")
+# source("paper_poster_plots/scripts/03_results_data.R")
 # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
 p1 <- readRDS("./plots/01_survey_table.RDS")
 print(p1)
@@ -382,12 +433,7 @@ print(p1)
 
 /Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
 
-
-**** Populations                                      ::noexport:
-
-- Sub-national populations from WorldPop (reference) were used to infer circumcision coverage from rate estimates. 
-
-**** Old                                                           :noexport:
+***** Older still
 
 120 household surveys conducted in 33 SSA countries 2002-2019
 Self-reported circumcision:
@@ -489,6 +535,10 @@ model:
 - How we should treat TMC, in terms of whether to continue to assume a constant rate of TMC over time, or to reject that assumption,
 - How to model paediatric MMC, which should be minimal in at least the VMMC target countries.
 
+If possible, we hoped to use the same model for every country, or failing that, come up with a
+satisfactory choice of model specification which would make sense both qualitatively and
+quantitatively. 
+
 ***** Qualitative                                         :ignore:
 Qualitatively, we have made some presumptions about certain countries and their circumcision patterns.
 
@@ -521,6 +571,7 @@ in the models for these countries seems like a logical choice.
 We have also performed a quantitative analysis of the different model specifications available
 to us. A more detailed treatment of this can be found in section x of the appendix. 
 
+#+begin_comment
 - Explain method, why within-sample comparison performed here
 - Describe posterior predictive comparison between model fit and empirical survey coverage estimates
 - For "For x / y SSA countries" the model with .. parameters had better model fit (quote some stats)
@@ -528,10 +579,53 @@ to us. A more detailed treatment of this can be found in section x of the append
 - "For x / y VMMC countries, the model with ...
 - Therefore, our quantitative analysis reinforces what we expected to be the best model
   specifications for VMMC and non-VMMC countries from our quantitative arguments. 
+#+end_comment
 
+For each country, we fit a model for each possible specification of threemc, that is:
+- for each choice of temporal prior, namely AR1, RW1 and RW2,
+- a choice of whether or not to include a paediatric age cutoff for MMC of ten, and
+- a choice of whether to include a temporal effect for TMC. 
+Thus totalling 12 possible models for each country.
+These models were fit to all of the survey data available, rather than a subset of the data.
+This was because we were most interested here in seeing how the inclusion of a peadiatric age cutoff and/or a temporal TMC effect would effect the ability of the model to fit to the data available, rather than in the relative short-term forecasting ability of the different model specifications.
+As the choice of temporal prior was more important when forecasting, we were not especially interested in how each of these performed here, but regardless we fit for each temporal prior, for completeness. 
 
+The survey weighted empirical survey circumcision coverage was compared to a sample of 1000 draws from the posterior predictions of circumcision coverage for each country.
+Both were aggregated to area level 1 and to five year age groups (from 15-19 through 55-59), to avoid having too many zeros in the survey estimates.
+# Multiple comparisons between the two were made, including the expected log-predictive density (ELPD), the continous ranked probability score (CRPS), the mean error (ME), mean squared error (MSE) and root mean squared error (RMSE).
+# We also looked at the credible interval coverage.
+# To calculate this, we took a binomial sample, from the posterior predictive distribution of circumcision coverage.
+# We then find the percentage of our weighted survey coverage estimates which fall into the 2.5$^{th}$, 10$^{th}$, 25$^{th}$, 50$^{th}$, 75$^{th}$, 90$^{th}$ and 97.5$^{th}$ percentiles, (TODO:Continue here! Think this is wrong too lol, run task in R to understand how this all works, also look at previous notes)
+Comparisons were made of mean predictions, using expected log-posterior density (ELPD) and continuous ranked probability scores (CRPS), as well as error statistics such as the mean error (ME), root mean error (RME) and root mean error squared (RMSE).
+Also evaluated was the the "calibration" of our model with regards to it's posterior predictive uncertainty.
+This involved comparing survey estimates of circumcision coverage with the 50%, 80% and 95% credible intervals (CIs) of our posterior predictive distribution. A "good" calibration was regarded as one in which roughly 50% of survey observations fell within the 50% CI range, 85% within the 85% CI range, and 95% within the 95% range.
+Seeing as we are comparing within-sample mean estimates here, we were particularly interested in the RMSE of our predictions compared to the survey estimates. 
 
-*** Model Calibration and Choice of Temporal Prior                 :noexport:
+Just as we distinguished between VMMC and non-VMMC countries when considering the qualitative merits of each model specification, so too did a pattern emerge here when quantitively comparing the model fits for both sets of SSA countries. 
+
+For the non-VMMC countries there was a drastic difference in mean predictive accuracy between the different model specifications.
+The best model specification was the model which included a temporal TMC effect, but not a paediatric age cutoff for MMC.
+This specification performed the best for x / y countries, averaging a RMSE of x, CRPS of x and ELPD of x, in comparison to the next best specification, ?, which averaged an RMSE of x, CRPS of x and ELPD of x. 
+It appeared that the inclusion of a temporal TMC effect was very influential in improving the fit of the model for non-VMMC countries, with specifications including this term averaging a RMSE of x versus x for those which did not include this term.
+Models including an MMC paediatric age cutoff of 10 consistently performed worse than other models, averaging an RMSE of x versus x. 
+These findings were in line with our previous intuitions on MC patterns in non-VMMC, mainly WCA countries, where TMC was historically high, and increases in MMC are likely within the previously TMC population, and hence MMCs were likely performed on younger individuals than in VMMC countries. 
+
+In contrast, for the VMMC priority countries, the choice of whether to include an MMC paedaitric age cutoff had little effect on model fit.
+This may be because under fifteens were not surveyed, and so there were no survey estimates for paediatric populations to compare to our model predictions.
+However, the inclusion of this MMC paediatic age cutoff did have a negative effect to the fit for the models to adults for non-VMMC countries, so the fact that it's inclusion here did not hurt model fit suggests it was an accurate representation of MMC patterns in VMMC priority countries.
+As we were aware of VMMC programme policy in not currently circumcising under fifteens, and since it did not seem to negatively effect model fit to adults, we decided to include a paediatric age cutoff of 10 in the model for VMMC coutries. 
+# Kenya, however, stood out here as a country with high TMC, as it's patterns of circumcision, and the best model specification for the country, appeared to more closely match that of the non-VMMC countries with historically high TMC, rather than the other VMMC priority countries. 
+Models which including a temporal TMC effect were marginally better, with an average RMSE of x versus x for all other models.
+In particular, Kenya, which had high historical TMC in most regions and was the most similar of the VMMC countries to WCA countries in terms of it's circumcision patterns, saw a marked improvement when this effect was included, with an average RMSE of x versus x. For completeness, we decided to include a temporal effect for TMC in the model specification for VMMC priority countries.
+#+begin_comment
+Note: We have a paedaitric age cutoff of 10, but we know (do we?) that VMMC programmes do not circumcise under 15s, so why didn't we use a cutoff of 15? 
+Note: Need to include something on posterior predictive coverage as well here, basically just saying how it didn't significantly change for different models, largely because uncertainty was relatively low for within-sample predictions. 
+#+end_comment
+
+It was therefore ultimately decided to include a temporal effect for TMC in the model for both VMMC and non-VMMC countries, while only including a pedaitric age cutoff for VMMC countries.
+A table with the full set of fit statistics for each model specification for each country can be found in section x of the appendix.
+
+*** Model Calibration and Choice of Temporal Prior
 
 **** Notes                                                         :noexport:
 - Calibrated MMC-related variance hyperparameters using grid search. Idea is to use information
@@ -541,47 +635,48 @@ to us. A more detailed treatment of this can be found in section x of the append
 
 **** Another very rough draft  (not sure if everything here is appropriate for this section) (much of this will probably go to the appendix as well!) :ignore:
 
-For some VMMC priority countries, we do not have access to more recent survey data. 
-One particular country where this is the case is Tanzania, whose most recent survey is a 2016 PHIA survey.
-In these circumstances, VMMC programme data is an available source of more recent data.
+#+begin_comment
+- Reason why we need to calibrate models (lack of recent surveys), would like more dramatic
+fanning out of uncertainty to reflect this (done)
+- Two main drivers of uncertainty: i) sigma hyperparameters, and ii) temporal prior selection (done)
+- Due to computational constriants, cannot fit partially pooled model (done)
+- Instead, use common time-related hyperparameters across all models (done)
+- To find optimal hyerparameters, performed grid search over sensible values from "naive" fits (done)
+- Results, possibly split between VMMC and non-VMMC countries
+- Conclusions
+#+end_comment
+
+For some VMMC priority countries, we did not have access to more recent survey data. 
+One particular country where this is the case is Tanzania, whose most recent survey was the 2016 PHIA survey.
+In these circumstances, there may have been a significant increase in MMC coverage due to VMMC programme implementation which was not captured within our survey period.
+VMMC programme data was an available source of more recent circumcision data.
 The DMPPT2 model explicitly uses this data to estimate MMC. 
-+Putting aside suspected problems associated with the programme data, such as individuals availing of VMMC in districts in which they are not residents, and suspected reporting biases with countries like TZA and Zimbabwe,+ the results of DMPPT2, particularly at the national level, where travel between districts is ignored, suggest that VMMC may have scaled up at a rate not anticipated by threemc where only these older surveys are available. 
-+This is consistent with the out-of-sample (OOS) evaluations of our model fit to countries like ZWE, where removing access to the most recent (2018 DHS) survey similarly+
-+underestimates VMMC scale up (include plot here?).+
-Hence, we feel that our model likely underestimates it's own uncertainty with regards to predicting circumcision coverage for progressively later years than our last
-available surveys, particularly in the case of VMMC priority countries which started with a low circumcision coverage. What we desire is a more dramatic "fanning" out of
-our prediction interval as we forecast further from the last available survey data, again, particularly for VMMC countries in which there may have been a large scale up
-in circumcision coverage since the last available survey, representing an intervention via VMMC programmes which our model, fit for each country separately, is not equipped to
-handle.
+The results of DMPPT2, as well as those for countries with more recent surveys who have experienced significant MMC scaleups, suggest that VMMC may have scaled up at a rate not anticipated by threemc where only these older surveys are available.
+This was consistent with out-of-sample (OOS) exploration of model fits to countries like Zimbabwe, where removing access to the most recent (2018 DHS) survey similarly underestimates VMMC scale up.
+Hence, it was felt that threemc likely underestimates it's own uncertainty with regards to predicting circumcision coverage for progressively later years from our last available surveys, particularly in the case of VMMC priority countries, which have seen rapid increases in a previously low circumcision.
+A more dramatic "fanning" out of our prediction interval as we forecast further from the last available survey data was therefore deemed desirable, consistent with having greater uncertainty in our future forecasts. 
 
-Due to computational constraints, we cannot model each country together as one singular area hierarchy, which, through the neighbourhood correlation structure inherent in the model,
-would allow the model to borrow information from countries with a large amount of available data to inform predictions in countries with older and/or fewer surveys (i.e. some partial pooling
-between countries would take place).
-One alternative to using a partially-pooled model is to use the uncertainty estimates which produce the best predictions for countries with more recent data to inform our uncertainty estimates in countries with less recent survey data available. 
+#+begin_comment
+should I include a plot here of ZWE results for out-of-sample evaluation, with DMPPT2 and survey results also in it? 
+#+end_comment
 
-To quantitatively explore this hypothesis, we performed an out of survey (OOS) evaluation of the model fit to each country, removing their most recent survey data and comparing posterior predictions to the survey-estimated circumcision coverage. 
-(Something about this incorporating survey design/effective sample sizes etc should probably be here)
-These comparisons consisted of comparisons of mean predictions, using ELPD and CRPS scores, as well as error statistics such as the ME, RME and RMSE, and evaluations of the
-"calibration" of our model with regards to it's posterior predictive uncertainty for each unique region-year-age-type (what does Matt use for this) stratum of our data. 
+The two main factors of uncertainty over time in threemc were:
+- How we should treat TMC, in terms of whether to continue to assume a constant rate of TMC over time, or to reject that assumption,
+- The variance hyperparameters relating to time, including the variance hyperparameters for time interactions with space and age, and 
+- The choice of temporal prior, for which threemc supports the use of an AR1, RW1 or RW2 prior. 
+The "unpooled" optimised time-related variance hyperparameters for the model fit for each respective country varied significantly, but in general certain patterns and values for these hyperparameters could be associated with a greater "fanning" out of our uncertainty bounds for successive prediction years.
+  
+Due to computational constraints, we cannot model the entire SSA region together as one singular area hierarchy, which, through partial pooling and the neighbourhood correlation structure inherent in the model, would allow the model to borrow information from countries with a large amount of available data to inform predictions in countries with older and/or fewer surveys.
+One alternative to using a partially-pooled model is to use the uncertainty estimates which produce the best predictions for countries with more recent data to inform our uncertainty estimates in countries with less recent survey data available.
+To quantitatively explore this hypothesis, we performed an OOS evaluation of the model fit to each country, removing their most recent survey data (or, in the case where there were two surveys in subsequent years, the two most recent surveys) and comparing posterior predictions to the survey-estimated circumcision coverage, as we did with our analysis of different model specifications.
+A grid search over sensible variance hyperparameter values from the "naive" threemc fits for each country and temporal prior was employed, to determine the optimal values and temporal prior choice. 
+For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were ignored in our calibration efforts with this model.
 
-This involved comparing survey estimates of circumcision coverage with the 50%, 80% and 95% credible intervals (CI) coverage of our posterior predictive distribution. A "good" calibration
-was regarded as one in which roughly 50% of (training) survey observations fell within the 50% CI range, 85% within the 85% CI range, and 95% within the 95% range.
+TODO: Add results!
 
-Two principal components of the model largely determine how the uncertainty of our model predicitions scale up over time: 
-1. *The choice of temporal prior*: threemc uses an AR 1 temporal prior. However, this is easily replaceable with, for example, a random walk (RW) prior. These temporal priors
-   differ consireably in how they use previous estimates to inform future predictions, and so we appraised a number of choices for our temporal prior to determine if there
-   was a preferable alternative to our default AR 1 temporal prior, with regards to the particular context of increasing year-on-year uncertainty bounds.
-   The choice of temporal prior was included in this OOS analysis, rather than in our
-   previous within-sample parameter chioce, as the main effect of the temporal prior is in
-   determining our temporal forecast. As such, an OOS validation would prove to be more informative in determining the optimal temporal prior for the largest number of countries. 
-2. *The choice of (log) variance hyperparameters*: The "unpooled" optimised time-related variance hyperparameters for each respective country varied significantly, but in general certain patterns and values for these hyperparameters could be associated with a greater "fanning" out of our uncertainty bounds for successive prediction years.
+* Results
 
-/For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were/
-/ignored in our calibration efforts with this model/ ()
-
-
-* Results                                                            :noexport:
-
+** Plan
 ** Plan (pre research questions)                                   :noexport:
 
 - First section: summary descriptive statistics about the data 
@@ -595,6 +690,17 @@ Yes; 1-2 paragraphs summarising the key decisions. Then referring to appendix fo
 - Will I need something on comparison to survey points and/or DMPPT2 results?  
 
 *** Data (no header required here)                                   :ignore:
+
+Things to add:
+
+- Number of surveys, n countries, years (done)
+- Something about missingness
+  - Amount of left censoring and right censoring of circumcision age,
+  - Amount of unknown circumcision status
+- List countries which we cannot model (BWA, etc), and reasons why
+- Isn't there something wrong with the age at circumcision for these countries as well??
+- "More information on each survey, including participation rates, can be found in section x of the appendix. 
+
 *** Spatio-temporal trends in Circumcision Coverage in Sub-Saharan Africa
 
 Figure: Map plots of MC, MMC and TMC coverage for 10-29 year olds from 2010 to 2020,
@@ -659,8 +765,95 @@ Figure: Table of MC, MMC and TMC coverage for VMMC countries for 10-29 year olds
 
 
 ** Text                                                              :ignore:
-*** Data                                                           :noexport:
-*** Spatial Variation in Total, Medical & Traditional Circumcision 
+
+*** Data                                                             :ignore:
+
+Our data consisted of src_R[:exports results :session :results raw]{data_inlines$n_surveys_orig} nationally representative household surveys conducted in src_R[:exports results :session :results raw]{data_inlines$n_iso3} SSA countries between src_R[:exports results :session :results raw]{data_inlines$min_year} and src_R[:exports results :session :results raw]{data_inlines$max_year}.
+Of these src_R[:exports results :session :results raw]{data_inlines$n_surveys_orig} surveys, src_R[:exports results :session :results raw]{data_inlines$n_surveys} contained sufficent information on circumcision, as outlined in the Methods section of this paper. 
+#+begin_comment
+Want to add here: 
+- Amongst all surveys anaylsed, there was on average x amount of left censoring (ranging from x to x), right censoring (same), unknown circumcision status, (done)
+- The final dataset contained x individual survey respondents for x birth cohorts from 1950 through 2005 (entering adulthood at age 15 between 1965 and 2020). 
+- The sample size per dataset ranged from 1364 (male, Eswatini MICS 2014) to 41,821 (female, Nigeria DHS 2018).
+- Countries with no type info (which also have a lot of left censoring)
+- Countries which could not be modelled, and why. 
+#+end_comment
+These remaining surveys consisted of src_R[:exports results :session :results raw]{data_inlines$n_respondents} individuals respondents from src_R[:exports results :session :results raw]{data_inlines$n_cohorts} birth cohorts from src_R[:exports results :session :results raw]{data_inlines$min_cohort} to src_R[:exports results :session :results raw]{data_inlines$max_cohort}. The sample size per survey ranged from src_R[:exports results :session :results raw]{data_inlines$max_survey_size$n} in the src_R[:exports results :session :results raw]{data_inlines$max_survey_size$survey} survey to src_R[:exports results :session :results raw]{data_inlines$min_survey_size$n} in the src_R[:exports results :session :results raw]{data_inlines$min_survey_size$survey} survey.
+
+There was significant censoring and missing data even in the remaining surveys. 
+Left censoring of circumcision status, analagous to unknown circumcision age, averaged  src_R[:exports results :session :results raw]{data_inlines$mean_l_cens_perc} across all surveys, and ranged from src_R[:exports results :session :results raw]{data_inlines$min_l_cens_perc$min} in the src_R[:exports results :session :results raw]{data_inlines$min_l_cens_perc$survey} survey to src_R[:exports results :session :results raw]{data_inlines$max_l_cens_perc$max} in the src_R[:exports results :session :results raw]{data_inlines$max_l_cens_perc$survey} survey.
+src_R[:exports results :session :results raw]{length(data_inlines$l_cens_surveys$surveys_0.9)} surveys had more than 90% left censoring of circumcision age, with src_R[:exports results :session :results raw]{length(data_inlines$l_cens_surveys$surveys_0.1)} surveys having less than 10% left censoring.
+No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that threemc could not be fit to Botswana. 
+Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged src_R[:exports results :session :results raw]{data_inlines$mean_r_cens_perc} across all surveys, ranging from src_R[:exports results :session :results raw]{data_inlines$min_r_cens_perc$min} in the src_R[:exports results :session :results raw]{data_inlines$min_r_cens_perc$survey} survey to src_R[:exports results :session :results raw]{data_inlines$max_r_cens_perc$max} in the src_R[:exports results :session :results raw]{data_inlines$max_r_cens_perc$survey} survey.
+
+On average across all surveys, src_R[:exports results :session :results raw]{data_inlines$mean_unknown_status_perc} of respondents did not respond to either the circumcision location or provider question, and so had unknown circumcision type. 
+This was lowest in the src_R[:exports results :session :results raw]{data_inlines$min_unknown_status_perc$survey} survey, at src_R[:exports results :session :results raw]{data_inlines$min_unknown_status_perc$min}, and highest in the src_R[:exports results :session :results raw]{data_inlines$max_unknown_status_perc$survey} survey, at src_R[:exports results :session :results raw]{data_inlines$max_unknown_status_perc$max}.
+src_R[:exports results :session :results raw]{length(data_inlines$no_type_iso3)} countries had unknown circumcision type; src_R[:exports results :session :results raw]{data_inlines$no_type_cntry}. 
+Amongst these countries, left censoring averaged src_R[:exports results :session :results raw]{data_inlines$mean_no_type_cntry_l_cens}. 
+However, the mean survey circumcision coverage amongst these same countries was src_R[:exports results :session :results raw]{data_inlines$mean_no_type_cntry_circ}, which may explain the relative lack of circumcision information available in their surveys.
+#+begin_comment
+value for left censoring equals value for circumcision coverage above for countries with no type info, is that correct??
+Also, how could the ZAF survey have lower unknown circumcision type than the countries with no type?! Definitely need to double check that one!
+#+end_comment
+
+In addition to Botswana, Guinea-Bissau, Equitorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit threemc in these countries either. 
+
+More information on individual surveys, including participation rates, can be found in section x of the appendix. 
+
+ #+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
+ #+NAME: fig1
+ #+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
+ # source("paper_poster_plots/scripts/03_results_data.R")
+ # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+ # p1 <- readRDS("./plots/01_survey_table.RDS")
+ print(p1)
+ #+end_src
+
+/Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type./
+
+*** Subnational Variation in Total, Medical & Traditional Circumcision over Time
+
+#+begin_comment
+Include:
+- Number of (MC/MMC/TMC) circumcisions performed in SSA from 2010-2020
+- Increase in overall circumcision coverage across region 2010-2020
+- Largest increase in coverage was in country x
+- Need a lot more than that!
+#+end_comment
+
+Figure 2: Map plot
+caption:
+Figure x: Estimated percentage of men aged 10-29 years who were circumcised sub-nationally in 33 SSA countries. Missing from map: Guinea-Bissau, Equitorial Guinea, Central African Republic and Botswana
+Another useful figure here: plot of district level MC coverage coloured by ESA/WCA and size given by population of each
+Caption:
+Figure x: District-level median percentage of men aged 10-29 years who were circumcised in 2020 in 33 SSA countries. Each point is a district, sized by district population relative to average district size and coloured by the African region their country falls under (Eastern and Southern Africa (ESA) and Western and Central Africa (WCA), respectively). Each white dot represents the national median. A vertical dotted line signifies the UNAIDS target of 90% national MC.
+
+Also should fit in somewhere: geofaceted plot showing differences in TMC/MMC type coverage
+2010-2020
+Caption:
+Figure x: Percentage of men aged 10-29 years who were medically circumcised and traditionally circumcised over time between 2010 and 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. The lighter shaded area represents projection after the most recent household survey. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+
+*** Subnational Variation in Total, Medical & Traditional Circumcision Across Different Ages (working title!)
+
+Figure: Geofaceted plot, but by age rather than year, for 2020 (doesn't look too bad, ask Jeff what he thinks)
+Caption:
+Figure x: Projected percentage of men from 0 to 60 years old who were medically circumcised and traditionally circumcised by 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. Purple areas represent countries where circumcision type could not be ascertained from surveys.
+
+
+*** Decrease in TMC in SSA region Over Time
+
+
+
+*** UNAIDS Goals Progress in VMMC Target Countries
+
+Result: Kenya (and maybe Mozambique?) is the only country expected to have reached the VMMC target of 90% circumcision coverage amongst 10-29 year olds by 2020. In other VMMC countries, significant progress towards this goal has been made, but there still remain a significant number of un-circumised 10-29 year olds. 
+
+Figure: Geofaceted plot showing circumcision coverage increase over time (could do for several of the larger age groups with their associated targets as dashed lines)
+However, probably only interested in VMMC countries here, so table probably more appropriate
+Additional Figure: Some kind of table showing progress towards goals?
+
+
 * Discussion                                                         :noexport:
 
 ** Plan                                                            :noexport:
@@ -684,6 +877,11 @@ Several countries: surveys suggest fewer VMMCs conducted than programme data
 
 #+PRINT_BIBLIOGRAPHY
 
+* Availability of data and materials
+** Data Availability 
+# The datasets analysed during the current study are available in the Demographic and Health Surveys Program (https://dhsprogram.com/Data/), the Performance Monitoring for Action project (https://www.pmadata.org/data), the Population-based HIV Impact Assessment project (https://phia-data.icap.columbia.edu), and South African National HIV Prevalence, Incidence, Behaviour and Communication Survey (http://www.hsrc.ac.za/).
+** Code Availability 
+threemc is implemented in an R package, which can be found on Github at https://github.com/mrc-ide/threemc. The code used to generate the results of this paper is located at https://github.com/mrc-ide/threemc-orderly, and makes heavy use of the orderly R package [include reference!].
 * Appendix                                                         :noexport:
 * Additional                                                       :noexport:
 ** Acronyms

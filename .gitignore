@@ -5,6 +5,10 @@
 
 # ignore tex files
 *.tex
+# ignore pdf files (except final paper)
+paper/**/*.pdf 
+!paper/paper.pdf
+!compare_hyperpar_oos/*.pdf
 
 # ignore datafiles
 paper/data/
