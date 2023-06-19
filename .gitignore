@@ -5,10 +5,13 @@
 
 # ignore tex files
 *.tex
+# except the paper itself, and supp figures!
+!paper/paper.tex
+!paper/supp_figs.tex
 # ignore pdf files (except final paper)
 paper/**/*.pdf 
 !paper/paper.pdf
-!compare_hyperpar_oos/*.pdf
+!compare_hyperpar_oos/*.pdf # also don't ignore OOS plots
 # don't upload plots (yet!)
 paper/plots
 
