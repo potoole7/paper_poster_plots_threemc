@@ -300,8 +300,6 @@ Transition from MMC -> TMC independent of VMMC for HIV programmes — enumerate 
 Comments on challenges and limitations of interpreting these results (projections without recent programme data) vs. challenges of interpreting VMMC programme data  
 Comments on circumcision < age 15. 
 
-
-
 ** Limitations
 - Computational constraints meant we could not include a spacetime interaction effect for TMC, and
   also means we were forced to calibrate our model in the method described above, rather than performing a partially pooled model for the entire SSA region.

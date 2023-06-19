@@ -9,6 +9,8 @@
 paper/**/*.pdf 
 !paper/paper.pdf
 !compare_hyperpar_oos/*.pdf
+# don't upload plots (yet!)
+paper/plots
 
 # ignore datafiles
 paper/data/
