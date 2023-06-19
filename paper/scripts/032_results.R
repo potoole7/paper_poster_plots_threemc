@@ -645,9 +645,9 @@ p5 <- plt_coverage_year_national(
   results_agegroup = results_agegroup_rate,
   areas            = areas,
   last_surveys     = last_surveys,
-  spec_age_group   = spec_age_group,
+  spec_age_group   = "0+",
   # spec_years       = spec_years,
-  spec_years       = spec_years[1]:last(spec_years),
+  spec_years       = spec_years,
   spec_model       = "No program data", 
   spec_types = paste(c("MC", "MMC", "TMC"), "probability"),
   main             = "",
@@ -716,9 +716,12 @@ p5_geo +
     legend.text = element_text(size = 20, face = "bold")
   )
 
-saveRDS(p5_geo, "paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
-p5_geo <- readRDS("paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
-
+saveRDS(p5_geo, "paper_poster_plots/paper/data/05_circ_rates.RDS")
+ggsave("paper_poster_plots/paper/plots/05_circ_rates.png",
+       p5_geo,
+       width = 12, 
+       height = 10,
+       units = "in")
 
 #### Figure x: National Level Coverage 2010-2020 10-29 year olds ####
 
