@@ -1,47 +1,61 @@
-% Created 2023-05-30 Tue 07:57
-% Intended LaTeX compiler: pdflatex
-\documentclass[a4paper, 12pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass{article}
+
+\usepackage[top=3cm, bottom=3cm, left=3cm,right=3cm]{geometry}
+\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{graphicx}
-\usepackage{longtable}
-\usepackage{wrapfig}
-\usepackage{rotating}
-\usepackage[normalem]{ulem}
-\usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{capt-of}
-\usepackage{hyperref}
-\usepackage{color}
-\usepackage{listings}
-\usepackage{minted}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{todonotes}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{authblk}
-\usepackage{breakcites}
-\usepackage{apacite}
-\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry} % define (reduced) margin size
-\usepackage[parfill]{parskip} % insert whitespace between new paragraphs
-\setlength\parindent{0pt}
-\tolerance=9999
-\emergencystretch=10pt
-\hyphenpenalty=10000
-\exhyphenpenalty=100
-\author[1]{Patrick O'Toole}
-\author[1,2]{Matthew L. Thomas}
-\author[1]{Oliver Stevens}
-\author[1,3]{Kevin Lam}
-\author[4]{Katherine Kripke}
-\author[1]{Rachel Esra}
-\author[5]{Ian Wanyeki}
-\author[5]{Lycias Zembe}
-\author[1]{Jeffrey W. Eaton}
-\affil[1]{\emph{Imperial College London, London, United Kingdom}} \\
-\affil[2]{\emph{Joint Centre for Excellence in Environmental Intelligence, University of Exeter and Met Office}} \\
-\affil[3]{\emph{Department of Statistics, University of British Columbia}} \\
-\affil[4]{\emph{Avenir Health, Takoma Park, MD, USA}} \\
-\affil[5]{\emph{Joint United Nations Programme on HIV/AIDS (UNAIDS)}} \\
-\date{17th October 2022}
+\usepackage{pdfpages}
+\usepackage{setspace} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage[colorlinks=true,citecolor=blue, linkcolor=blue]{hyperref}
+\usepackage{multirow}
+\setlength{\tabcolsep}{5pt}
+%%\setlength{\parindent}{0pt}
+\usepackage[parfill]{parskip}
+\renewcommand{\arraystretch}{1.5}
+
+\renewcommand\Affilfont{\itshape\footnotesize}
+\def\ci{\perp\!\!\!\perp}
+
+\renewcommand\Affilfont{\itshape\footnotesize}
+\linespread{1.5}
+
+% \usepackage{lineno}
+% \linenumbers
+
+% Nature Bibliography style
+\usepackage[backend=biber,style=nature]{biblatex}
+\addbibresource{library.bib} 
+
+%%%%%%%%%%%%%
+%%% Title %%%
+%%%%%%%%%%%%%
 \title{District-level male medical and traditional circumcision coverage and unmet need in sub-Saharan Africa}
+
+\author{}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \maketitle
 
@@ -257,11 +271,12 @@ In addition to Botswana, Guinea-Bissau, Equitorial Guinea and the Central Africa
 
 More information on individual surveys, including participation rates, can be found in section x of the appendix. 
 
-\begin{center}
-\includegraphics[width=.9\linewidth]{plots/01_survey_table.pdf}
-\end{center}
+\begin{figure}
+    \centering
+    % \includegraphics[width=.9\linewidth]{plots/01_survey_table.pdf}
+    \caption{Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}
+\end{figure}
 
-\emph{Figure 1: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}
 
 \subsection{Subnational Variation in Total, Medical \& Traditional Circumcision over time}
 \label{sec:org0d1ffe6}
