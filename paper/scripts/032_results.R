@@ -18,13 +18,14 @@ library(geofacet)
 library(glue)
 library(ggtext)
 source("Shiny/src/functions.R") # plotting functions
+source("paper_poster_plots/paper/scripts/00_funs.R")
 
 #### Metadata ####
 
 orderly_root <- here::here()
 
 spec_age_group <- "10-29"
-spec_years <- c(2010, 2020)
+spec_years <- c(2006, 2020)
 
 ## for tabulating surveys
 # remove circumcisions with missing type?
@@ -65,6 +66,10 @@ colourPalette <- rev(colorRampPalette(
     "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2")
 )(100))
 
+# colourPalette for % changeR
+colourPalette2 <- rev(heat.colors(100))
+# colourPalette2 <- vir
+
 #### Load Data ####
 
 # orderly archives
@@ -103,68 +108,6 @@ pars_df <- bind_rows(
   )
 )
 
-# takes a data frame of parameters and performs an orderly search on each row.
-# By default, can also load these files (also ran parallel)
-load_orderly_data <- function(
-    # parameters fed to orderly::orderly_search
-  task,
-  parameters = NULL, # needs to be a df, not a list!
-  query = NULL, 
-  filenames = NULL, # name of specific artefact file to load, if desired
-  dirs = NULL, # optionally just provide dirs to skip orderly_search
-  load_fun = readr::read_csv, # function to load data with, if so desired
-  ncores = max(1, parallel::detectCores() - 2), 
-  ...
-) {
-  
-  # check that either parameters & query or just dirs have been provided
-  # (could also add a query parser here for the parameters!)
-  # stopifnot((!is.null(parameters) & !is.null(query)) || !is.null(dirs))
-  
-  if (is.null(dirs)) {
-    # search parameter space specified for previously run orderly tasks
-    if (!is.null(parameters)) {
-      dirs <- unlist(parallel::mclapply(seq_len(nrow(parameters)), function(i) {
-        # give progress (no longer works properly w/ mclapply rather than lapply)
-        # message(100 * (i / nrow(parameters)), "% completed") 
-        system(sprintf(
-          'echo "\n%s\n"', 
-          paste0(100 * (i / nrow(parameters)), "% completed", collapse = "")
-        ))
-        orderly::orderly_search(
-          query = query, 
-          name = task, 
-          parameters = c(parameters[i, ]) # coerces pars df to a list 
-        )
-      }, mc.cores = ncores))  
-    } else {
-      dirs <- orderly::orderly_search(
-        query = query, 
-        name = task
-      )
-    }
-  }
-  
-  # return NAs in parameters search, but only load files from found directories
-  dirs_return <- dirs
-  dirs <- dirs[!is.na(dirs)]
-  # return dirs if filenames unspecified
-  if (is.null(filenames)) return(list("dirs" = dirs_return))
-  files <- file.path(
-    "archive", 
-    task,
-    dirs, 
-    "artefacts/", # prob don't need this? I just structure my tasks this way
-    filenames
-  )
-  # return filenames if load_fun isn't specified
-  if (!is.null(load_fun) == FALSE) return(files)
-  return(list(
-    "dirs" = dirs_return, 
-    "output" = lapply(files, load_fun, ...)
-  ))
-}
-
 # pull most recent results for age groups
 results_dirs <- load_orderly_data(
   task = "02final_aggregations", 
@@ -177,14 +120,14 @@ results_dirs <- load_orderly_data(
     )"
 )$dirs
 
-# results_agegroup <- load_orderly_data(
-#   task = "02final_aggregations", 
-#   dirs = results_dirs[!is.na(results_dirs)],
-#   filenames = "Results_AgeGroup_Prevalence.csv.gz"
-# )$output %>% 
-#   bind_rows()
-# gc()
-# 
+results_agegroup <- load_orderly_data(
+  task = "02final_aggregations",
+  dirs = results_dirs[!is.na(results_dirs)],
+  filenames = "Results_AgeGroup_Prevalence.csv.gz"
+)$output %>%
+  bind_rows()
+gc()
+
 # # most recent results for single ages
 # results_age <- load_orderly_data(
 #   task = "02final_aggregations", 
@@ -195,9 +138,9 @@ results_dirs <- load_orderly_data(
 #   filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage"))
 # gc()
 # 
-# if (!"iso3" %in% names(results_agegroup)) {
-#   results_agegroup$iso3 <- substr(results_agegroup$area_id, 0, 3)
-# }
+if (!"iso3" %in% names(results_agegroup)) {
+  results_agegroup$iso3 <- substr(results_agegroup$area_id, 0, 3)
+}
 # 
 # if (!"iso3" %in% names(results_age)) {
 #   results_age$iso3 <- substr(results_age$area_id, 0, 3)
@@ -225,29 +168,29 @@ results_dirs <- load_orderly_data(
 #   # dplyr::filter(type %in% paste0(c("MC", "MMC", "TMC"), "s performed"))
 # gc()
 
-results_agegroup_rate <- load_orderly_data(
-  task = "02final_aggregations",
-  dirs = results_dirs[!is.na(results_dirs)],
-  filenames = "Results_AgeGroup_Probability.csv.gz"
-)$output %>%
-  bind_rows()
-# filter not working here for some reason??
-results_agegroup_rate <- results_agegroup_rate[
-  results_agegroup_rate$type %in% paste(
-    c("MC", "MMC", "TMC"), "probability"
-  ),
-]
-gc()
+# results_agegroup_rate <- load_orderly_data(
+#   task = "02final_aggregations",
+#   dirs = results_dirs[!is.na(results_dirs)],
+#   filenames = "Results_AgeGroup_Probability.csv.gz"
+# )$output %>%
+#   bind_rows()
+# # filter not working here for some reason??
+# results_agegroup_rate <- results_agegroup_rate[
+#   results_agegroup_rate$type %in% paste(
+#     c("MC", "MMC", "TMC"), "probability"
+#   ),
+# ]
+# gc()
 
-if (!"iso3" %in% names(results_agegroup_rate)) {
-  results_agegroup_rate$iso3 <- substr(results_agegroup_rate$area_id, 0, 3)
-}
+# if (!"iso3" %in% names(results_agegroup_rate)) {
+#   results_agegroup_rate$iso3 <- substr(results_agegroup_rate$area_id, 0, 3)
+# }
 
 
 # VMMC iso3s not in results
-# missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup$area_id]
+missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup$area_id]
 # missing_iso3 <- target_iso3[!target_iso3 %in% results_age$area_id]
-missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup_rate$area_id]
+# missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup_rate$area_id]
 
 # pull shapefiles
 areas <- load_orderly_data("00a2_areas_join", 
@@ -261,63 +204,77 @@ populations <- load_orderly_data(
   query = "latest", 
   file = "population_agegroup_aggr.csv.gz"
 )$output[[1]] %>% 
-  # filter(iso3 %in% results_agegroup$iso3) %>% 
+  filter(iso3 %in% results_agegroup$iso3) %>% 
   # filter(iso3 %in% results_age$iso3) %>% 
-  filter(iso3 %in% results_agegroup_rate$iso3) %>% 
+  # filter(iso3 %in% results_agegroup_rate$iso3) %>% 
   identity()
 
 # last surveys 
 last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
 
 # Additional areas from Oli, so map plot can be for all of SSA
-dat_loc <- "global/"
-non_ssa_afr_areas <- sf::read_sf(
-  file.path(
-    dat_loc, 
-    "Longitude_Graticules_and_World_Countries_Boundaries-shp/99bfd9e7-bb42-4728-87b5-07f8c8ac631c2020328-1-1vef4ev.lu5nk.shp"
-  )
-) %>%
-  filter(
-    CNTRY_NAME %in% c(
-      "Western Sahara", "Mauritania", "Morocco", "Algeria", 
-      "Libya", "Tunisia", "Egypt", "Equatorial Guinea", 
-      "Somalia", "Djibouti", "Eritrea", "Sudan"
-    )
-  )
+# NOTE: no longer needed, not added to map plot
+# dat_loc <- "global/"
+# non_ssa_afr_areas <- sf::read_sf(
+#   file.path(
+#     dat_loc, 
+#     "Longitude_Graticules_and_World_Countries_Boundaries-shp/99bfd9e7-bb42-4728-87b5-07f8c8ac631c2020328-1-1vef4ev.lu5nk.shp"
+#   )
+# ) %>%
+#   filter(
+#     CNTRY_NAME %in% c(
+#       "Western Sahara", "Mauritania", "Morocco", "Algeria", 
+#       "Libya", "Tunisia", "Egypt", "Equatorial Guinea", 
+#       "Somalia", "Djibouti", "Eritrea", "Sudan"
+#     )
+#   )
+# 
+# # areas for SDN and SSD
+# sudanese_areas <-   
+#   bind_rows(
+#     sf::read_sf(file.path(dat_loc, "sdn_adm_cbs_nic_ssa_20200831_shp/sdn_admbnda_adm1_cbs_nic_ssa_20200831.shp")),
+#     sf::read_sf(file.path(dat_loc, "ssd_admbnda_imwg_nbs_shp/ssd_admbnda_adm0_imwg_nbs_20180817.shp"))
+#   ) %>% 
+#   select(CNTRY_NAME = ADM0_EN) %>% 
+#   group_split(CNTRY_NAME) %>% 
+#   purrr::map(function(x) {
+#     cntry <- unique(x$CNTRY_NAME)
+#     x <- sf::st_union(x) # may need sf::st_combine?
+#     df <- data.frame("CNTRY_NAME" = cntry)
+#     sf::st_geometry(df) <- x
+#     return(df)
+#   }) %>%  
+#   bind_rows()
+# 
+# non_ssa_afr_areas <- non_ssa_afr_areas %>% 
+#   bind_rows(sudanese_areas) %>% 
+#   mutate(
+#     iso3 = countrycode::countrycode(CNTRY_NAME, "country.name", "iso3c"),
+#     area_level = 0
+#   ) %>% 
+#   filter(!is.na(iso3)) %>% 
+#   select(iso3, area_level)
+# 
+# gc()
 
-# areas for SDN and SSD
-sudanese_areas <-   
-  bind_rows(
-    sf::read_sf(file.path(dat_loc, "sdn_adm_cbs_nic_ssa_20200831_shp/sdn_admbnda_adm1_cbs_nic_ssa_20200831.shp")),
-    sf::read_sf(file.path(dat_loc, "ssd_admbnda_imwg_nbs_shp/ssd_admbnda_adm0_imwg_nbs_20180817.shp"))
-  ) %>% 
-  select(CNTRY_NAME = ADM0_EN) %>% 
-  group_split(CNTRY_NAME) %>% 
-  purrr::map(function(x) {
-    cntry <- unique(x$CNTRY_NAME)
-    x <- sf::st_union(x) # may need sf::st_combine?
-    df <- data.frame("CNTRY_NAME" = cntry)
-    sf::st_geometry(df) <- x
-    return(df)
-  }) %>%  
-  bind_rows()
+# Pull regional information for each country
+loc <- RCurl::getURL("https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv")
+iso_df <- read.csv(text = loc)
+iso_df <- iso_df %>%
+  filter(region == "Africa") %>%
+  mutate(across(intermediate.region, ~ifelse(. == "", sub.region, .))) %>%
+  select(
+    iso3 = alpha.3, region = intermediate.region
+  ) %>%
+  mutate(region = ifelse(region == "", "Other", region))
 
-non_ssa_afr_areas <- non_ssa_afr_areas %>% 
-  bind_rows(sudanese_areas) %>% 
-  mutate(
-    iso3 = countrycode::countrycode(CNTRY_NAME, "country.name", "iso3c"),
-    area_level = 0
-  ) %>% 
-  filter(!is.na(iso3)) %>% 
-  select(iso3, area_level)
 
-gc()
-
-#### Figure 2: Map of MC Coverage across SSA 2010-2020 10-29 year olds ####
+#### Figure 2: Map of MC Coverage across SSA 20-2020 10-29 year olds ####
 
 ## Map Plot ##
 main_title <- paste0(
-  "Male Circumcision Coverage, ",
+  # "MC Coverage, ",
+  "Circumcision Coverage ", 
   paste0(spec_years[1], "-", spec_years[2]),
   ", age ",
   spec_age_group,
@@ -325,23 +282,24 @@ main_title <- paste0(
 )
 
 # add non-SSA countries to areas
-areas_all_afr <- bind_rows(areas, non_ssa_afr_areas) %>% 
-  filter(!is.na(iso3))
+# areas_all_afr <- bind_rows(areas, non_ssa_afr_areas) %>% 
+#   filter(!is.na(iso3))
 
-p2 <- plt_coverage_map(
-  # results_agegroup   = filter(results_agegroup, type == "MC coverage"),
-  results_agegroup   = results_agegroup %>% 
-    filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")),  
-  areas              = areas_all_afr,
-  colourPalette      = colourPalette,
-  spec_age_group     = spec_age_group,
-  spec_years         = spec_years,
-  spec_model         = "No program data",
-  plot_type          = "map",
-  country_area_level = 0, 
-  inc_difference     = TRUE,
-  spec_main_title    = main_title
-)
+# p2 <- plt_coverage_map(
+#   # results_agegroup   = filter(results_agegroup, type == "TMC coverage"),
+#   results_agegroup   = results_agegroup %>% 
+#     filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")),  
+#   # areas              = areas_all_afr,
+#   areas              = areas,
+#   colourPalette      = colourPalette,
+#   spec_age_group     = spec_age_group,
+#   spec_years         = spec_years,
+#   spec_model         = "No program data",
+#   plot_type          = "map",
+#   country_area_level = 0, 
+#   inc_difference     = TRUE,
+#   spec_main_title    = main_title
+# )
 
 # make facets vertical rather than horizontal!
 # p2 <- p2 + 
@@ -376,31 +334,289 @@ p2 <- plt_coverage_map(
 #     strip.text.x = element_text(size = 26, face = "bold"),
 #     legend.position = "right"
 #   )
-p2
 
+# remove colour bar for the first two plots
+# p2final <- lapply(1:3, function(i) {
+#   if (i == 3) return(p2[[i]])
+#   p2[[i]] + 
+#     scale_fill_gradientn(
+#       values = NULL, colors = colourPalette, breaks = NULL, limits = NULL
+#     )
+# })
+# 
+# # change titles for different types
+# p2final[[2]] <- p2final[[2]] + 
+#   ggtitle(stringr::str_replace(main_title, "MC", "MMC"))
+# p2final[[3]] <- p2final[[3]] + 
+#   ggtitle(stringr::str_replace(main_title, "MC", "TMC"))
 
+# Plot with facets 
+
+# additions: 
+# - Have single faceted R plot, with tag in corner (done, no tags though ..)
+# - Text very large compared to the images, reduce size!
+# - Remove North African countries from plot
+# - For "% Change%", have a different colour bar, which goes into negative numbers (e.g. -30% to 70%)
+# - Can put year labels, can put in upper left of Africa, leaves more space for image
+
+# Qs: 
+# - How do we want colour bars displayed? Like Tristan, on the side of his plot? 
+# 
+
+country_area_level = 0
+results_area_level = NULL
+spec_model <- "No program data"
+spec_main_title    = main_title
+
+main_title <- paste0(
+  # "MC Coverage, ",
+  "Male circumcision coverage, ",
+  paste0(spec_years[1], "-", spec_years[2]),
+  ", age ",
+  spec_age_group,
+  " years"
+)
+
+results_agegroup1 <- results_agegroup
+areas1 <- areas
+
+## Plot ##
+
+if (!"iso3" %in% names(results_agegroup1)) {
+  results_agegroup1$iso3 <- substr(results_agegroup1$area_id, 0, 3)
+}
+
+# take only required columns in areas for later joining with results
+areas_join <- areas1 %>%
+    dplyr::select(iso3, area_id, area_name, area_level)
+                  
+# Subsetting results
+if (!is.null(results_area_level)) {
+    results_agegroup1 <- results_agegroup1 %>%
+        filter(area_level == results_area_level)
+} else {
+  results_agegroup1 <- results_agegroup1 %>%
+    group_by(iso3) %>%
+    filter(area_level == max(area_level)) %>%
+    ungroup()
+}
+tmp <- results_agegroup1 %>%
+    filter(
+        area_id != "",
+        year %in%       spec_years,
+        age_group ==    spec_age_group,
+        # area_level <=   results_area_level,
+        model ==        spec_model,
+        type %in%       c("MC coverage", "MMC coverage", "TMC coverage")
+    )
+
+tmp <- tmp %>% 
+        select(-matches("area_name")) %>%
+        # Merging to shapefiles
+        left_join(areas_join)
+
+tmp <- tmp %>% 
+    # filter out areas with missing iso3, which cause errors with below
+    filter(!is.na(iso3)) %>%
+    # take maximum area level for known regions
+    group_by(iso3) %>%
+    filter(area_level == max(area_level, na.rm = TRUE)) %>%
+    ungroup() %>%
+    # Altering labels for the plot
+    dplyr::mutate(
+        type = ifelse(grepl("MMC", type), "Medical",
+                      ifelse(grepl("TMC", type), "Traditional", "Total"))
+    ) %>%
+    # change data to sf object
+    st_as_sf()
+
+# filter overlaying area shapes for specified area level
+areas_plot <- areas1
+if (!is.null(country_area_level)) {
+  areas_plot <- areas_plot %>%
+    filter(area_level == country_area_level)
+}
+
+# repair polygons which may be invalid
+tmp <- st_make_valid(tmp)
+areas_plot <- st_make_valid(areas_plot)
+
+# Add difference, if specified
+tmp$year <- as.factor(tmp$year)
+# if (inc_difference == TRUE) {
+
+# split by country, take spec_years, calculate difference between the two
+diff_df <- tmp %>%
+  arrange(year) %>%
+  group_split(area_id, model, type, age_group)
+  
+diff_df <- lapply(diff_df, function(x) {
+     # take negative difference for TMC (expecting decline)
+     # Now colouring % Change differently to total coverage
+     # if (all(x$type == "Traditional")) x <- x[nrow(x):1, ]
+     x <- x%>% 
+       # don't allow change to be < 0
+       # mutate(across(mean:upper, ~ max(0, diff(.)))) %>% 
+       mutate(across(mean:upper, ~ case_when(
+         type == "Traditional" ~ diff(.), 
+         TRUE                  ~ max(0, diff(.))
+       ))) %>% 
+       # take final line, only this shows difference
+       slice(n())
+ }) %>%
+  bind_rows() %>%
+  mutate(
+    year = "% Change"
+    # year = ifelse(type == "Traditional", "-% Change"  ,"% Change")
+  )
+
+levels <- c(spec_years, unique(diff_df$year))
+tmp <- bind_rows(tmp, diff_df) %>%
+    mutate(year = factor(year, levels = levels))
+
+spec_results <- tmp
+spec_areas <- areas_plot
+
+map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
+
+  spec_results$type <- factor(
+    spec_results$type, 
+    levels = c("Total", "Medical", "Traditional")
+  )
+  
+  spec_results_change <- filter(spec_results, year == "% Change")
+  spec_results_year <- filter(spec_results, year != "% Change")
+  
+  p <- ggplot() +
+    geom_sf(
+      data = spec_results_year,
+      aes(fill = mean), 
+      size = 0.5,
+      colour = NA
+    ) +
+    geom_sf(
+      data = spec_areas,
+      colour = "black",
+      size = 0.5,
+      fill = NA
+    ) +
+    labs(fill = "") +
+    scale_fill_gradientn(
+      colours = colourPalette,
+      breaks = seq(0, 1, by = 0.1),
+      limits = c(0, 1),
+      label = scales::label_percent(accuracy = 1),
+      guide = guide_colourbar(
+        # direction = "vertical",
+        label = TRUE,
+        draw.ulim = TRUE,
+        draw.llim = TRUE,
+        frame.colour = "black",
+        ticks = TRUE,
+        # barheight = 1,
+        barheight = 15,
+        # barwidth = 30
+        # barwidth = 20
+        barwidth = 1,
+        title.position = "right"
+      )
+    ) +
+    # guides(fill = guide_colourbar(title.position = "right")) +
+    ggnewscale::new_scale_fill() +
+    # colour percentage change differently
+    geom_sf(
+      data = spec_results_change,
+      aes(fill = mean),
+      size = 0.5,
+      colour = NA
+    ) + 
+    labs(fill = "") +
+    scale_fill_gradientn(
+      colours = colourPalette2,
+      breaks = seq(-0.5, 0.5, by = 0.1),
+      limits = c(-0.5, 0.5),
+      label = scales::label_percent(accuracy = 1),
+      guide = guide_colourbar(
+        # direction = "vertical", 
+        label = TRUE, 
+        draw.ulim = TRUE,
+        draw.llim = TRUE,
+        frame.colour = "black", 
+        ticks = TRUE, 
+        # barheight = 1,
+        barheight = 15,
+        # barwidth = 30,
+        # barwidth = 20,
+        barwidth = 1,
+        title.position = "right"
+      )
+    ) +
+    # guides(fill = guide_colourbar(title.position = "right")) +
+    facet_grid(type ~ year) + 
+    theme_minimal() +
+    theme(
+      axis.text       = element_blank(),
+      axis.ticks      = element_blank(),
+      strip.text      = element_text(size = 20), #  face = "bold"),
+      legend.text     = element_text(size = 12),
+      plot.title      = element_text(size = 26, hjust = 0.5),
+      # legend.position = "bottom",
+      panel.grid      = element_blank(),
+      panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
+    )
+}
+
+p2final <- map_plot(tmp, areas_plot, colourPalette, colourPalette2) + 
+  ggtitle(main_title)
+ 
+
+# save plots
 # ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
 # ggplot2::ggsave(
-#   "paper_poster_plots/paper/plots/02_map_plot.png", 
-#   p2, 
-#   width = 9, 
+#   "paper_poster_plots/paper/plots/02_map_plot.png",
+#   p2,
+#   width = 9,
 #   height = 11,
 #   units = "in"
 # )
-# saveRDS(p2, "paper_poster_plots/paper/plots/02_map_plot.RDS")
-rm(p2); gc()
-# export with width = 1350, height = 1400!
+# types <- c("MC", "MMC", "TMC")
+# lapply(seq_along(p2final), function(i) {
+#   ggplot2::ggsave(
+#     paste0("paper_poster_plots/paper/plots/02_map_plot_", types[[i]], ".png"),
+#     p2final[[i]],
+#     width = 9,
+#     height = 11,
+#     units = "in"
+#   )
+# })
+ggplot2::ggsave(
+  "paper_poster_plots/paper/plots/02_map_plot_facet.png",
+  p2final,
+  width = 12,
+  height = 10,
+  units = "in"
+)
+
+# rm(p2final); gc()
+
 
 #### Figure 3: Sub-National Variation in MC Coverage Plot ####
 
 # TODO: Fix country orderings
 
 # order plot West to East, North to South
+# plot_order <- c(
+#   "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
+#   "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
+#   "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
+#   "SWZ", "LSO", "ZAF"
+# )
+# plot order from figure 1
 plot_order <- c(
-  "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
-  "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
-  "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
-  "SWZ", "LSO", "ZAF"
+  "BEN", "BFA", "CIV", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", 
+  "NGA", "SEN", "SLE", "GMB", "TGO", "AGO", "CMR", "CAF", "TCD", 
+  "COG", "COD", "GAB", "BDI", "ETH", "KEN", "MWI", "MOZ", "RWA", 
+  "TZA", "UGA", "ZMB", "ZWE", "BWA", "SWZ", "LSO", "NAM", "ZAF"
 )
 plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
 
@@ -430,6 +646,32 @@ plt_data <- results_agegroup %>%
   mutate(population = population / median(population)) %>%
   ungroup()
 
+# where to add horizontal line for VMMC vs non-VMMC
+country_positions1 <- length(vmmc_iso3) + 1
+
+# add country position (need whitespace for horizontal line)
+country_pos_df <- data.frame(
+  "iso3"        = plot_order, 
+  "country_idx" = rev(seq_along(plot_order))
+) %>% 
+  mutate(
+    country_idx = ifelse(!iso3 %in% vmmc_iso3, country_idx + 1, country_idx), 
+    country = country_name_convention(
+      countrycode::countrycode(iso3, "iso3c", "country.name")
+    )
+  )
+
+plt_data <- plt_data %>% 
+  mutate(
+    vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "None-VMMC"), 
+    # country_idx = as.integer(fct_rev(iso3)) +
+    # country_idx = as.integer(iso3) +
+    #   c(0, 1, 2, 3)[
+    #     match(region, rev(c("None-VMMC", "VMMC")))
+    #   ]
+  ) %>% 
+  left_join(country_pos_df)
+
 p3 <- plt_data %>% 
   # take max area level for each country
   group_by(iso3) %>% 
@@ -438,14 +680,17 @@ p3 <- plt_data %>%
     aes(
       # countries on the x-axis, in specified order
       # x = forcats::fct_rev(forcats::fct_relevel(iso3, levels = plot_order)), 
-      x = factor(iso3, levels = rev(plot_order)),
+      # x = factor(iso3, levels = rev(plot_order)),
+      x = country_idx, 
       # median MC Coverage on the y-axis
       y = median
     )
   ) +
   # add points coloured by region with weighted populations determining size
   geom_jitter(
-    aes(color = region, size = population), 
+    # aes(color = region, size = population), 
+    aes(size = population), 
+    colour = wesanderson::wes_palette("Zissou1")[1],
     shape = 20, 
     width = 0.1, 
     alpha = 0.5
@@ -453,56 +698,73 @@ p3 <- plt_data %>%
   # add median national level to plot as white dots
   geom_point(
     data = filter(plt_data, area_level == 0),
-    shape = 21, 
-    size = 4, 
-    fill = "white", 
+    size = 5, 
+    # fill = "white", 
+    # fill = "#DCDCDC",
+    # fill = "#F5F5F5",
+    fill = "#F1F1F1",
     col = "black", 
-    alpha = 0.9
+    alpha = 1, 
+    pch = 21, 
+    stroke = 1.1
   ) +
-  # add horizontal line at 90% circumcision
+  # add vertical line at 90% circumcision
   geom_hline(
     yintercept = 0.9, 
     size = 0.8,
     linetype = "dashed",
     colour = "grey50"
   ) +
-  # moz.utils::standard_theme() + # Oli's pretty theme (not working atm)
+  # add horizontal line to split VMMC and non-VMMC countries
+  geom_vline(xintercept = country_positions1) + 
+  # annotate plot with regional labels
+  annotate(
+    geom = "text",
+    # x = zoo::rollmean(c(country_positions1, 0), 2),
+    x = c(length(plot_order) + 1), # , length(plot_order) - (country_positions1 + 4)),
+    y = 0.04,
+    # label = c("non-VMMC", "VMMC"),
+    label = "non-VMMC",
+    # angle = 270,
+    fontface = "bold",
+    size = 5
+  ) +
+  annotate(
+    geom = "text",
+    # x = zoo::rollmean(c(country_positions1, 0), 2),
+    x = c(length(plot_order) - (country_positions1 + 4)),
+    y = 0.025,
+    label = "VMMC",
+    fontface = "bold",
+    size = 5
+  ) +
   # add Oli's (unbroken) theme 
   theme_minimal() + 
   theme(
     legend.position = "bottom", 
-    strip.text = element_text(size = 13, face = "bold"), 
+    strip.text = element_text(size = 13), 
     plot.title = element_text(size = 16), 
     axis.text = element_text(size = 12), 
-    axis.title = element_text(size = 14, face = "bold"), 
+    axis.title = element_text(size = 14), 
     legend.text = element_text(size = 12), 
     # strip.text = element_text(face = "bold"), 
     strip.background = element_rect(fill = NA, colour = "white"), 
-    plot.tag = element_text(size = 16, face = "bold"), 
+    plot.tag = element_text(size = 16), 
     panel.background = element_rect(fill = NA, color = "black")
   ) +
-  scale_x_discrete(
-    labels = function(x, family = "bold", colour = "black") {
-      labs <- countrycode::countrycode(x, "iso3c", "country.name")
-      labs <- ifelse(
-        labs == "Congo - Brazzaville", 
-        "DR Congo",
-        ifelse(
-          grepl("Congo", labs),
-          "Congo",  
-          countrycode::countrycode(x, "iso3c", "country.name")
-        )
-      )
-      labs <- glue::glue(
-        "<b style='font-family:{family}; color:{colour}'>{labs}</b>"
-      )
-    }
+  scale_x_continuous(
+    element_blank(),
+    breaks = country_pos_df$country_idx,
+    minor_breaks = NULL,
+    labels = country_pos_df$country,
+    # position = "left",
+    expand = expansion(add = 0.6)
   ) +
   scale_y_continuous(
-    # n.breaks = 5, 
+    n.breaks = 6, 
     breaks = c(0, 0.25, 0.5, 0.75, 0.9, 1),
-    labels = scales::percent # , 
-    # limits = c(0, 1)
+    limits = c(0, 1),
+    labels = scales::percent
   ) +
   scale_size_continuous(
     # breaks = c(0.5, 1, 10, 20, 100), 
@@ -522,13 +784,13 @@ p3 <- plt_data %>%
   theme(
     legend.title.align = 0.5,
     # legend.text.align = -3, # not working!
-    legend.title = element_text(size = 14, face = "bold"),
+    legend.title = element_text(size = 14),
     legend.text = element_text(size = 15),
     legend.position = "bottom",
-    axis.title.x = element_text(face = "bold", size = 16),
-    axis.text.x = element_text(face = "bold", size = c(rep(15, 3), 18, 15)),
+    axis.title.x = element_text(size = 16),
+    axis.text.x = element_text(size = c(rep(15, 3), 18, 15)),
     axis.text.y = ggtext::element_markdown(size = 17), # hjust = 0.5),
-    plot.title = element_text(hjust = 0.5, face = "bold", size = 18)
+    plot.title = element_text(hjust = 0.5, size = 18)
   ) + 
   # scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
   # coord_flip(ylim = c(0.04, 0.975), clip = "off")
@@ -722,6 +984,230 @@ ggsave("paper_poster_plots/paper/plots/05_circ_rates.png",
        width = 12, 
        height = 10,
        units = "in")
+
+#### Figure y: Absolute Change in TMC from 2000 (previously 2008) ####
+no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
+vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
+
+tmp <- results_agegroup %>% 
+  filter(
+    area_level == 0, 
+    # type      == "Change in TMC coverage from 2008", 
+    type     %in% paste0("Change in ", 
+                         c("MC", "MMC", "TMC"), 
+                         " coverage from 2008"),
+    age_group == spec_age_group, 
+    # year > 2008
+    year == 2020
+  ) %>% 
+  mutate(
+    area_name = case_when(
+      grepl("Tanzania", area_name) ~ "Tanzania", 
+      TRUE                         ~ area_name
+    ),
+    type = case_when(
+      grepl(" MC ", type)  ~ "MC", 
+      grepl(" TMC ", type) ~ "TMC", 
+      TRUE                 ~ "MMC"
+    ),
+    # have NAs for countries with no type information
+    across(mean:upper, ~ ifelse(area_id %in% no_type_iso3, NA, .))
+  ) %>% 
+  # join in ESA-WCA regions for colour
+  left_join(threemc::esa_wca_regions, by = c("area_id" = "iso3")) %>% 
+  arrange(region, desc(mean))
+
+# Setting factor for ggplot2
+plot_order <- c(
+  "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
+  "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
+  "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
+  "SWZ", "LSO", "ZAF"
+)
+plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
+tmp$area_id <- factor(tmp$area_id, levels = plot_order)
+tmp <- tmp[order(tmp$area_id), ]
+
+# tmp$area_name <- factor(tmp$area_name, levels = tmp$area_name)
+# tmp$area_name <- factor(tmp$area_name, levels = plot_order)
+
+# Plotting to PDF
+# pdf('Chngeprev1020_1549_District.pdf', width = 16, height = 10)
+
+# join region
+tmp <- tmp %>%
+  # remove WCA/ESA categorisation
+  select(-region) %>% 
+  # Add Western/Middle/Eastern/Southern categorisation
+  left_join(iso_df, by = c("area_id" = "iso3")) %>% 
+  # arrange region as a factor, approximately counter-clockwise
+  mutate(
+    region = factor(region, levels = c("Western Africa", 
+                                       "Middle Africa",
+                                       "Eastern Africa", 
+                                       "Southern Africa")
+    )
+  ) %>%
+  # arrange by region (as a factor) and area_name (alphabetically)
+  arrange(region, area_name) %>%
+  # convert country to factor
+  mutate(area_name = fct_rev(fct_inorder(area_name)))
+
+# finally, add country position as in figure 3 (need to functionalise!)
+tmp <- tmp %>% 
+  mutate(
+    vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "None-VMMC"), 
+    # country_idx = as.integer(fct_rev(iso3)) +
+    # country_idx = as.integer(iso3) +
+    #   c(0, 1, 2, 3)[
+    #     match(region, rev(c("None-VMMC", "VMMC")))
+    #   ]
+  ) %>% 
+  left_join(country_pos_df)
+
+annonate_df <- data.frame(
+  # "xstar" = c(
+  #   c(length(plot_order) + 1), 
+  #   c(length(plot_order) - (country_positions1 + 4)), 
+  #   0, 
+  #   0
+  # ), 
+  # "ystar" = c(0.04, 0.025), 
+  # label = c("non-VMMC", "VMMC")
+  country_idx = c(
+    c(length(plot_order) + 1),
+    c(length(plot_order) - (country_positions1 + 4))
+  ),
+  mean = c(-0.12, -0.15), 
+  type = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
+  label = c("Non-VMMC", "VMMC")
+)
+
+py <- tmp %>% 
+  ggplot(
+    # aes(x = area_name, y = mean)
+    aes(x = country_idx, y = mean)
+  ) +
+  # geom_point(size = 3) +
+  geom_bar(aes(fill = mean), stat = "identity") +
+  # geom_errorbar(
+  #   aes(ymin = lower, ymax = upper),
+  #   width = 0,
+  #   size = 2, 
+  #   show.legend = FALSE
+  # ) +
+  geom_linerange(
+    aes(ymin = lower, ymax = upper)
+    # position = position_dodge(width = 0.9) # ,
+    # show.legend = FALSE
+  ) +
+  geom_hline(
+    yintercept = 0, 
+    size = 0.8,
+    # linetype = "dashed",
+    colour = "grey50"
+  ) +
+  # add vline for VMMC - non-VMMC split
+  geom_vline(xintercept = country_positions1) + 
+  # label countries, with space for vline splitting VMMC & non-VMMC
+  scale_x_continuous(
+    element_blank(),
+    breaks = country_pos_df$country_idx,
+    minor_breaks = NULL,
+    labels = country_pos_df$country,
+    # position = "left",
+    expand = expansion(add = 0.6)
+  ) +
+  scale_y_continuous(
+    label = scales::label_percent(),
+    limits = c(-0.2, 0.5),
+    breaks = seq(-0.2, 0.5, by = 0.1)
+  ) +
+  labs(fill = "") + 
+  # scale_colour_brewer(palette = "Set1") +
+  scale_fill_gradientn(
+    colours = colourPalette2,
+    breaks = seq(-0.5, 0.5, by = 0.1),
+    limits = c(-0.5, 0.5),
+    label = scales::label_percent(accuracy = 1),
+    guide = guide_colourbar(
+      # direction = "vertical",
+      label = TRUE,
+      draw.ulim = TRUE,
+      draw.llim = TRUE,
+      frame.colour = "black",
+      ticks = TRUE,
+      barheight = 1,
+      # barheight = 30,
+      # barwidth = 30
+      barwidth = 40
+      # barwidth = 1
+    )
+  ) +
+  labs(
+    x        = "Country",
+    y        = "Change in Coverage (%)",
+    colour   = "Region",
+    # title    = "Absolute change in TMC coverage between 2000 and 2020 (10-29 year olds)",
+    title    = "Absolute change in male circumcision coverage between 2000 and 2020 (10-29 year olds)",
+    subtitle = ""
+  ) +
+  facet_wrap(type ~ .) + # , scales = "free") +
+  theme_minimal() +
+  # annotate(
+  #   geom = "text",
+  #   # x = zoo::rollmean(c(country_positions1, 0), 2),
+  #   x = c(length(plot_order) + 1), # , length(plot_order) - (country_positions1 + 4)),
+  #   y = 0.04,
+  #   # label = c("non-VMMC", "VMMC"),
+  #   label = "non-VMMC",
+  #   # angle = 270,
+  #   fontface = "bold",
+  #   size = 5
+  # ) +
+# annotate(
+#   geom = "text",
+#   # x = zoo::rollmean(c(country_positions1, 0), 2),
+#   x = c(length(plot_order) - (country_positions1 + 4)),
+#   y = 0.025,
+#   label = "VMMC",
+#   fontface = "bold",
+#   size = 5
+# ) +
+geom_text(
+  data = annonate_df, 
+  aes(label = label),
+  # aes(x = xstar,  y = ystar, label = label), 
+  size = 5, 
+  fontface = "bold"
+) +
+  # Altering plot text size
+  theme(
+    axis.text.x       = element_text(size = 14),
+    axis.text.y       = element_text(size = 16),
+    strip.text      = element_text(size = 16),
+    legend.text     = element_text(size = 18),
+    legend.title    = element_text(size = 18),
+    axis.title      = element_text(size = 18),
+    plot.title      = element_text(size = 22, hjust = 0.5),
+    legend.position = "bottom",
+    strip.background = element_rect(fill = NA, colour = "white"), 
+    plot.tag = element_text(size = 16, face = "bold"), 
+    panel.background = element_rect(fill = NA, color = "black")
+  ) + 
+  coord_flip(clip = "off")
+py
+
+
+ggplot2::ggsave(
+  # paste0("paper_poster_plots/paper/plots/02_map_plot_", types[[i]], ".png"),
+  "paper_poster_plots/paper/plots/0y_change_08_20.png",
+  py,
+  width = 16,
+  height = 10,
+  units = "in"
+)
+
 
 #### Figure x: National Level Coverage 2010-2020 10-29 year olds ####
 
