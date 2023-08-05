@@ -985,38 +985,74 @@ ggsave("paper_poster_plots/paper/plots/05_circ_rates.png",
        height = 10,
        units = "in")
 
-#### Figure y: Absolute Change in TMC from 2000 (previously 2008) ####
+#### Figure y: Change in MC/MMC/TMC from 2000 ####
+
+no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
+vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
+
+# Want to show change in MC/TMC/MMC from 2000 to 2020
+# On y axis, will have country names 
+# On x axis, will have coverages in both 2000 and 2020
+# An arrow will show the direction of change (i.e. increase/decrease)
+# faceting by circumcision type, clearly shows decreasing TMC!!
+
+## Preprocessing ##
+
+# Try add relative change as well as absolute!
 no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
 vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
 
 tmp <- results_agegroup %>% 
+  # initial filter
   filter(
     area_level == 0, 
-    # type      == "Change in TMC coverage from 2008", 
-    type     %in% paste0("Change in ", 
-                         c("MC", "MMC", "TMC"), 
-                         " coverage from 2008"),
-    age_group == spec_age_group, 
-    # year > 2008
-    year == 2020
+    type %in% paste0(c("MC", "MMC", "TMC"), " coverage"),
+    # age_group == spec_age_group, 
+    age_group == "15-29",
+    year %in% c(2000, 2020)
   ) %>% 
   mutate(
     area_name = case_when(
       grepl("Tanzania", area_name) ~ "Tanzania", 
       TRUE                         ~ area_name
     ),
-    type = case_when(
-      grepl(" MC ", type)  ~ "MC", 
-      grepl(" TMC ", type) ~ "TMC", 
-      TRUE                 ~ "MMC"
-    ),
-    # have NAs for countries with no type information
-    across(mean:upper, ~ ifelse(area_id %in% no_type_iso3, NA, .))
+    area_name = case_when(
+      grepl("Gambia", area_name) ~ "Gambia", 
+      TRUE                         ~ area_name
+    )
   ) %>% 
   # join in ESA-WCA regions for colour
   left_join(threemc::esa_wca_regions, by = c("area_id" = "iso3")) %>% 
-  arrange(region, desc(mean))
+  arrange(region, desc(mean)) %>% 
+  # convert coverages to wide format by year
+  select(-c(population, lower, upper, median, sd)) %>% 
+  tidyr::pivot_wider(values_from = mean, names_from = year) %>% 
+  rename(upper = `2020`, lower = `2000`) %>% 
+  relocate(upper, .after = lower) %>% 
+  mutate(
+    # have NAs for countries with no type information
+    across(lower:upper, ~ ifelse(
+      area_id %in% no_type_iso3 & grepl("MMC|TMC", type),
+      NA, 
+      .
+    ))
+  ) %>% 
+  # calculate difference from 2000 to 2020 (may be positive or negative)
+  mutate(
+    diff = upper - lower
+  ) %>% 
+  # simplify type name
+  mutate(
+    type = case_when(
+      grepl("MMC", type)  ~ "MMC", 
+      grepl("TMC", type)  ~ "TMC", 
+      TRUE                ~ "MC"
+    )
+  ) 
+  
 
+## Plotting ##
+  
 # Setting factor for ggplot2
 plot_order <- c(
   "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
@@ -1027,12 +1063,6 @@ plot_order <- c(
 plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
 tmp$area_id <- factor(tmp$area_id, levels = plot_order)
 tmp <- tmp[order(tmp$area_id), ]
-
-# tmp$area_name <- factor(tmp$area_name, levels = tmp$area_name)
-# tmp$area_name <- factor(tmp$area_name, levels = plot_order)
-
-# Plotting to PDF
-# pdf('Chngeprev1020_1549_District.pdf', width = 16, height = 10)
 
 # join region
 tmp <- tmp %>%
@@ -1066,142 +1096,96 @@ tmp <- tmp %>%
   left_join(country_pos_df)
 
 annotate_df <- data.frame(
-  # "xstar" = c(
-  #   c(length(plot_order) + 1), 
-  #   c(length(plot_order) - (country_positions1 + 4)), 
-  #   0, 
-  #   0
-  # ), 
-  # "ystar" = c(0.04, 0.025), 
-  # label = c("non-VMMC", "VMMC")
   country_idx = c(
     c(length(plot_order) + 1),
     c(length(plot_order) - (country_positions1 + 4))
   ),
-  mean = c(-0.12, -0.15), 
-  type = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
+  value = c(-0.12, -0.15), 
+  type  = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
   label = c("Non-VMMC", "VMMC")
 )
 
-py <- tmp %>% 
-  ggplot(
-    # aes(x = area_name, y = mean)
-    aes(x = country_idx, y = mean)
+# convert to long format for plot
+tmp_long <- tmp %>% 
+  # select(-c(mean, sd, median)) %>% 
+  tidyr::pivot_longer(lower:upper, names_to = "year") %>% 
+  mutate(year = ifelse(year == "lower", 2000, 2020))
+
+tmp_long_lower <- tmp_long %>% filter(year == 2000)
+tmp_long_upper <- tmp_long %>% filter(year == 2020)
+
+py <- tmp_long %>%
+  ggplot() +
+  geom_point(aes(x = country_idx, y = value, colour = factor(year)), size = 3) +
+  geom_segment(
+    data = tmp_long_lower,
+    aes(
+      x      = country_idx,
+      y      = value,
+      xend   = tmp_long_upper$country_idx,
+      yend   = tmp_long_upper$value # ,
+      # colour = factor(year)
+    ), 
+    arrow = arrow(length = unit(0.3, "cm")), 
+    size = 1
   ) +
-  # geom_point(size = 3) +
-  geom_bar(aes(fill = mean), stat = "identity") +
-  # geom_errorbar(
-  #   aes(ymin = lower, ymax = upper),
-  #   width = 0,
-  #   size = 2, 
-  #   show.legend = FALSE
+  # horizontal line at 0% 
+  # geom_hline(
+  #   yintercept = 0,
+  #   size = 0.8,
+  #   colour = "grey50"
   # ) +
-  geom_linerange(
-    aes(ymin = lower, ymax = upper)
-    # position = position_dodge(width = 0.9) # ,
-    # show.legend = FALSE
-  ) +
-  geom_hline(
-    yintercept = 0, 
-    size = 0.8,
-    # linetype = "dashed",
-    colour = "grey50"
-  ) +
   # add vline for VMMC - non-VMMC split
-  geom_vline(xintercept = country_positions1) + 
+  geom_vline(xintercept = country_positions1) +
+  geom_text(
+    data = annotate_df, 
+    # aes(label = label),
+    aes(x = country_idx,  y = value, label = label), 
+    size = 5, 
+    fontface = "bold"
+  ) +
   # label countries, with space for vline splitting VMMC & non-VMMC
   scale_x_continuous(
     element_blank(),
     breaks = country_pos_df$country_idx,
     minor_breaks = NULL,
     labels = country_pos_df$country,
-    # position = "left",
     expand = expansion(add = 0.6)
   ) +
   scale_y_continuous(
     label = scales::label_percent(),
-    limits = c(-0.2, 0.5),
-    breaks = seq(-0.2, 0.5, by = 0.1)
-  ) +
-  labs(fill = "") + 
-  # scale_colour_brewer(palette = "Set1") +
-  scale_fill_gradientn(
-    colours = colourPalette2,
-    breaks = seq(-0.5, 0.5, by = 0.1),
-    limits = c(-0.5, 0.5),
-    label = scales::label_percent(accuracy = 1),
-    guide = guide_colourbar(
-      # direction = "vertical",
-      label = TRUE,
-      draw.ulim = TRUE,
-      draw.llim = TRUE,
-      frame.colour = "black",
-      ticks = TRUE,
-      barheight = 1,
-      # barheight = 30,
-      # barwidth = 30
-      barwidth = 40
-      # barwidth = 1
-    )
+    limits = c(0, 1),
+    breaks = seq(0, 1, by = 0.2)
   ) +
   labs(
     x        = "Country",
     y        = "Change in Coverage (%)",
-    colour   = "Region",
-    # title    = "Absolute change in TMC coverage between 2000 and 2020 (10-29 year olds)",
-    title    = "Absolute change in male circumcision coverage between 2000 and 2020 (10-29 year olds)",
+    colour   = "Year",
+    title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
     subtitle = ""
   ) +
   facet_wrap(type ~ .) + # , scales = "free") +
   theme_minimal() +
-  # annotate(
-  #   geom = "text",
-  #   # x = zoo::rollmean(c(country_positions1, 0), 2),
-  #   x = c(length(plot_order) + 1), # , length(plot_order) - (country_positions1 + 4)),
-  #   y = 0.04,
-  #   # label = c("non-VMMC", "VMMC"),
-  #   label = "non-VMMC",
-  #   # angle = 270,
-  #   fontface = "bold",
-  #   size = 5
-  # ) +
-# annotate(
-#   geom = "text",
-#   # x = zoo::rollmean(c(country_positions1, 0), 2),
-#   x = c(length(plot_order) - (country_positions1 + 4)),
-#   y = 0.025,
-#   label = "VMMC",
-#   fontface = "bold",
-#   size = 5
-# ) +
-  geom_text(
-    data = annotate_df, 
-    aes(label = label),
-    # aes(x = xstar,  y = ystar, label = label), 
-    size = 5, 
-    fontface = "bold"
-  ) +
   # Altering plot text size
   theme(
-    axis.text.x       = element_text(size = 14),
-    axis.text.y       = element_text(size = 16),
-    strip.text      = element_text(size = 16),
-    legend.text     = element_text(size = 18),
-    legend.title    = element_text(size = 18),
-    axis.title      = element_text(size = 18),
-    plot.title      = element_text(size = 22, hjust = 0.5),
-    legend.position = "bottom",
-    strip.background = element_rect(fill = NA, colour = "white"), 
-    plot.tag = element_text(size = 16, face = "bold"), 
+    axis.text.x      = element_text(size = 14),
+    axis.text.y      = element_text(size = 16),
+    strip.text       = element_text(size = 16),
+    legend.text      = element_text(size = 18),
+    legend.title     = element_text(size = 18),
+    axis.title       = element_text(size = 18),
+    plot.title       = element_text(size = 22, hjust = 0.5),
+    legend.position  = "bottom",
+    strip.background = element_rect(fill = NA, colour = "white"),
+    plot.tag         = element_text(size = 16, face = "bold"),
     panel.background = element_rect(fill = NA, color = "black")
-  ) + 
+  ) +
   coord_flip(clip = "off")
+
 py
 
-
 ggplot2::ggsave(
-  # paste0("paper_poster_plots/paper/plots/02_map_plot_", types[[i]], ".png"),
-  "paper_poster_plots/paper/plots/0y_change_08_20.png",
+  "paper_poster_plots/paper/plots/0y_change_00_20.png",
   py,
   width = 16,
   height = 10,
