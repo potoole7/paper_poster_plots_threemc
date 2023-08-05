@@ -1065,7 +1065,7 @@ tmp <- tmp %>%
   ) %>% 
   left_join(country_pos_df)
 
-annonate_df <- data.frame(
+annotate_df <- data.frame(
   # "xstar" = c(
   #   c(length(plot_order) + 1), 
   #   c(length(plot_order) - (country_positions1 + 4)), 
@@ -1174,13 +1174,13 @@ py <- tmp %>%
 #   fontface = "bold",
 #   size = 5
 # ) +
-geom_text(
-  data = annonate_df, 
-  aes(label = label),
-  # aes(x = xstar,  y = ystar, label = label), 
-  size = 5, 
-  fontface = "bold"
-) +
+  geom_text(
+    data = annotate_df, 
+    aes(label = label),
+    # aes(x = xstar,  y = ystar, label = label), 
+    size = 5, 
+    fontface = "bold"
+  ) +
   # Altering plot text size
   theme(
     axis.text.x       = element_text(size = 14),
