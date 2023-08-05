@@ -24,7 +24,7 @@ source("paper_poster_plots/paper/scripts/00_funs.R")
 
 orderly_root <- here::here()
 
-spec_age_group <- "10-29"
+spec_age_group <- "15-29" # changed from 10-29 upon Jeff's request
 spec_years <- c(2006, 2020)
 
 ## for tabulating surveys
@@ -269,7 +269,7 @@ iso_df <- iso_df %>%
   mutate(region = ifelse(region == "", "Other", region))
 
 
-#### Figure 2: Map of MC Coverage across SSA 20-2020 10-29 year olds ####
+#### Figure 2: Map of MC Coverage across SSA 20-2020 15-29 year olds ####
 
 ## Map Plot ##
 main_title <- paste0(
@@ -779,7 +779,9 @@ p3 <- plt_data %>%
     size = "District pop. relative to\n median district size", 
     color = "Region"
   ) +
-  ggtitle("District-Level MC Coverage, 2020, ages 10-29 years old") + 
+  ggtitle(paste0(
+    "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
+  )) + 
   scale_color_manual(values = wesanderson::wes_palette("Zissou1")[c(1, 4)]) +
   theme(
     legend.title.align = 0.5,
@@ -1193,7 +1195,7 @@ ggplot2::ggsave(
 )
 
 
-#### Figure x: National Level Coverage 2010-2020 10-29 year olds ####
+#### Figure x: National Level Coverage 2010-2020 ####
 
 # Create area plot of (type-split) coverage for each country
 
