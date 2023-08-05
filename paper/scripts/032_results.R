@@ -212,51 +212,6 @@ populations <- load_orderly_data(
 # last surveys 
 last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
 
-# Additional areas from Oli, so map plot can be for all of SSA
-# NOTE: no longer needed, not added to map plot
-# dat_loc <- "global/"
-# non_ssa_afr_areas <- sf::read_sf(
-#   file.path(
-#     dat_loc, 
-#     "Longitude_Graticules_and_World_Countries_Boundaries-shp/99bfd9e7-bb42-4728-87b5-07f8c8ac631c2020328-1-1vef4ev.lu5nk.shp"
-#   )
-# ) %>%
-#   filter(
-#     CNTRY_NAME %in% c(
-#       "Western Sahara", "Mauritania", "Morocco", "Algeria", 
-#       "Libya", "Tunisia", "Egypt", "Equatorial Guinea", 
-#       "Somalia", "Djibouti", "Eritrea", "Sudan"
-#     )
-#   )
-# 
-# # areas for SDN and SSD
-# sudanese_areas <-   
-#   bind_rows(
-#     sf::read_sf(file.path(dat_loc, "sdn_adm_cbs_nic_ssa_20200831_shp/sdn_admbnda_adm1_cbs_nic_ssa_20200831.shp")),
-#     sf::read_sf(file.path(dat_loc, "ssd_admbnda_imwg_nbs_shp/ssd_admbnda_adm0_imwg_nbs_20180817.shp"))
-#   ) %>% 
-#   select(CNTRY_NAME = ADM0_EN) %>% 
-#   group_split(CNTRY_NAME) %>% 
-#   purrr::map(function(x) {
-#     cntry <- unique(x$CNTRY_NAME)
-#     x <- sf::st_union(x) # may need sf::st_combine?
-#     df <- data.frame("CNTRY_NAME" = cntry)
-#     sf::st_geometry(df) <- x
-#     return(df)
-#   }) %>%  
-#   bind_rows()
-# 
-# non_ssa_afr_areas <- non_ssa_afr_areas %>% 
-#   bind_rows(sudanese_areas) %>% 
-#   mutate(
-#     iso3 = countrycode::countrycode(CNTRY_NAME, "country.name", "iso3c"),
-#     area_level = 0
-#   ) %>% 
-#   filter(!is.na(iso3)) %>% 
-#   select(iso3, area_level)
-# 
-# gc()
-
 # Pull regional information for each country
 loc <- RCurl::getURL("https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.csv")
 iso_df <- read.csv(text = loc)
@@ -280,77 +235,7 @@ main_title <- paste0(
   spec_age_group,
   " years"
 )
-
-# add non-SSA countries to areas
-# areas_all_afr <- bind_rows(areas, non_ssa_afr_areas) %>% 
-#   filter(!is.na(iso3))
-
-# p2 <- plt_coverage_map(
-#   # results_agegroup   = filter(results_agegroup, type == "TMC coverage"),
-#   results_agegroup   = results_agegroup %>% 
-#     filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")),  
-#   # areas              = areas_all_afr,
-#   areas              = areas,
-#   colourPalette      = colourPalette,
-#   spec_age_group     = spec_age_group,
-#   spec_years         = spec_years,
-#   spec_model         = "No program data",
-#   plot_type          = "map",
-#   country_area_level = 0, 
-#   inc_difference     = TRUE,
-#   spec_main_title    = main_title
-# )
-
-# make facets vertical rather than horizontal!
-# p2 <- p2 + 
-#   ggtitle("") + # remove title
-#   # ggtitle("Male Circumcision Coverage, 2010-2020") +
-#   facet_wrap(~ year, dir = "v") + # make maps vertical
-#   # make colour bar vertical and smaller
-#   scale_fill_gradientn(
-#     colours = colourPalette, 
-#     # breaks = seq(0, 1, by = 0.2),
-#     breaks = seq(0, 1, by = 0.2),
-#     limits = c(0, 1),  
-#     label = scales::label_percent(accuracy = 1),
-#     guide = guide_colourbar(
-#       direction = "vertical", 
-#       label = TRUE, 
-#       draw.ulim = TRUE,
-#       draw.llim = TRUE,
-#       frame.colour = "black", 
-#       ticks = TRUE, 
-#       # barheight = 1,
-#       barheight = 30,
-#       # barwidth = 30
-#       barwidth = 1
-#     )
-#   ) + 
-#   theme(
-#     plot.title = element_text(size = 30, face = "bold"),
-#     # increase colourbar text size
-#     legend.text = element_text(size = 20), 
-#     # bold facet names
-#     strip.text.x = element_text(size = 26, face = "bold"),
-#     legend.position = "right"
-#   )
-
-# remove colour bar for the first two plots
-# p2final <- lapply(1:3, function(i) {
-#   if (i == 3) return(p2[[i]])
-#   p2[[i]] + 
-#     scale_fill_gradientn(
-#       values = NULL, colors = colourPalette, breaks = NULL, limits = NULL
-#     )
-# })
-# 
-# # change titles for different types
-# p2final[[2]] <- p2final[[2]] + 
-#   ggtitle(stringr::str_replace(main_title, "MC", "MMC"))
-# p2final[[3]] <- p2final[[3]] + 
-#   ggtitle(stringr::str_replace(main_title, "MC", "TMC"))
-
-# Plot with facets 
+# Plot all types & with facets 
 
 # additions: 
 # - Have single faceted R plot, with tag in corner (done, no tags though ..)
