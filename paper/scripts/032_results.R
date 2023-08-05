@@ -61,14 +61,18 @@ target_iso3 <- c(
   "RWA", "ZAF", "SWZ", "UGA", "TZA", "ZMB", "ZWE"
 )
 
+
+# Colour palette for map plot
 colourPalette <- rev(colorRampPalette(
   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
-    "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#5e4fa2")
+    "#e6f598", "#abdda4", "#66c2a5", "#3288bd", 
+    "#5e4fa2")
 )(100))
 
 # colourPalette for % changeR
 colourPalette2 <- rev(heat.colors(100))
-# colourPalette2 <- vir
+# colourPalette2 <- viridis::viridis(100)
+
 
 #### Load Data ####
 
@@ -359,8 +363,13 @@ levels <- c(spec_years, unique(diff_df$year))
 tmp <- bind_rows(tmp, diff_df) %>%
     mutate(year = factor(year, levels = levels))
 
-spec_results <- tmp
-spec_areas <- areas_plot
+# finally, change 0s for countries with no type info to NAs
+tmp <- tmp %>% 
+  mutate(mean = ifelse(iso3 %in% no_type_iso3 & mean == 0, NA, mean))
+
+# for testing plot
+# spec_results <- tmp
+# spec_areas <- areas_plot
 
 map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 
@@ -388,9 +397,10 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     labs(fill = "") +
     scale_fill_gradientn(
       colours = colourPalette,
+      na.value = "grey",
       breaks = seq(0, 1, by = 0.1),
       limits = c(0, 1),
-      label = scales::label_percent(accuracy = 1),
+      label = scales::label_percent(accuracy = 1), 
       guide = guide_colourbar(
         # direction = "vertical",
         label = TRUE,
@@ -418,6 +428,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     labs(fill = "") +
     scale_fill_gradientn(
       colours = colourPalette2,
+      na.value = "grey",
       breaks = seq(-0.5, 0.5, by = 0.1),
       limits = c(-0.5, 0.5),
       label = scales::label_percent(accuracy = 1),
@@ -451,9 +462,10 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     )
 }
 
-p2final <- map_plot(tmp, areas_plot, colourPalette, colourPalette2) + 
+p2final <- map_plot(tmp1, areas_plot, colourPalette, colourPalette2) + 
   ggtitle(main_title)
  
+p2final
 
 # save plots
 # ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
