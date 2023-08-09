@@ -365,7 +365,9 @@ tmp <- bind_rows(tmp, diff_df) %>%
 
 # finally, change 0s for countries with no type info to NAs
 tmp <- tmp %>% 
-  mutate(mean = ifelse(iso3 %in% no_type_iso3 & mean == 0, NA, mean))
+  mutate(mean = ifelse(
+    iso3 %in% no_type_iso3 & type != "Total", NA, mean
+  ))
 
 # for testing plot
 # spec_results <- tmp
