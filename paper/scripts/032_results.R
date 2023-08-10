@@ -804,8 +804,7 @@ ggplot2::ggsave(
 
 saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 
-
-#### Figure y: Change in MC/MMC/TMC from 2000 ####
+#### Figure 5: Change in MC/MMC/TMC from 2000 ####
 
 no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
 vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
@@ -934,7 +933,7 @@ tmp_long <- tmp %>%
 tmp_long_lower <- tmp_long %>% filter(year == 2000)
 tmp_long_upper <- tmp_long %>% filter(year == 2020)
 
-py <- tmp_long %>%
+p5 <- tmp_long %>%
   ggplot() +
   geom_point(aes(x = country_idx, y = value, colour = factor(year)), size = 3) +
   geom_segment(
@@ -1002,11 +1001,11 @@ py <- tmp_long %>%
   ) +
   coord_flip(clip = "off")
 
-py
+p5
 
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/0y_change_00_20.png",
-  py,
+  "paper_poster_plots/paper/plots/05_change_00_20.png",
+  p5,
   width = 16,
   height = 10,
   units = "in"
