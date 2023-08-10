@@ -464,10 +464,10 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     )
 }
 
-p2final <- map_plot(tmp1, areas_plot, colourPalette, colourPalette2) + 
+p2final <- map_plot(tmp, areas_plot, colourPalette, colourPalette2) + 
   ggtitle(main_title)
  
-p2final
+# p2final
 
 # save plots
 # ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
@@ -696,7 +696,7 @@ p3 <- plt_data %>%
   # scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
   # coord_flip(ylim = c(0.04, 0.975), clip = "off")
   coord_flip(clip = "off")
-p3
+# p3
 
 p3$plot_order <- plot_order
 
@@ -802,89 +802,6 @@ ggplot2::ggsave(
 
 saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 
-#### Figure 5: Geofaceted plot for circ rates (i.e. n circs by type) ####
-
-p5 <- plt_coverage_year_national(
-  results_agegroup = results_agegroup_rate,
-  areas            = areas,
-  last_surveys     = last_surveys,
-  spec_age_group   = "0+",
-  # spec_years       = spec_years,
-  spec_years       = spec_years,
-  spec_model       = "No program data", 
-  spec_types = paste(c("MC", "MMC", "TMC"), "probability"),
-  main             = "",
-  n_plots          = length(unique(results_agegroup_rate$iso3))
-)[[1]]
-
-# grid for geofaceting, standardise country names
-ssa_grid <- geofacet::africa_countries_grid1 %>%
-  mutate(
-    name = case_when(
-      grepl("Ivoire", name)                      ~ "Cote d'Ivoire",
-      name == "Gambia"                           ~ "The Gambia",
-      name == "Democratic Republic of the Congo" ~ "DR Congo",
-      name == "Republic of the Congo"            ~ "Congo",
-      name == "Equatorial Guinea"                ~ "Eq. Guinea",
-      name == "Central African Republic"          ~ "Cent. Af. Rep.",
-      TRUE                                       ~ name
-    )
-  ) %>%
-  filter(name %in% c(ssa_countries, "Eq. Guinea", "Cent. Af. Rep."))
-
-# remove missing rows and columns (only looking at SSA, not all of Africa)
-min_row <- min(ssa_grid$row)
-if (min_row > 1) {
-  ssa_grid <- ssa_grid %>%
-    mutate(row = row - (min_row - 1))
-}
-min_col <- min(ssa_grid$col)
-if (min_col > 1) {
-  ssa_grid <- ssa_grid %>%
-    mutate(col = col - (min_col - 1))
-}
-
-p5_geo <- p5 +
-  # geofacet based on SSA shape
-  geofacet::facet_geo(~ area_name, grid = ssa_grid) +
-  # make x-axis text smaller to fit all of map
-  ggtitle(
-    paste0("MMC & TMC Rates vs Year, 2010-2020, ", spec_age_group, " year olds")
-  ) +
-  theme(
-    strip.text = element_text(size = 20, face = "bold"),
-    legend.position = "none", # remove legend, add with crop
-    plot.title = element_text(hjust = 0.5, face = "bold", family = "Arial"),
-    axis.text.x = element_text(size = 12, angle = 0, hjust = 1, vjust = 1)
-  ) + 
-  labs(y = "") + # remove x-axis
-  scale_x_continuous(
-    # breaks = seq(spec_years[1], last(spec_years), by = 2),
-    breaks = seq(spec_years[1], last(spec_years), by = 5),
-    limits = c(spec_years[1] - 0.25, last(spec_years) + 0.75)
-  ) + 
-  scale_y_continuous(
-    breaks = scales::pretty_breaks(5),
-    limits = c(0, 100 * (round(max(p5$data$mean.y) + 5 * 10 ^ (-2), 1)))
-  ) + 
-  NULL
-# remove hline, only applicable for coverage
-p5_geo$layers[[1]] <- NULL
-p5_geo
-
-# for legend: 
-p5_geo +
-  theme(
-    legend.position = "bottom",
-    legend.text = element_text(size = 20, face = "bold")
-  )
-
-saveRDS(p5_geo, "paper_poster_plots/paper/data/05_circ_rates.RDS")
-ggsave("paper_poster_plots/paper/plots/05_circ_rates.png",
-       p5_geo,
-       width = 12, 
-       height = 10,
-       units = "in")
 
 #### Figure y: Change in MC/MMC/TMC from 2000 ####
 
