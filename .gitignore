@@ -15,6 +15,6 @@ paper/**/*.pdf
 # don't upload plots (yet!)
 # paper/plots
 paper/plots/old
+paper/data/ # ignore datafiles
 
-# ignore datafiles
-paper/data/
+paper/ltximg # ignore LaTeX exports from Org
