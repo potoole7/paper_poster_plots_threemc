@@ -58,7 +58,7 @@ load_orderly_data <- function(
         orderly::orderly_search(
           query = query, 
           name = task, 
-          parameters = c(parameters[i, ]) # coerces pars df to a list 
+          parameters = c(parameters[i, , drop = FALSE]) # coerce df to list 
         )
       }, mc.cores = ncores))  
     } else {
@@ -82,7 +82,9 @@ load_orderly_data <- function(
     filenames
   )
   # return filenames if load_fun isn't specified
-  if (!is.null(load_fun) == FALSE) return(files)
+  if (!is.null(load_fun) == FALSE) {
+    return(list("dirs"  = dirs_return, "files" = files))
+  }
   return(list(
     "dirs" = dirs_return, 
     "output" = lapply(files, load_fun, ...)
