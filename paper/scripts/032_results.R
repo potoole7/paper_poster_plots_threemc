@@ -1,6 +1,8 @@
 #### Create plots for results ####
 
 # Produce summary stats here as well
+# must be run in threemc-orderly https://github.com/mrc-ide/threemc-orderly 
+# Orderly `archive/` found on Sharepoint https://tinyurl.com/ufpxymmb
 
 # stopifnot(dirname(getwd()) == "threemc-orderly")
 while(basename(getwd()) != "threemc-orderly") setwd("../.")
