@@ -643,15 +643,15 @@ to us. A more detailed treatment of this can be found in section x of the append
 
 For each country, we fit a model for each possible model specification for threemc, that is:
 - for each choice of temporal prior, namely AR1, RW1 and RW2,
-- a choice of whether or not to include a paediatric age cutoff for MMC of ten, and
+- a choice of whether or not to include a paediatric age cutoff of 10 years of age for MMC, and
 - a choice of whether to include a temporal effect for TMC. 
 Thus totalling 12 possible models for each country.
 These models were fit to all of the survey data available, rather than a subset of the data.
 This was because we were most interested here in seeing how the inclusion of a peadiatric age cutoff and/or a temporal TMC effect would effect the fit of the model to the data available, rather than in the relative short-term forecasting ability of the different specifications.
 As the choice of temporal prior was more important when forecasting, we were not especially interested in how each of these performed here, but regardless we fit for each temporal prior, for completeness. 
 
-The survey weighted empirical survey circumcision coverage was compared to a sample of 1000 draws from the posterior predictions of circumcision coverage for each country.
-Both were aggregated to area level 1 and to five year age groups (from 15-19 through 55-59), to avoid having too many zeros in the survey estimates.
+The survey weighted empirical survey circumcision coverages were compared to samples of 1000 draws from the posterior predictions of circumcision coverage for each country.
+Both were aggregated to five year age groups (from 15-19 through 55-59), in order to avoid having too many zeros in the survey estimates.
 # Multiple comparisons between the two were made, including the expected log-predictive density (ELPD), the continous ranked probability score (CRPS), the mean error (ME), mean squared error (MSE) and root mean squared error (RMSE).
 # We also looked at the credible interval coverage.
 # To calculate this, we took a binomial sample, from the posterior predictive distribution of circumcision coverage.
