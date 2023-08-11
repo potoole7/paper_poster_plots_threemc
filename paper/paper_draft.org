@@ -911,11 +911,23 @@ Include:
 - Something about TMC as well would be useful
 #+end_comment
 
-#  #+NAME: fig2
-#  #+begin_src R :exports results :results file graphics :file plots/02_map_plot.pdf :width 11 :height 10
-# p2 <- readRDS("./plots/02_map_plot.RDS")
-# print(p2)
+# #+begin_src R :exports results :results file graphics :file plots_org/01_survey_table.png :width 9 :height 10
+# # source("paper_poster_plots/scripts/03_results_data.R")
+# # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+# p1 <- readRDS("./plots/01_survey_table.RDS")
+# print(p1)
 # #+end_src
+
+# :width 9 :height 10
+#+NAME: fig2
+#+begin_src R :exports results :results file graphics :file plots_org/02_map_plot.png
+p2 <- readRDS("./plots/02_map_plot.RDS")
+print(p2)
+#+end_src
+
+#+RESULTS: fig2
+[[file:plots_org/02_map_plot.png]]
+
 /Figure 2: Estimated percentage of men aged 10-29 years who were circumcised subnationally in 33 SSA countries./ 
 /Missing from map: Guinea-Bissau, Equitorial Guinea, Central African Republic and Botswana./
 
@@ -956,6 +968,16 @@ MMC in WCA increased from x% (x% - x%)
 # print(p3)
 #  #+end_src
 
+# :width 9 :height 10
+#+NAME: fig3
+#+begin_src R :exports results :results file graphics :file plots_org/03_subnat_plot.png
+p3 <- readRDS("./plots/03_subnat_plot.RDS")
+print(p3)
+#+end_src
+
+#+RESULTS: fig3
+[[file:plots_org/03_subnat_plot.png]]
+
 /Figure 3: District-level median percentage of men aged 10-29 years who were circumcised in 2020 in 33 SSA countries./
 /Each point is a district, sized by district population relative to average district size and coloured by the African region their country falls under (Eastern and Southern Africa (ESA) and Western and Central Africa (WCA), respectively)./
 /Each white dot represents the national median. A vertical dotted line signifies the UNAIDS target of 90% national MC./
@@ -984,12 +1006,12 @@ In total, the mean percentage of districts in each country with greater than 90%
 # working title!
 
 # Figure: Geofaceted plot, but by age rather than year, for 2020 (doesn't look too bad, ask Jeff what he thinks)
-# #+NAME: fig4
-# #+begin_src R :exports results :results file graphics :file plots/04_geo_age.pdf :width 16 :height 13
-# p4 <- readRDS("./plots/04_geo_age.RDS")
-# print(p4)
-# #+end_src
-
+# Freezes export, unfortunately
+#+NAME: fig4
+#+begin_src R :exports results :results file graphics :file plots_org/04_geo_age.png
+p4 <- readRDS("./plots/04_geo_age.RDS")
+print(p4)
+#+end_src
 /Figure 4: Projected percentage of men from 0 to 60 years old who were medically circumcised and traditionally circumcised by 2020. The horizontal grey dashed line indicates the 90% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. Purple areas represent countries where circumcision type could not be ascertained from surveys./
 
 #+begin_comment
@@ -1010,12 +1032,19 @@ For MMC, the average age at circumcision in 2020 was x, compared to x in 2006, w
 The average age of MC in 2020 for ESA was x, while in WCA it was x. 
 
 *** Decrease in TMC in SSA region Over Time
-# #+NAME: fig5
-# #+begin_src R :exports results :results file graphics :file plots/05_subnat_plot.pdf :width 9 :height 10
-# p5 <- readRDS("./plots/03_subnat_plot.RDS")
-# print(p5)
-# #+end_src
-/Figure 6: Number of men aged 10-29 years who were medically circumcised and traditionally circumcised each year between 2010 and 2020. The lighter shaded area represents projection after the most recent household survey. Purple areas represent countries where circumcision type could not be ascertained from surveys./
+
+# width 9 :height 10
+#+NAME: fig5
+#+begin_src R :exports results :results file graphics :file plots_org/05_change_00_20.png
+p5 <- readRDS("./plots/05_change_00_20.RDS")
+print(p5)
+#+end_src
+
+#+RESULTS: fig5
+[[file:plots_org/05_change_00_20.png]]
+
+# /Figure 5: Number of men aged 10-29 years who were medically circumcised and traditionally circumcised each year between 2010 and 2020. The lighter shaded area represents projection after the most recent household survey. Purple areas represent countries where circumcision type could not be ascertained from surveys./
+/Figure 5: insert caption here!/
 
 #+begin_comment
 - TMC coverage in SSA in 2006, compared to 2020. 
