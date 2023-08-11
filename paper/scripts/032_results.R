@@ -70,10 +70,21 @@ colourPalette <- rev(colorRampPalette(
     "#e6f598", "#abdda4", "#66c2a5", "#3288bd", 
     "#5e4fa2")
 )(100))
+# change mint green as it's awful looking in % Change facets of map plot
+# colourPalette <- rev(colorRampPalette(
+#   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
+#     "#e6f598", 
+#     # "#66c2a5", 
+#     "#54bb9a",
+#     "#46af8e",  
+#     "#3288bd", "#5e4fa2")
+# )(100))
+
 
 # colourPalette for % changeR
-colourPalette2 <- rev(heat.colors(100))
+# colourPalette2 <- rev(heat.colors(100))
 # colourPalette2 <- viridis::viridis(100)
+colourPalette2 <- viridis::plasma(100)
 
 
 #### Load Data ####
@@ -372,9 +383,11 @@ tmp <- tmp %>%
   ))
 
 # for testing plot
-# spec_results <- tmp
-# spec_areas <- areas_plot
+spec_results <- tmp
+spec_areas <- areas_plot
 
+rm(results_agegroup1, areas1); gc()
+   
 map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 
   spec_results$type <- factor(
@@ -406,18 +419,16 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       limits = c(0, 1),
       label = scales::label_percent(accuracy = 1), 
       guide = guide_colourbar(
-        # direction = "vertical",
+        direction = "horizontal",
         label = TRUE,
         draw.ulim = TRUE,
         draw.llim = TRUE,
         frame.colour = "black",
         ticks = TRUE,
-        # barheight = 1,
-        barheight = 15,
-        # barwidth = 30
-        # barwidth = 20
-        barwidth = 1,
-        title.position = "right"
+        barheight = 1,
+        # barwidth = 20,
+        barwidth = 22,
+        title.position = "bottom"
       )
     ) +
     # guides(fill = guide_colourbar(title.position = "right")) +
@@ -433,22 +444,20 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     scale_fill_gradientn(
       colours = colourPalette2,
       na.value = "grey",
-      breaks = seq(-0.5, 0.5, by = 0.1),
-      limits = c(-0.5, 0.5),
+      breaks = seq(-0.2, 0.5, by = 0.1),
+      limits = c(-0.2, 0.5),
       label = scales::label_percent(accuracy = 1),
       guide = guide_colourbar(
-        # direction = "vertical", 
+        direction = "horizontal", 
         label = TRUE, 
         draw.ulim = TRUE,
         draw.llim = TRUE,
         frame.colour = "black", 
         ticks = TRUE, 
-        # barheight = 1,
-        barheight = 15,
-        # barwidth = 30,
+        barheight = 1,
         # barwidth = 20,
-        barwidth = 1,
-        title.position = "right"
+        barwidth = 15,
+        title.position = "bottom"
       )
     ) +
     # guides(fill = guide_colourbar(title.position = "right")) +
@@ -460,16 +469,22 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       strip.text      = element_text(size = 20), #  face = "bold"),
       legend.text     = element_text(size = 12),
       plot.title      = element_text(size = 26, hjust = 0.5),
-      # legend.position = "bottom",
+      legend.position = "bottom",
       panel.grid      = element_blank(),
       panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
     )
 }
 
-p2final <- map_plot(tmp, areas_plot, colourPalette, colourPalette2) + 
+p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) + 
   ggtitle(main_title)
  
 # p2final
+
+# save object for org-mode paper draft
+# saveRDS(
+#   p2final, 
+#   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
+# )
 
 # save plots
 # ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
@@ -493,7 +508,7 @@ p2final <- map_plot(tmp, areas_plot, colourPalette, colourPalette2) +
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/02_map_plot_facet.png",
   p2final,
-  width = 12,
+  width = 14,
   height = 10,
   units = "in"
 )
@@ -702,6 +717,7 @@ p3 <- plt_data %>%
 
 p3$plot_order <- plot_order
 
+saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.png")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/03_subnat_plot.png", 
   p3, 
@@ -709,8 +725,6 @@ ggplot2::ggsave(
   height = 10,
   units = "in"
 )
-
-saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 
 rm(p3); gc()
 
@@ -794,6 +808,7 @@ p4_geo <- p4_geo +
 # saveRDS(p4_geo, "paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
 # p4_geo <- readRDS("paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
 
+saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/04_geo_age.png", 
   p4_geo, 
@@ -802,7 +817,6 @@ ggplot2::ggsave(
   units = "in"
 )
 
-saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 
 #### Figure 5: Change in MC/MMC/TMC from 2000 ####
 
@@ -1003,6 +1017,7 @@ p5 <- tmp_long %>%
 
 p5
 
+saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/05_change_00_20.png",
   p5,
