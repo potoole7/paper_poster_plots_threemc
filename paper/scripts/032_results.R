@@ -417,7 +417,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       na.value = "grey",
       breaks = seq(0, 1, by = 0.1),
       limits = c(0, 1),
-      label = scales::label_percent(accuracy = 1), 
+      label = scales::label_percent(accuracy = 1, trim = FALSE), 
       guide = guide_colourbar(
         direction = "horizontal",
         label = TRUE,
@@ -426,12 +426,11 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         frame.colour = "black",
         ticks = TRUE,
         barheight = 1,
-        # barwidth = 20,
-        barwidth = 22,
+        # barwidth = 17, # may want this?
+        barwidth = 18,
         title.position = "bottom"
       )
     ) +
-    # guides(fill = guide_colourbar(title.position = "right")) +
     ggnewscale::new_scale_fill() +
     # colour percentage change differently
     geom_sf(
@@ -446,7 +445,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       na.value = "grey",
       breaks = seq(-0.2, 0.5, by = 0.1),
       limits = c(-0.2, 0.5),
-      label = scales::label_percent(accuracy = 1),
+      label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
       guide = guide_colourbar(
         direction = "horizontal", 
         label = TRUE, 
@@ -455,20 +454,16 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         frame.colour = "black", 
         ticks = TRUE, 
         barheight = 1,
-        # barwidth = 20,
-        barwidth = 15,
+        # barwidth = 10,
+        barwidth = 10.5,
         title.position = "bottom"
       )
     ) +
-    # guides(fill = guide_colourbar(title.position = "right")) +
     facet_grid(type ~ year) + 
-    theme_minimal() +
+    theme_minimal(base_size = 9) +
     theme(
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
-      strip.text      = element_text(size = 20), #  face = "bold"),
-      legend.text     = element_text(size = 12),
-      plot.title      = element_text(size = 26, hjust = 0.5),
       legend.position = "bottom",
       panel.grid      = element_blank(),
       panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
@@ -477,8 +472,6 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 
 p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) + 
   ggtitle(main_title)
- 
-# p2final
 
 # save object for org-mode paper draft
 # saveRDS(
@@ -487,31 +480,36 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
 # )
 
 # save plots
-# ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
 # ggplot2::ggsave(
-#   "paper_poster_plots/paper/plots/02_map_plot.png",
-#   p2,
-#   width = 9,
-#   height = 11,
+#   "paper_poster_plots/paper/plots/02_map_plot_facet2.png",
+#   # colour bars are the wrong way around again!!!
+#   p2final + theme(
+#     plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+#     strip.text    = element_text(size = rel(1.5)), 
+#     # probably too small, but so annoying to fix!!
+#     legend.text   = element_text(size = rel(0.8))
+#   ),
+#   width  = 6.3,
+#   height = 6.5,
 #   units = "in"
 # )
-# types <- c("MC", "MMC", "TMC")
-# lapply(seq_along(p2final), function(i) {
-#   ggplot2::ggsave(
-#     paste0("paper_poster_plots/paper/plots/02_map_plot_", types[[i]], ".png"),
-#     p2final[[i]],
-#     width = 9,
-#     height = 11,
-#     units = "in"
-#   )
-# })
-ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/02_map_plot_facet.png",
-  p2final,
-  width = 14,
-  height = 10,
-  units = "in"
+
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+pdf(
+# png(
+  "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
+  # "paper_poster_plots/paper/plots/02_map_plot_facet2.png", 
+  width = 6.3, 
+  height = 6.5
 )
+p2final + 
+  theme(
+    plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+    strip.text    = element_text(size = rel(1.5)), 
+    # probably too small, but so annoying to fix!!
+    legend.text   = element_text(size = rel(0.8))
+  )
+dev.off()
 
 # rm(p2final); gc()
 
