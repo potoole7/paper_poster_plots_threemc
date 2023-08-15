@@ -927,9 +927,10 @@ tmp <- tmp %>%
 annotate_df <- data.frame(
   country_idx = c(
     c(length(plot_order) + 1),
-    c(length(plot_order) - (country_positions1 + 4))
+    c(length(plot_order) - (country_positions1 + 3.5))
   ),
-  value = c(-0.12, -0.15), 
+  # value = c(-0.12, -0.15), 
+  value = c(0.22, 0.12), 
   type  = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
   label = c("Non-VMMC", "VMMC")
 )
@@ -970,7 +971,7 @@ p5 <- tmp_long %>%
     data = annotate_df, 
     # aes(label = label),
     aes(x = country_idx,  y = value, label = label), 
-    size = 5, 
+    size = 3, 
     fontface = "bold"
   ) +
   # label countries, with space for vline splitting VMMC & non-VMMC
@@ -1000,7 +1001,6 @@ p5 <- tmp_long %>%
   ) +
   coord_flip(clip = "off", expand = TRUE)
 
-# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
 p5 <- p5 + 
   # New England Journal of Medicine colourscheme
   ggsci::scale_colour_nejm() +
@@ -1028,6 +1028,9 @@ p5 <- p5 +
     panel.spacing       = unit(0.65, units = "cm"), 
     plot.margin         = unit(c(0, 0.5, 0, 0), "cm") 
   )
+
+# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
+# p5
 # dev.off()
 
 saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
