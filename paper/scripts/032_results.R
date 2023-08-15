@@ -981,44 +981,61 @@ p5 <- tmp_long %>%
     labels = country_pos_df$country,
     expand = expansion(add = 0.6)
   ) +
-  scale_y_continuous(
-    label = scales::label_percent(),
-    limits = c(0, 1),
-    breaks = seq(0, 1, by = 0.2)
-  ) +
   labs(
     x        = "Country",
     y        = "Change in Coverage (%)",
     colour   = "Year",
-    title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
+    # title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
+    title    = "Change in male circumcision coverage, 2000 - 2020, 15-29 year olds",
     subtitle = ""
   ) +
   facet_wrap(type ~ .) + # , scales = "free") +
-  theme_minimal() +
+  theme_bw(base_size = 8) +
   # Altering plot text size
   theme(
-    axis.text.x      = element_text(size = 14),
-    axis.text.y      = element_text(size = 16),
-    strip.text       = element_text(size = 16),
-    legend.text      = element_text(size = 18),
-    legend.title     = element_text(size = 18),
-    axis.title       = element_text(size = 18),
-    plot.title       = element_text(size = 22, hjust = 0.5),
     legend.position  = "bottom",
     strip.background = element_rect(fill = NA, colour = "white"),
-    plot.tag         = element_text(size = 16, face = "bold"),
-    panel.background = element_rect(fill = NA, color = "black")
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_blank()    
   ) +
-  coord_flip(clip = "off")
+  coord_flip(clip = "off", expand = TRUE)
 
-p5
+# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
+p5 <- p5 + 
+  # New England Journal of Medicine colourscheme
+  ggsci::scale_colour_nejm() +
+  # scale_x_continuous(expand = c(0, 1), limits = c(0, 1)) + 
+  scale_y_continuous(
+    expand = c(0, 0), 
+    limits = c(0, 1), 
+    label = scales::label_percent(),
+    breaks = seq(0, 1, by = 0.2), 
+    n.breaks = 5, 
+    minor_breaks = NULL
+  ) + 
+  theme(
+    plot.title          = element_text(
+      size = rel(1.4), hjust = 0.5, vjust = -2
+    ), 
+    axis.text.x         = element_text(size = rel(1.2)),
+    axis.title.x        = element_text(size = rel(1.2)),
+    axis.text.y         = element_text(size = rel(1.2)),
+    axis.ticks.length.y = unit(5, "pt"), 
+    strip.text          = element_text(size = rel(1.2)),
+    legend.text         = element_text(size = rel(1.2)),
+    legend.title        = element_text(size = rel(1.3)),
+    # panel spacing and right-hand margin so x-axis labels fit & don't touch
+    panel.spacing       = unit(0.65, units = "cm"), 
+    plot.margin         = unit(c(0, 0.5, 0, 0), "cm") 
+  )
+# dev.off()
 
 saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/05_change_00_20.png",
   p5,
-  width = 16,
-  height = 10,
+  width = 6.3,
+  height = 6,
   units = "in"
 )
 
