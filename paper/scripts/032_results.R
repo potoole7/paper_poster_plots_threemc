@@ -244,15 +244,6 @@ iso_df <- iso_df %>%
 #### Figure 2: Map of MC Coverage across SSA 20-2020 15-29 year olds ####
 
 ## Map Plot ##
-main_title <- paste0(
-  # "MC Coverage, ",
-  "Circumcision Coverage ", 
-  paste0(spec_years[1], "-", spec_years[2]),
-  ", age ",
-  spec_age_group,
-  " years"
-)
-# Plot all types & with facets 
 
 # additions: 
 # - Have single faceted R plot, with tag in corner (done, no tags though ..)
@@ -263,7 +254,6 @@ main_title <- paste0(
 
 # Qs: 
 # - How do we want colour bars displayed? Like Tristan, on the side of his plot? 
-# 
 
 country_area_level = 0
 results_area_level = NULL
@@ -272,12 +262,14 @@ spec_main_title    = main_title
 
 main_title <- paste0(
   # "MC Coverage, ",
-  "Male circumcision coverage, ",
+  "Circumcision coverage ", 
   paste0(spec_years[1], "-", spec_years[2]),
-  ", age ",
+  ", ",
   spec_age_group,
-  " years"
+  " year olds"
 )
+# Plot all types & with facets 
+
 
 results_agegroup1 <- results_agegroup
 areas1 <- areas
@@ -494,22 +486,28 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
 #   units = "in"
 # )
 
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-pdf(
-# png(
-  "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
-  # "paper_poster_plots/paper/plots/02_map_plot_facet2.png", 
-  width = 6.3, 
-  height = 6.5
-)
-p2final + 
+p2final <- p2final + 
   theme(
-    plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+    # plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+    plot.title    = element_text(size = rel(1.6), hjust = 0.5), 
     strip.text    = element_text(size = rel(1.5)), 
     # probably too small, but so annoying to fix!!
-    legend.text   = element_text(size = rel(0.8))
+    # legend.text   = element_text(size = rel(0.8))
+    legend.text   = element_text(size = rel(0.75))
   )
-dev.off()
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p2final
+# dev.off()
+
+ggsave(
+# png(
+  # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
+  "paper_poster_plots/paper/plots/02_map_plot_facet.png", 
+  p2final,
+  width = 6.3, 
+  height = 6.5, 
+  units = "in"
+)
 
 # rm(p2final); gc()
 
