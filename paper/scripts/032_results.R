@@ -244,15 +244,6 @@ iso_df <- iso_df %>%
 #### Figure 2: Map of MC Coverage across SSA 20-2020 15-29 year olds ####
 
 ## Map Plot ##
-main_title <- paste0(
-  # "MC Coverage, ",
-  "Circumcision Coverage ", 
-  paste0(spec_years[1], "-", spec_years[2]),
-  ", age ",
-  spec_age_group,
-  " years"
-)
-# Plot all types & with facets 
 
 # additions: 
 # - Have single faceted R plot, with tag in corner (done, no tags though ..)
@@ -263,7 +254,6 @@ main_title <- paste0(
 
 # Qs: 
 # - How do we want colour bars displayed? Like Tristan, on the side of his plot? 
-# 
 
 country_area_level = 0
 results_area_level = NULL
@@ -272,12 +262,14 @@ spec_main_title    = main_title
 
 main_title <- paste0(
   # "MC Coverage, ",
-  "Male circumcision coverage, ",
+  "Circumcision coverage ", 
   paste0(spec_years[1], "-", spec_years[2]),
-  ", age ",
+  ", ",
   spec_age_group,
-  " years"
+  " year olds"
 )
+# Plot all types & with facets 
+
 
 results_agegroup1 <- results_agegroup
 areas1 <- areas
@@ -417,7 +409,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       na.value = "grey",
       breaks = seq(0, 1, by = 0.1),
       limits = c(0, 1),
-      label = scales::label_percent(accuracy = 1), 
+      label = scales::label_percent(accuracy = 1, trim = FALSE), 
       guide = guide_colourbar(
         direction = "horizontal",
         label = TRUE,
@@ -426,12 +418,11 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         frame.colour = "black",
         ticks = TRUE,
         barheight = 1,
-        # barwidth = 20,
-        barwidth = 22,
+        # barwidth = 17, # may want this?
+        barwidth = 18,
         title.position = "bottom"
       )
     ) +
-    # guides(fill = guide_colourbar(title.position = "right")) +
     ggnewscale::new_scale_fill() +
     # colour percentage change differently
     geom_sf(
@@ -446,7 +437,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       na.value = "grey",
       breaks = seq(-0.2, 0.5, by = 0.1),
       limits = c(-0.2, 0.5),
-      label = scales::label_percent(accuracy = 1),
+      label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
       guide = guide_colourbar(
         direction = "horizontal", 
         label = TRUE, 
@@ -455,20 +446,16 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         frame.colour = "black", 
         ticks = TRUE, 
         barheight = 1,
-        # barwidth = 20,
-        barwidth = 15,
+        # barwidth = 10,
+        barwidth = 10.5,
         title.position = "bottom"
       )
     ) +
-    # guides(fill = guide_colourbar(title.position = "right")) +
     facet_grid(type ~ year) + 
-    theme_minimal() +
+    theme_minimal(base_size = 9) +
     theme(
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
-      strip.text      = element_text(size = 20), #  face = "bold"),
-      legend.text     = element_text(size = 12),
-      plot.title      = element_text(size = 26, hjust = 0.5),
       legend.position = "bottom",
       panel.grid      = element_blank(),
       panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
@@ -477,8 +464,6 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 
 p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) + 
   ggtitle(main_title)
- 
-# p2final
 
 # save object for org-mode paper draft
 # saveRDS(
@@ -487,29 +472,40 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
 # )
 
 # save plots
-# ggsave(plot = p2a, filename = "poster/plots/p2a.png", width = 1980, height = 1060, units = "px")
 # ggplot2::ggsave(
-#   "paper_poster_plots/paper/plots/02_map_plot.png",
-#   p2,
-#   width = 9,
-#   height = 11,
+#   "paper_poster_plots/paper/plots/02_map_plot_facet2.png",
+#   # colour bars are the wrong way around again!!!
+#   p2final + theme(
+#     plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+#     strip.text    = element_text(size = rel(1.5)), 
+#     # probably too small, but so annoying to fix!!
+#     legend.text   = element_text(size = rel(0.8))
+#   ),
+#   width  = 6.3,
+#   height = 6.5,
 #   units = "in"
 # )
-# types <- c("MC", "MMC", "TMC")
-# lapply(seq_along(p2final), function(i) {
-#   ggplot2::ggsave(
-#     paste0("paper_poster_plots/paper/plots/02_map_plot_", types[[i]], ".png"),
-#     p2final[[i]],
-#     width = 9,
-#     height = 11,
-#     units = "in"
-#   )
-# })
-ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/02_map_plot_facet.png",
+
+p2final <- p2final + 
+  theme(
+    # plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
+    plot.title    = element_text(size = rel(1.6), hjust = 0.5), 
+    strip.text    = element_text(size = rel(1.5)), 
+    # probably too small, but so annoying to fix!!
+    # legend.text   = element_text(size = rel(0.8))
+    legend.text   = element_text(size = rel(0.75))
+  )
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p2final
+# dev.off()
+
+ggsave(
+# png(
+  # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
+  "paper_poster_plots/paper/plots/02_map_plot_facet.png", 
   p2final,
-  width = 14,
-  height = 10,
+  width = 6.3, 
+  height = 6.5, 
   units = "in"
 )
 
@@ -985,44 +981,61 @@ p5 <- tmp_long %>%
     labels = country_pos_df$country,
     expand = expansion(add = 0.6)
   ) +
-  scale_y_continuous(
-    label = scales::label_percent(),
-    limits = c(0, 1),
-    breaks = seq(0, 1, by = 0.2)
-  ) +
   labs(
     x        = "Country",
     y        = "Change in Coverage (%)",
     colour   = "Year",
-    title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
+    # title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
+    title    = "Change in male circumcision coverage, 2000 - 2020, 15-29 year olds",
     subtitle = ""
   ) +
   facet_wrap(type ~ .) + # , scales = "free") +
-  theme_minimal() +
+  theme_bw(base_size = 8) +
   # Altering plot text size
   theme(
-    axis.text.x      = element_text(size = 14),
-    axis.text.y      = element_text(size = 16),
-    strip.text       = element_text(size = 16),
-    legend.text      = element_text(size = 18),
-    legend.title     = element_text(size = 18),
-    axis.title       = element_text(size = 18),
-    plot.title       = element_text(size = 22, hjust = 0.5),
     legend.position  = "bottom",
     strip.background = element_rect(fill = NA, colour = "white"),
-    plot.tag         = element_text(size = 16, face = "bold"),
-    panel.background = element_rect(fill = NA, color = "black")
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_blank()    
   ) +
-  coord_flip(clip = "off")
+  coord_flip(clip = "off", expand = TRUE)
 
-p5
+# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
+p5 <- p5 + 
+  # New England Journal of Medicine colourscheme
+  ggsci::scale_colour_nejm() +
+  # scale_x_continuous(expand = c(0, 1), limits = c(0, 1)) + 
+  scale_y_continuous(
+    expand = c(0, 0), 
+    limits = c(0, 1), 
+    label = scales::label_percent(),
+    breaks = seq(0, 1, by = 0.2), 
+    n.breaks = 5, 
+    minor_breaks = NULL
+  ) + 
+  theme(
+    plot.title          = element_text(
+      size = rel(1.4), hjust = 0.5, vjust = -2
+    ), 
+    axis.text.x         = element_text(size = rel(1.2)),
+    axis.title.x        = element_text(size = rel(1.2)),
+    axis.text.y         = element_text(size = rel(1.2)),
+    axis.ticks.length.y = unit(5, "pt"), 
+    strip.text          = element_text(size = rel(1.2)),
+    legend.text         = element_text(size = rel(1.2)),
+    legend.title        = element_text(size = rel(1.3)),
+    # panel spacing and right-hand margin so x-axis labels fit & don't touch
+    panel.spacing       = unit(0.65, units = "cm"), 
+    plot.margin         = unit(c(0, 0.5, 0, 0), "cm") 
+  )
+# dev.off()
 
 saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/05_change_00_20.png",
   p5,
-  width = 16,
-  height = 10,
+  width = 6.3,
+  height = 6,
   units = "in"
 )
 
