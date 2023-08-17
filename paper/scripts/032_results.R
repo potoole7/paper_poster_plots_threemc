@@ -67,7 +67,7 @@ target_iso3 <- c(
 # Colour palette for map plot
 colourPalette <- rev(colorRampPalette(
   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
-    "#e6f598", "#abdda4", "#66c2a5", "#3288bd", 
+    "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#13699e",
     "#5e4fa2")
 )(100))
 # change mint green as it's awful looking in % Change facets of map plot
@@ -255,11 +255,6 @@ iso_df <- iso_df %>%
 # Qs: 
 # - How do we want colour bars displayed? Like Tristan, on the side of his plot? 
 
-country_area_level = 0
-results_area_level = NULL
-spec_model <- "No program data"
-spec_main_title    = main_title
-
 main_title <- paste0(
   # "MC Coverage, ",
   "Circumcision coverage ", 
@@ -268,8 +263,11 @@ main_title <- paste0(
   spec_age_group,
   " year olds"
 )
-# Plot all types & with facets 
 
+country_area_level = 0
+results_area_level = NULL
+spec_model <- "No program data"
+spec_main_title    = main_title
 
 results_agegroup1 <- results_agegroup
 areas1 <- areas
@@ -382,6 +380,8 @@ rm(results_agegroup1, areas1); gc()
    
 map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 
+  # spec_results$mean <- 100 * spec_results$mean
+  
   spec_results$type <- factor(
     spec_results$type, 
     levels = c("Total", "Medical", "Traditional")
@@ -437,7 +437,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       na.value = "grey",
       breaks = seq(-0.2, 0.5, by = 0.1),
       limits = c(-0.2, 0.5),
-      label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
+      # label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
+      label = scales::label_percent(accuracy = 1, trim = TRUE, prefix = "\t"),
       guide = guide_colourbar(
         direction = "horizontal", 
         label = TRUE, 
@@ -454,6 +455,11 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     facet_grid(type ~ year) + 
     theme_minimal(base_size = 9) +
     theme(
+      plot.title    = element_text(size = rel(1.6), hjust = 0.5), 
+      strip.text    = element_text(size = rel(1.5)), 
+      # probably too small, but so annoying to fix!!
+      # legend.text   = element_text(size = rel(0.75)) # 0.70 too small
+      legend.text   = element_text(size = rel(0.72), vjust = 0.5),
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
       legend.position = "bottom",
@@ -466,39 +472,16 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
   ggtitle(main_title)
 
 # save object for org-mode paper draft
-# saveRDS(
-#   p2final, 
-#   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
-# )
+saveRDS(
+  p2final,
+  "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
+)
 
-# save plots
-# ggplot2::ggsave(
-#   "paper_poster_plots/paper/plots/02_map_plot_facet2.png",
-#   # colour bars are the wrong way around again!!!
-#   p2final + theme(
-#     plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
-#     strip.text    = element_text(size = rel(1.5)), 
-#     # probably too small, but so annoying to fix!!
-#     legend.text   = element_text(size = rel(0.8))
-#   ),
-#   width  = 6.3,
-#   height = 6.5,
-#   units = "in"
-# )
-
-p2final <- p2final + 
-  theme(
-    # plot.title    = element_text(size = rel(1.8), hjust = 0.5), 
-    plot.title    = element_text(size = rel(1.6), hjust = 0.5), 
-    strip.text    = element_text(size = rel(1.5)), 
-    # probably too small, but so annoying to fix!!
-    # legend.text   = element_text(size = rel(0.8))
-    legend.text   = element_text(size = rel(0.75))
-  )
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # p2final
 # dev.off()
 
+# save plots
 ggsave(
 # png(
   # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
