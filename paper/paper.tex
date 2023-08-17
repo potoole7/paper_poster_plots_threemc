@@ -311,8 +311,8 @@ To quantitatively explore this hypothesis, we performed an OOS evaluation of the
 A grid search over sensible variance hyperparameter values from the "naive" threemc fits for each country and temporal prior was employed, to determine the optimal values and temporal prior choice. 
 For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were ignored in our calibration efforts with this model.
 
-TODO: Finish this write up!
-TODO: Add results! Also add ternary plot 
+\todo{Finish this write up!}
+\todo{Add results! Also add ternary plot}
 
 \section{Results}
 \label{sec:orgfc68fc8}
@@ -347,17 +347,24 @@ More information on individual surveys, including participation rates, can be fo
     \caption{\emph{Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}}
 \end{figure}
 
-
 \subsection{Subnational Variation in Total, Medical \& Traditional Circumcision over time}
 \label{sec:org0d1ffe6}
 
 % Map Plot
 \begin{figure}
     \centering
-    \includegraphics[width=.9\linewidth]
-    {plots/02_map_plot_facet.png}
+    % \includegraphics[width=.9\linewidth]
+    \includegraphics[width=1\linewidth]
+    % {plots/02_map_plot_facet.png}
+    {paper/plots/02_map_plot_facet.png}
     \caption{\emph{Estimated percentage of men aged 10-29 years who were circumcised subnationally in 33 SSA countries in 2006 and 2020, as well as the difference in coverage between the two years. Maps show total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC), for which the negative change from 2006 to 2020 is shown, respectively. Missing from map: Guinea-Bissau, Equitorial Guinea, Central African Republic and Botswana}}
 \end{figure}
+\todo{
+  - Use divergent colour palette for "% change", and different one for coverage
+- Need to position colour bars under corresponding facets, rather than to the side
+- Grey out countries with no type (done)
+- reevaluate text size
+}
 
 Between 2007, the year VMMC programme implementation began, and 2020, an estimated x million men(95\% CI: x - x million) were newly circumcised. 
 Of these, x million (x - x million) were MMCS, along with x million (x - x million) TMCS. 
@@ -389,6 +396,7 @@ MMC in WCA increased from x\% (x\% - x\%)
     Each point is a district, sized by district population relative to average district size and coloured by the African region their country falls under (Eastern and Southern Africa (ESA) and Western and Central Africa (WCA), respectively).
     Each white dot represents the national median. A vertical dotted line signifies the UNAIDS target of 90\% national MC.}}
 \end{figure}
+
 
 Within countries, the median difference in MC coverage between the districts with lowest and highest coverage in 2020 was x\% (x\% - x\%).
 For ESA countries, this was x\% (x\% - x\%), in contrast to WCA countries, where it was x\% (x\% - x\%).

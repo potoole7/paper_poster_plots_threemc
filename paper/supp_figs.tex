@@ -21,6 +21,7 @@
 \usepackage{longtable}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{pifont}
 \usepackage[colorlinks=true,citecolor=blue, linkcolor=blue]{hyperref}
 \usepackage{multirow}
 \setlength{\tabcolsep}{5pt}
@@ -31,6 +32,7 @@
 \renewcommand\Affilfont{\itshape\footnotesize}
 \def\ci{\perp\!\!\!\perp}
 
+% bibliography
 \renewcommand\Affilfont{\itshape\footnotesize}
 \linespread{1.5}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -41,6 +43,8 @@
 % Nature Bibliography style
 \usepackage[backend=biber,style=nature]{biblatex}
 \addbibresource{library.bib} 
+
+\newcommand{\xmark}{\ding{55}}
 
 %%%%%%%%%%%%%
 %%% Title %%%
@@ -123,22 +127,26 @@ Jeffrey W. Eaton\textsuperscript{1,6} \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The study consisted of 33 sub-Saharan countries, which in approximate order from North to South and then West to East are: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Demorcratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, South Africa". 
-We excluded 4 countries: Equitorial Guinea, Guinea-Bissau, the Central African Republic and Botswana. These were excluded because they either had no surveys conducted, or, where surveys were available, there was insufficient information available on circumcision.  
+The study consisted of 33 sub-Saharan countries, which in approximate order from North to South and then West to East are: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Democratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, South Africa". 
+We excluded 4 SSA countries: Equitorial Guinea, Guinea-Bissau, the Central African Republic and Botswana. These were excluded because they either had no surveys conducted, or, where surveys were available, there was insufficient information available on age at circumcision.  
 
 We identified 109 nationally representative household surveys conducted the study region  between 2002 and 2019. 
-These included several major survey series, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \textbf{[Citations]}. 
+These included several major survey series, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{dhs} \cite{ais} \cite{phia} \cite{hsrc2002} \cite{hsrc2008} \cite{hsrc2012} \cite{hsrc2017} \todo{include MICS reference}.
 Data on self-reported circumcision status were available in 104 out of the total 109 surveys. 
-\textbf{[Expand on reasons for exclusions]} [Link in your survey figure] Excluded surveys lacked information on age at circumcision, which made it impossible to make inferences on circumcision under our time-to-event modelling framework.  
+\textbf{[Expand on reasons for exclusions]} \textbf{[Link in your survey figure]} \todo{done, what do you mean by "link in survey figure?"}
+Excluded surveys lacked information on age at circumcision, which made it impossible to make inferences on circumcision under our time-to-event modelling framework. The surveys which were excluded on the basis of this requirement were the 2008 Botswana AIDS Impact Survey (BAIS) and 2013 BAIS surveys, the Central African Republic 2018 MICS survey and the 2014 and 2018 Guinea-Bissau MICS surveys \cite{bais2008} \cite{bais2013}.
+For 5 countries, namely Liberia, Senegal, Niger, Guinea, and the DR Congo, information on circumcision type was not available in any surveys. Therefore, only MC could be estimated in these countries, and no inferences about circumcision type, whether MMC or TMC, could be made.
+See figure 1 for a visual representation of the different survey providers for each country, as well as the sample size of each survey and the availability of circumcision type information. 
+See table 1 for the full list of surveys for each country, and the circumcision information included in each survey. 
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=.9\linewidth]{plots/01_survey_table.pdf}
-    \caption{Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}
+    \includegraphics[width=.9\linewidth]{paper/plots/01_survey_table.png}
+    \caption{Household surveys detailing circumcision patterns in sub-Saharan Africa. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}
     \label{fig:enter-label}
 \end{figure}
 
-Demographic variables such as age, residence and survey sampling weight were extracted from all surveys, alongside information related to circumcision: self-reported circumcision status, age at circumcision, Who performed the circumcision (whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown)  and Where did the circumcision take place (whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown). \textbf{[Write and link in survey table].}
+Demographic variables such as age, residence and survey sampling weight were extracted from all surveys, alongside information related to circumcision: self-reported circumcision status, age at circumcision, Who performed the circumcision (whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown) and Where did the circumcision take place (whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown). \textbf{[Write and link in survey table].}
 
 % \begin{landscape}
 {\linespread{1}
@@ -162,32 +170,167 @@ Demographic variables such as age, residence and survey sampling weight were ext
       %%% Table footer %%%
       %%%%%%%%%%%%%%%%%%%%
       \\[-5pt]\hline
-      \caption{Table caption}
+      \caption{Table of circumcision-related questions included in each survey for each sub-Saharan African country. Surveys which did not include a "Circumcision Status" and "Age at Circumcision" question could not be used, while circumcision type could not be inferred from surveys which did not have a "Who performed the circumcision" and/or "Where was the circumcision performed" question.}
       \endfoot
+      
       %%%%%%%%%%%%%%%%%%%%%%
       %%% Table contents %%%
       %%%%%%%%%%%%%%%%%%%%%%
-      \multicolumn{2}{l}{\textbf{Angola}} \\
-      & 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt]
-      \multicolumn{2}{l}{\textbf{Burundi}} \\
-      & 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
-      & 2016 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt]
-      \multicolumn{2}{l}{\textbf{South Africa}} \\
-      & 2002 (HSRC) &  \\
-      & 2008 (HSRC) &  \\
-      & 2012 (HSRC) &  \\
-      & 2016 (DHS)  &  \\
-      & 2017 (HSRC) &  
+      \multicolumn{2}{l}{\textbf{Angola}} \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Benin}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Botswana}} \\ 
+& 2008 (BAIS) & \checkmark & \xmark & \xmark & \checkmark \\ 
+& 2013 (BAIS) & \checkmark & \xmark & \xmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Burkina Faso}} \\ 
+& 2003 (DHS) & \checkmark & \checkmark & \xmark & \xmark \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Burundi}} \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Cameroon}} \\ 
+& 2004 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2011 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2018 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Central African Republic}} \\ 
+& 2018 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Chad}} \\ 
+& 2004 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2014 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2019 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Congo - Kinshasa}} \\ 
+& 2007 (DHS) & \checkmark & \xmark & \xmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Côte d’Ivoire}} \\ 
+& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Eswatini}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \checkmark & \xmark \\ 
+& 2010 (MICS) & \checkmark & \checkmark & \xmark & \xmark \\ 
+& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Ethiopia}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2011 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Gabon}} \\ 
+& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Gambia}} \\ 
+& 2018 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Ghana}} \\ 
+& 2003 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2008 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2014 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Guinea}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Guinea-Bissau}} \\ 
+& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2018 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Kenya}} \\ 
+& 2003 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2008 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2014 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2018 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Lesotho}} \\ 
+& 2004 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2009 (DHS) & \checkmark & \checkmark & \xmark & \checkmark \\ 
+& 2014 (DHS) & \checkmark & \checkmark & \xmark & \checkmark \\ 
+& 2017 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Liberia}} \\ 
+& 2007 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2013 (DHS) & \checkmark & \xmark & \xmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Malawi}} \\ 
+& 2004 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2013 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2019 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Mali}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2018 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Mozambique}} \\ 
+& 2003 (DHS) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2009 (AIS) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2011 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2015 (AIS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Namibia}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \checkmark & \xmark \\ 
+& 2013 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2017 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Niger}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Nigeria}} \\ 
+& 2008 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2013 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2018 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Repulic of the Congo}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2009 (AIS) & \checkmark & \xmark & \checkmark & \xmark \\ 
+& 2011 (DHS) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Rwanda}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2008 (DHS) & \checkmark & \checkmark & \xmark & \xmark \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2018 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2019 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Senegal}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Sierra Leone}} \\ 
+& 2008 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2013 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2019 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{South Africa}} \\ 
+& 2002 (HSRC) & \checkmark & \checkmark & \xmark & \checkmark \\ 
+& 2008 (HSRC) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2012 (HSRC) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (DHS) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2017 (HSRC) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Tanzania}} \\ 
+& 2003 (AIS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2004 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2007 (AIS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2012 (AIS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Togo}} \\ 
+& 2013 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Uganda}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2011 (AIS) & \checkmark & \checkmark & \xmark & \checkmark \\ 
+& 2011 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Zambia}} \\ 
+& 2007 (DHS) & \checkmark & \checkmark & \xmark & \xmark \\ 
+& 2013 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\ 
+& 2018 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[5pt] 
+\multicolumn{2}{l}{\textbf{Zimbabwe}} \\ 
+& 2005 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
+& 2010 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
+& 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark \\[5pt] 
+
 \end{longtable}
 }
-% \end{landscape}
 
 The age of respondents was calculated from the century-month-code (CMC) of birth and interview dates. 
 Survey respondents were located to their districts using masked cluster geocoordinates. 
 Where these coordinates were unavailable (as in several MICS surveys) respondents were located to their level 1 administrative boundaries, most often corresponding to a province.  
 
-Circumcisions were classed as a medical male circumcision (MMC) and traditional male circumcision (TMC) sing responses to both ‘Who performed the circumcision?’ and ‘Where did the circumcision take place?’ were classified \textbf{[Link to the table]}. 
-Respondents that did not have any information related to the type of circumcision were classified as having an “unknown” male circumcision (MC).   
+Circumcisions were classed as a medical male circumcision (MMC) or traditional male circumcision (TMC) based on how responses to both ‘Who performed the circumcision?’ and ‘Where did the circumcision take place?’ were classified \textbf{[Link to the table]}. 
+Respondents that did not have any information related to the type of circumcision were classified as having “unknown” male circumcision (MC) type.   
 
 {\linespread{1}
 \small
@@ -209,6 +352,7 @@ Respondents that did not have any information related to the type of circumcisio
 
 In total, information was extracted from XXX, XXX respondents from all surveys.
 \textbf{[Participation rates table]}
+\todo{Get Matt to make dummy table for me based on this info for 2-3 countries, then I can fill in}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -220,6 +364,7 @@ In total, information was extracted from XXX, XXX respondents from all surveys.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [Add in information about the boundaries] 
+\todo{Section for Jeff}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -232,6 +377,7 @@ In total, information was extracted from XXX, XXX respondents from all surveys.
 
 Estimates for the male population size by district and five-year age group from 2002 through 2019 were sourced from XXX. 
 Distributed (?) to single-year of age according to ??? 
+\todo{Section for Jeff}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -807,7 +953,15 @@ Using the final models from each country, we estimated full posterior distributi
 % TODO: Finish this write up!
 % TODO: Add results! Also add ternary plot 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\todo{Fix links to HSRC surveys, no longer working!}
+\todo{Get reference for MICS surveys!}
+\todo{May have to reference every survey, as in Cork paper!}
+
+\printbibliography
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
