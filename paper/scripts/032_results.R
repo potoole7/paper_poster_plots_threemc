@@ -912,8 +912,8 @@ annotate_df <- data.frame(
     c(length(plot_order) + 1),
     c(length(plot_order) - (country_positions1 + 3.5))
   ),
-  # value = c(-0.12, -0.15), 
-  value = c(0.22, 0.12), 
+  # value = c(0.22, 0.12), 
+  value = c(0.24, 0.14), 
   type  = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
   label = c("Non-VMMC", "VMMC")
 )
@@ -940,14 +940,8 @@ p5 <- tmp_long %>%
       # colour = factor(year)
     ), 
     arrow = arrow(length = unit(0.3, "cm")), 
-    size = 1
+    size = 0.6
   ) +
-  # horizontal line at 0% 
-  # geom_hline(
-  #   yintercept = 0,
-  #   size = 0.8,
-  #   colour = "grey50"
-  # ) +
   # add vline for VMMC - non-VMMC split
   geom_vline(xintercept = country_positions1) +
   geom_text(
@@ -965,6 +959,14 @@ p5 <- tmp_long %>%
     labels = country_pos_df$country,
     expand = expansion(add = 0.6)
   ) +
+  scale_y_continuous(
+    expand = c(0, 0), 
+    limits = c(0, 1), 
+    label = scales::label_percent(),
+    breaks = seq(0, 1, by = 0.2), 
+    n.breaks = 5 # , 
+    # minor_breaks = NULL
+  ) + 
   labs(
     x        = "Country",
     y        = "Change in Coverage (%)",
@@ -975,31 +977,11 @@ p5 <- tmp_long %>%
   ) +
   facet_wrap(type ~ .) + # , scales = "free") +
   theme_bw(base_size = 8) +
+  # use NEJM colours (want 2020 in red though)
+  scale_colour_manual(values = c("#0072B5", "#BC3C29")) + 
+  # pal_nejm("default")(2)[2:1] + 
   # Altering plot text size
   theme(
-    legend.position  = "bottom",
-    strip.background = element_rect(fill = NA, colour = "white"),
-    panel.background = element_rect(fill = NA, color = "black"),
-    panel.border = element_blank()    
-  ) +
-  coord_flip(clip = "off", expand = TRUE)
-
-p5 <- p5 + 
-  # New England Journal of Medicine colourscheme
-  ggsci::scale_colour_nejm() +
-  # scale_x_continuous(expand = c(0, 1), limits = c(0, 1)) + 
-  scale_y_continuous(
-    expand = c(0, 0), 
-    limits = c(0, 1), 
-    label = scales::label_percent(),
-    breaks = seq(0, 1, by = 0.2), 
-    n.breaks = 5, 
-    minor_breaks = NULL
-  ) + 
-  theme(
-    plot.title          = element_text(
-      size = rel(1.4), hjust = 0.5, vjust = -2
-    ), 
     axis.text.x         = element_text(size = rel(1.2)),
     axis.title.x        = element_text(size = rel(1.2)),
     axis.text.y         = element_text(size = rel(1.2)),
@@ -1007,14 +989,23 @@ p5 <- p5 +
     strip.text          = element_text(size = rel(1.2)),
     legend.text         = element_text(size = rel(1.2)),
     legend.title        = element_text(size = rel(1.3)),
+    legend.position     = "bottom",
+    plot.title          = element_text(
+      size = rel(1.4), hjust = 0.5, vjust = -2
+    ), 
     # panel spacing and right-hand margin so x-axis labels fit & don't touch
     panel.spacing       = unit(0.65, units = "cm"), 
-    plot.margin         = unit(c(0, 0.5, 0, 0), "cm") 
-  )
+    panel.border        = element_blank(),
+    panel.grid.major.y  = element_blank(),
+    plot.margin         = unit(c(0, 0.5, 0, 0), "cm"),
+    strip.background    = element_rect(fill = NA, colour = "white"),
+    panel.background    = element_rect(fill = NA, color = "black")
+  ) +
+  coord_flip(clip = "off", expand = TRUE)
 
-# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
-# p5
-# dev.off()
+dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
+p5
+dev.off()
 
 saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
 ggplot2::ggsave(
