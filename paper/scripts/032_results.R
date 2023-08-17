@@ -379,6 +379,15 @@ spec_areas <- areas_plot
 rm(results_agegroup1, areas1); gc()
    
 map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
+  
+  n <- 0
+  hor_push <- function(x) {
+    print(x)
+    n <<- n + 1
+    if (count %% 2 == 1) return(0) else return(0.5)
+  }
+  
+  rm(n)
 
   # spec_results$mean <- 100 * spec_results$mean
   
@@ -435,10 +444,9 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     scale_fill_gradientn(
       colours = colourPalette2,
       na.value = "grey",
-      breaks = seq(-0.2, 0.5, by = 0.1),
+      breaks = seq(-0.2, 0.5, by = 0.1), 
       limits = c(-0.2, 0.5),
-      # label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
-      label = scales::label_percent(accuracy = 1, trim = TRUE, prefix = "\t"),
+      label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
       guide = guide_colourbar(
         direction = "horizontal", 
         label = TRUE, 
@@ -459,7 +467,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       strip.text    = element_text(size = rel(1.5)), 
       # probably too small, but so annoying to fix!!
       # legend.text   = element_text(size = rel(0.75)) # 0.70 too small
-      legend.text   = element_text(size = rel(0.72), vjust = 0.5),
+      # legend.text   = element_text(size = rel(0.72), hjust = 0.1),
+      legend.text   = element_text(size = rel(0.71)),
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
       legend.position = "bottom",
@@ -472,10 +481,10 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
   ggtitle(main_title)
 
 # save object for org-mode paper draft
-saveRDS(
-  p2final,
-  "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
-)
+# saveRDS(
+#   p2final,
+#   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
+# )
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # p2final
