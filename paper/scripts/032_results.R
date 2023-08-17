@@ -567,6 +567,8 @@ plt_data <- plt_data %>%
   ) %>% 
   left_join(country_pos_df)
 
+# 
+set.seed(123)
 p3 <- plt_data %>% 
   # take max area level for each country
   group_by(iso3) %>% 
@@ -574,8 +576,6 @@ p3 <- plt_data %>%
   ggplot(
     aes(
       # countries on the x-axis, in specified order
-      # x = forcats::fct_rev(forcats::fct_relevel(iso3, levels = plot_order)), 
-      # x = factor(iso3, levels = rev(plot_order)),
       x = country_idx, 
       # median MC Coverage on the y-axis
       y = median
@@ -583,20 +583,22 @@ p3 <- plt_data %>%
   ) +
   # add points coloured by region with weighted populations determining size
   geom_jitter(
-    # aes(color = region, size = population), 
     aes(size = population), 
-    colour = wesanderson::wes_palette("Zissou1")[1],
+    colour = "#BC3C29", # red, to match coverage change plot below
     shape = 20, 
-    width = 0.1, 
+    width = 0.1, # width of jitter, not points!
     alpha = 0.5
+  ) +
+  scale_size_continuous(
+    breaks = c(1, 10, 20), 
+    # limits = c(10, 50), 
+    # breaks = c(100, 200, 300), 
+    labels = paste0(c(1, 10, 20), "x")
   ) +
   # add median national level to plot as white dots
   geom_point(
     data = filter(plt_data, area_level == 0),
     size = 5, 
-    # fill = "white", 
-    # fill = "#DCDCDC",
-    # fill = "#F5F5F5",
     fill = "#F1F1F1",
     col = "black", 
     alpha = 1, 
@@ -615,38 +617,21 @@ p3 <- plt_data %>%
   # annotate plot with regional labels
   annotate(
     geom = "text",
-    # x = zoo::rollmean(c(country_positions1, 0), 2),
-    x = c(length(plot_order) + 1), # , length(plot_order) - (country_positions1 + 4)),
-    y = 0.04,
-    # label = c("non-VMMC", "VMMC"),
+    x = c(length(plot_order) + 1),
+    y = 0.12,
     label = "non-VMMC",
-    # angle = 270,
     fontface = "bold",
-    size = 5
+    size = 4.5
   ) +
   annotate(
     geom = "text",
-    # x = zoo::rollmean(c(country_positions1, 0), 2),
     x = c(length(plot_order) - (country_positions1 + 4)),
-    y = 0.025,
+    y = 0.075,
     label = "VMMC",
     fontface = "bold",
-    size = 5
+    size = 4.5
   ) +
-  # add Oli's (unbroken) theme 
-  theme_minimal() + 
-  theme(
-    legend.position = "bottom", 
-    strip.text = element_text(size = 13), 
-    plot.title = element_text(size = 16), 
-    axis.text = element_text(size = 12), 
-    axis.title = element_text(size = 14), 
-    legend.text = element_text(size = 12), 
-    # strip.text = element_text(face = "bold"), 
-    strip.background = element_rect(fill = NA, colour = "white"), 
-    plot.tag = element_text(size = 16), 
-    panel.background = element_rect(fill = NA, color = "black")
-  ) +
+  theme_bw(base_size = 8) + 
   scale_x_continuous(
     element_blank(),
     breaks = country_pos_df$country_idx,
@@ -658,14 +643,16 @@ p3 <- plt_data %>%
   scale_y_continuous(
     n.breaks = 6, 
     breaks = c(0, 0.25, 0.5, 0.75, 0.9, 1),
-    limits = c(0, 1),
+    expand = c(0, 0), 
+    limits = c(0, 1), 
     labels = scales::percent
   ) +
   scale_size_continuous(
-    # breaks = c(0.5, 1, 10, 20, 100), 
     breaks = c(1, 10, 20), 
-    # labels = paste0(c(0.5, 1, 10, 20, 100), "x")
+    range = c(1, 12),
+    # breaks = c(100, 200, 300), 
     labels = paste0(c(1, 10, 20), "x")
+    # labels = paste0(c(1, 50), "x")
   ) +
   labs(
     y = "Median Male Circumcision Coverage", 
@@ -675,33 +662,38 @@ p3 <- plt_data %>%
     color = "Region"
   ) +
   ggtitle(paste0(
-    "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
+    # "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
+    "District-Level male circumcision coverage, ", spec_years[2], ", ", spec_age_group, " year olds"
   )) + 
   scale_color_manual(values = wesanderson::wes_palette("Zissou1")[c(1, 4)]) +
   theme(
+    axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
+    axis.title.x = element_text(size = rel(1.5)),
+    axis.text.y = element_text(size = rel(1.8)),
+    strip.background = element_rect(fill = NA, colour = "white"), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    legend.text = element_text(size = rel(1.5)),
+    legend.title = element_text(size = rel(1.5)),
     legend.title.align = 0.5,
-    # legend.text.align = -3, # not working!
-    legend.title = element_text(size = 14),
-    legend.text = element_text(size = 15),
     legend.position = "bottom",
-    axis.title.x = element_text(size = 16),
-    axis.text.x = element_text(size = c(rep(15, 3), 18, 15)),
-    axis.text.y = ggtext::element_markdown(size = 17), # hjust = 0.5),
-    plot.title = element_text(hjust = 0.5, size = 18)
+    plot.title = element_text(hjust = 1, size = rel(1.6)),
+    panel.grid.major.y = element_blank(), 
+    plot.margin = unit(c(0.2, 0.8, 0, 0), "cm")
   ) + 
-  # scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
-  # coord_flip(ylim = c(0.04, 0.975), clip = "off")
   coord_flip(clip = "off")
-# p3
 
 p3$plot_order <- plot_order
+
+# dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
+# p3
+# dev.off()
 
 saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.png")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/03_subnat_plot.png", 
   p3, 
-  width = 12, 
-  height = 10,
+  width = 6.3, 
+  height = 8,
   units = "in"
 )
 
