@@ -421,7 +421,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         barheight = 1,
         # barwidth = 17, # may want this?
         barwidth = 18,
-        title.position = "bottom"
+        title.position = "bottom", 
+        plot.background = element_rect(fill = "white", colour = "white")
       )
     ) +
     ggnewscale::new_scale_fill() +
@@ -475,7 +476,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       axis.ticks      = element_blank(),
       legend.position = "bottom",
       panel.grid      = element_blank(),
-      panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
+      panel.spacing   = unit(0.01, "lines"), # make plot as "dense" as possible
+      plot.background = element_rect(fill = "white", colour = "white")
     )
 }
 
@@ -700,7 +702,7 @@ p3$plot_order <- plot_order
 # p3
 # dev.off()
 
-saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.png")
+# saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/03_subnat_plot.png", 
   p3, 
