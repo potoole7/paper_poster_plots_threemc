@@ -421,7 +421,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
         barheight = 1,
         # barwidth = 17, # may want this?
         barwidth = 18,
-        title.position = "bottom"
+        title.position = "bottom", 
+        plot.background = element_rect(fill = "white", colour = "white")
       )
     ) +
     ggnewscale::new_scale_fill() +
@@ -475,7 +476,8 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       axis.ticks      = element_blank(),
       legend.position = "bottom",
       panel.grid      = element_blank(),
-      panel.spacing   = unit(0.01, "lines") # make plot as "dense" as possible
+      panel.spacing   = unit(0.01, "lines"), # make plot as "dense" as possible
+      plot.background = element_rect(fill = "white", colour = "white")
     )
 }
 
@@ -700,7 +702,7 @@ p3$plot_order <- plot_order
 # p3
 # dev.off()
 
-saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.png")
+# saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/03_subnat_plot.png", 
   p3, 
@@ -741,11 +743,14 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
       name == "Democratic Republic of the Congo" ~ "DR Congo",
       name == "Republic of the Congo"            ~ "Congo",
       name == "Equatorial Guinea"                ~ "Eq. Guinea",
-      name == "Central African Republic"          ~ "Cent. Af. Rep.",
+      name == "Guinea-Bissau"                    ~ "Gin. Bissau",
+      name == "Central African Republic"         ~ "Cent. Af. Rep.",
       TRUE                                       ~ name
     )
   ) %>%
-  filter(name %in% c(ssa_countries, "Eq. Guinea", "Cent. Af. Rep."))
+  filter(
+    name %in% c(ssa_countries, "Gin. Bissau", "Eq. Guinea", "Cent. Af. Rep.")
+  )
 
 # remove missing rows and columns (only looking at SSA, not all of Africa)
 min_row <- min(ssa_grid$row)
@@ -762,41 +767,34 @@ if (min_col > 1) {
 p4_geo <- p4 +
   # geofacet based on SSA shape
   geofacet::facet_geo(~ area_name, grid = ssa_grid) +
-  # make x-axis text smaller to fit all of map
-  # ggtitle(
-  #   paste0("MMC & TMC Coverage, 2010-2020, ", spec_age_group, " year olds")
-  # ) +
-  ggtitle(paste0("MMC & TMC Coverage vs Age, 2020")) +
+  ggtitle(paste0("Medical & traditional male circumcision by age, 2020")) +
+  # set theme and base size for text
+  theme_minimal(base_size = 9) + 
+  # reduce x-axis ticks, too crowded
+  scale_x_continuous(breaks = seq(0, 60, by = 20)) + 
+  # remove x-axis
+  labs(y = "") +  
   theme(
-    strip.text = element_text(size = 20, face = "bold"),
-    legend.position = "none", # remove legend, add with crop
-    plot.title = element_text(hjust = 0.5, face = "bold", family = "Arial"),
-    axis.text.x = element_text(size = 14, face = "bold", angle = 0, hjust = 1, vjust = 1)
-  ) +
-  labs(y = "") # remove x-axis
-  # scale_x_continuous(
-  #   # breaks = seq(spec_years[1], last(spec_years), by = 2),
-  #   breaks = seq(spec_years[1], last(spec_years), by = 5),
-  #   limits = c(spec_years[1] - 0.25, last(spec_years) + 0.75)
-  # )
-p4_geo
-
-# for legend:
-p4_geo <- p4_geo +
-  theme(
-    legend.position = "bottom",
-    legend.text = element_text(size = 20, face = "bold")
+    axis.text.x     = element_text(size = rel(1.1)),
+    axis.text.y     = element_blank(),
+    legend.text     = element_text(size = rel(1.2)),
+    strip.text      = element_text(size = 8.5),
+    plot.title      = element_text(size = rel(1.5),  hjust = 0.5),
+    panel.grid      = element_blank(),
+    plot.background = element_rect(fill = "white", colour = "white"),
+    legend.position = "bottom"
   )
 
-# saveRDS(p4_geo, "paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
-# p4_geo <- readRDS("paper_poster_plots/paper/data/0x_circ_type_vs_age_2020.RDS")
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p4_geo
+# dev.off()
 
-saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
+# saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/04_geo_age.png", 
   p4_geo, 
-  width = 16, 
-  height = 13,
+  width = 6.3, 
+  height = 6.5,
   units = "in"
 )
 
