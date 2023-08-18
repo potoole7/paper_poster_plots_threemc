@@ -489,9 +489,9 @@ p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) +
 #   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
 # )
 
-dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-p2final
-dev.off()
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p2final
+# dev.off()
 
 # save plots
 ggsave(
