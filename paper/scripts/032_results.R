@@ -64,26 +64,29 @@ target_iso3 <- c(
 )
 
 
-# Colour palette for map plot
-colourPalette <- rev(colorRampPalette(
-  c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
-    "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#13699e",
-    "#5e4fa2")
-)(100))
-# change mint green as it's awful looking in % Change facets of map plot
+# Colour palette for "% change" facets in map plot
 # colourPalette <- rev(colorRampPalette(
 #   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
-#     "#e6f598", 
-#     # "#66c2a5", 
-#     "#54bb9a",
-#     "#46af8e",  
-#     "#3288bd", "#5e4fa2")
+#     "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#13699e",
+#     "#5e4fa2")
 # )(100))
 
+# Breaks are between -0.2 and -0.5 => 7 breaks overall
+# Want everything negative to be blue (so 2 / 7 of colours)
+# Change to 14 colours in scale, with first 4 as blue, then each "break" 
+# constitutes one colour, and negative values will be in blue
+colourPalette <- rev(colorRampPalette(
+  c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
+    "#e6f598", "#abdda4", "#8CD1A4", "#66C2A4", "#3D94B7", "#2C82B7", "#13699e",
+    "#5e4fa2")
+)(140))
 
-# colourPalette for % changeR
-# colourPalette2 <- rev(heat.colors(100))
-# colourPalette2 <- viridis::viridis(100)
+# change region changing from blue to grean to only blue
+colourPalette[30:40] <- colourPalette[30]
+# change greenish-blue to be more green
+# colourPalette[41:45] <- colourPalette[45]
+
+# Colour Palette for years in map plot
 colourPalette2 <- viridis::plasma(100)
 
 
@@ -380,17 +383,6 @@ rm(results_agegroup1, areas1); gc()
    
 map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
   
-  n <- 0
-  hor_push <- function(x) {
-    print(x)
-    n <<- n + 1
-    if (count %% 2 == 1) return(0) else return(0.5)
-  }
-  
-  rm(n)
-
-  # spec_results$mean <- 100 * spec_results$mean
-  
   spec_results$type <- factor(
     spec_results$type, 
     levels = c("Total", "Medical", "Traditional")
@@ -442,9 +434,19 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     ) + 
     labs(fill = "") +
     scale_fill_gradientn(
+    # scale_fill_gradient2(
       colours = colourPalette2,
+      # colours = c(colourPalette_blue, colourPalette_other),
+      #colours = c(
+      #  colourPalette_blue, 
+      #  colourPalette_green, 
+      #  colourPalette_yellow, 
+      #  colourPalette_red_orange
+      #),
       na.value = "grey",
+      # breaks = seq(-0.2, 0.5, by = 0.1), 
       breaks = seq(-0.2, 0.5, by = 0.1), 
+      # limits = c(-0.2, 0.5),
       limits = c(-0.2, 0.5),
       label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
       guide = guide_colourbar(
@@ -480,15 +482,16 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
 p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) + 
   ggtitle(main_title)
 
+
 # save object for org-mode paper draft
 # saveRDS(
 #   p2final,
 #   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
 # )
 
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-# p2final
-# dev.off()
+dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+p2final
+dev.off()
 
 # save plots
 ggsave(
