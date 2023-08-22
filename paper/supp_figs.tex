@@ -352,6 +352,24 @@ In total, information was extracted from XXX, XXX respondents from all surveys.
 \textbf{[Participation rates table]}
 \todo{Get Matt to make dummy table for me based on this info for 2-3 countries, then I can fill in}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -391,17 +409,14 @@ Distributed (?) to single-year of age according to ???
 {\color{red} \bf
 To do:
 \begin{itemize}
-    \item Aggregated areas
     \item Model calibration
     \item Prior choice
     \item Citations
 \end{itemize}}
 
-Following a similar approach to \cite{thomas2021multilevel}, we developed a Bayesian hierarchical model with small area estimation methods that uses survey data to estimate the probabilities and coverage of circumcision using a competing risk discrete time-to-event model stratified by region, age, time, and type.
+Following a similar approach to \cite{thomas2021multilevel}, we developed a Bayesian hierarchical model with small area estimation methods that uses survey data to estimate the probabilities and coverage of circumcision using a competing risk discrete time-to-event model stratified by region, age, time, and type. We modelled each country independently rather than a model by sub-region or for the whole of sub-Saharan due to computational constraints and we modelled probabilities of circumcision at the organizational level in which the country team has prioritised their program, called the PSNU area level, or the most granular level available in surveys (hereafter called the district-level). 
 
-We modelled each country independently rather than a model by sub-region or for the whole of sub-Saharan due to computational constraints and we modelled probabilities of circumcision at the organizational level in which the country team has prioritised their program, called the PSNU area level, or the most granular level available in surveys. 
-
-In countries where suitable survey information was collected on circumcision type, we consider the following two types of circumcision: (1) circumcisions that occurred in traditional male initiation ceremonies or for other religious or cultural reasons (TMC) and (2) circumcisions for non-traditional reasons and/or HIV prevention that take place in a clinical setting using medical methods (MMC). In countries that did not have a survey that contained information on the type of circumcision, so we were unable to conduct an analysis of the probabilities of circumcision by type. Therefore, we consider a used survey data to estimates the probabilities and coverage of circumcision of any or (unknown) type (MC). 
+In countries where suitable survey information was collected on circumcision type, we consider the following two types of circumcision: (1) circumcisions that occurred in traditional male initiation ceremonies or for other religious or cultural reasons (TMC) and (2) circumcisions for non-traditional reasons and/or HIV prevention that take place in a clinical setting using medical methods (MMC). Some countries did not have any surveys that collected information on the type of circumcision (see above), so we were unable to conduct an analysis of the probabilities of circumcision by type. For these countries, we consider estimating the probability and coverage of circumcision of any or (unknown) type (MC) only. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -412,7 +427,7 @@ In countries where suitable survey information was collected on circumcision typ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We used survey data to model the probabilities of receiving a TMC, MMC or MC for individuals residing in region $i \in I = \{1, 2, \ldots, N_I\}$ at age $a \in A = \{0, 1, 2, \ldots, N_A\}$ and time $t \in T = \{1, 2, \ldots, N_T\}$. 
+In countries where suitable survey information was collected on circumcision type, we used survey data to model the probabilities of receiving a TMC, MMC or MC for individuals residing in district $i \in I = \{1, 2, \ldots, N_I\}$ at age $a \in A = \{0, 1, 2, \ldots, N_A\}$ and time $t \in T = \{1, 2, \ldots, N_T\}$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -420,20 +435,22 @@ We used survey data to model the probabilities of receiving a TMC, MMC or MC for
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\noindent We define $\lambda^{\text{TMC}}_{iat}$ as the probability that an individual in region $i$ received TMC at age $a$ and time step $t$, given they were uncircumcised by age $a-1$ and time $t-1$, 
+\noindent We define $\lambda^{\text{TMC}}_{iat}$ as the probability that an individual in district $i$ received TMC at age $a$ and time step $t$, given they were uncircumcised by age $a-1$ and time $t-1$, 
 \begin{equation} 
 		\lambda^{\text{TMC}}_{iat} = \mathbb{P}(\text{TMC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)). 
 	\label{eqn::TMC}
 \end{equation}
-A key assumption of \cite{thomas2021multilevel} model was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa but an assumption of a constant probability of TMC might not be feasible everywhere. For example, in some countries the level and practices of TMC has changed through time due to demographic shifts. There has also been a replacement of TMCs through MMCs observed, particularly in VMMC priority countries, to ensure HIV prevention efficacy and/or for safety considerations \cite{thomas2021multilevel}. Furthermore, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. Here, we consider two models for $\lambda^{\text{TMC}}_{iat}$ in each country: (i) time invariant (i.e. constant over time) and (ii) time variant (i.e. varying over time). The {\it time-invariant} probability of TMC was modelled using a piece-wise logit-linear function, 
+A key assumption of the \cite{thomas2021multilevel} model was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa however an assumption of a constant probability of TMC might not be feasible everywhere. For example, in some countries the level and practices of TMC have changed through time due to demographic shifts. There has also been a replacement of TMCs through MMCs observed, particularly in VMMC priority countries, to ensure HIV prevention efficacy and/or for safety considerations \cite{thomas2021multilevel}. Furthermore, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. Here, we consider two models for $\lambda^{\text{TMC}}_{iat}$ in each country: (i) time invariant (i.e. constant over time) and (ii) time variant (i.e. varying over time). 
+
+The {\it time-invariant} probability of TMC was modelled using a piece-wise logit-linear function, 
 \begin{equation*} 
 	\text{logit}(\lambda^{\text{TMC}}_{iat}) = \hat{\alpha} + \hat{\psi}_i + \hat{\phi}_a + \hat{\gamma}_{ia}
 \end{equation*}
-where $\hat{\alpha}$ is the intercept, $\hat{\psi_i}$ is a regional random effect, $\hat{\phi}_a$ is an age random effect, and $\hat{\gamma}_{ia}$ is an age-space interaction term to allow different age patterns of TMC across regions. The {\it time-variant} probability of TMC was also modelled using a piece-wise logit-linear function, 
+where $\hat{\alpha}$ is the intercept, $\hat{\psi_i}$ is a district random effect, $\hat{\phi}_a$ is an age random effect, and $\hat{\gamma}_{ia}$ is an age-district interaction term to allow different age patterns of TMC across districts. The {\it time-variant} probability of TMC was also modelled using a piece-wise logit-linear function, 
 \begin{equation*} 
 	\text{logit}(\lambda^{\text{TMC}}_{iat}) = \hat{\alpha} + \hat{\psi}_i + \hat{\phi}_a + \hat{\theta}_t + \hat{\gamma}_{ia} + \hat{\delta}_{at}
 \end{equation*}
-where $\hat{\alpha}$ is the intercept, $\hat{\psi_i}$ is a regional random effect, $\hat{\phi}_a$ is an age random effect, $\theta_i$ is a temporal random effect,  $\hat{\gamma}_{ia}$ is an age-space interaction term to allow different age patterns of TMC  across regions and $\hat{\delta}_{at}$ is an age-time interaction term to allow for different age patterns of TMCs over time. We did not include a space-time interaction into due to computational reasons. 
+where $\hat{\alpha}$ is the intercept, $\hat{\psi_i}$ is a district random effect, $\hat{\phi}_a$ is an age random effect, $\theta_i$ is a temporal random effect,  $\hat{\gamma}_{ia}$ is an age-district interaction term to allow different age patterns of TMC across districts and $\hat{\delta}_{at}$ is an age-time interaction term to allow for different age patterns of TMCs over time. We did not include a district-time interaction into due to computational constraints. 
 
 Whether a country used a time-invariant or time-variant probability of TMC was chosen depending on which produced the best within-sample model fit (see Section \ref{sec::modelcheck} for further details). 
 
@@ -443,11 +460,11 @@ Whether a country used a time-invariant or time-variant probability of TMC was c
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\noindent We defined $\lambda^{\text{MMC}}_{iat}$ as the probability an individual in region $i$ received MMC at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$,  
+\noindent We defined $\lambda^{\text{MMC}}_{iat}$ as the probability an individual in district $i$ received MMC at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$,  
 \begin{equation*}
 		\lambda^{\text{MMC}}_{iat} = \mathbb{P}(\text{MMC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)),
 \end{equation*}
-To ensure $\lambda^{\text{TMC}}_{iat} + \lambda^{\text{MMC}}_{iat} \leq 1$ for all $i$, $a$ and $t$ in the discrete-time framework, we assumed the TMC prior to MMC in each time step. Therefore, we condition on this and practically model the probability an individual in region $i$ received an MMC at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$ and did not receive TMC at age $a$ and time $t$
+To ensure $\lambda^{\text{TMC}}_{iat} + \lambda^{\text{MMC}}_{iat} \leq 1$ for all $i$, $a$ and $t$ in the discrete-time framework, we assumed the TMC prior to MMC in each time step. Therefore, we condition on this and practically model the probability an individual in district $i$ received an MMC at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$ and did not receive TMC at age $a$ and time $t$
 \begin{equation*}
 		\tilde{\lambda}^{\text{MMC}}_{iat} = \mathbb{P}(\text{MMC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1) \text{ and no TMC in} \; (i,a, t))
 \end{equation*}
@@ -456,17 +473,13 @@ It then follows that
 		\lambda^{\text{MMC}}_{iat} = \tilde{\lambda}^{\text{MMC}}_{iat}\cdot (1-\lambda^{\text{TMC}}_{iat}).
 \end{equation*}
 
-The provision of MMC is highly heterogeneous in sub-Saharan Africa and has changed  since 2008 in countries that have programmes to scale-up MMC for HIV prevention. VMMC programmes provide MMCs for HIV prevention to those aged 10 and over, while infant and paediatric medical circumcision often occurs through cultural or religious practices unrelated to scale-up of VMMC for HIV prevention. Due to this, Thomas et al. \cite{thomas2021multilevel} separated the probability of MMC, $\tilde{\lambda}^{\text{MMC}}_{iat}$, into two processes: (i) paediatric circumcision (for those aged 0--9) and (ii) adolescent and adult circumcision (for those aged 10 and over). This ensured that any increase in MMC for those aged 10 and over did not affect the probability of MMC in those under 10 in South Africa. However, this may not be appropriate everywhere, particularly in countries without programmes to upscale MMC coverage. Therefore, we consider two models for $\lambda^{\text{MMC}}_{iat}$ in each country: (i) [Need a name] and (ii) [Need a name].
+The provision of MMC is highly heterogeneous in sub-Saharan Africa and has changed substantially since 2008, particularly in countries that have programmes to scale-up MMC for HIV prevention. VMMC programmes provide MMCs for HIV prevention to those aged 10 and over, while infant and paediatric medical circumcision often occurs through cultural or religious practices unrelated to scale-up of VMMC for HIV prevention. Due to this, Thomas et al. \cite{thomas2021multilevel} separated the probability of MMC, $\tilde{\lambda}^{\text{MMC}}_{iat}$, into two processes: (i) paediatric circumcision (for those aged 0--9) and (ii) adolescent and adult circumcision (for those aged 10 and over). This ensured that any increase in MMC for those aged 10 and over did not bias the probability of MMC in those under 10 in South Africa. However, this may not be appropriate everywhere, particularly in countries without programmes to upscale MMC coverage. Therefore, we consider two models for $\lambda^{\text{MMC}}_{iat}$ in each country: (i) no cut-off and (ii) paediatric cut off.
 
-We modelled $\tilde{\lambda}^{\text{MMC}}_{iat}$ using a piece-wise logit-linear function:
-
+We modelled the probability of MMC {\it with no cut-off} using a piece-wise logit-linear function, 
 \begin{equation*}
 	\text{logit}(\tilde{\lambda}^{\text{MMC}}_{iat}) = \alpha + \psi_i + \phi_a + \theta_t + \gamma_{ia} + \delta_{at} + \zeta_{it} 
 \end{equation*}
-where $\alpha$ is the intercept, $\psi_i$ is a regional random effect, $\theta_i$ is a temporal random effect, $\phi_a$ is an age random effect, $\gamma_{ia}$ is an age-space interaction terms to allow for different patterns of MMCs over age between regions $\delta_{at}$ is an age-time interaction term to account for any changing age patterns in MMCs over time and $\zeta_{it}$ is an space-time interaction term to allow for different uptake of MMCs over time across regions. 
-
-
-Therefore, we modelled $\tilde{\lambda}^{\text{MMC}}_{iat}$ using a piece-wise logit-linear function:
+where $\alpha$ is the intercept, $\psi_i$ is a district random effect, $\theta_i$ is a temporal random effect, $\phi_a$ is an age random effect, $\gamma_{ia}$ is an age-district interaction terms to allow for different patterns of MMCs over age between districts, $\delta_{at}$ is an age-time interaction term to account for any changing age patterns in MMCs over time and $\zeta_{it}$ is an district-time interaction term to allow for different uptake of MMCs over time across districts. We also modelled the probability of MMC {\it with a paediatric cut-off} using a piece-wise logit-linear function, 
 \begin{equation*}
 	\text{logit}(\tilde{\lambda}^{\text{MMC}}_{iat}) =
 	\begin{cases}
@@ -474,9 +487,9 @@ Therefore, we modelled $\tilde{\lambda}^{\text{MMC}}_{iat}$ using a piece-wise l
 		\alpha + \psi_i + \phi_a + \theta_t + \gamma_{ia} + \delta_{at} + \zeta_{it} & \text{for } a \geq 10
 	\end{cases} 
 \end{equation*}
-where $\bar{\alpha}$ and $\alpha$ are intercepts, $\bar{\psi}_i$ and $\psi_i$ are regional random effects, $\theta_i$ are temporal random effects, $\bar{\phi}_a$ and $\phi_a$ are age random effects, $\bar{\gamma}_{ia}$ and $\gamma_{ia}$ are age-space interaction terms to allow for different age patterns of MMCs between regions, for paediatric circumcision and adolescent and adult circumcision respectively. The $\delta_{at}$ is an age-time interaction term to allow for different age patterns of MMCs over time and $\zeta_{it}$ is an space-time interaction term to allow for different uptake of MMCs over time across regions, in adolescent and adult men. We assume that the probabilities of MMC among those aged 0--9 were constant over time, (i.e. $\lambda^{\text{MMC}}_{iat} \equiv \lambda^{\text{MMC}}_{ia}$ when $0\leq a \leq 9$), as paediatric medical circumcision practices are unrelated to VMMC for HIV prevention and are relatively stable. 
+where $\bar{\alpha}$ and $\alpha$ are intercepts, $\bar{\psi}_i$ and $\psi_i$ are district random effects, $\theta_i$ are temporal random effects, $\bar{\phi}_a$ and $\phi_a$ are age random effects, $\bar{\gamma}_{ia}$ and $\gamma_{ia}$ are age-district interaction terms for paediatric circumcision and adolescent and adult circumcision respectively. The $\delta_{at}$ is an age-time interaction term to allow for different age patterns of MMCs over time and $\zeta_{it}$ is an space-time interaction term to allow for different uptake of MMCs over time across districts in adolescent and adult men. We assume that the probability of MMC among those aged 0--9 were constant over time, (i.e. $\lambda^{\text{MMC}}_{iat} \equiv \lambda^{\text{MMC}}_{ia}$ when $0\leq a \leq 9$), as paediatric medical circumcision practices are unrelated to VMMC for HIV prevention and are relatively stable. 
 
-The choice of whether a country used a {\color{red}\bf[Need a name]} or {\color{red}\bf[Need a name]} probability of MMC was chosen depending on which produced the best within-sample model fit (see Section \ref{sec::modelcheck} for further details). 
+The choice of whether a country used a paediatric cut-off or no cut-off in the probability of MMC was chosen depending on which produced the best within-sample model fit (see Section \ref{sec::modelcheck} for further details). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -493,8 +506,6 @@ and this is modelled using the sum of having either a TMC or MMC at age $a$ and 
 	\lambda^{\text{MC}}_{iat} = \lambda^{\text{TMC}}_{ia} + \lambda^{\text{MMC}}_{iat}. 
 \end{equation*}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -504,33 +515,18 @@ and this is modelled using the sum of having either a TMC or MMC at age $a$ and 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Some countries did not have a survey that collected information on the type of circumcision, so we were unable to conduct an analysis of the probabilities of circumcision by type. In this case, we use survey data to model the probabilities of receiving a MC of any type for individuals residing in region $i \in I = \{1, 2, \ldots, N_I\}$ at age $a \in A = \{0, 1, 2, \ldots, N_A\}$ and time $t \in T = \{1, 2, \ldots, N_T\}$. 
+In countries that did not have a survey that contained information on the type of circumcision, we used survey data to model the probabilities of receiving a MC of any (or unknown) type for individuals residing in district $i \in I = \{1, 2, \ldots, N_I\}$ at age $a \in A = \{0, 1, 2, \ldots, N_A\}$ and time $t \in T = \{1, 2, \ldots, N_T\}$. 
 
-We defined $\lambda^{\text{MC}}_{iat}$ as the probability an individual in region $i$ received a circumcision  at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$,  
-\begin{equation}
-		\lambda^{\text{MC}}_{iat} = \mathbb{P}(\text{MC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)),
-	\label{eqn::mc}
+\noindent We define $\lambda^{\text{MC}}_{iat}$ as the probability that an individual in district $i$ received a circumcision (either a TMC or MMC) at age $a$ and time step $t$, given they were uncircumcised by age $a-1$ and time $t-1$, 
+\begin{equation} 
+		\lambda^{\text{MC}}_{iat} = \mathbb{P}(\text{MC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)). 
+	\label{eqn::MC}
 \end{equation}
-Here, we model $\lambda^{\text{MC}}_{iat}$ using a piece-wise logit-linear function:
+We modelled the probability of MC using a piece-wise logit-linear function:
 \begin{equation*}
 	\text{logit}(\lambda^{\text{MC}}_{iat}) = \alpha + \psi_i + \phi_a + \theta_t + \gamma_{ia} + \delta_{at} + \zeta_{it} 
 \end{equation*}
-where $\alpha$ is the intercept, $\psi_i$ is a regional random effect, $\theta_i$ is a temporal random effect, $\phi_a$ is an age random effect, $\gamma_{ia}$ is an age-space interaction terms to allow for different patterns of MCs over age between regions $\delta_{at}$ is an age-time interaction term to account for any changing age patterns in MCs over time and $\zeta_{it}$ is an space-time interaction term to allow for different uptake of MCs over time across regions. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Including aggregated estimates}
-\label{sec::aggregated}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{equation*}
-	\lambda^{\text{MC}}_{Rat} = \frac{\sum_{i\in R}P_{iat}\lambda^{\text{MC}}_{iat}}{\sum_{i\in R}P_{iat}}
-\end{equation*}
-
-
+where $\alpha$ is the intercept, $\psi_i$ is a district random effect, $\theta_i$ is a temporal random effect, $\phi_a$ is an age random effect, $\gamma_{ia}$ is an age-district interaction terms to allow for different patterns of MCs over age between districts, $\delta_{at}$ is an age-time interaction term to account for any changing age patterns in MCs over time and $\zeta_{it}$ is an district-time interaction term to allow for different uptake of MCs over time across districts. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -541,16 +537,16 @@ where $\alpha$ is the intercept, $\psi_i$ is a regional random effect, $\theta_i
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The probability $S_{iat}$ of remaining uncircumcised up to age $a$ and time $t$,  typically referred to as the survivor function, is expressed as
-\begin{equation}
+We define the probability of remaining uncircumcised, $S_{iat}$, in district $i$, at age $a$ and time $t$ (often called the survivor function), is estimated using, 
+\begin{equation*}
 	\begin{split}
 		S_{iat} &= \mathbb{P}(\text{Uncircumcised in} \; (i,a-1,t-1)) \\
 				&= \prod_{(0,(t-a))}^{(a-1,t-1)}\lambda^{\text{UC}}_{iat} \\
 				&= \lambda^{\text{UC}}_{i,0,t-a}\cdot \lambda^{\text{UC}}_{i,1,t-a+1}\cdot\ldots \cdot\lambda^{\text{UC}}_{i,a-1,t-1}
 	\end{split}
 	\label{eqn::survfunc}
-\end{equation}
-where $\lambda^{\text{UC}}_{iat}$ is the probability an individual in region $i$ remained uncircumcised at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$, was
+\end{equation*}
+where $\lambda^{\text{UC}}_{iat}$ is the probability an individual in district $i$ remained uncircumcised at age $a$ and time $t$, given they were uncircumcised by age $a-1$ and time $t-1$,
 \begin{equation*}
 	\begin{split}
 		\lambda^{\text{UC}}_{iat} &= \mathbb{P}(\text{Uncircumcised in}  \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)),\\
@@ -559,7 +555,7 @@ where $\lambda^{\text{UC}}_{iat}$ is the probability an individual in region $i$
 	\label{eqn::uncirc}
 \end{equation*}
 
-The cumulative incidence function (CIF) defines the marginal probability (or coverage/proportion) of individuals who received a TMC, a MMC or a MC of any type by age $a$ and time $t$, accounting for the competing risk of other circumcision types. This was calculated as the sum of incidence of circumcision by type $k$ at each age up to $a$:
+The cumulative incidence function (CIF) defines the marginal probability (or coverage/proportion) of individuals residing in district $i$ who received a TMC, MMC or MC of any (or unknown) type by age $a$ and time $t$, accounting for the competing risk of other circumcision types. This was calculated as the sum of incidence of circumcision by type $k$ at each age up to $a$:
 \begin{equation*}
 	\begin{split}
 		\text{CIF}_{iat}^k &= \mathbb{P}(k \; \text{by} \; (i,a,t)) \\
@@ -587,49 +583,62 @@ where $I^k_{iat}$ is the incidence of circumcision of type $k\in \{\textrm{TMC},
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In space, we assigned the random effects $\hat{\psi}_i$, $\bar{\psi}_i$, $\psi_i$, $\hat{\gamma}_{ia}$, $\gamma_{ia}$ and $\zeta_{it}$, intrinsic conditional autoregressive (ICAR) priors in space \cite{besag1995conditional}. An ICAR model allows us to encodes spatial dependence between neighbouring regions which allows information on the probability and coverage of circumcision in areas where data is sparse or non-existent to be borrowed. For a generic parameter $\beta_i$, an ICAR model assumes that the mean of $\beta_i$ is a weighted average its neighbours, 
+In space, we assigned the random effects $\hat{\psi}_i$, $\bar{\psi}_i$, $\psi_i$, $\hat{\gamma}_{ia}$, $\gamma_{ia}$ and $\zeta_{it}$, intrinsic conditional autoregressive (ICAR) priors \cite{besag1995conditional}. An ICAR model allows us to encode spatial dependence between neighbouring regions which allows information on the probability and coverage of circumcision in areas where data is sparse or non-existent to be borrowed. For a generic parameter $\beta_i$, an ICAR model assumes that the mean of $\beta_i$ is a weighted average its neighbours, 
 \begin{equation*}
 	\beta_i \;|\; \beta_{j}, j \sim i, \tau_{\beta} \sim \text{N}\left(\frac{1}{n_i} \sum_{j \sim i} \beta_j, \frac{1}{n_i\tau_{\beta}} \right) \;\;\; i = 1, 2, 3,\ldots, N_I
 \end{equation*}
-Here, $j \sim i$ refers to the neighbours of region $i$, $n_i$ is the number of neighbours and $\tau_{\beta}$ is the marginal precision \cite{rue2005gaussian}. 
+Here, $j \sim i$ refers to the neighbours of region $i$, $n_i$ is the number of neighbours and $\tau_{\beta}$ is the marginal precision \cite{rue2005gaussian}. The joint distribution may be equivalently expressed as $\boldsymbol{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{I})$ where $Q_{I}$ is the precision matrix encoding the adjacency structure of the neighbourhoods. The precision matrix $Q_{I}$ is rank deficient and consequently the prior is improper \cite{rue2005gaussian}. 
 
-In age, we modelled the random effects ($\hat{\phi}_a$, $\bar{\phi}_a$, $\phi_a$, $\hat{\gamma}_{ia}$, $\bar{\gamma}_{ia}$, $\gamma_{ia}$ and $\delta_{at}$) using penalised B-splines. For a generic parameter $\beta_a$, penalised B-splines assumes that $\beta_a$ is a sum of basis functions, 
+In age, we modelled the random effects ($\hat{\phi}_a$, $\bar{\phi}_a$, $\phi_a$, $\hat{\gamma}_{ia}$, $\bar{\gamma}_{ia}$, $\gamma_{ia}$ and $\delta_{at}$) using penalised B-splines. This allows us to smooth across the age of circumcision profile and also allows information on the probability and coverage of circumcision for ages to be borrowed where the data is sparse or non-existent (i.e. older age groups). For a generic parameter $\beta_a$, penalised B-splines assumes that $\beta_a$ is a sum of basis functions, 
 \begin{align*} 
 	\beta_a = \sum_{j = 1}^{J} w_{j}b_{aj}
 \end{align*} 
-where $b_{aj}$ are B-spline basis functions {\color{red}[CITE]} with knots placed every five years (at 0, 5, 10 etc.), $J$ is the number of splines used and $\omega_{j}$ are the spline weight parameters to be estimated. The weights $w_{j}$ are penalised using an AR1 process 
+where $b_{aj}$ are B-spline basis functions {\color{red}[CITE]} with knots placed every five years (at 0, 5, 10 etc.), $J$ is the number of splines used and $w_{j}$ are the spline weight parameters to be estimated. The weights $w_{j}$ are penalised using an AR1 process, 
 \begin{align*} 
   w_{j} \; | \; w_{j-1}, \rho_{w}, \tau_{w} &\sim N(\rho_{w} \cdot w_{j-1}, \;\; \tau^{-1}_{w}) \;\;\;  j = 2, 3,\ldots, J \\
   w_{1} \; | \; \rho_{w}, \tau_{w} &\sim N(0, \tau^{-1}_{w}) 
 \end{align*}
-where $|\rho_{w}| < 1$ is an autocorrelation parameters controlling the correlation of the effect of the current age on the previous age and $\tau_{w}$ is the precision.
+where $|\rho_{w}| < 1$ is an autocorrelation parameter controlling the correlation of the effect of the current age on the previous age and $\tau_{w}$ is the precision. The joint distribution is given by $\boldsymbol{w}\; | \; \rho_{w}, \tau_{w} \sim N(\boldsymbol{0}, \tau_{w}^{-1}Q^{-1}_{J}(\rho_{w}))$ where $Q_{J}$ is the precision matrix as defined by the basis functions and the autocorrelation parameter. Then defining $\boldsymbol{\beta} = W_{\beta}\cdot \boldsymbol{w}$ where $W_{\beta}$ is a design matrix evaluating the basis functions $b_{aj}$ at each age of interest, the joint distribution is given by, $\boldsymbol{\beta}\; | \;\boldsymbol{\omega}, \; W_{\beta}, \; \rho_{w}, \tau_{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{A})$ where Q^{-1}_{A} = W_{\beta}\cdot Q^{-1}_{J}(\rho_{w})\cdot W_{\beta}^T.
 
-In time, we consider three possible prior distirbution choices: an autoregressive process of order 1 (AR1), random walk of order 1 (RW1) and random walk of order 2 (RW2). {\color{red} \bf [Need more information]}
-% \noindent In time, we assigned the random effects $\theta_t$, $\delta_{at}$ and $\zeta_{it}$ an autoregressive process of order 1 (AR1) priors,
+In time, we consider three possible prior distribution choices for the random effects ($\hat{\theta}_t$, $\hat{\delta}_{at}$, $\theta_t$, $\delta_{at}$ and $\zeta_{it}$): an autoregressive process of order 1 (AR1), random walk of order 1 (RW1) and random walk of order 2 (RW2). AR and RW processes allows us to encode temporal dependence between survey information on the probability and coverage of circumcision and project this into the future. For a generic parameter $\beta_t$, an AR1 process assumes that,
 \begin{align*} 
   \beta_{t} \; | \; \beta_{t-1}, \rho_{\beta}, \tau_{\beta} &\sim N(\rho_{\beta} \cdot \beta_{t-1}, \;\; \tau^{-1}_{\beta}) \;\;\;  t = 2, 3,\ldots, N_T \\
   \beta_{1} \; | \; \rho_{\beta}, \tau_{\beta} &\sim N(0, \tau^{-1}_{\beta})  \;\;\;  t = 1
 \end{align*}
-
+where $|\rho_{\beta}| < 1$ is an autocorrelation parameters controlling the correlation of the effect of the current age on the previous age and $\tau_{\beta}$ is the precision. The joint distribution may be equivalently expressed as $\boldsymbol{\beta}\; | \; \rho_{\beta}, \tau_{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{T}(\rho_{\beta}))$ where $Q_{T}$ is the precision matrix and encodes the first order dependency in time controlled by the autocorrelation parameter $\rho_{\beta}$. A RW1 process assumes that,
 \begin{align*} 
   \beta_{t} \; | \; \beta_{t-1}, \tau_{\beta} &\sim N(\beta_{t-1}, \;\; \tau^{-1}_{\beta}) \;\;\;  t = 2, 3,\ldots, N_T \\
   \beta_{1} \; | \; \rho_{\beta}, \tau_{\beta} &\sim N(0, \tau^{-1}_{\beta})  \;\;\;  t = 1
 \end{align*}
-
+and a RW2 process assumes that,
 \begin{align*} 
   \beta_{t} \; | \; \beta_{t-1}, \tau_{\beta} &\sim N(\beta_{t-1}, \;\; \tau^{-1}_{\beta}) \;\;\;  t = 3, 4,\ldots, N_T \\
   \beta_{t} \; | \; \rho_{\beta}, \tau_{\beta} &\sim N(0, \tau^{-1}_{\beta})  \;\;\;  t = 1, 2
 \end{align*}
+where $\tau_{\beta}$ is the precision. For both RW1 and RW2, the joint distribution may be equivalently expressed as $\boldsymbol{\beta}\; | \; \tau_{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{T})$ where $Q_{T}$ is the precision matrix and encodes the dependency in time of the process and will be rank deficient and consequently the prior would be improper \cite{rue2005gaussian}. The choice of whether a country uses a AR1, RW1 and RW2 as a temporal prior was chosen depending on which produced the best out-of-sample model fit during model calibration (see Section \ref{sec::modelcheck} for further details). 
 
-% where $|\rho_{\phi}| < 1$ is an autocorrelation parameters controlling the correlation of the effect of the current age on the previous age and $\tau_{\beta}$ is the precision. 
+Moreover, age-space, age-time, and space-time interaction terms ($\hat{\gamma}_{ia}$, $\bar{\gamma}_{ia}$, $\gamma_{ia}$, $\hat{\delta}_{at}$, $\delta_{at}$, and $\zeta_{it}$) are modelled using a Type IV interaction as defined by Knorr-Held and Leonard \cite{knorr2000bayesian}, 
+\begin{align*} 
+  \hat{\boldsymbol{\gamma}} \; | \; \rho_{\boldsymbol{\hat{\gamma}}}, \tau_{\boldsymbol{\hat{\gamma}}} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\hat{\gamma}} Q^{-1}_{\hat{\gamma}}) \\
+  \bar{\boldsymbol{\gamma}} \; | \; \rho_{\boldsymbol{\bar{\gamma}}}, \tau_{\boldsymbol{\bar{\gamma}}} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\bar{\gamma}} Q^{-1}_{\bar{\gamma}}) \\
+  \boldsymbol{\gamma} \; | \; \rho_{\gamma}, \tau_{\gamma} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\gamma} Q^{-1}_{\gamma})\\
+  \boldsymbol{\hat{\delta}} \; | \; \tau_{\hat{\delta}} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\hat{\delta}} Q^{-1}_{\hat{\delta}})\\
+  \boldsymbol{\delta} \; | \; \tau_{\delta} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\delta} Q^{-1}_{\delta})\\
+  \boldsymbol{\zeta} \; | \; \rho_{\zeta}, \tau_{\zeta} &\sim N(\boldsymbol{0}, \;\tau^{-1}_{\zeta} Q^{-1}_{\zeta})
+\end{align*}
+where the precision matrices constructed using Kronecker products 
+\begin{align*} 
+	Q_{\hat{\gamma}} = Q_{\bar{\gamma}} = Q_{\gamma} &= Q_A \otimes Q_I\\
+	Q_{\hat{\delta}} = Q_{\delta} &= Q_A \otimes Q_T\\
+	Q_{\zeta} &=Q_I \otimes Q_T
+\end{align*}
+Here, $Q_I$, $Q_A$ and $Q_T$ are precision matrices discussed above.
 
-Moreover, age-space, age-time, and space-time interaction terms ($\hat{\gamma}_{ia}$, $\bar{\gamma}_{ia}$, $\gamma_{ia}$, $\delta_{at}$ and $\zeta_{it}$) are modelled using a Type IV interactions as defined by Knorr-Held and Leonard \cite{knorr2000bayesian},
-
-We assigned Gaussian priors to each of the intercepts, $\alpha, \;\hat{\alpha}, \;\bar{\alpha} \sim N(0, 5^2)$. Exponential priors were placed on standard deviations, $\sigma_{(\cdot)} = \sqrt{\tau^{-1}_{(\cdot)}} \sim \text{Exp}(1)$. Gaussian priors were set for all correlation parameters on the logit scale, such that 
+Gaussian priors were assigned to each of the intercepts, $\alpha, \;\hat{\alpha}, \;\bar{\alpha} \sim N(0, 5^2)$. Gaussian priors were set for all correlation parameters on the logit scale, such that 
 \begin{align*} 
   \hat{\rho}_{(\cdot)} = \frac{2}{1 + \exp(-\rho_{(\cdot)})} - 1 \sim N(3, 1^2)
 \end{align*}
-corresponding to 95\% CI prior weight that the autocorrelation parameters are between 0.48 and 0.99 on the real scale.
+corresponding to 95\% CI prior weight that the autocorrelation parameters are between 0.48 and 0.99 on the real scale. For the age, district and age-district random effects, we assigned exponential priors on standard deviations, $\sigma_{(\cdot)} = \sqrt{\tau^{-1}_{(\cdot)}} \sim \text{Exp}(1)$ on each of these processes. For the temporal, age-time and space-time random effects, the hyperpriors on the standard deviations $\sigma_{(\cdot)} = \sqrt{\tau^{-1}_{(\cdot)}}$ were decided as part of the model calibration process (see Section \ref{sec::modelcheck} for further details). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -640,9 +649,7 @@ corresponding to 95\% CI prior weight that the autocorrelation parameters are be
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Survey data consists of individual observations of self-reported age at circumcision, date of birth, and circumcision type (medical or traditional) from male survey respondents. Circumcision status observations were right censored if the respondent reported not being circumcised at the time of the survey or left censored if the individual reported being circumcised at the time of survey but did not report their age at circumcision.
-
-\noindent Each survey $s \in S = \{1, 2, \ldots, N_S\}$ consists of sampled individuals $j \in J_s = \{0, 1, 2, \ldots, N_{J_s}\}$ residing in region $i \in I = \{1, 2, \ldots, N_I\}$. Surveyed individuals were followed from their year of birth until their year of circumcision or their year of censoring. For circumcised individuals, the year of circumcision was calculated as the year of birth plus the age at circumcision. It was assumed that no circumcisions occurred after age 59, so for uncircumcised individuals, censoring occurred either in the survey year or when they were 59. Individuals who self-reported they were circumcised but have a missing age at circumcision were included in the analysis through left censoring. 
+The extracted survey data consisted of individual observations of self-reported age at circumcision, date of birth, and circumcision type (medical or traditional) from male survey respondents (see above). Each survey $s \in S = \{1, 2, \ldots, N_S\}$ consists of sampled individuals $j \in J_s = \{0, 1, 2, \ldots, N_{J_s}\}$ residing in region $i \in I = \{1, 2, \ldots, N_I\}$. Individuals were followed from their year of birth to either their year of circumcision or their year of censoring. For circumcised individuals, the year of circumcision was calculated as the year of birth plus the age at circumcision. It was assumed that no circumcisions occurred after age 59, so for uncircumcised individuals, right censoring occurred either in the survey year or when they were 59. Individuals who self-reported they were circumcised but did not report an age at circumcision were included in the analysis through left censoring. 
 
 \noindent The likelihood function for each individual is this defined by the following groups:
 \begin{itemize}
@@ -652,7 +659,7 @@ Survey data consists of individual observations of self-reported age at circumci
 	\item[(4)] \textbf{Right censored (RC)}: Individuals in region $i$ who remained uncircumcised by age $a$ at time $t$. The likelihood of this outcome was the probability of remaining uncircumcised in region $i$, at age $a$ and time $t$,$S_{iat}$
 	\item[(5)] \textbf{TMC left censored (TMCLC)}: Individuals in region $i$ reporting a TMC at an unknown age and time between birth at time $t-a$ and age $a$ at time $t$. The likelihood of this outcome was the probability of receiving a TMC in region $i$ before age $a$ at time $t$, $\text{CIF}^{\text{TMC}}_{iat}$
 	\item[(6)] \textbf{MMC left censored (MMCLC)}: Individuals in region $i$ reporting a MMC at an unknown age and time between birth at time $t-a$ and age $a$ at time $t$. The likelihood of this outcome was the probability of receiving a MMC in region $i$ before age $a$ at time $t$, $\text{CIF}^{\text{MMC}}_{iat}$ 
-	\item[(7)] \textbf{MC left censored (MCLC)}: Individuals in region $i$ reporting a circumcision, of unknown type at an unknown age and time, between birth at time $t-a$ and age $a$ at time $t$. The likelihood of this outcome was the probability of being circumcised in region $i$ before age $a$ at time $t$, $(1-S_{iat}) = \text{CIF}^{\text{MMC}}_{iat}$ 
+	\item[(7)] \textbf{MC left censored (MCLC)}: Individuals in region $i$ reporting a circumcision, of unknown type at an unknown age and time, between birth at time $t-a$ and age $a$ at time $t$. The likelihood of this outcome was the probability of being circumcised in region $i$ before age $a$ at time $t$, $(1-S_{iat}) = \text{CIF}^{\text{MC}}_{iat}$ 
 \end{itemize}
 
 \noindent Taken together, the partial likelihood for the discrete time-to-event model may be expressed as 
@@ -671,6 +678,12 @@ where $\mathbbm{1}^{l}_{sjiat}$ is an indicator variable indicating whether indi
 \end{equation*}
 where $l$ is TMC, MMC, MC, RC, MMCLC, TMCLC or MCLC which correspond to the outcomes (1)-(7) above.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Accounting for survey design}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \noindent Survey data are collected through a complex two-stage cluster sampling design with unequal sampling probabilities. Performing model inference using a standard likelihood may lead to biased estimates so to account for these survey designs, the probabilities of circumcision were estimated using a weighted pseudo-likelihood in which we replaced the observed counts $\text{N}^l_{iat}$ with weighted counts $\tilde{\text{N}}^l_{iat}$, calculated using survey weights. Each individual $j$ in survey $s$ residing in region $i$ had sampling weight $\omega_{sji}$ which were normalised using the Kish effective sample size, 
 \begin{equation*}
 	\tilde\omega_{sji} = \frac{\omega_{sji}}{\bar{\omega}_{si}}\cdot \frac{M_s}{M^{\text{eff}}_s} 
@@ -686,13 +699,62 @@ Using the normalised sampling weights, $\tilde\omega_{sji}$, we calculate the we
 where $l$ is TMC, MMC, MC, RC, MMCLC, TMCLC or MCLC which correspond to the outcomes (1)-(7) above. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Accounting for regional aggregates}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Model checking}
+Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the PSNU unit. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the PSNU unit directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In some instances, these areal units represented PSNU unit, however in many cases, these are on higher administrative boundaries (e.g. national/admin-0).
+
+In order to include survey data on district as well as other administrative aggregates levels into the model, we estimate a population-weighted regional estimate of the probabilities of TMC, MMC and/or MC. We define the probability that an individual in region $ R \subset I = \{1, 2, \ldots, N_I\}$ received a circumcision of type $k$ at age $a$ and time step $t$ as 
+\begin{equation*}
+	\lambda^{k}_{Rat} = \frac{\sum_{i\in R}P_{iat}\lambda^{k}_{iat}}{\sum_{i\in R}P_{iat}}
+\end{equation*}
+where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The district level probabilities of TMC, MMC and MC are then replaced with regional equivalents in the likelihood. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Final model selection}
 \label{sec::modelcheck}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The choice of the final model to use in each country was decided in a two stage process. 
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Model specification}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the first stage of selecting the final model in each country, we performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC. For each of the 12 model combinations, 
+
+
+We sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. 
+
+To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. The best performing models 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Model calibration}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
 
 
 
