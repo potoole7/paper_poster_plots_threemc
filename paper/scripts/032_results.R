@@ -75,19 +75,24 @@ target_iso3 <- c(
 # Want everything negative to be blue (so 2 / 7 of colours)
 # Change to 14 colours in scale, with first 4 as blue, then each "break" 
 # constitutes one colour, and negative values will be in blue
-colourPalette <- rev(colorRampPalette(
+# colourPalette <- rev(colorRampPalette(
+colourPalette2 <- rev(colorRampPalette(
   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
     "#e6f598", "#abdda4", "#8CD1A4", "#66C2A4", "#3D94B7", "#2C82B7", "#13699e",
     "#5e4fa2")
-)(140))
+)(100))
 
 # change region changing from blue to grean to only blue
-colourPalette[30:40] <- colourPalette[30]
+# colourPalette[30:40] <- colourPalette[30]
 # change greenish-blue to be more green
 # colourPalette[41:45] <- colourPalette[45]
 
 # Colour Palette for years in map plot
-colourPalette2 <- viridis::plasma(100)
+# colourPalette <- viridis::plasma(100)
+colourPalette <- c(
+  grDevices::colorRampPalette(c("blue","white"))(40), 
+  grDevices::colorRampPalette(c("white", "red"))(100)
+)
 
 
 #### Load Data ####
