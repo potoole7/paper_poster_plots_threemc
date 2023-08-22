@@ -704,13 +704,18 @@ where $l$ is TMC, MMC, MC, RC, MMCLC, TMCLC or MCLC which correspond to the outc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the PSNU unit. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the PSNU unit directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In some instances, these areal units represented PSNU unit, however in many cases, these are on higher administrative boundaries (e.g. national/admin-0).
+Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the PSNU unit. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the PSNU unit directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In some instances, these areal units represented PSNU unit, however in many cases, these are on higher administrative boundaries (e.g. national/admin-0). \todo{Not entirely convinced that }
 
 In order to include survey data on district as well as other administrative aggregates levels into the model, we estimate a population-weighted regional estimate of the probabilities of TMC, MMC and/or MC. We define the probability that an individual in region $ R \subset I = \{1, 2, \ldots, N_I\}$ received a circumcision of type $k$ at age $a$ and time step $t$ as 
 \begin{equation*}
 	\lambda^{k}_{Rat} = \frac{\sum_{i\in R}P_{iat}\lambda^{k}_{iat}}{\sum_{i\in R}P_{iat}}
 \end{equation*}
-where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The district level probabilities of TMC, MMC and MC are then replaced with regional equivalents in the likelihood. 
+where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The regional probabilities of TMC, MMC and MC 
+
+
+for surveys not at the 
+
+with regional equivalents in the likelihood above in order to include higher level aggregates. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -734,12 +739,13 @@ The choice of the final model to use in each country was decided in a two stage 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In the first stage of selecting the final model in each country, we performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC. For each of the 12 model combinations, 
+In the first stage of selecting the final model, we performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC. 
+
+In each country, 
 
 
-We sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. 
 
-To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. The best performing models 
+For each of the 12 model combinations, we sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. The best performing models 
 
 
 
