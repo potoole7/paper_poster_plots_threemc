@@ -248,6 +248,43 @@ iso_df <- iso_df %>%
   ) %>%
   mutate(region = ifelse(region == "", "Other", region))
 
+# areas for SSD (want to add to map plot)
+dat_loc <- "paper_poster_plots/aids_2022_poster/data/"
+ 
+ssn_areas <- sf::read_sf(file.path(
+  dat_loc, 
+  "ssd_admbnda_imwg_nbs_shp/ssd_admbnda_adm0_imwg_nbs_20180817.shp"
+)) %>% 
+  select(CNTRY_NAME = ADM0_EN) %>% 
+  group_split(CNTRY_NAME) %>% 
+  purrr::map(function(x) {
+    cntry <- unique(x$CNTRY_NAME)
+    x <- sf::st_union(x) # may need sf::st_combine?
+    df <- data.frame("CNTRY_NAME" = cntry)
+    sf::st_geometry(df) <- x
+    return(df)
+  }) %>%  
+  bind_rows() %>% 
+  mutate(
+    iso3 = countrycode::countrycode(CNTRY_NAME, "country.name", "iso3c"),
+    area_id = iso3,
+    area_name = CNTRY_NAME,
+    area_level = 0
+  ) %>% 
+  filter(!is.na(iso3)) %>% 
+  select(iso3, area_id, area_name, area_level)
+
+# add to areas 
+areas_map <- bind_rows(areas, ssn_areas) %>% 
+  filter(!is.na(iso3))
+
+# Also add Lake Victoria for blue in map plot
+lake_vic <- rnaturalearth::ne_download(
+  scale = 110, type = "lakes", category = "physical") %>% 
+  sf::st_as_sf(lakes110, crs = 4269) %>% 
+  filter(name == "Lake Victoria") %>% 
+  select(name)
+
 
 #### Figure 2: Map of MC Coverage across SSA 20-2020 15-29 year olds ####
 
@@ -278,7 +315,7 @@ spec_model <- "No program data"
 spec_main_title    = main_title
 
 results_agegroup1 <- results_agegroup
-areas1 <- areas
+areas1 <- areas_map
 
 ## Plot ##
 
@@ -310,10 +347,24 @@ tmp <- results_agegroup1 %>%
         type %in%       c("MC coverage", "MMC coverage", "TMC coverage")
     )
 
+# Create dummy rows of NAs for missing countries - want them grey in map
+missing_iso3 <- unique(
+  areas_join$iso3[!areas_join$iso3 %in% results_agegroup$iso3]
+)
+
+tmp_missing <- tidyr::crossing(
+  "iso3" = missing_iso3, 
+  "age_group" = tmp$age_group, 
+  "year" = tmp$year, 
+  "type" = tmp$type
+) %>% 
+  left_join(areas_join, by = "iso3", relationship = "many-to-many")
+
+# Merge to shapefiles
 tmp <- tmp %>% 
-        select(-matches("area_name")) %>%
-        # Merging to shapefiles
-        left_join(areas_join)
+  select(-matches("area_name")) %>%
+  left_join(areas_join) %>% 
+  bind_rows(tmp_missing)
 
 tmp <- tmp %>% 
     # filter out areas with missing iso3, which cause errors with below
@@ -409,6 +460,12 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       size = 0.5,
       fill = NA
     ) +
+    geom_sf(
+      data   = lake_vic, 
+      colour = "lightblue", 
+      fill   = "lightblue",
+      size   = 0.5
+    ) + 
     labs(fill = "") +
     scale_fill_gradientn(
       colours = colourPalette,
