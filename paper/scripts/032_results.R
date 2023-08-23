@@ -651,10 +651,8 @@ p3 <- plt_data %>%
   filter(area_level == max(area_level)) %>% 
   ggplot(
     aes(
-      # countries on the x-axis, in specified order
-      x = country_idx, 
-      # median MC Coverage on the y-axis
-      y = median
+     x = country_idx,  # countries on the x-axis, in specified order
+     y = median # median MC Coverage on the y-axis
     )
   ) +
   # add points coloured by region with weighted populations determining size
@@ -674,7 +672,7 @@ p3 <- plt_data %>%
   # add median national level to plot as white dots
   geom_point(
     data = filter(plt_data, area_level == 0),
-    size = 5, 
+    size = 4.5, 
     fill = "#F1F1F1",
     col = "black", 
     alpha = 1, 
@@ -694,18 +692,21 @@ p3 <- plt_data %>%
   annotate(
     geom = "text",
     x = c(length(plot_order) + 1),
-    y = 0.12,
-    label = "non-VMMC",
+    # y = 0.12,
+    y = 0.21,
+    label = "non-VMMC Priority Countries",
     fontface = "bold",
-    size = 4.5
+    size = 3.5
   ) +
   annotate(
     geom = "text",
-    x = c(length(plot_order) - (country_positions1 + 4)),
-    y = 0.075,
-    label = "VMMC",
+    # x = c(length(plot_order) - (country_positions1 + 4)),
+    x = c(length(plot_order) - (country_positions1 + 5)),
+    # y = 0.075,
+    y = 0.175,
+    label = "VMMC Priority Countries",
     fontface = "bold",
-    size = 4.5
+    size = 3.5
   ) +
   theme_bw(base_size = 8) + 
   scale_x_continuous(
@@ -731,25 +732,26 @@ p3 <- plt_data %>%
     # labels = paste0(c(1, 50), "x")
   ) +
   labs(
-    y = "Median Male Circumcision Coverage", 
+    # y = "Median Male Circumcision Coverage", 
+    y = paste0("Male Circumcision Coverage, ", spec_years[2], ", ", spec_age_group, " year olds"),
     x = element_blank(), 
-    # size = "District pop. relative\nto median district size", 
     size = "District pop. relative to\n median district size", 
     color = "Region"
   ) +
-  ggtitle(paste0(
-    # "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
-    "District-Level male circumcision coverage, ", spec_years[2], ", ", spec_age_group, " year olds"
-  )) + 
+  # ggtitle(paste0(
+  #   # "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
+  #   "District-Level male circumcision coverage, ", spec_years[2], ", ", spec_age_group, " year olds"
+  # )) + 
   scale_color_manual(values = wesanderson::wes_palette("Zissou1")[c(1, 4)]) +
   theme(
-    axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
-    axis.title.x = element_text(size = rel(1.5)),
-    axis.text.y = element_text(size = rel(1.8)),
+    # axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
+    axis.text.x = element_text(size = c(rep(12, 4), 15, 12), colour = "black"),
+    axis.title.x = element_text(size = rel(1.5), colour = "black"),
+    axis.text.y = element_text(size = rel(1.8), colour = "black"),
     strip.background = element_rect(fill = NA, colour = "white"), 
-    panel.background = element_rect(fill = NA, color = "black"),
-    legend.text = element_text(size = rel(1.5)),
-    legend.title = element_text(size = rel(1.5)),
+    panel.background = element_rect(fill = NA, colour = "black"),
+    legend.text = element_text(size = rel(1.5), colour = "black"),
+    legend.title = element_text(size = rel(1.5), colour = "black"),
     legend.title.align = 0.5,
     legend.position = "bottom",
     plot.title = element_text(hjust = 1, size = rel(1.6)),
@@ -760,9 +762,9 @@ p3 <- plt_data %>%
 
 p3$plot_order <- plot_order
 
-# dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
-# p3
-# dev.off()
+dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
+p3
+dev.off()
 
 # saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
