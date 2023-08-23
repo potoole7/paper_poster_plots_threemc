@@ -762,9 +762,9 @@ p3 <- plt_data %>%
 
 p3$plot_order <- plot_order
 
-dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
-p3
-dev.off()
+# dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
+# p3
+# dev.off()
 
 # saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
@@ -807,7 +807,7 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
       name == "Democratic Republic of the Congo" ~ "DR Congo",
       name == "Republic of the Congo"            ~ "Congo",
       name == "Equatorial Guinea"                ~ "Eq. Guinea",
-      name == "Guinea-Bissau"                    ~ "Gin. Bissau",
+      # name == "Guinea-Bissau"                    ~ "Gin. Bissau",
       name == "Central African Republic"         ~ "Cent. Af. Rep.",
       TRUE                                       ~ name
     )
@@ -833,23 +833,31 @@ p4_geo <- p4 +
   geofacet::facet_geo(~ area_name, grid = ssa_grid) +
   ggtitle(paste0("Medical & traditional male circumcision by age, 2020")) +
   # set theme and base size for text
-  theme_minimal(base_size = 9) + 
+  theme_bw(base_size = 9) + 
   # reduce x-axis ticks, too crowded
   scale_x_continuous(breaks = seq(0, 60, by = 20)) + 
   # remove x-axis
-  labs(y = "") +  
+  # labs(y = "") +  
+  # labs(title = "",
+  #   y = "Circumcision coverage by age, 2020"
+  # ) + 
   theme(
     axis.text.x     = element_text(size = rel(1.1)),
-    axis.text.y     = element_blank(),
+    axis.text.y     = element_text(size = rel(1.1)),
+    axis.title.y    = element_text(size = rel(1.5)),
     legend.text     = element_text(size = rel(1.2)),
-    strip.text      = element_text(size = 8.5),
-    plot.title      = element_text(size = rel(1.5),  hjust = 0.5),
-    panel.grid      = element_blank(),
-    plot.background = element_rect(fill = "white", colour = "white"),
-    legend.position = "bottom"
+    legend.direction = "vertical",
+    # legend.position = "bottom",
+    legend.position = c(0.15, 0.2),
+    # legend.justification = "left",
+    strip.text      = element_text(size = 7.5), # , hjust = -0.1),
+    plot.title      = element_text(size = rel(1.5)),
+    strip.background = element_blank(),
+    plot.background = element_rect(fill = "white", colour = "white")
   )
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# dev.new(width = 6.3, height = 8,  noRStudioGD = TRUE)
 # p4_geo
 # dev.off()
 
@@ -858,7 +866,7 @@ ggplot2::ggsave(
   "paper_poster_plots/paper/plots/04_geo_age.png", 
   p4_geo, 
   width = 6.3, 
-  height = 6.5,
+  height = 8,
   units = "in"
 )
 
