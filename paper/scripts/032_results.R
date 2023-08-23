@@ -248,6 +248,43 @@ iso_df <- iso_df %>%
   ) %>%
   mutate(region = ifelse(region == "", "Other", region))
 
+# areas for SSD (want to add to map plot)
+dat_loc <- "paper_poster_plots/aids_2022_poster/data/"
+ 
+ssn_areas <- sf::read_sf(file.path(
+  dat_loc, 
+  "ssd_admbnda_imwg_nbs_shp/ssd_admbnda_adm0_imwg_nbs_20180817.shp"
+)) %>% 
+  select(CNTRY_NAME = ADM0_EN) %>% 
+  group_split(CNTRY_NAME) %>% 
+  purrr::map(function(x) {
+    cntry <- unique(x$CNTRY_NAME)
+    x <- sf::st_union(x) # may need sf::st_combine?
+    df <- data.frame("CNTRY_NAME" = cntry)
+    sf::st_geometry(df) <- x
+    return(df)
+  }) %>%  
+  bind_rows() %>% 
+  mutate(
+    iso3 = countrycode::countrycode(CNTRY_NAME, "country.name", "iso3c"),
+    area_id = iso3,
+    area_name = CNTRY_NAME,
+    area_level = 0
+  ) %>% 
+  filter(!is.na(iso3)) %>% 
+  select(iso3, area_id, area_name, area_level)
+
+# add to areas 
+areas_map <- bind_rows(areas, ssn_areas) %>% 
+  filter(!is.na(iso3))
+
+# Also add Lake Victoria for blue in map plot
+lake_vic <- rnaturalearth::ne_download(
+  scale = 110, type = "lakes", category = "physical") %>% 
+  sf::st_as_sf(lakes110, crs = 4269) %>% 
+  filter(name == "Lake Victoria") %>% 
+  select(name)
+
 
 #### Figure 2: Map of MC Coverage across SSA 20-2020 15-29 year olds ####
 
@@ -278,7 +315,7 @@ spec_model <- "No program data"
 spec_main_title    = main_title
 
 results_agegroup1 <- results_agegroup
-areas1 <- areas
+areas1 <- areas_map
 
 ## Plot ##
 
@@ -310,10 +347,24 @@ tmp <- results_agegroup1 %>%
         type %in%       c("MC coverage", "MMC coverage", "TMC coverage")
     )
 
+# Create dummy rows of NAs for missing countries - want them grey in map
+missing_iso3 <- unique(
+  areas_join$iso3[!areas_join$iso3 %in% results_agegroup$iso3]
+)
+
+tmp_missing <- tidyr::crossing(
+  "iso3" = missing_iso3, 
+  "age_group" = tmp$age_group, 
+  "year" = tmp$year, 
+  "type" = tmp$type
+) %>% 
+  left_join(areas_join, by = "iso3", relationship = "many-to-many")
+
+# Merge to shapefiles
 tmp <- tmp %>% 
-        select(-matches("area_name")) %>%
-        # Merging to shapefiles
-        left_join(areas_join)
+  select(-matches("area_name")) %>%
+  left_join(areas_join) %>% 
+  bind_rows(tmp_missing)
 
 tmp <- tmp %>% 
     # filter out areas with missing iso3, which cause errors with below
@@ -409,6 +460,12 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
       size = 0.5,
       fill = NA
     ) +
+    geom_sf(
+      data   = lake_vic, 
+      colour = "lightblue", 
+      fill   = "lightblue",
+      size   = 0.5
+    ) + 
     labs(fill = "") +
     scale_fill_gradientn(
       colours = colourPalette,
@@ -594,10 +651,8 @@ p3 <- plt_data %>%
   filter(area_level == max(area_level)) %>% 
   ggplot(
     aes(
-      # countries on the x-axis, in specified order
-      x = country_idx, 
-      # median MC Coverage on the y-axis
-      y = median
+     x = country_idx,  # countries on the x-axis, in specified order
+     y = median # median MC Coverage on the y-axis
     )
   ) +
   # add points coloured by region with weighted populations determining size
@@ -617,7 +672,7 @@ p3 <- plt_data %>%
   # add median national level to plot as white dots
   geom_point(
     data = filter(plt_data, area_level == 0),
-    size = 5, 
+    size = 4.5, 
     fill = "#F1F1F1",
     col = "black", 
     alpha = 1, 
@@ -637,18 +692,21 @@ p3 <- plt_data %>%
   annotate(
     geom = "text",
     x = c(length(plot_order) + 1),
-    y = 0.12,
-    label = "non-VMMC",
+    # y = 0.12,
+    y = 0.21,
+    label = "non-VMMC Priority Countries",
     fontface = "bold",
-    size = 4.5
+    size = 3.5
   ) +
   annotate(
     geom = "text",
-    x = c(length(plot_order) - (country_positions1 + 4)),
-    y = 0.075,
-    label = "VMMC",
+    # x = c(length(plot_order) - (country_positions1 + 4)),
+    x = c(length(plot_order) - (country_positions1 + 5)),
+    # y = 0.075,
+    y = 0.175,
+    label = "VMMC Priority Countries",
     fontface = "bold",
-    size = 4.5
+    size = 3.5
   ) +
   theme_bw(base_size = 8) + 
   scale_x_continuous(
@@ -674,25 +732,26 @@ p3 <- plt_data %>%
     # labels = paste0(c(1, 50), "x")
   ) +
   labs(
-    y = "Median Male Circumcision Coverage", 
+    # y = "Median Male Circumcision Coverage", 
+    y = paste0("Male Circumcision Coverage, ", spec_years[2], ", ", spec_age_group, " year olds"),
     x = element_blank(), 
-    # size = "District pop. relative\nto median district size", 
     size = "District pop. relative to\n median district size", 
     color = "Region"
   ) +
-  ggtitle(paste0(
-    # "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
-    "District-Level male circumcision coverage, ", spec_years[2], ", ", spec_age_group, " year olds"
-  )) + 
+  # ggtitle(paste0(
+  #   # "District-Level MC Coverage, ", spec_years[2], " ages ", spec_age_group, " years old"
+  #   "District-Level male circumcision coverage, ", spec_years[2], ", ", spec_age_group, " year olds"
+  # )) + 
   scale_color_manual(values = wesanderson::wes_palette("Zissou1")[c(1, 4)]) +
   theme(
-    axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
-    axis.title.x = element_text(size = rel(1.5)),
-    axis.text.y = element_text(size = rel(1.8)),
+    # axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
+    axis.text.x = element_text(size = c(rep(12, 4), 15, 12), colour = "black"),
+    axis.title.x = element_text(size = rel(1.5), colour = "black"),
+    axis.text.y = element_text(size = rel(1.8), colour = "black"),
     strip.background = element_rect(fill = NA, colour = "white"), 
-    panel.background = element_rect(fill = NA, color = "black"),
-    legend.text = element_text(size = rel(1.5)),
-    legend.title = element_text(size = rel(1.5)),
+    panel.background = element_rect(fill = NA, colour = "black"),
+    legend.text = element_text(size = rel(1.5), colour = "black"),
+    legend.title = element_text(size = rel(1.5), colour = "black"),
     legend.title.align = 0.5,
     legend.position = "bottom",
     plot.title = element_text(hjust = 1, size = rel(1.6)),
@@ -703,9 +762,9 @@ p3 <- plt_data %>%
 
 p3$plot_order <- plot_order
 
-# dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
-# p3
-# dev.off()
+dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
+p3
+dev.off()
 
 # saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
