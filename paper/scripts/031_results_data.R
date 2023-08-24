@@ -345,13 +345,15 @@ p1 <- fig1data %>%
     shape = "Info on circumcision type",
     size = "Sample size"
   ) +
-  theme_bw() + 
+  theme_bw(base_size = 9) + 
   theme(
-    axis.title.x = element_text(size = 12, face = "bold"),
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 14, face = "bold"),
-    axis.text.y = element_text(size = 12, face = "bold"),
-    legend.text = element_text(size = 15, face= "bold"),
-    legend.title = element_text(size = 14, face = "bold"),
+    axis.title.x = element_text(size = rel(1.5), colour = "black"),
+    axis.text.x = element_text(
+      size = rel(1.5), angle = 45, hjust = 1, colour = "black"
+    ),
+    axis.text.y = element_text(size = rel(1.5), colour = "black"),
+    legend.text = element_text(size = rel(1.5), colour = "black"),
+    legend.title = element_text(size = rel(1.5), colour = "black"),
     legend.position = "bottom",
     legend.box = "vertical",
     legend.spacing = unit(0, "cm"),
@@ -362,7 +364,7 @@ p1 <- fig1data %>%
     plot.margin = margin(0.25, 1, 0, 0, "cm") 
   ) +
   coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
-# p1
+p1
 
 # dev.new(width = 6.3, height = 10.5, noRStudioGD = TRUE)
 # p1
