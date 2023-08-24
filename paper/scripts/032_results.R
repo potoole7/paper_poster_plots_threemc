@@ -63,6 +63,20 @@ target_iso3 <- c(
   "RWA", "ZAF", "SWZ", "UGA", "TZA", "ZMB", "ZWE"
 )
 
+# VMMC countries  
+vmmc_iso3 <- c(
+  "LSO", "MOZ", "NAM", "RWA", "TZA", "UGA", "MWI",
+  "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF" # LSO, SWZ ran already
+)
+vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
+
+# countries with no type information
+no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
+
+# remaining countries
+iso3 <- ssa_iso3[!ssa_iso3 %in% c(vmmc_iso3, no_type_iso3)]
+
+
 
 # Colour palette for "% change" facets in map plot
 # colourPalette <- rev(colorRampPalette(
@@ -95,19 +109,22 @@ colourPalette <- c(
 )
 
 
+# plot order for countries, first non-VMMC & then VMMC countries
+plot_order <- c(
+  "BEN", "BFA", "CIV", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", 
+  "NGA", "SEN", "SLE", "GMB", "TGO", "AGO", "CMR", "CAF", "TCD", 
+  "COG", "COD", "GAB", "BDI", "ETH", "KEN", "MWI", "MOZ", "RWA", 
+  "TZA", "UGA", "ZMB", "ZWE", "BWA", "SWZ", "LSO", "NAM", "ZAF"
+)
+
+# where to add horizontal line for VMMC vs non-VMMC
+country_positions1 <- length(vmmc_iso3) + 1
+
+
 #### Load Data ####
 
 # orderly archives
 archives <- orderly::orderly_list_archive()
-
-# VMMC countries  
-vmmc_iso3 <- c(
-  "LSO", "MOZ", "NAM", "RWA", "TZA", "UGA", "MWI",
-  "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF" # LSO, SWZ ran already
-)
-no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
-
-iso3 <- ssa_iso3[!ssa_iso3 %in% c(vmmc_iso3, no_type_iso3)]
 
 pars_df <- bind_rows(
   # parameters for VMMC countries 
@@ -233,6 +250,19 @@ populations <- load_orderly_data(
   # filter(iso3 %in% results_age$iso3) %>% 
   # filter(iso3 %in% results_agegroup_rate$iso3) %>% 
   identity()
+
+# add country position in figs. 3 & 6, with whitespace for horizontal line
+plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
+country_pos_df <- data.frame(
+  "iso3"        = plot_order, 
+  "country_idx" = rev(seq_along(plot_order))
+) %>% 
+  mutate(
+    country_idx = ifelse(!iso3 %in% vmmc_iso3, country_idx + 1, country_idx), 
+    country = country_name_convention(
+      countrycode::countrycode(iso3, "iso3c", "country.name")
+    )
+  )
 
 # last surveys 
 last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
@@ -573,24 +603,6 @@ ggsave(
 
 #### Figure 3: Sub-National Variation in MC Coverage Plot ####
 
-# TODO: Fix country orderings
-
-# order plot West to East, North to South
-# plot_order <- c(
-#   "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
-#   "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
-#   "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
-#   "SWZ", "LSO", "ZAF"
-# )
-# plot order from figure 1
-plot_order <- c(
-  "BEN", "BFA", "CIV", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", 
-  "NGA", "SEN", "SLE", "GMB", "TGO", "AGO", "CMR", "CAF", "TCD", 
-  "COG", "COD", "GAB", "BDI", "ETH", "KEN", "MWI", "MOZ", "RWA", 
-  "TZA", "UGA", "ZMB", "ZWE", "BWA", "SWZ", "LSO", "NAM", "ZAF"
-)
-plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
-
 # take MC coverage for specific age group and final year
 plt_data <- results_agegroup %>%
   filter(
@@ -617,33 +629,13 @@ plt_data <- results_agegroup %>%
   mutate(population = population / median(population)) %>%
   ungroup()
 
-# where to add horizontal line for VMMC vs non-VMMC
-country_positions1 <- length(vmmc_iso3) + 1
-
-# add country position (need whitespace for horizontal line)
-country_pos_df <- data.frame(
-  "iso3"        = plot_order, 
-  "country_idx" = rev(seq_along(plot_order))
-) %>% 
-  mutate(
-    country_idx = ifelse(!iso3 %in% vmmc_iso3, country_idx + 1, country_idx), 
-    country = country_name_convention(
-      countrycode::countrycode(iso3, "iso3c", "country.name")
-    )
-  )
-
+# add plot position for each country
 plt_data <- plt_data %>% 
   mutate(
     vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "None-VMMC"), 
-    # country_idx = as.integer(fct_rev(iso3)) +
-    # country_idx = as.integer(iso3) +
-    #   c(0, 1, 2, 3)[
-    #     match(region, rev(c("None-VMMC", "VMMC")))
-    #   ]
   ) %>% 
   left_join(country_pos_df)
 
-# 
 set.seed(123)
 p3 <- plt_data %>% 
   # take max area level for each country
@@ -691,22 +683,26 @@ p3 <- plt_data %>%
   # annotate plot with regional labels
   annotate(
     geom = "text",
-    x = c(length(plot_order) + 1),
+    x = c(length(plot_order) + 0.5),
     # y = 0.12,
-    y = 0.21,
-    label = "non-VMMC Priority Countries",
+    # y = 0.21,
+    y = 0.01,
+    label = "non-VMMC \n Priority Countries",
     fontface = "bold",
-    size = 3.5
+    size = 3.5, 
+    hjust = 0
   ) +
   annotate(
     geom = "text",
     # x = c(length(plot_order) - (country_positions1 + 4)),
-    x = c(length(plot_order) - (country_positions1 + 5)),
+    x = c(length(plot_order) - (country_positions1 + 4.5)),
     # y = 0.075,
-    y = 0.175,
-    label = "VMMC Priority Countries",
+    # y = 0.175,
+    y = 0.01,
+    label = "VMMC \n Priority Countries",
     fontface = "bold",
-    size = 3.5
+    size = 3.5, 
+    hjust = 0
   ) +
   theme_bw(base_size = 8) + 
   scale_x_continuous(
@@ -871,10 +867,10 @@ ggplot2::ggsave(
 )
 
 
-#### Figure 5: Change in MC/MMC/TMC from 2000 ####
+#### Figure 5: Geofaceted plot of age at circumcision ####
 
-no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
-vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
+
+#### Figure 6: Change in MC/MMC/TMC from 2000 ####
 
 # Want to show change in MC/TMC/MMC from 2000 to 2020
 # On y axis, will have country names 
@@ -930,9 +926,9 @@ tmp <- results_agegroup %>%
   # simplify type name
   mutate(
     type = case_when(
-      grepl("MMC", type)  ~ "MMC", 
-      grepl("TMC", type)  ~ "TMC", 
-      TRUE                ~ "MC"
+      grepl("MMC", type) ~ "Medical Male Circumcision", # "MMC", 
+      grepl("TMC", type) ~ "Traditional Male Circumcision", # "TMC", 
+      TRUE               ~ "Male Circumcision" # "MC"
     )
   ) 
   
@@ -940,12 +936,12 @@ tmp <- results_agegroup %>%
 ## Plotting ##
   
 # Setting factor for ggplot2
-plot_order <- c(
-  "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
-  "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
-  "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
-  "SWZ", "LSO", "ZAF"
-)
+# plot_order <- c(
+#   "SEN", "GMB", "GNB", "GIN", "SLE", "LBR", "MLI", "BFA", "CIV", "GHA", "TGO", 
+#   "BEN", "NER", "NGA", "CMR", "TCD", "CAF", "SSD", "ETH", "GAB", "COG", "COD",
+#   "UGA", "KEN", "RWA", "BDI", "TZA", "AGO", "ZMB", "MWI", "MOZ", "ZWE", "NAM", 
+#   "SWZ", "LSO", "ZAF"
+# )
 plot_order <- plot_order[plot_order %in% results_agegroup$iso3]
 tmp$area_id <- factor(tmp$area_id, levels = plot_order)
 tmp <- tmp[order(tmp$area_id), ]
@@ -983,13 +979,22 @@ tmp <- tmp %>%
 
 annotate_df <- data.frame(
   country_idx = c(
-    c(length(plot_order) + 1),
-    c(length(plot_order) - (country_positions1 + 3.5))
+    c(length(plot_order) + 0.5),
+    c(length(plot_order) - (country_positions1 + 4))
   ),
-  # value = c(0.22, 0.12), 
-  value = c(0.24, 0.14), 
-  type  = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
-  label = c("Non-VMMC", "VMMC")
+  # value = c(0.24, 0.14), 
+  value = c(0.05, 0.04), 
+  # type  = factor(c("MC", "MC"), levels = c("MC", "MMC", "TMC")),
+  type  = factor(
+    c("Male Circumcision", "Male Circumcision"), 
+    levels = c(
+      "Male Circumcision", 
+      "Medical Male Circumcision", 
+      "Traditional Male Circumcision"
+    )
+  ),
+  # label = c("Non-VMMC", "VMMC")
+  label = paste0(c("Non-VMMC", "VMMC"), "\n priority countries")
 )
 
 # convert to long format for plot
@@ -1001,29 +1006,51 @@ tmp_long <- tmp %>%
 tmp_long_lower <- tmp_long %>% filter(year == 2000)
 tmp_long_upper <- tmp_long %>% filter(year == 2020)
 
-p5 <- tmp_long %>%
+# tmp_long_lower1 <- tmp_long_lower %>% 
+#   mutate(
+#     value = ifelse(
+#       !is.na(tmp_long_upper$value) & value < tmp_long_upper$value, 
+#       value - 0.05, 
+#       value + 0.05)
+#   )
+
+# "Nudge" arrows so they point to point edges, rather than centroids
+# nudge <- 0.0375
+# tmp_long_upper1 <- tmp_long_upper %>% 
+#   mutate(
+#     value = case_when(
+#       is.na(tmp_long_lower$value)            ~ value, 
+#       # if 2020 cov > 2000 cov, move back by `nudge` from dot centroid
+#       value > (tmp_long_lower$value + nudge) ~ value - nudge,
+#       # if 2020 cov < 2000 cov, move forward
+#       value + nudge < tmp_long_lower$value   ~ value + nudge,
+#       TRUE                                   ~ value
+#     )
+#   )
+
+p6 <- tmp_long %>%
   ggplot() +
   geom_point(aes(x = country_idx, y = value, colour = factor(year)), size = 3) +
   geom_segment(
+  # ggarchery::geom_arrowsegment(
     data = tmp_long_lower,
     aes(
       x      = country_idx,
       y      = value,
       xend   = tmp_long_upper$country_idx,
-      yend   = tmp_long_upper$value # ,
-      # colour = factor(year)
+      yend   = tmp_long_upper$value
     ), 
-    arrow = arrow(length = unit(0.3, "cm")), 
+    arrow = arrow(length = unit(0.2, "cm"), type = "closed"), 
     size = 0.6
   ) +
   # add vline for VMMC - non-VMMC split
   geom_vline(xintercept = country_positions1) +
   geom_text(
     data = annotate_df, 
-    # aes(label = label),
     aes(x = country_idx,  y = value, label = label), 
-    size = 3, 
-    fontface = "bold"
+    size = 2.5, 
+    fontface = "bold",
+    hjust = 0
   ) +
   # label countries, with space for vline splitting VMMC & non-VMMC
   scale_x_continuous(
@@ -1043,11 +1070,11 @@ p5 <- tmp_long %>%
   ) + 
   labs(
     x        = "Country",
-    y        = "Change in Coverage (%)",
-    colour   = "Year",
+    y        = "Coverage (%), 15-29 year olds",
+    colour   = ""
     # title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
-    title    = "Change in male circumcision coverage, 2000 - 2020, 15-29 year olds",
-    subtitle = ""
+    # title    = "Change in male circumcision coverage, 2000 - 2020, 15-29 year olds",
+    # subtitle = ""
   ) +
   facet_wrap(type ~ .) + # , scales = "free") +
   theme_bw(base_size = 8) +
@@ -1056,14 +1083,18 @@ p5 <- tmp_long %>%
   # pal_nejm("default")(2)[2:1] + 
   # Altering plot text size
   theme(
-    axis.text.x         = element_text(size = rel(1.2)),
-    axis.title.x        = element_text(size = rel(1.2)),
-    axis.text.y         = element_text(size = rel(1.2)),
+    axis.text.x         = element_text(size = rel(1.2), colour = "black"),
+    axis.title.x        = element_text(size = rel(1.2), colour = "black"),
+    axis.text.y         = element_text(size = rel(1.2), colour = "black"),
     axis.ticks.length.y = unit(5, "pt"), 
-    strip.text          = element_text(size = rel(1.2)),
-    legend.text         = element_text(size = rel(1.2)),
-    legend.title        = element_text(size = rel(1.3)),
-    legend.position     = "bottom",
+    strip.text          = element_text(
+      size = rel(0.9), face = "bold", colour = "black", hjust = 0
+    ),
+    legend.text         = element_text(size = rel(1.2), colour = "black"),
+    legend.position     = c(0.062, 0.9),
+    # remove white box behind legend
+    legend.background   = element_rect(colour = NA, fill = NA),
+    legend.key          = element_rect(colour = NA, fill = NA),
     plot.title          = element_text(
       size = rel(1.4), hjust = 0.5, vjust = -2
     ), 
@@ -1071,20 +1102,20 @@ p5 <- tmp_long %>%
     panel.spacing       = unit(0.65, units = "cm"), 
     panel.border        = element_blank(),
     panel.grid.major.y  = element_blank(),
-    plot.margin         = unit(c(0, 0.5, 0, 0), "cm"),
+    plot.margin         = unit(c(0, 0.5, 0.2, 0), "cm"),
     strip.background    = element_rect(fill = NA, colour = "white"),
     panel.background    = element_rect(fill = NA, color = "black")
   ) +
   coord_flip(clip = "off", expand = TRUE)
 
-dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
-p5
-dev.off()
+# dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
+# p6
+# dev.off()
 
-saveRDS(p5, "paper_poster_plots/paper/plots/05_change_00_20.RDS")
+# saveRDS(p6, "paper_poster_plots/paper/plots/06_change_00_20.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/05_change_00_20.png",
-  p5,
+  "paper_poster_plots/paper/plots/06_change_00_20.png",
+  p6,
   width = 6.3,
   height = 6,
   units = "in"
