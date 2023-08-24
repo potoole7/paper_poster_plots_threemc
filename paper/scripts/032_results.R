@@ -683,22 +683,26 @@ p3 <- plt_data %>%
   # annotate plot with regional labels
   annotate(
     geom = "text",
-    x = c(length(plot_order) + 1),
+    x = c(length(plot_order) + 0.5),
     # y = 0.12,
-    y = 0.21,
-    label = "non-VMMC Priority Countries",
+    # y = 0.21,
+    y = 0.01,
+    label = "non-VMMC \n Priority Countries",
     fontface = "bold",
-    size = 3.5
+    size = 3.5, 
+    hjust = 0
   ) +
   annotate(
     geom = "text",
     # x = c(length(plot_order) - (country_positions1 + 4)),
-    x = c(length(plot_order) - (country_positions1 + 5)),
+    x = c(length(plot_order) - (country_positions1 + 4.5)),
     # y = 0.075,
-    y = 0.175,
-    label = "VMMC Priority Countries",
+    # y = 0.175,
+    y = 0.01,
+    label = "VMMC \n Priority Countries",
     fontface = "bold",
-    size = 3.5
+    size = 3.5, 
+    hjust = 0
   ) +
   theme_bw(base_size = 8) + 
   scale_x_continuous(
