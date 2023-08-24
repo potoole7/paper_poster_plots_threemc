@@ -127,11 +127,9 @@ Jeffrey W. Eaton\textsuperscript{1,6} \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The study consisted of 33 sub-Saharan countries, which in approximate order from North to South and then West to East are: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Democratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, South Africa". 
-We excluded 4 SSA countries: Equitorial Guinea, Guinea-Bissau, the Central African Republic and Botswana. These were excluded because they either had no surveys conducted, or, where surveys were available, there was insufficient information available on age at circumcision.  
-
-We identified 109 nationally representative household surveys conducted the study region  between 2002 and 2019. 
-These included several major survey series, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{dhs, ais, phia, hsrc2002, hsrc2008, hsrc2012, hsrc2017} \todo{include MICS reference}.
+The study consisted of 33 sub-Saharan countries, that have conducted surveys that contained information on self-reported circumcision status since 2002: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Democratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, South Africa. 
+We excluded Equitorial Guinea, Guinea-Bissau, the Central African Republic and Botswana because they either had no surveys conducted, or, where surveys were available, there was insufficient information available on age at circumcision.  
+In total, we identified 109 nationally representative household surveys conducted the study region between 2002 and 2019. These included several major survey series, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{dhs, ais, phia, hsrc2002, hsrc2008, hsrc2012, hsrc2017} \todo{include MICS reference}.
 Data on self-reported circumcision status were available in 104 out of the total 109 surveys. 
 \textbf{[Expand on reasons for exclusions]} \textbf{[Link in your survey figure]} \todo{done, what do you mean by "link in survey figure?"}
 Excluded surveys lacked information on age at circumcision, which made it impossible to make inferences on circumcision under our time-to-event modelling framework. The surveys which were excluded on the basis of this requirement were the 2008 Botswana AIDS Impact Survey (BAIS) and 2013 BAIS surveys, the Central African Republic 2018 MICS survey and the 2014 and 2018 Guinea-Bissau MICS surveys \cite{bais2008, bais2013}.
@@ -322,6 +320,90 @@ Demographic variables such as age, residence and survey sampling weight were ext
 & 2016 (PHIA) & \checkmark & \checkmark & \checkmark & \xmark 
 \end{longtable}
 }
+
+
+\begin{landscape}
+    {\linespread{1}
+  \footnotesize 
+\begin{longtable}[c]{ll cccc ccc ccc}
+      %%%%%%%%%%%%%%%%%%%%
+      %%% Table header %%%
+      %%%%%%%%%%%%%%%%%%%%
+      % Upper layer of table header
+      \hline
+      % Lines inside the header
+      \multicolumn{1}{l}{} & & \multicolumn{4}{c}{\bf Survey questions} & \multicolumn{2}{c}{\bf Sample size} & \multicolumn{2}{c}{\bf Circumcision status} & \multicolumn{2}{c}{\bf Circumcision metadata} \\
+      \cmidrule(lr){3-6} \cmidrule(lr){7-8}\cmidrule(lr){9-10} \cmidrule(lr){11-12}
+       & & {\bf Circ.} & {\bf Age at} & {\bf Who} & {\bf Where } & \multirow{2}{*}{\bf Total} & \multirow{2}{*}{\bf Included (\%)} & \multirow{2}{*}{\bf Uncircumcised (\%)} & \multirow{2}{*}{\bf Circumcised (\%)} & {\bf Known age} & {\bf Known type}
+       \\
+       & & {\bf Status} & {\bf Circ.} & {\bf performed?} & {\bf performed?}  & & & & & {\bf at circ. (\%)} & {\bf of circ. (\%)} \\[5pt]
+      % Lower lines
+      \hline
+      \vspace{-3pt}
+      \endhead
+      %%%%%%%%%%%%%%%%%%%%
+      %%% Table footer %%%
+      %%%%%%%%%%%%%%%%%%%%
+      \\[-3pt] \hline
+      \endfoot
+      %%%%%%%%%%%%%%%%%%%%%%
+      %%% Table contents %%%
+      %%%%%%%%%%%%%%%%%%%%%%
+      \multicolumn{2}{l}{\textbf{Angola}} \\ 
+& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark & 5684 & 5660 (99.58\%) & 207 (3.66\%) & 5453 (96.34\%) & 4106 (75.30\%) & 4767 (75.30\%) \\[3pt]
+\multicolumn{2}{l}{\textbf{Benin}} \\ 
+& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark & 5321 & 5317 (99.92\%) & 234 (4.40\%) & 5083 (95.60\%) & 0 (0.00\%) & 0 (0.00\%) \\ 
+& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark & 5153 & 5129 (99.53\%) & 354 (6.90\%) & 4775 (93.10\%) & 2709 (56.73\%) & 4328 (56.73\%) \\  
+& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark & 4577 & 4370 (95.48\%) & 124 (2.84\%) & 4246 (97.16\%) & 4141 (97.53\%) & 4210 (97.53\%) \\  
+& 2017 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark & 7595 & 7569 (99.66\%) & 401 (5.30\%) & 7168 (94.70\%) & 2514 (35.07\%) & 7063 (35.07\%) \\[3pt]
+\end{longtable}
+
+\begin{longtable}[c]{ll ccc ccc}
+      %%%%%%%%%%%%%%%%%%%%
+      %%% Table header %%%
+      %%%%%%%%%%%%%%%%%%%%
+      % Upper layer of table header
+      \hline
+      % Lines inside the header
+      \multicolumn{1}{l}{} & & \multicolumn{2}{c}{\bf Sample size} & \multicolumn{2}{c}{\bf Circumcision status} & \multicolumn{2}{c}{\bf Circumcision metadata} \\ 
+      \cmidrule(lr){3-4} \cmidrule(lr){5-6}\cmidrule(lr){7-8} 
+       & & \multirow{2}{*}{\bf Total} & \multirow{2}{*}{\bf Included (\%)} & \multirow{2}{*}{\bf Uncircumcised (\%)} & \multirow{2}{*}{\bf Circumcised (\%)} & {\bf Known age at} & {\bf Known type of}
+       \\
+       & & & & & & {\bf circumcision (\%)} & {\bf circumcision (\%)} \\[5pt]
+      % Lower lines
+      \hline
+      \vspace{-3pt}
+      \endhead
+      %%%%%%%%%%%%%%%%%%%%
+      %%% Table footer %%%
+      %%%%%%%%%%%%%%%%%%%%
+      \\[-3pt] \hline
+      \endfoot
+      %%%%%%%%%%%%%%%%%%%%%%
+      %%% Table contents %%%
+      %%%%%%%%%%%%%%%%%%%%%%
+\multicolumn{2}{l}{\textbf{Angola}} \\ 
+& 2015 (DHS) & 5684 & 5660 (99.58\%) & 207 (3.66\%) & 5453 (96.34\%) & 4106 (75.30\%) & 4767 (75.30\%) \\[3pt]
+\multicolumn{2}{l}{\textbf{Benin}} \\ 
+& 2006 (DHS) & 5321 & 5317 (99.92\%) & 234 (4.40\%) & 5083 (95.60\%) & 0 (0.00\%) & 0 (0.00\%) \\ 
+& 2012 (DHS) & 5153 & 5129 (99.53\%) & 354 (6.90\%) & 4775 (93.10\%) & 2709 (56.73\%) & 4328 (56.73\%) \\ 
+& 2014 (MICS) & 4577 & 4370 (95.48\%) & 124 (2.84\%) & 4246 (97.16\%) & 4141 (97.53\%) & 4210 (97.53\%) \\ 
+& 2017 (DHS) & 7595 & 7569 (99.66\%) & 401 (5.30\%) & 7168 (94.70\%) & 2514 (35.07\%) & 7063 (35.07\%) \\[3pt]
+\end{longtable}
+}
+\end{landscape}
+
+
+
+
+
+
+
+
+  
+
+
+
 
 The age of respondents was calculated from the century-month-code (CMC) of birth and interview dates. 
 Survey respondents were located to their districts using masked cluster geocoordinates. 
@@ -598,7 +680,7 @@ where $b_{aj}$ are B-spline basis functions {\color{red}[CITE]} with knots place
   w_{j} \; | \; w_{j-1}, \rho_{w}, \tau_{w} &\sim N(\rho_{w} \cdot w_{j-1}, \;\; \tau^{-1}_{w}) \;\;\;  j = 2, 3,\ldots, J \\
   w_{1} \; | \; \rho_{w}, \tau_{w} &\sim N(0, \tau^{-1}_{w}) 
 \end{align*}
-where $|\rho_{w}| < 1$ is an autocorrelation parameter controlling the correlation of the effect of the current age on the previous age and $\tau_{w}$ is the precision. The joint distribution is given by $\boldsymbol{w}\; | \; \rho_{w}, \tau_{w} \sim N(\boldsymbol{0}, \tau_{w}^{-1}Q^{-1}_{J}(\rho_{w}))$ where $Q_{J}$ is the precision matrix as defined by the basis functions and the autocorrelation parameter. Then defining $\boldsymbol{\beta} = W_{\beta}\cdot \boldsymbol{w}$ where $W_{\beta}$ is a design matrix evaluating the basis functions $b_{aj}$ at each age of interest, the joint distribution is given by, $\boldsymbol{\beta}\; | \;\boldsymbol{\omega}, \; W_{\beta}, \; \rho_{w}, \tau_{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{A})$ where Q^{-1}_{A} = W_{\beta}\cdot Q^{-1}_{J}(\rho_{w})\cdot W_{\beta}^T.
+where $|\rho_{w}| < 1$ is an autocorrelation parameter controlling the correlation of the effect of the current age on the previous age and $\tau_{w}$ is the precision. The joint distribution is given by $\boldsymbol{w}\; | \; \rho_{w}, \tau_{w} \sim N(\boldsymbol{0}, \tau_{w}^{-1}Q^{-1}_{J}(\rho_{w}))$ where $Q_{J}$ is the precision matrix as defined by the basis functions and the autocorrelation parameter. Then defining $\boldsymbol{\beta} = W_{\beta}\cdot \boldsymbol{w}$ where $W_{\beta}$ is a design matrix evaluating the basis functions $b_{aj}$ at each age of interest, the joint distribution is given by, $\boldsymbol{\beta}\; | \;\boldsymbol{\omega}, \; W_{\beta}, \; \rho_{w}, \tau_{\beta} \sim N(\boldsymbol{0}, \tau_{\beta}^{-1}Q^{-1}_{A})$ where $Q^{-1}_{A} = W_{\beta}\cdot Q^{-1}_{J}(\rho_{w})\cdot W_{\beta}^T$.
 
 In time, we consider three possible prior distribution choices for the random effects ($\hat{\theta}_t$, $\hat{\delta}_{at}$, $\theta_t$, $\delta_{at}$ and $\zeta_{it}$): an autoregressive process of order 1 (AR1), random walk of order 1 (RW1) and random walk of order 2 (RW2). AR and RW processes allows us to encode temporal dependence between survey information on the probability and coverage of circumcision and project this into the future. For a generic parameter $\beta_t$, an AR1 process assumes that,
 \begin{align*} 
