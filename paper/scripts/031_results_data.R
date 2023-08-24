@@ -259,8 +259,14 @@ plot_surveys <- survey_tbl %>%
   ) %>%
   # arrange by region (as a factor) and country (alphabetically)
   arrange(region, country) %>%
-  # convert country to factor
-  mutate(country = fct_inorder(country))
+  # change long country name, severely affecting plot width
+  mutate(
+    country = ifelse(
+      country == "Central African Republic", "Cent. Af. Rep.", country
+    ),
+    # convert country to factor
+    country = fct_inorder(country)
+  )
 
 
 fig1data <- plot_surveys %>%
@@ -301,15 +307,15 @@ p1 <- fig1data %>%
   # annotate plot with (vertical) regional labels
   annotate(
     "text",
-    2020,
+    2020.2,
     # have labels in between horizontal lines
     zoo::rollmean(c(country_positions, 0), 2),
     label = c("Western", "Central", "Eastern", "Southern"),
     angle = 270,
     fontface = "bold",
-    size = 6
+    size = 4
   ) +
-  geom_point(stroke = 3) +
+  geom_point(stroke = 2) +
   # specify x and y labels, subbing country name for country_idx
   scale_x_continuous(
     "Survey Year", 
@@ -334,14 +340,15 @@ p1 <- fig1data %>%
     size = guide_legend(order = 3)
   ) +
   labs(
-    colour = "Survey Type",
+    colour = "Survey type",
     # shape = "Type Distinction",
-    shape = "Information on Circumcision Type",
-    size = "Sample Size"
+    shape = "Info on circumcision type",
+    size = "Sample size"
   ) +
+  theme_bw() + 
   theme(
     axis.title.x = element_text(size = 12, face = "bold"),
-    axis.text.x = element_text(angle = 45, hjust = 1.0, size = 14, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 14, face = "bold"),
     axis.text.y = element_text(size = 12, face = "bold"),
     legend.text = element_text(size = 15, face= "bold"),
     legend.title = element_text(size = 14, face = "bold"),
@@ -356,6 +363,11 @@ p1 <- fig1data %>%
   ) +
   coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
 # p1
+
+# dev.new(width = 6.3, height = 10.5, noRStudioGD = TRUE)
+# p1
+# dev.off()
+
 
 #### Data inlines ####
 
@@ -604,12 +616,12 @@ data_inlines <- c(
 #### Saving ####
 
 # save plot
-saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
+# saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/01_survey_table.png", 
   p1, 
-  width = 9, 
-  height = 11,
+  width = 6.3, 
+  height = 8,
   units = "in"
 )
 
