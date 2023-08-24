@@ -235,13 +235,15 @@ sample_sizes <- survey_circumcision %>%
 
 # find original sample; this will give participation
 n_orig <- survey_circumcision_orig %>% 
-  group_by(survey_id) %>% 
-  summarise(n_orig = n(), .groups = "drop") %>% 
-  select(-survey_id)
+  count(survey_id) %>% 
+  # select(-survey_id)
+  identity()
 
-sample_sizes <- cbind(sample_sizes, n_orig) %>% 
+# sample_sizes <- cbind(sample_sizes, n_orig) %>% 
+sample_sizes <- left_join(sample_sizes, n_orig) %>% 
+  relocate(n_orig = n, .before = everything()) %>% 
   # calculate participation rates
-  mutate(part_rates = N / n_orig) %>% 
+  # mutate(part_rates = N / n_orig) %>% 
   select(-survey_id)
 
 # find level of left and right censoring occuring
@@ -260,6 +262,7 @@ cens <- survey_circumcision %>%
   
 # finally, find number of known circumcision types
 types <- survey_circumcision %>% 
+  mutate(type = ifelse(type == "Missing", NA, type)) %>% 
   group_by(survey_id) %>% 
   summarise(
     across(all_of(c("circ_who", "circ_where", "type")),
@@ -270,21 +273,27 @@ types <- survey_circumcision %>%
 
 # now join together!
 table3 <- cbind(survey_names, sample_sizes, cens, types) %>% 
-  select(-c(survey_id, n_orig)) %>% 
-  mutate(part_rates = paste(round(100 * part_rates, 3), "%", sep = "")) %>% 
-  rename(
+  # select(-c(survey_id, n_orig)) %>% 
+  select(-survey_id) %>% 
+  # remove questions about circ type; unneeded
+  select(-c(known_who, known_where)) %>% 
+  # mutate(part_rates = paste(round(100 * part_rates, 3), "%", sep = "")) %>% 
+  select(
     "Country"                      = country, 
     "Year"                         = year, 
     "Series"                       = series, 
-    "Sample Size"                  = N, 
+    # "Sample Size"                  = N, 
+    "Sample Size"                  = n_orig,
     "Effective Sample Size"        = Neff, 
-    "Participation Rates"          = part_rates, 
+    # "Participation Rates"          = part_rates, 
+    "Number Participated"          = N, 
     "Left Censored"                = left_censored, 
     "Right Censored/Uncircumcised" = right_censored, 
     "Uncensored/Circumcised"       = uncensored, 
-    "Known Circumcision Provider"  = known_who, 
-    "Known Circumcision Location"  = known_where, 
+    # "Known Circumcision Provider"  = known_who, 
+    # "Known Circumcision Location"  = known_where, 
     "Known Circumcision Type"      = known_type
   )
 
 # tabulate and export to Latex (to do!)
+readr::write_csv(table3)
