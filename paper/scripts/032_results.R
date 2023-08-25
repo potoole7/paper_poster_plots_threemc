@@ -94,7 +94,7 @@ colourPalette2 <- rev(colorRampPalette(
   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
     "#e6f598", "#abdda4", "#8CD1A4", "#66C2A4", "#3D94B7", "#2C82B7", "#13699e",
     "#5e4fa2")
-)(100))
+)(50))
 
 # change region changing from blue to grean to only blue
 # colourPalette[30:40] <- colourPalette[30]
@@ -104,8 +104,8 @@ colourPalette2 <- rev(colorRampPalette(
 # Colour Palette for years in map plot
 # colourPalette <- viridis::plasma(100)
 colourPalette <- c(
-  grDevices::colorRampPalette(c("blue","white"))(40), 
-  grDevices::colorRampPalette(c("white", "red"))(100)
+  grDevices::colorRampPalette(c("blue","white"))(20), 
+  grDevices::colorRampPalette(c("white", "red"))(50)
 )
 
 
@@ -555,7 +555,7 @@ map_plot <- function(
     theme_minimal(base_size = 9) +
     theme(
       strip.text    = element_text(size = rel(1.1), face = "bold"), 
-      legend.text   = element_text(size = rel(0.8)),
+      legend.text   = element_text(size = rel(0.75)),
       legend.title = element_text(size = rel(1.0), face = "bold", hjust = 0.5),
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
