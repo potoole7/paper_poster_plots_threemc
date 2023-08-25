@@ -649,14 +649,12 @@ p3 <- plt_data %>%
   ) +
   scale_size_continuous(
     breaks = c(1, 10, 20), 
-    # limits = c(10, 50), 
-    # breaks = c(100, 200, 300), 
     labels = paste0(c(1, 10, 20), "x")
   ) +
   # add median national level to plot as white dots
   geom_point(
     data = filter(plt_data, area_level == 0),
-    size = 4.5, 
+    size = 4, 
     fill = "#F1F1F1",
     col = "black", 
     alpha = 1, 
@@ -675,21 +673,16 @@ p3 <- plt_data %>%
   # annotate plot with regional labels
   annotate(
     geom = "text",
-    x = c(length(plot_order) + 0.5),
-    # y = 0.12,
-    # y = 0.21,
+    x = c(length(plot_order) + 0.85),
     y = 0.01,
-    label = "non-VMMC \nPriority Countries",
+    label = "Non-VMMC \nPriority Countries",
     fontface = "bold",
     size = 3.5, 
     hjust = 0
   ) +
   annotate(
     geom = "text",
-    # x = c(length(plot_order) - (country_positions1 + 4)),
-    x = c(length(plot_order) - (country_positions1 + 4.5)),
-    # y = 0.075,
-    # y = 0.175,
+    x = c(length(plot_order) - (country_positions1 + 3.9)),
     y = 0.01,
     label = "VMMC \nPriority Countries",
     fontface = "bold",
@@ -706,12 +699,12 @@ p3 <- plt_data %>%
     expand = expansion(add = 0.6)
   ) +
   scale_y_continuous(
-    n.breaks = 6, 
-    breaks = c(0, 0.25, 0.5, 0.75, 0.9, 1),
     expand = c(0, 0), 
     limits = c(0, 1), 
-    labels = scales::percent
-  ) +
+    label = scales::label_percent(),
+    breaks = seq(0, 1, by = 0.25), 
+    n.breaks = 5 
+  ) + 
   scale_size_continuous(
     breaks = c(1, 10, 20), 
     range = c(1, 12),
@@ -732,8 +725,8 @@ p3 <- plt_data %>%
   # )) + 
   scale_color_manual(values = wesanderson::wes_palette("Zissou1")[c(1, 4)]) +
   theme(
-    # axis.text.x = element_text(size = c(rep(12, 3), 15, 12)),
-    axis.text.x = element_text(size = c(rep(12, 4), 15, 12), colour = "black"),
+    # axis.text.x = element_text(size = c(rep(12, 4), 15, 12), colour = "black"),
+    axis.text.x = element_text(size = c(12), colour = "black"),
     axis.title.x = element_text(size = rel(1.5), colour = "black"),
     axis.text.y = element_text(size = rel(1.8), colour = "black"),
     strip.background = element_rect(fill = NA, colour = "white"), 
