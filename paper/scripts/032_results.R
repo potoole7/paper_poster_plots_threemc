@@ -767,6 +767,9 @@ rm(p3); gc()
 
 #### Figure 4: Geofaceted plot for single ages ####
 
+# results_age <- readr::read_csv(
+#   "paper_poster_plots/paper/data/results_age.csv.gz"
+# )
 p4 <- plt_coverage_year_national_single_age(
   results_age  = results_age,
   areas        = areas,
@@ -1029,7 +1032,7 @@ p6 <- tmp_long %>%
       xend   = tmp_long_upper$country_idx,
       yend   = tmp_long_upper$value
     ), 
-    arrow = arrow(length = unit(0.2, "cm"), type = "closed"), 
+    arrow = arrow(length = unit(0.15, "cm"), type = "closed"), 
     size = 0.6
   ) +
   # add vline for VMMC - non-VMMC split
@@ -1074,11 +1077,13 @@ p6 <- tmp_long %>%
   # Altering plot text size
   theme(
     axis.text.x         = element_text(size = rel(1.2), colour = "black"),
-    axis.title.x        = element_text(size = rel(1.2), colour = "black"),
+    axis.title.x        = element_text(
+      size = rel(0.9), face = "bold", colour = "black", vjust = -1
+    ),
     axis.text.y         = element_text(size = rel(1.2), colour = "black"),
     axis.ticks.length.y = unit(5, "pt"), 
     strip.text          = element_text(
-      size = rel(0.9), face = "bold", colour = "black", hjust = 0
+      size = rel(0.9), face = "bold", colour = "black" #  , hjust = 0
     ),
     legend.text         = element_text(size = rel(1.2), colour = "black"),
     legend.position     = c(0.062, 0.9),
