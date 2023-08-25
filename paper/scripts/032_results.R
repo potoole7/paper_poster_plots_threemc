@@ -770,17 +770,6 @@ rm(p3); gc()
 # results_age <- readr::read_csv(
 #   "paper_poster_plots/paper/data/results_age.csv.gz"
 # )
-p4 <- plt_coverage_year_national_single_age(
-  results_age  = results_age,
-  areas        = areas,
-  last_surveys = last_surveys,
-  spec_ages    = 0:60,
-  spec_year    = last(spec_years),
-  spec_model   = "No program data",
-  main         = "",
-  # n_plots      = length(unique(results_agegroup$iso3))
-  n_plots      = length(unique(results_age$iso3))
-)[[1]]
 
 # grid for geofaceting, standardise country names
 ssa_grid <- geofacet::africa_countries_grid1 %>%
@@ -799,6 +788,20 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
   filter(
     name %in% c(ssa_countries, "Gin. Bissau", "Eq. Guinea", "Cent. Af. Rep.")
   )
+
+p4 <- plt_coverage_year_national_single_age(
+  results_age  = results_age,
+  areas        = areas,
+  last_surveys = last_surveys,
+  spec_ages    = 0:60,
+  spec_year    = last(spec_years),
+  spec_model   = "No program data",
+  main         = "", 
+  ssa_grid     = ssa_grid,
+  # n_plots      = length(unique(results_agegroup$iso3))
+  n_plots      = length(unique(results_age$iso3))
+)[[1]]
+
 
 # remove missing rows and columns (only looking at SSA, not all of Africa)
 min_row <- min(ssa_grid$row)
@@ -819,7 +822,9 @@ p4_geo <- p4 +
   # set theme and base size for text
   theme_bw(base_size = 9) + 
   # reduce x-axis ticks, too crowded
-  scale_x_continuous(breaks = seq(0, 60, by = 20)) + 
+  scale_x_continuous(
+    breaks = seq(0, 60, by = 20), limits = c(0, 60), expand = c(0, 0)
+  ) + 
   # remove x-axis
   # labs(y = "") +  
   labs(
@@ -839,10 +844,14 @@ p4_geo <- p4 +
     # legend.position = "bottom",
     legend.position = c(0.15, 0.2),
     # legend.justification = "left",
-    strip.text      = element_text(size = 7.5), # , hjust = -0.1),
+    # strip.text      = element_text(size = 7.5), # , hjust = -0.1),
+    strip.text      = element_text(size = 6.8, face = "bold"), # , hjust = -0.1),
     plot.title      = element_text(size = rel(1.5)),
     strip.background = element_blank(),
-    plot.background = element_rect(fill = "white", colour = "white")
+    plot.background = element_rect(fill = "white", colour = "white"),
+    # of plot panels
+    panel.grid.minor   = element_blank(),
+    panel.grid.major.y = element_blank()
   )
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
