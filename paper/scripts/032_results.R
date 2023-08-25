@@ -479,10 +479,40 @@ map_plot <- function(
   spec_results_change <- filter(spec_results, year == "% Change")
   spec_results_year <- filter(spec_results, year != "% Change")
   
-  p <- ggplot() +
+  ggplot() +
     geom_sf(
       data = spec_results_year,
       aes(fill = mean), 
+      size = 0.5,
+      colour = NA
+    ) +
+    labs(fill = "") +
+    scale_fill_gradientn(
+      colours = colourPalette,
+      na.value = "grey",
+      breaks = seq(0, 1, by = 0.1),
+      limits = c(0, 1),
+      label = scales::label_percent(accuracy = 1, trim = FALSE), 
+      guide = guide_colourbar(
+        # title = " Percent circumcised, 15–29 years",
+        title = paste0(" Percent circumcised, ", spec_age_group, " years"),
+        direction = "horizontal",
+        label = TRUE,
+        draw.ulim = TRUE,
+        draw.llim = TRUE,
+        frame.colour = "black",
+        ticks = TRUE,
+        barheight = 1,
+        barwidth = 17,
+        title.position = "bottom", 
+        plot.background = element_rect(fill = "white", colour = "white")
+      )
+    ) +
+    ggnewscale::new_scale_fill() +
+    # colour percentage change differently
+    geom_sf(
+      data = spec_results_change,
+      aes(fill = mean),
       size = 0.5,
       colour = NA
     ) +
@@ -499,43 +529,17 @@ map_plot <- function(
       size   = 0.5
     ) + 
     labs(fill = "") +
-    scale_fill_gradientn(
-      colours = colourPalette,
-      na.value = "grey",
-      breaks = seq(0, 1, by = 0.1),
-      limits = c(0, 1),
-      label = scales::label_percent(accuracy = 1, trim = FALSE), 
-      guide = guide_colourbar(
-        direction = "horizontal",
-        label = TRUE,
-        draw.ulim = TRUE,
-        draw.llim = TRUE,
-        frame.colour = "black",
-        ticks = TRUE,
-        barheight = 1,
-        # barwidth = 17, # may want this?
-        barwidth = 18,
-        title.position = "bottom", 
-        plot.background = element_rect(fill = "white", colour = "white")
-      )
-    ) +
-    ggnewscale::new_scale_fill() +
-    # colour percentage change differently
-    geom_sf(
-      data = spec_results_change,
-      aes(fill = mean),
-      size = 0.5,
-      colour = NA
-    ) + 
-    labs(fill = "") +
+    ## ggtitle("Circumcision coverage 2006-2020, 15-29 year olds") + 
     scale_fill_gradientn(
       colours = colourPalette2,
       na.value = "grey",
       breaks = seq(-0.2, 0.5, by = 0.1), 
       limits = c(-0.2, 0.5),
-      label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
+      label = scales::label_percent(accuracy = 1, trim = TRUE),
       guide = guide_colourbar(
-        direction = "horizontal", 
+        # title = "Absolute change, 2006–2020",
+        title = paste0("Absolute change, ", spec_years[1], "-", spec_years[2]),
+        direction = "horizontal",
         label = TRUE, 
         draw.ulim = TRUE,
         draw.llim = TRUE,
@@ -543,19 +547,16 @@ map_plot <- function(
         ticks = TRUE, 
         barheight = 1,
         # barwidth = 10,
-        barwidth = 10.5,
+        barwidth = 10,
         title.position = "bottom"
       )
     ) +
-    facet_grid(type ~ year) + 
+    facet_grid(type ~ year, switch = "y") + 
     theme_minimal(base_size = 9) +
     theme(
-      plot.title    = element_text(size = rel(1.6), hjust = 0.5), 
-      strip.text    = element_text(size = rel(1.5)), 
-      # probably too small, but so annoying to fix!!
-      # legend.text   = element_text(size = rel(0.75)) # 0.70 too small
-      # legend.text   = element_text(size = rel(0.72), hjust = 0.1),
-      legend.text   = element_text(size = rel(0.71)),
+      strip.text    = element_text(size = rel(1.1), face = "bold"), 
+      legend.text   = element_text(size = rel(0.8)),
+      legend.title = element_text(size = rel(1.0), face = "bold", hjust = 0.5),
       axis.text       = element_blank(),
       axis.ticks      = element_blank(),
       legend.position = "bottom",
@@ -565,8 +566,7 @@ map_plot <- function(
     )
 }
 
-p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette) + 
-  ggtitle(main_title)
+p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette)
 
 
 # save object for org-mode paper draft
