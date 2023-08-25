@@ -467,7 +467,9 @@ spec_areas <- areas_plot
 
 rm(results_agegroup1, areas1); gc()
    
-map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
+map_plot <- function(
+    spec_results, spec_areas, lake_vic, colourPalette, colourPalette2
+  ) {
   
   spec_results$type <- factor(
     spec_results$type, 
@@ -527,19 +529,9 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     ) + 
     labs(fill = "") +
     scale_fill_gradientn(
-    # scale_fill_gradient2(
       colours = colourPalette2,
-      # colours = c(colourPalette_blue, colourPalette_other),
-      #colours = c(
-      #  colourPalette_blue, 
-      #  colourPalette_green, 
-      #  colourPalette_yellow, 
-      #  colourPalette_red_orange
-      #),
       na.value = "grey",
-      # breaks = seq(-0.2, 0.5, by = 0.1), 
       breaks = seq(-0.2, 0.5, by = 0.1), 
-      # limits = c(-0.2, 0.5),
       limits = c(-0.2, 0.5),
       label = scales::label_percent(accuracy = 1, trim = TRUE), #  prefix = " "),
       guide = guide_colourbar(
@@ -573,7 +565,7 @@ map_plot <- function(spec_results, spec_areas, colourPalette, colourPalette2) {
     )
 }
 
-p2final <- map_plot(tmp, areas_plot, colourPalette2, colourPalette) + 
+p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette) + 
   ggtitle(main_title)
 
 
@@ -687,7 +679,7 @@ p3 <- plt_data %>%
     # y = 0.12,
     # y = 0.21,
     y = 0.01,
-    label = "non-VMMC \n Priority Countries",
+    label = "non-VMMC \nPriority Countries",
     fontface = "bold",
     size = 3.5, 
     hjust = 0
@@ -699,7 +691,7 @@ p3 <- plt_data %>%
     # y = 0.075,
     # y = 0.175,
     y = 0.01,
-    label = "VMMC \n Priority Countries",
+    label = "VMMC \nPriority Countries",
     fontface = "bold",
     size = 3.5, 
     hjust = 0
@@ -729,7 +721,7 @@ p3 <- plt_data %>%
   ) +
   labs(
     # y = "Median Male Circumcision Coverage", 
-    y = paste0("Male Circumcision Coverage, ", spec_years[2], ", ", spec_age_group, " year olds"),
+    y = paste0("Circumcision Coverage (%), ", spec_years[2], ", ", spec_age_group, " year olds"),
     x = element_blank(), 
     size = "District pop. relative to\n median district size", 
     color = "Region"
@@ -756,7 +748,7 @@ p3 <- plt_data %>%
   ) + 
   coord_flip(clip = "off")
 
-p3$plot_order <- plot_order
+# p3$plot_order <- plot_order
 
 # dev.new(width = 6.3, height = 8, noRStudioGD = TRUE)
 # p3
@@ -827,18 +819,23 @@ if (min_col > 1) {
 p4_geo <- p4 +
   # geofacet based on SSA shape
   geofacet::facet_geo(~ area_name, grid = ssa_grid) +
-  ggtitle(paste0("Medical & traditional male circumcision by age, 2020")) +
+  # ggtitle(paste0("Medical & traditional male circumcision by age, 2020")) +
   # set theme and base size for text
   theme_bw(base_size = 9) + 
   # reduce x-axis ticks, too crowded
   scale_x_continuous(breaks = seq(0, 60, by = 20)) + 
   # remove x-axis
   # labs(y = "") +  
+  labs(
+    x = "Age, 2020",
+    y = "Circumcision Coverage (%)"
+  ) + 
   # labs(title = "",
   #   y = "Circumcision coverage by age, 2020"
   # ) + 
   theme(
     axis.text.x     = element_text(size = rel(1.1)),
+    axis.title.x    = element_text(size = rel(1.5)),
     axis.text.y     = element_text(size = rel(1.1)),
     axis.title.y    = element_text(size = rel(1.5)),
     legend.text     = element_text(size = rel(1.2)),
@@ -994,7 +991,7 @@ annotate_df <- data.frame(
     )
   ),
   # label = c("Non-VMMC", "VMMC")
-  label = paste0(c("Non-VMMC", "VMMC"), "\n priority countries")
+  label = paste0(c("Non-VMMC", "VMMC"), " \nPriority Countries")
 )
 
 # convert to long format for plot
@@ -1032,7 +1029,6 @@ p6 <- tmp_long %>%
   ggplot() +
   geom_point(aes(x = country_idx, y = value, colour = factor(year)), size = 3) +
   geom_segment(
-  # ggarchery::geom_arrowsegment(
     data = tmp_long_lower,
     aes(
       x      = country_idx,
@@ -1064,13 +1060,14 @@ p6 <- tmp_long %>%
     expand = c(0, 0), 
     limits = c(0, 1), 
     label = scales::label_percent(),
-    breaks = seq(0, 1, by = 0.2), 
+    # breaks = seq(0, 1, by = 0.2), 
+    breaks = seq(0, 1, by = 0.25), 
     n.breaks = 5 # , 
     # minor_breaks = NULL
   ) + 
   labs(
     x        = "Country",
-    y        = "Coverage (%), 15-29 year olds",
+    y        = "Circumcision Coverage (%), 15-29 year olds",
     colour   = ""
     # title    = "Absolute change in male circumcision coverage between 2000 and 2020 (15-29 year olds)",
     # title    = "Change in male circumcision coverage, 2000 - 2020, 15-29 year olds",
