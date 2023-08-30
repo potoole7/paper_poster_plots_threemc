@@ -200,34 +200,25 @@ Sub-national populations from WorldPop were used to calculate circumcision cover
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Following a similar approach to Thomas {\it et al.} \cite{thomas2021multilevel}, we developed a Bayesian hierarchical model with small area estimation methods that uses survey data to estimate the probabilities and coverage of circumcision which uses a competing risk discrete time-to-event process stratified by region, age, time, and type. We modelled each country independently rather than a model by sub-region or for the whole of sub-Saharan due to computational constraints and we modelled probabilities of circumcision at the organizational level in which the country team has prioritised their program, called the PSNU area level, or the most granular level available in surveys (hereafter called the district-level). 
+Following a similar approach to Thomas {\it et al.} \cite{thomas2021multilevel}, we developed a Bayesian hierarchical model with small area estimation methods that uses survey data to estimate the probabilities and coverage of circumcision stratified by region, age, time, and type. We modelled each country independently rather than a model by sub-region or for the whole of sub-Saharan due to computational constraints and we modelled probabilities of circumcision at the organizational level in which the country team has prioritised their program, called the PSNU area level, or the most granular level available in surveys (hereafter called the district-level). 
 
-In countries where suitable survey information was collected on circumcision type, we consider the following two types of circumcision: (1) circumcisions that occurred in traditional male initiation ceremonies or for other religious or cultural reasons (TMC) and (2) circumcisions for non-traditional reasons and/or HIV prevention that take place in a clinical setting using medical methods (MMC). Some countries did not have any surveys that collected information on the type of circumcision (see Supplementary Material for more detail), so we were unable to conduct an analysis of the probabilities of circumcision by type. For these countries, we consider estimating the probability and coverage of circumcision of any or (unknown) type (MC) only. 
+In countries where suitable survey information was collected on circumcision type, we consider the following two types of circumcision: (1) circumcisions that occurred in traditional male initiation ceremonies or for other religious or cultural reasons (TMC) and (2) circumcisions for non-traditional reasons and/or HIV prevention that take place in a clinical setting using medical methods (MMC). 
 
+For the probability of TMC, a key assumption of the \cite{thomas2021multilevel} model was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa however an assumption of a constant probability of TMC might not be feasible everywhere. For example, in some countries the level and practices of TMC have changed through time due to demographic shifts. There has also been a replacement of TMCs through MMCs observed, particularly in VMMC priority countries, to ensure HIV prevention efficacy and/or for safety considerations \cite{thomas2021multilevel}. Furthermore, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. Here, we consider two models for $\lambda^{\text{TMC}}_{iat}$ in each country: (i) time invariant (i.e. constant over time) and (ii) time variant (i.e. varying over time). The {\it time invariant} probability of TMC was modelled by a logit-linear function with random effects for age, district, as well as an age-district interaction, to allow for different patterns in the age at circumcision across districts. The {\it time variant} was also modelled by a logit-linear function with random effects for age, district, time, as well as age-district and age-time interaction, to allow for different patterns in the age at circumcision across space and time. We did not include a district-time interaction into due to computational constraints. 
 
+The provision of MMC is highly heterogeneous in sub-Saharan Africa and has changed substantially since 2008, particularly in countries that have programmes to scale-up MMC for HIV prevention. VMMC programmes provide MMCs for HIV prevention to those aged 10 and over, while infant and paediatric medical circumcision often occurs through cultural or religious practices unrelated to scale-up of VMMC for HIV prevention. Due to this, Thomas et al. \cite{thomas2021multilevel} separated the probability of MMC, $\tilde{\lambda}^{\text{MMC}}_{iat}$, into two processes: (i) paediatric circumcision (for those aged 0--9) and (ii) adolescent and adult circumcision (for those aged 10 and over). This ensured that any increase in MMC for those aged 10 and over did not bias the probability of MMC in those under 10 in South Africa. However, this may not be appropriate everywhere, particularly in countries without programmes to upscale MMC coverage. Therefore, we consider two models for the probability of MMC in each country: (i) no cut-off and (ii) paediatric cut off.
 
+We modelled probability of MMC with {\it no paediatric cut-off} was modelled using logit-linear function with random effects for age, time, and district, and interactions for district-time, age-time, and age-district, to allow for inter-district/time/age variation in circumcision rates. For the probability of MMC with {\it a paediatric cut-off}, the probability of paediatric MMC-nT was modelled using a logit-linear function with random effects for age, district, an age-district interaction, to allow for different practices of paediatric circumcision observed across districts. We assumed that the probability of paediatric MMC-nT was constant over time. The probability of adolescent and adult MMC-nT was also modelled using logit-linear function with random effects for age, time, and district, as well as all the associated two-way interactions to allow for inter-district/time/age variation in circumcision rates. To ensure the probability of MC (i.e. the sum of the probabilities of MMC and TMC) was not larger than one, we applied the probability of TMC before MMC in each time step.
 
+Whether a country used (i) a time-invariant or time-variant probability of TMC and (i) a paediatric cut-off or no cut-off in the probability of MMC, was decided based on which produced the best within-sample model fit (see Section XX for further details). 
 
-% "threemc" (Matt's model for male circumcision) (or "Multi-level model for male circumcision"?) is
-% a Bayesian, spatio-temporal, competing-risks, time-to-event model (reference). We have extended
-% this model from its initial application in South Africa to
-% 33
-% countries within the SSA region. The model produces estimates of circumcision rates, incidence and coverage (i.e. cumulative indidence), with associated uncertainty bounds, stratified by type, year, age and location. Circumcision rates are projected after their most recent household survey
-% assuming continuation of estimated age-specific rates, with probabilistic uncertainty. Estimates
-% for single ages were binned into 5-year age groups from 0-4 to 54-59, and other age groups of interest, such as the VMMC target age group of 10-29 year-olds.
+Some countries did not have any surveys that collected information on the type of circumcision (see Supplementary Material for more detail), so we were unable to conduct an analysis of the probabilities of circumcision by type. For these countries, we consider estimating the probability and coverage of circumcision of any or (unknown) type (MC) only. We used survey data to model the probability of MC directly, using a discrete time-to-event process. We modelled probability of MC using logit-linear function with random effects for age, time, and district, as well as the associated two-way interactions to allow for inter-district/time/age variation in MC rates. 
 
-% A key assumption of the original threemc model was that TMC was constant over time, due to the perceived intransigence in TMC practises and traditional male initiation ceremonies amongst tribal, cultural and religious groups which have developed over time. MMCs amongst paediatric males, defined as those under 10, were also assumed to be constant over time, as VMMC programmes, the  main force behind the adoption of MMC in much of SSA, do not targets males below 10 (reference).
+We calculated the estimated circumcision coverage by type (MMC/TMC/MC) within each cohort using the cumulative incidence function, which defines the marginal probability (or proportion/coverage of) individuals who were received an MMC, TMC, or MC by district, age and time, whilst accounting for the competing risk of other circumcision type.
 
-% Countries were modelled at the organizational level in which the country team has prioritised their program, called the PSNU area level, or the most granular level available in surveys. Model estimates were weighted by population and post-stratified to produce estimates for their "parent" regions. 
+Prior distributions were specified on all model parameters and were specified to allow areas, with little to no data, to borrow district-age-time information on circumcision. Furthermore, we wanted to ensure any correlation in circumcision practices across district, age and time was modelled. We assigned intrinsic conditional autoregressive (ICAR) priors to the district random effects, and penalised B-spline functions on the age random effects. The temporal random effects were assigned one of three potential priors in each country: an autoregressive process of order 1 (AR1), random walk of order 1 (RW1) and random walk of order 2 (RW2). The choice of whether a country uses a AR1, RW1 and RW2 as a temporal prior was chosen depending on which produced the best out-of-sample model fit during model calibration (see Section XX for further details). The age-space, age-time, and space-time interaction terms were modelled as Type IV interactions as defined by Knorr-Held and Leonard, where precision matrices were constructed through Kronecker products. Vague Gaussian priors were assigned to each of the intercepts, and Gaussian priors were specified for all correlation parameters on the logit scale, such that a priori there was 95\% probability that the autocorrelation parameters on AR1 processes were between 0.48 and 0.99 on the real scale. We assigned exponential priors on standard deviations parameters, with the same hyperparameters for the age, district and age-district random effects. For the time, age-time and space-time random effects, the hyperparameters on the exponential priors were decided during model calibration (see Section XX for further details). 
 
-% Some additional features were added to threemc during the course of this analysis: 
-% \begin{itemize}
-% \item Where no information on circumcision type was available for every survey in a given country, a type-agnostic version of the model was used,
-% \item Survey estimates for less granular areas were used to inform likelihood estimation for their "child" areas, where previously they were ignored,
-% \item optional addition of a temporal effect for TMC, due to the suggestion of survey estimates that TMC practices may be changing, even in non-VMMC target countries, over time, and
-% \item an optional random walk (RW) temporal prior was implemented, where previously only an auto-regressive (AR1) temporal prior was available.
-% \end{itemize}
-
+Technical details of the model are in Supplementary Materials.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -502,10 +493,10 @@ MC coverage there increased from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in
 
 TODO: Add some kind of table here!
 
-\subsection{Comparison to results of DMPPT2 model}
-\label{sec:orge0178ca}
-
-TODO: Write this section!
+% \subsection{Comparison to results of DMPPT2 model}
+% \label{sec:orge0178ca}
+% 
+% TODO: Write this section!
 
 \section{Discussion}
 \label{sec:orgca35e01}
@@ -536,16 +527,16 @@ MC coverage amongst 10-29 year olds in 14 VMMC priority countries by 2021.
 However, this has resulted in just x country, x, expected to have realised this goal.
 Granular district and age-stratified estimates for MC, as provided by threemc, provide a key source of information for focusing further programme implementation in these VMMC priority countries, in addition to subnational HIV burden estimates which identify the areas most in need of HIV prevention interventions such as VMMC. 
 
-In the majority of VMMC countries, the results of threemc and DMPPT2 largely agree. 
-However, for several countries, namely Tanzania, Zimbabwe and parts of Kenya, we can see that DMPPT2 estimates far exceed empirical survey and threemc estimates, and indeed the population of many districts, suggesting that they may be adversely affected by 
-\begin{enumerate}
-\item people travelling from their home districts to others to avail of VMMC programmes, and
-\item ii) possible misreporting occurring in programmatic data due to incentives to report higher numbers of circumcisions for VMMC clinics.
-\end{enumerate}
-Where it is desired to incorporate VMMC programme data in estimates of MC coverage, threemc may provide a useful "baseline" circumcision estimate for DMPPT2 up until the last household survey was performed, with programme data taking over as the main data source thereafter.  
-threemc may also complement DMPPT2 in it's inclusion of estimates for TMC, since DMPPT2 and the programme data only concern MMC. 
+% In the majority of VMMC countries, the results of threemc and DMPPT2 largely agree. 
+% However, for several countries, namely Tanzania, Zimbabwe and parts of Kenya, we can see that DMPPT2 estimates far exceed empirical survey and threemc estimates, and indeed the population of many districts, suggesting that they may be adversely affected by 
+% \begin{enumerate}
+% \item people travelling from their home districts to others to avail of VMMC programmes, and
+% \item ii) possible misreporting occurring in programmatic data due to incentives to report higher numbers of circumcisions for VMMC clinics.
+% \end{enumerate}
+% Where it is desired to incorporate VMMC programme data in estimates of MC coverage, threemc may provide a useful "baseline" circumcision estimate for DMPPT2 up until the last household survey was performed, with programme data taking over as the main data source thereafter.  
+% threemc may also complement DMPPT2 in it's inclusion of estimates for TMC, since DMPPT2 and the programme data only concern MMC. 
 
-There were several limitations inherint in the threemc model, and in this analysis. 
+There were several limitations inherent in the threemc model, and in this analysis. 
 TODO: Write these out!
 There is much scope for further developments from this analysis. 
 One obvious, though difficult possibility is the incorporation of programme data within threemc. 
