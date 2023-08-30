@@ -170,22 +170,42 @@ results_agegroup <- load_orderly_data(
   bind_rows()
 gc()
 
-# # most recent results for single ages
+# most recent results for single ages
 # results_age <- load_orderly_data(
 #   task = "02final_aggregations", 
 #   dirs = results_dirs[!is.na(results_dirs)],
-#   filenames = "Results_Age_Prevalence.csv.gz"
+#   # filenames = "Results_Age_Prevalence.csv.gz"
 # )$output %>% 
 #   bind_rows() %>% 
 #   filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage"))
+# results_age <- readr::read_csv(
+#   "paper_poster_plots/paper/data/results_age.csv.gz"
+# )
 # gc()
-# 
+
+# incidence for age specific results
+# results_age_n_performed <- load_orderly_data(
+#   task = "02final_aggregations", 
+#   dirs = results_dirs[!is.na(results_dirs)],
+#   filenames = "Results_Age_Incidence.csv.gz"
+# )$output %>% 
+#   bind_rows() %>% 
+#   filter(type %in% paste0(c("MC", "MMC", "TMC"), "s performed"))
+# results_age_n_performed <- readr::read_csv(
+#   "paper_poster_plots/paper/data/results_age_n_performed.csv.gz"
+# )
+# gc()
+#  
 if (!"iso3" %in% names(results_agegroup)) {
   results_agegroup$iso3 <- substr(results_agegroup$area_id, 0, 3)
 }
-# 
 # if (!"iso3" %in% names(results_age)) {
 #   results_age$iso3 <- substr(results_age$area_id, 0, 3)
+# }
+# if (!"iso3" %in% names(results_age_n_performed)) {
+#   results_age_n_performed$iso3 <- substr(
+#     results_age_n_performed$area_id, 0, 3
+#   )
 # }
 
 # results_agegroup_n_circ <- readr::read_csv(file.path(
@@ -230,9 +250,9 @@ if (!"iso3" %in% names(results_agegroup)) {
 
 
 # VMMC iso3s not in results
-missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup$area_id]
+# missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup$area_id]
 # missing_iso3 <- target_iso3[!target_iso3 %in% results_age$area_id]
-# missing_iso3 <- target_iso3[!target_iso3 %in% results_agegroup_rate$area_id]
+# missing_iso3 <- target_iso3[!target_iso3 %in% results_age_n_performed$area_id]
 
 # pull shapefiles
 areas <- load_orderly_data("00a2_areas_join", 
@@ -248,6 +268,7 @@ populations <- load_orderly_data(
 )$output[[1]] %>% 
   filter(iso3 %in% results_agegroup$iso3) %>% 
   # filter(iso3 %in% results_age$iso3) %>% 
+  # filter(iso3 %in% results_age_n_performed$iso3) %>% 
   # filter(iso3 %in% results_agegroup_rate$iso3) %>% 
   identity()
 
@@ -870,6 +891,215 @@ ggplot2::ggsave(
 
 
 #### Figure 5: Geofaceted plot of age at circumcision ####
+
+country_area_level <- 0
+results_area_level <- NULL
+spec_model         <- "No program data"
+# spec_main_title    <- main_title
+
+# calculate mean age at circumcision for each area_id, rename as in fig 2
+mean_circ_age <- calc_circ_age_ridge(
+  results_age_n_performed,
+  areas,
+  spec_years = spec_years[[2]],
+  area_levels = unique(results_age_n_performed$area_level),
+  spec_model = "No program data",
+  spec_ages = 0:60, 
+  # may also need "MCs performed"?
+  spec_types = c("MMCs performed", "TMCs performed") 
+)$mean_age_at_circ %>% 
+  `[[`(1) %>% 
+  rename(
+    mean = average_age, lower = average_age_lower, upper = average_age_upper
+  )
+
+areas1 <- areas_map
+
+## Plot ##
+
+if (!"iso3" %in% names(mean_circ_age)) {
+  mean_circ_age$iso3 <- substr(mean_circ_age$area_id, 0, 3)
+}
+
+# take only required columns in areas for later joining with results
+areas_join <- areas1 %>%
+    dplyr::select(iso3, area_id, area_name, area_level)
+                  
+# Subsetting results
+if (!is.null(results_area_level)) {
+    mean_circ_age <- mean_circ_age %>%
+        filter(area_level == results_area_level)
+} else {
+  mean_circ_age <- mean_circ_age %>%
+    group_by(iso3) %>%
+    filter(area_level == max(area_level)) %>%
+    ungroup()
+}
+tmp <- mean_circ_age %>%
+    filter(
+        area_id != "",
+        year %in%       spec_years # ,
+        # age_group ==    spec_age_group,
+        # area_level <=   results_area_level,
+        # model ==        spec_model # ,
+        # type %in%       c("MC coverage", "MMC coverage", "TMC coverage")
+    )
+
+# Create dummy rows of NAs for missing countries - want them grey in map
+missing_iso3 <- unique(
+  areas_join$iso3[!areas_join$iso3 %in% results_age_n_performed$iso3]
+)
+
+tmp_missing <- tidyr::crossing(
+  "iso3" = missing_iso3, 
+  # "age_group" = tmp$age_group, 
+  "year" = tmp$year, 
+  "type" = tmp$type
+) %>% 
+  left_join(areas_join, by = "iso3", relationship = "many-to-many")
+
+# Merge to shapefiles
+tmp <- tmp %>% 
+  select(-matches("area_name")) %>%
+  left_join(areas_join) %>% 
+  bind_rows(tmp_missing)
+
+tmp <- tmp %>% 
+    # filter out areas with missing iso3, which cause errors with below
+    filter(!is.na(iso3)) %>%
+    # take maximum area level for known regions in every country
+    group_by(iso3) %>%
+    filter(area_level == max(area_level, na.rm = TRUE)) %>%
+    ungroup() %>%
+    # Altering labels for the plot
+    dplyr::mutate(
+        type = ifelse(grepl("MMC", type), "Medical",
+                      ifelse(grepl("TMC", type), "Traditional", "Total"))
+    ) %>%
+    # change data to sf object
+    st_as_sf()
+
+# filter overlaying area shapes for specified area level
+areas_plot <- areas1
+if (!is.null(country_area_level)) {
+  areas_plot <- areas_plot %>%
+    filter(area_level == country_area_level)
+}
+
+# repair polygons which may be invalid
+tmp <- st_make_valid(tmp)
+areas_plot <- st_make_valid(areas_plot)
+
+# make year a factor
+tmp$year <- as.factor(tmp$year)
+
+# finally, change 0s for countries with no type info to NAs
+tmp <- tmp %>% 
+  mutate(mean = ifelse(
+    iso3 %in% no_type_iso3, NA, mean
+  ))
+
+# for testing plot
+spec_results <- tmp
+spec_areas <- areas_plot
+
+rm(mean_circ_age, areas1); gc()
+   
+map_plot_circ_age <- function(
+    spec_results, spec_areas, lake_vic, colourPalette
+  ) {
+  
+  levs = c("Total", "Medical", "Traditional")
+  levs <- levs[levs %in% spec_results$type]
+  
+  spec_results$type <- factor(spec_results$type, levels = levs)
+  
+  # spec_results_change <- filter(spec_results, year == "% Change")
+  # spec_results_year <- filter(spec_results, year != "% Change")
+  
+  ggplot() +
+    geom_sf(
+      data = spec_results, # spec_results_year,
+      aes(fill = mean), 
+      size = 0.5,
+      colour = NA
+    ) +
+    labs(fill = "") +
+    scale_fill_gradientn(
+      colours = colourPalette,
+      na.value = "grey",
+      # breaks = seq(0, 60, by = 10),
+      breaks = seq(0, 30, by = 5), # average age at circ < 30
+      # limits = c(0, 60),
+      limits = c(0, 30),
+      # label = scales::label_percent(accuracy = 1, trim = FALSE), 
+      guide = guide_colourbar(
+        # title = paste0(" Percent circumcised, ", spec_age_group, " years"),
+        title = paste0("Mean age at circumcision, ", spec_years[2]),
+        direction = "horizontal",
+        label = TRUE,
+        draw.ulim = TRUE,
+        draw.llim = TRUE,
+        frame.colour = "black",
+        ticks = TRUE,
+        barheight = 1,
+        barwidth = 17,
+        title.position = "bottom", 
+        plot.background = element_rect(fill = "white", colour = "white")
+      )
+    ) +
+    # fill in country borders in black
+    geom_sf(
+      data = spec_areas,
+      colour = "black",
+      size = 0.5,
+      fill = NA
+    ) +
+    # fill in lake victoria in light blue
+    geom_sf(
+      data   = lake_vic, 
+      colour = "lightblue", 
+      fill   = "lightblue",
+      size   = 0.5
+    ) + 
+    labs(fill = "") +
+    facet_wrap(~ type) + 
+    theme_minimal(base_size = 9) +
+    theme(
+      strip.text    = element_text(size = rel(1.1), face = "bold"), 
+      legend.text   = element_text(size = rel(0.75)),
+      legend.title = element_text(size = rel(1.0), face = "bold", hjust = 0.5),
+      axis.text       = element_blank(),
+      axis.ticks      = element_blank(),
+      legend.position = "bottom",
+      panel.grid      = element_blank(),
+      panel.spacing   = unit(0.01, "lines"), # make plot as "dense" as possible
+      plot.background = element_rect(fill = "white", colour = "white")
+    )
+}
+
+p5 <- map_plot_circ_age(tmp, areas_plot, lake_vic, colourPalette2)
+
+# save object for org-mode paper draft
+# saveRDS(
+#   p5,
+#   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.RDS"
+# )
+
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p2final
+# dev.off()
+
+# save plots
+ggsave(
+# png(
+  # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
+  "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
+  p5,
+  width = 6.3, 
+  height = 6.5, 
+  units = "in"
+)
 
 
 #### Figure 6: Change in MC/MMC/TMC from 2000 ####
