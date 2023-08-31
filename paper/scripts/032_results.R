@@ -1113,7 +1113,7 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
   # scale_colour_tron() + 
   labs(
     x = "Mean medical circumcision age, 2020",
-    y = "Mean traditional circumcision age, 2020", 
+    y = "Mean traditional circumcision age", 
     colour = "", 
     tag = "B"
   ) + 
@@ -1129,9 +1129,9 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
   theme_bw(base_size = 9) + 
   theme(
     axis.text.x       = element_text(size = rel(1.6), colour = "black"),
-    axis.title.x      = element_text(size = rel(1.4), face = "bold"),
+    axis.title.x      = element_text(size = rel(1.3), face = "bold"),
     axis.text.y       = element_text(size = rel(1.6), colour = "black"), 
-    axis.title.y      = element_text(size = rel(1.4), face = "bold"),
+    axis.title.y      = element_text(size = rel(1.3), face = "bold"),
     legend.text       = element_text(size = rel(1.5), colour = "black"),
     legend.position   = c(0.15, 0.8),
     # remove white box behind legend
@@ -1166,7 +1166,7 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
 ggsave(
   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
   # p5,
-  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1, rel_heights = c(1.2, 1)),
+  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1, rel_heights = c(1.3, 1)),
   width = 6.3, 
   # height = 10, 
   height = 8, 
