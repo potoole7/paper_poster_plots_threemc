@@ -19,6 +19,7 @@ library(ggsci)
 library(geofacet)
 library(glue)
 library(ggtext)
+library(cowplot)
 source("Shiny/src/functions.R") # plotting functions
 source("paper_poster_plots/paper/scripts/00_funs.R")
 
@@ -1165,7 +1166,7 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
 ggsave(
   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
   # p5,
-  cowplot::plot_grid(plotlist = list(p5, p5_scatter), ncol = 1),
+  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1),
   width = 6.3, 
   height = 9, 
   units = "in"
