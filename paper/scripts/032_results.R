@@ -1075,7 +1075,9 @@ map_plot_circ_age <- function(
       plot.tag          = element_text(size = rel(2), face = "bold"),
       plot.tag.position = c(0.1, 1),
       # add margin to remove grey spaces in combined plots
-      plot.margin     = unit(c(1.1, 0, 1.1, 0), "cm")
+      plot.margin     = unit(c(1.1, 0, 1.1, 0), "cm"),
+      # move legend items closer together
+      legend.spacing.x = unit(0.1, "cm")
     )
 }
 
@@ -1085,10 +1087,11 @@ p5 <- map_plot_circ_age(
   rev(wesanderson::wes_palette("Darjeeling1", 3)),
   3
 )
-
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # p5
-# dev.off()
+
+dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+p5
+dev.off()
 
 # save object for org-mode paper draft
 # saveRDS(
