@@ -1166,9 +1166,10 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
 ggsave(
   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
   # p5,
-  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1),
+  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1, rel_heights = c(1.2, 1)),
   width = 6.3, 
-  height = 9, 
+  # height = 10, 
+  height = 8, 
   units = "in"
 )
 
