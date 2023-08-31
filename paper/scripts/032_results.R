@@ -902,6 +902,7 @@ mean_circ_age <- calc_circ_age_ridge(
   results_age_n_performed,
   areas,
   spec_years = spec_years[[2]],
+  # spec_years = 2000,
   area_levels = unique(results_age_n_performed$area_level),
   spec_model = "No program data",
   spec_ages = 0:60, 
@@ -1003,51 +1004,47 @@ tmp <- tmp %>%
 spec_results <- tmp
 spec_areas <- areas_plot
 
-rm(mean_circ_age, areas1); gc()
+# rm(mean_circ_age, areas1); gc()
    
 map_plot_circ_age <- function(
-    spec_results, spec_areas, lake_vic, colourPalette
+    spec_results, spec_areas, lake_vic, colourPalette, n_breaks = 3
   ) {
   
   levs = c("Total", "Medical", "Traditional")
   levs <- levs[levs %in% spec_results$type]
   
+  stopifnot(n_breaks %in% c(3, 6))
+  
   spec_results$type <- factor(spec_results$type, levels = levs)
   
-  # spec_results_change <- filter(spec_results, year == "% Change")
-  # spec_results_year <- filter(spec_results, year != "% Change")
+  spec_results$mean_f <- cut(spec_results$mean, n_breaks)
+  if (n_breaks == 3) {
+    levels(spec_results$mean_f) <- c("0-10", "11-20", "> 20")
+  } else {
+    levels(spec_results$mean_f) <- c(
+      "0-5", "6-10", "11-15", "16-20", "21-25", "> 25"
+    )
+  }
+  
+  if (is.function(colourPalette)) {
+    cols <- colourPalette(n_breaks)
+  } else cols <- colourPalette
+  names(cols) = levels(spec_results$mean_f)
   
   ggplot() +
     geom_sf(
       data = spec_results, # spec_results_year,
-      aes(fill = mean), 
+      aes(fill = mean_f), 
       size = 0.5,
       colour = NA
     ) +
     labs(fill = "") +
-    scale_fill_gradientn(
-      colours = colourPalette,
-      na.value = "grey",
-      # breaks = seq(0, 60, by = 10),
-      breaks = seq(0, 30, by = 5), # average age at circ < 30
-      # limits = c(0, 60),
-      limits = c(0, 30),
-      # label = scales::label_percent(accuracy = 1, trim = FALSE), 
-      guide = guide_colourbar(
-        # title = paste0(" Percent circumcised, ", spec_age_group, " years"),
-        title = paste0("Mean age at circumcision, ", spec_years[2]),
-        direction = "horizontal",
-        label = TRUE,
-        draw.ulim = TRUE,
-        draw.llim = TRUE,
-        frame.colour = "black",
-        ticks = TRUE,
-        barheight = 1,
-        barwidth = 17,
-        title.position = "bottom", 
-        plot.background = element_rect(fill = "white", colour = "white")
-      )
-    ) +
+    # add colour bar for discrete age bands
+    # viridis::scale_fill_viridis(
+    #   discrete = TRUE, na.value = "grey", option = "D"
+    # ) + 
+    # ggsci::scale_fill_tron() + 
+    scale_fill_manual(values = cols, na.value = "grey")+ 
     # fill in country borders in black
     geom_sf(
       data = spec_areas,
@@ -1062,23 +1059,35 @@ map_plot_circ_age <- function(
       fill   = "lightblue",
       size   = 0.5
     ) + 
-    labs(fill = "") +
+    labs(fill = "", tag = "A") +
     facet_wrap(~ type) + 
     theme_minimal(base_size = 9) +
     theme(
-      strip.text    = element_text(size = rel(1.1), face = "bold"), 
-      legend.text   = element_text(size = rel(0.75)),
-      legend.title = element_text(size = rel(1.0), face = "bold", hjust = 0.5),
-      axis.text       = element_blank(),
-      axis.ticks      = element_blank(),
-      legend.position = "bottom",
-      panel.grid      = element_blank(),
-      panel.spacing   = unit(0.01, "lines"), # make plot as "dense" as possible
-      plot.background = element_rect(fill = "white", colour = "white")
+      strip.text        = element_text(size = rel(1.5), face = "bold"), 
+      legend.text       = element_text(size = rel(1.8)),
+      axis.text         = element_blank(),
+      axis.ticks        = element_blank(),
+      legend.position   = "bottom",
+      panel.grid        = element_blank(),
+      panel.spacing     = unit(0.01, "lines"), # make plot as "dense" as possible
+      plot.background   = element_rect(fill = "white", colour = "white"),
+      plot.tag          = element_text(size = rel(2), face = "bold"),
+      plot.tag.position = c(0.1, 1),
+      # add margin to remove grey spaces in combined plots
+      plot.margin     = unit(c(1.1, 0, 1.1, 0), "cm")
     )
 }
 
-p5 <- map_plot_circ_age(tmp, areas_plot, lake_vic, colourPalette2)
+p5 <- map_plot_circ_age(
+  tmp, areas_plot, lake_vic, 
+  # rev(RColorBrewer::brewer.pal(n = 3, name = "Dark2")), 
+  rev(wesanderson::wes_palette("Darjeeling1", 3)),
+  3
+)
+
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p5
+# dev.off()
 
 # save object for org-mode paper draft
 # saveRDS(
@@ -1086,18 +1095,79 @@ p5 <- map_plot_circ_age(tmp, areas_plot, lake_vic, colourPalette2)
 #   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.RDS"
 # )
 
+# scatter plot of TMC vs MMC for districts
+p5_scatter <- sf::st_drop_geometry(tmp) %>% 
+  select(-c(upper, lower)) %>% 
+  tidyr::pivot_wider(names_from = "type", values_from = "mean") %>% 
+  mutate(vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "Non-VMMC")) %>% 
+  ggplot(aes(x = Medical, y = Traditional, colour = vmmc)) +
+  geom_point() + 
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") + #, colour = "grey") +
+  # ggsci::scale_colour_nejm() +
+  scale_colour_manual(
+  #   # values = rev(RColorBrewer::brewer.pal(n = 6, name = "Dark2"))[5:6]
+  #   values = RColorBrewer::brewer.pal(n = 7, name = "Dark2")[5:6]
+    values = wesanderson::wes_palette("Darjeeling1", 5)[4:5]
+  ) + 
+  # scale_colour_tron() + 
+  labs(
+    x = "Mean medical circumcision age, 2020",
+    y = "Mean traditional circumcision age, 2020", 
+    colour = "", 
+    tag = "B"
+  ) + 
+  # define x and y breaks
+  scale_x_continuous(
+    breaks = seq(0, 30, by = 5), limits = c(0, 30), expand = c(0, 0)
+  ) + 
+  scale_y_continuous(
+    breaks = seq(0, 30, by = 5), limits = c(0, 30), expand = c(0, 0)
+  ) + 
+  # increase dot size in legend
+  guides(colour = guide_legend(override.aes = list(size = 4))) + 
+  theme_bw(base_size = 9) + 
+  theme(
+    axis.text.x       = element_text(size = rel(1.6), colour = "black"),
+    axis.title.x      = element_text(size = rel(1.4), face = "bold"),
+    axis.text.y       = element_text(size = rel(1.6), colour = "black"), 
+    axis.title.y      = element_text(size = rel(1.4), face = "bold"),
+    legend.text       = element_text(size = rel(1.5), colour = "black"),
+    legend.position   = c(0.15, 0.8),
+    # remove white box behind legend
+    legend.background = element_rect(colour = NA, fill = NA),
+    legend.key        = element_rect(colour = NA, fill = NA),
+    # increase tag size
+    plot.tag          = element_text(size = rel(2), face = "bold"),
+    plot.tag.position = c(0.12, 0.92),
+    # add margin so last x break is included
+    plot.margin         = unit(c(0, 0.5, 0, 0.1), "cm")
+  )
+
+
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-# p2final
+# p5_scatter
 # dev.off()
+
+# combine plots
+# p5final <- grid.arrange(
+#   grobs = list(p5, p5_scatter), 
+#   ncol = 2, 
+#   heights = c(2 , 1)
+# )
+# grid.arrange(grobs = list(p5, p5_scatter), ncol = 2)
+
+# dev.new(width = 6.3, height = 9,  noRStudioGD = TRUE)
+# cowplot::plot_grid(plotlist = list(p5, p5_scatter), ncol = 1)
+# dev.off()
+
 
 # save plots
 ggsave(
-# png(
-  # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
-  p5,
+  # p5,
+  cowplot::plot_grid(plotlist = list(p5, p5_scatter), ncol = 1),
   width = 6.3, 
-  height = 6.5, 
+  height = 9, 
   units = "in"
 )
 
