@@ -173,16 +173,16 @@ gc()
 
 # most recent results for single ages
 # results_age <- load_orderly_data(
-#   task = "02final_aggregations", 
+#   task = "02final_aggregations",
 #   dirs = results_dirs[!is.na(results_dirs)],
-#   # filenames = "Results_Age_Prevalence.csv.gz"
-# )$output %>% 
-#   bind_rows() %>% 
+#   filenames = "Results_Age_Prevalence.csv.gz"
+# )$output %>%
+#   bind_rows() %>%
 #   filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage"))
 # results_age <- readr::read_csv(
 #   "paper_poster_plots/paper/data/results_age.csv.gz"
 # )
-# gc()
+gc()
 
 # incidence for age specific results
 # results_age_n_performed <- load_orderly_data(
@@ -196,7 +196,7 @@ gc()
 #   "paper_poster_plots/paper/data/results_age_n_performed.csv.gz"
 # )
 # gc()
-#  
+  
 if (!"iso3" %in% names(results_agegroup)) {
   results_agegroup$iso3 <- substr(results_agegroup$area_id, 0, 3)
 }
@@ -590,16 +590,15 @@ map_plot <- function(
 
 p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette)
 
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p2final
+# dev.off()
 
 # save object for org-mode paper draft
 saveRDS(
   p2final,
   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
 )
-
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-# p2final
-# dev.off()
 
 # save plots
 ggsave(
@@ -696,15 +695,17 @@ p3 <- plt_data %>%
   annotate(
     geom = "text",
     x = c(length(plot_order) + 0.85),
+    # x = c(length(plot_order) + 0.3),
     y = 0.01,
-    label = "Non-VMMC \nPriority Countries",
+    label = "Non-VMMC Priority \nCountries",
     fontface = "bold",
     size = 3.5, 
     hjust = 0
   ) +
   annotate(
     geom = "text",
-    x = c(length(plot_order) - (country_positions1 + 3.9)),
+    # x = c(length(plot_order) - (country_positions1 + 3.9)),
+    x = c(length(plot_order) - (country_positions1 + 5.9)),
     y = 0.01,
     label = "VMMC \nPriority Countries",
     fontface = "bold",
