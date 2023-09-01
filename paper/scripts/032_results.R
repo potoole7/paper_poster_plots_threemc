@@ -1289,8 +1289,9 @@ tmp <- tmp %>%
 
 annotate_df <- data.frame(
   country_idx = c(
-    c(length(plot_order) + 0.5),
-    c(length(plot_order) - (country_positions1 + 4))
+    c(length(plot_order) + 0.6),
+    # c(length(plot_order) - (country_positions1 + 4))
+    c(length(plot_order) - (country_positions1 + 6))
   ),
   # value = c(0.24, 0.14), 
   value = c(0.05, 0.04), 
