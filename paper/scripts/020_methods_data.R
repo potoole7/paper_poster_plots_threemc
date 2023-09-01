@@ -273,6 +273,7 @@ types <- survey_circumcision %>%
 
 # now join together!
 table3 <- cbind(survey_names, sample_sizes, cens, types) %>% 
+  # arrange(survey_id) %>% 
   # select(-c(survey_id, n_orig)) %>% 
   select(-survey_id) %>% 
   # remove questions about circ type; unneeded
@@ -295,5 +296,21 @@ table3 <- cbind(survey_names, sample_sizes, cens, types) %>%
     "Known Circumcision Type"      = known_type
   )
 
+# add logicals in
+table3 <- table3 %>% 
+  bind_cols(
+    table1 %>% 
+      arrange(survey_id) %>% 
+      select(-survey_id) %>% 
+      mutate(across(contains("circ"), ~ ifelse(. == "[/]xmark", FALSE, TRUE)))
+  ) %>% 
+  relocate(contains("circ_"), .after = "Series") %>% 
+  rename(
+    "Circumcision Status" = circ_status,
+    "Age at Circumcision" = circ_age,
+    "Who performed?"      = circ_who, 
+    "Where performed?"    = circ_where
+  )
+
 # tabulate and export to Latex (to do!)
-readr::write_csv(table3)
+readr::write_csv(table3, "circ_table.csv")
