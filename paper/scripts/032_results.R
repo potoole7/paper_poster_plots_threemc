@@ -592,10 +592,10 @@ p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette)
 
 
 # save object for org-mode paper draft
-# saveRDS(
-#   p2final,
-#   "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
-# )
+saveRDS(
+  p2final,
+  "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
+)
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # p2final
@@ -769,7 +769,7 @@ p3 <- plt_data %>%
 # p3
 # dev.off()
 
-# saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
+saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/03_subnat_plot.png", 
   p3, 
@@ -876,12 +876,11 @@ p4_geo <- p4 +
     panel.grid.major.y = element_blank()
   )
 
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # dev.new(width = 6.3, height = 8,  noRStudioGD = TRUE)
 # p4_geo
 # dev.off()
 
-# saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
+saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/04_geo_age.png", 
   p4_geo, 
@@ -1089,15 +1088,9 @@ p5 <- map_plot_circ_age(
 )
 # p5
 
-dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-p5
-dev.off()
-
-# save object for org-mode paper draft
-# saveRDS(
-#   p5,
-#   "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.RDS"
-# )
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p5
+# dev.off()
 
 # scatter plot of TMC vs MMC for districts
 p5_scatter <- sf::st_drop_geometry(tmp) %>% 
@@ -1164,6 +1157,15 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
 # cowplot::plot_grid(plotlist = list(p5, p5_scatter), ncol = 1)
 # dev.off()
 
+# save object for org-mode paper draft
+saveRDS(
+  p5,
+  "paper_poster_plots/paper/plots/051_map_plot_mean_circ_age_map.RDS"
+)
+saveRDS(
+  p5_scatter,
+  "paper_poster_plots/paper/plots/052_map_plot_mean_circ_age_scatter.RDS"
+)
 
 # save plots
 ggsave(
@@ -1421,7 +1423,7 @@ p6 <- tmp_long %>%
 # p6
 # dev.off()
 
-# saveRDS(p6, "paper_poster_plots/paper/plots/06_change_00_20.RDS")
+saveRDS(p6, "paper_poster_plots/paper/plots/06_change_00_20.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/06_change_00_20.png",
   p6,
