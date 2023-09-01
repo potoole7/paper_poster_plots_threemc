@@ -364,7 +364,7 @@ p1 <- fig1data %>%
   annotate(
     geom = "text",
     x = 1999.2,
-    y = c(length(plot_order) - 0.07),
+    y = c(length(plot_order) - 0.2),
     # y = c(length(plot_order) + ),
     label = "Non-VMMC \nPriority \nCountries",
     fontface = "bold",
@@ -375,7 +375,7 @@ p1 <- fig1data %>%
     geom = "text",
     x = 1999.2,
     # y =  c(length(plot_order) - (country_positions + 3.9)),
-    y =  c(length(plot_order) - (country_positions + 7.7)),
+    y =  c(length(plot_order) - (country_positions + 7.9)),
     label = "VMMC \nPriority \nCountries",
     # angle = 270,
     fontface = "bold",
