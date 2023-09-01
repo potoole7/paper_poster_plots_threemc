@@ -51,6 +51,13 @@ ssa_iso3 <- sort(c(
   "SEN", "SLE", "SWZ", "TCD", "TGO", "TZA", "UGA", "ZAF", "ZMB", "ZWE"
 ))
 
+# VMMC countries  
+vmmc_iso3 <- c(
+  "LSO", "MOZ", "NAM", "RWA", "TZA", "UGA", "MWI",
+  "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF", "BWA"
+)
+vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
+
 # countries for which we have no results
 no_mod_iso3 <- c("BWA", "CAF", "GNB")
 
@@ -65,6 +72,18 @@ country_name_convention <- function(x) {
   )
 }
 ssa_countries <- country_name_convention(ssa_countries)
+
+# order to plot countries in; first non-VMMC, then VMMC
+# Note: This includes countries not modelled as well 
+plot_order <- c(
+  "BEN", "BFA", "CIV", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", 
+  "NGA", "SEN", "SLE", "GMB", "TGO", "AGO", "CMR", "CAF", "TCD", 
+  "COG", "COD", "GAB", "BDI", "ETH", "KEN", "MWI", "MOZ", "RWA", 
+  "TZA", "UGA", "ZMB", "ZWE", "BWA", "SWZ", "LSO", "NAM", "ZAF"
+)
+
+# where to add horizontal line for VMMC vs non-VMMC
+country_positions <- length(vmmc_iso3) + 1
 
 
 #### Load Data ####
@@ -105,7 +124,7 @@ populations <- load_archive(
 last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
 
 # Prepare circ data, normalise survey weights and apply Kish coefficients.
-survey_circumcision <- prepare_survey_data(
+survey_circumcision <- bind_rows(prepare_survey_data(
   areas               = areas,
   survey_circumcision = select(survey_circumcision, -matches("area_level")),
   area_lev            = threemc::datapack_psnu_area_level,
@@ -114,9 +133,27 @@ survey_circumcision <- prepare_survey_data(
   cens_age            = cens_age,
   rm_missing_type     = rm_missing_type,
   norm_kisk_weights   = TRUE
-)
+))
 
-survey_circumcision <- data.table::rbindlist(survey_circumcision)
+# add country position from figs. 3 & 6 for fig 1 here
+# NOTE: don't do the below, will remove CAF and GNB!
+# plot_order <- plot_order[plot_order %in% survey_circumcision_orig$iso3]
+country_pos_df <- data.frame(
+  "iso3"        = plot_order, 
+  "country_idx" = rev(seq_along(plot_order))
+) %>% 
+  mutate(
+    country_idx = ifelse(!iso3 %in% vmmc_iso3, country_idx + 1, country_idx), 
+    country = country_name_convention(
+      countrycode::countrycode(iso3, "iso3c", "country.name")
+    ),
+    country = case_when(
+      country == "Central African Republic" ~ "Cent. Af. Rep.", 
+      country == "Gambia"                   ~ "The Gambia",
+      TRUE                                  ~ country
+    )
+  )
+
 
 #### Figure: Tabulate Surveys ####
 
@@ -240,7 +277,7 @@ iso_df <- iso_df %>%
 survey_tbl <- survey_tbl %>%
   left_join(iso_df, by = "iso3")
 
-#### Plot ####
+## Plot ##
 
 plot_surveys <- survey_tbl %>%
   # don't want missing surveys
@@ -250,52 +287,57 @@ plot_surveys <- survey_tbl %>%
   # drop any pre-existing factor levels
   droplevels() %>%
   # arrange region as a factor, approximately counter-clockwise
-  mutate(
-    region = factor(region, levels = c("Western Africa", 
-                                       "Middle Africa",
-                                       "Eastern Africa", 
-                                       "Southern Africa")
-    )
-  ) %>%
+  # mutate(
+  #   region = factor(region, levels = c("Western Africa", 
+  #                                      "Middle Africa",
+  #                                      "Eastern Africa", 
+  #                                      "Southern Africa")
+  #   )
+  # ) %>%
   # arrange by region (as a factor) and country (alphabetically)
-  arrange(region, country) %>%
+  arrange(region, country) # %>%
   # change long country name, severely affecting plot width
-  mutate(
-    country = ifelse(
-      country == "Central African Republic", "Cent. Af. Rep.", country
-    ),
-    # convert country to factor
-    country = fct_inorder(country)
-  )
+  # mutate(
+  #   country = ifelse(
+  #     country == "Central African Republic", "Cent. Af. Rep.", country
+  #   ),
+  #   # convert country to factor
+  #   country = fct_inorder(country)
+  # )
 
 
 fig1data <- plot_surveys %>%
+  # add plot position for each country
+  left_join(country_pos_df) %>% 
   mutate(
     # plot position for countries, combining alphabetical order + region
     # add for region to highlight change in region on plot
-    country_idx = as.integer(fct_rev(country)) +
-      c(0, 1, 2, 3)[
-        match(region, rev(c("Western Africa", "Middle Africa",
-                            "Eastern Africa", "Southern Africa")))
-      ],
+    # country_idx = as.integer(fct_rev(country)) +
+    #   c(0, 1, 2, 3)[
+    #     match(region, rev(c("Western Africa", "Middle Africa",
+    #                         "Eastern Africa", "Southern Africa")))
+    #   ],
     # Used for point shapes in later dotplot
     data = ifelse(
       !is.na(`MMC, TMC, MC`), "Present", "Unavailable"
-    )
+    ),
+    # label country with VMMC status
+    vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "None-VMMC")
   ) %>%
   # get N again, as it is used for point sizes
   mutate(N = ifelse(is.na(`MMC, TMC, MC`), MC, `MMC, TMC, MC`))
 
 # labels to display for each country
-country_labels <- fig1data %>%
-  distinct(region, country, country_idx)
+# country_labels <- fig1data %>%
+#  distinct(region, country, country_idx)
 
 # position on plot grid for each country
-country_positions <- fig1data %>%
-  group_by(region) %>%
-  summarise(max(country_idx)) %>%
-  pull()
-country_positions <- country_positions + 1
+# country_positions <- fig1data %>%
+#   group_by(region) %>%
+#   # group_by(vmmc) %>%
+#   summarise(max(country_idx)) %>%
+#   pull()
+# country_positions <- country_positions + 1
 
 p1 <- fig1data %>%
   # specify aesthetic variables
@@ -303,32 +345,61 @@ p1 <- fig1data %>%
     aes(year, country_idx, colour = provider, shape = data, size = N)
   ) +
   # add horizontal lines for regional country (don't have line on top)
-  geom_hline(yintercept = country_positions[-1]) +
+  # geom_hline(yintercept = country_positions[-1]) +
+  # add horizontal line to split VMMC and non-VMMC countries
+  geom_hline(yintercept = country_positions) + 
   # annotate plot with (vertical) regional labels
+  # annotate(
+  #   "text",
+  #   2020.2,
+  #   # have labels in between horizontal lines
+  #   zoo::rollmean(c(country_positions, 0), 2),
+  #   # label = c("Western", "Central", "Eastern", "Southern"),
+  #   label = paste(c("VMMC", "Non-VMMC"), "priority countries"),
+  #   angle = 270,
+  #   fontface = "bold",
+  #   size = 4
+  # ) +
+  # annotate with VMMC status above and below horizontal
   annotate(
-    "text",
-    2020.2,
-    # have labels in between horizontal lines
-    zoo::rollmean(c(country_positions, 0), 2),
-    label = c("Western", "Central", "Eastern", "Southern"),
-    angle = 270,
+    geom = "text",
+    x = 1999.2,
+    y = c(length(plot_order) - 0.07),
+    # y = c(length(plot_order) + ),
+    label = "Non-VMMC \nPriority \nCountries",
     fontface = "bold",
-    size = 4
+    size = 3.5,
+    hjust = 0
+  ) +
+  annotate(
+    geom = "text",
+    x = 1999.2,
+    # y =  c(length(plot_order) - (country_positions + 3.9)),
+    y =  c(length(plot_order) - (country_positions + 7.7)),
+    label = "VMMC \nPriority \nCountries",
+    # angle = 270,
+    fontface = "bold",
+    size = 3.5,
+    hjust = 0
   ) +
   geom_point(stroke = 2) +
   # specify x and y labels, subbing country name for country_idx
   scale_x_continuous(
     "Survey Year", 
-    breaks = seq(2001, 2019, by = 2), 
+    # may break if not 2000, 2020
+    # breaks = seq(min(fig1data$year) - 2, max(fig1data$year) + 1, by = 2), 
+    breaks = seq(2000, 2020, by = 2),
     # minor_breaks = NULL
-    minor_breaks = waiver()
+    # minor_breaks = waiver(), 
+    limits = c(1999, 2020),
+    expand = c(0, 0)
   ) +
   scale_y_continuous(
     element_blank(),
-    breaks = country_labels$country_idx,
+    breaks = country_pos_df$country_idx,
     minor_breaks = NULL,
-    labels = country_labels$country,
-    position = "left",
+    labels = country_pos_df$country,
+    # position = "left",
     expand = expansion(add = 0.6)
   ) +
   # New England Journal of Medicine colourscheme
@@ -349,7 +420,10 @@ p1 <- fig1data %>%
   theme(
     axis.title.x = element_text(size = rel(1.5), colour = "black"),
     axis.text.x = element_text(
-      size = rel(1.5), angle = 45, hjust = 1, colour = "black"
+      size = rel(1.5), 
+      angle = 45, 
+      hjust = 1, 
+      colour = "black"
     ),
     axis.text.y = element_text(size = rel(1.5), colour = "black"),
     legend.text = element_text(size = rel(1.5), colour = "black"),
@@ -362,9 +436,11 @@ p1 <- fig1data %>%
     legend.text.align = 0,
     # plot.margin = margin(t = 1, l = 18, unit = "pt")
     plot.margin = margin(0.25, 1, 0, 0, "cm") 
-  ) +
-  coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
-p1
+  ) # +
+  # coord_cartesian(xlim = c(2002, 2018.75), clip = "off")
+  # coord_cartesian(xlim = c(2000, 2020.25), clip = "off")
+
+# p1
 
 # dev.new(width = 6.3, height = 10.5, noRStudioGD = TRUE)
 # p1
@@ -618,7 +694,7 @@ data_inlines <- c(
 #### Saving ####
 
 # save plot
-# saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
+saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
 ggplot2::ggsave(
   "paper_poster_plots/paper/plots/01_survey_table.png", 
   p1, 
