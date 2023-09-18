@@ -77,38 +77,18 @@ no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
 # remaining countries
 iso3 <- ssa_iso3[!ssa_iso3 %in% c(vmmc_iso3, no_type_iso3)]
 
-
-
-# Colour palette for "% change" facets in map plot
-# colourPalette <- rev(colorRampPalette(
-#   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
-#     "#e6f598", "#abdda4", "#66c2a5", "#3288bd", "#13699e",
-#     "#5e4fa2")
-# )(100))
-
-# Breaks are between -0.2 and -0.5 => 7 breaks overall
-# Want everything negative to be blue (so 2 / 7 of colours)
-# Change to 14 colours in scale, with first 4 as blue, then each "break" 
-# constitutes one colour, and negative values will be in blue
-# colourPalette <- rev(colorRampPalette(
-colourPalette2 <- rev(colorRampPalette(
+# Colour Palette for years in map plot
+colourPalette <- rev(colorRampPalette(
   c("#9e0142", "#d53e4f", "#f46d43", "#fdae61", "#fee08b", "#ffffbf",
     "#e6f598", "#abdda4", "#8CD1A4", "#66C2A4", "#3D94B7", "#2C82B7", "#13699e",
     "#5e4fa2")
 )(50))
 
-# change region changing from blue to grean to only blue
-# colourPalette[30:40] <- colourPalette[30]
-# change greenish-blue to be more green
-# colourPalette[41:45] <- colourPalette[45]
-
-# Colour Palette for years in map plot
-# colourPalette <- viridis::plasma(100)
-colourPalette <- c(
-  grDevices::colorRampPalette(c("blue","white"))(20), 
-  grDevices::colorRampPalette(c("white", "red"))(50)
+# Divergent colour palette for change in coverage facets of map plot
+colourPalette2 <- c(
+  grDevices::colorRampPalette(c("blue","white"))(30), # (20), 
+  grDevices::colorRampPalette(c("white", "red"))(70) # (50)
 )
-
 
 # plot order for countries, first non-VMMC & then VMMC countries
 plot_order <- c(
