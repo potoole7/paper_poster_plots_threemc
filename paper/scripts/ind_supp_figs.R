@@ -123,21 +123,20 @@ colourPalette2 <- c(
 )
 
 # Add Lake Victoria for blue in map plot for countries it's in
-if (cntry %in% c("UGA", "TZA", "KEN")) {
-  lake_vic <- rnaturalearth::ne_download(
-    scale = 110, type = "lakes", category = "physical") %>% 
-    sf::st_as_sf(lakes110, crs = 4269) %>% 
-    filter(name == "Lake Victoria") %>% 
-    select(name)
-} else lake_vic <- NULL
+# if (cntry %in% c("UGA", "TZA", "KEN")) {
+#   lake_vic <- rnaturalearth::ne_download(
+#     scale = 110, type = "lakes", category = "physical") %>% 
+#     sf::st_as_sf(lakes110, crs = 4269) %>% 
+#     filter(name == "Lake Victoria") %>% 
+#     select(name)
+# } else lake_vic <- NULL
 
 
 #### Load Data ####
 
-# pull most recent results for age groups
+# find orderly tasks corresponding to 
 results_dir <- load_orderly_data(
   task = "02final_aggregations", 
-  # parameters = pars_df,
   parameters = filter(pars_df, cntry == !!cntry),
   query = "latest(
       parameter:cntry           == cntry && 
@@ -151,16 +150,6 @@ results_dir <- file.path(
   results_dir, 
   "artefacts/"
 )
-
-# results_agegroup <- load_orderly_data(
-#   task = "02final_aggregations",
-#   dirs = results_dirs[!is.na(results_dirs)],
-#   filenames = "Results_AgeGroup_Prevalence.csv.gz"
-# )$output %>%
-#   bind_rows() %>% 
-#   # filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")) %>% 
-#   identity()
-# gc()
 results_agegroup <- results_reader(type = "age groups", dir_path = results_dir)
 
 # results_age <- load_orderly_data(
@@ -354,14 +343,14 @@ plt_age_coverage_by_type(
 plt_coverage_map_change(
     results_agegroup, 
     areas, 
-    lake_vic = lake_vic, 
+    lake_vic = NULL, 
     colourPalette, # for coverages
     colourPalette2, # for change in coverages
     spec_age_group, 
     spec_years, 
-    spec_model = "No program data",
+    spec_model         = "No program data",
     # spec_main_title    = main_title,
-    spec_main_title = paste0(
+    spec_main_title    = paste0(
       cntry, 
       " circumcision coverage, ", 
       paste0(spec_years[1], "-", spec_years[2]), 
@@ -370,8 +359,8 @@ plt_coverage_map_change(
       " year olds"
     ),
     country_area_level = 0,
-    inc_difference     = TRUE # ,
-    # str_save           = save_loc_3
+    inc_difference     = TRUE,
+    str_save           = save_loc_3
 )
  
 
