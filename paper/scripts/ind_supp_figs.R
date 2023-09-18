@@ -25,7 +25,7 @@ orderly_root <- here::here()
 save_loc <- "paper_poster_plots/paper/plots/supp_figs/"
 if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 
-cntry <- "UGA" # temp, run for one country, might loop thereafter
+cntry <- "LSO" # temp, run for one country, might loop thereafter
 
 # spec_age_group <- "10-29"
 spec_age_group <- "15-29"
@@ -392,11 +392,11 @@ plt_circ_age_ridge(
     results_age,
     areas,
     spec_years = spec_years[2],
-    # area_levels =  min(2, max(results_age$area_level)),
-    area_levels = 1,
+    area_levels =  min(2, max(results_age$area_level)),
+    # area_levels = 1,
     spec_ages = 0:30, # no circumcisions over 30, is that right?
-    # n_plots = 5,
-    n_plots = 9,
+    n_plots = 5,
+    # n_plots = 9,
     str_save = save_loc_6
 )
 
