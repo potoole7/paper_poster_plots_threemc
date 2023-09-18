@@ -352,243 +352,19 @@ lake_vic <- rnaturalearth::ne_download(
 # Qs: 
 # - How do we want colour bars displayed? Like Tristan, on the side of his plot? 
 
-main_title <- paste0(
-  # "MC Coverage, ",
-  "Circumcision coverage ", 
-  paste0(spec_years[1], "-", spec_years[2]),
-  ", ",
-  spec_age_group,
-  " year olds"
+# Plot
+p2final <- plt_coverage_map_change(
+    results_agegroup, 
+    areas_map, 
+    lake_vic = lake_vic, 
+    colourPalette, # for coverages
+    colourPalette2, # for change in coverages
+    spec_age_group, 
+    spec_years, 
+    spec_model = "No program data",
+    country_area_level = 0,
+    inc_difference     = TRUE
 )
-
-country_area_level = 0
-results_area_level = NULL
-spec_model <- "No program data"
-spec_main_title    = main_title
-
-results_agegroup1 <- results_agegroup
-areas1 <- areas_map
-
-## Plot ##
-
-if (!"iso3" %in% names(results_agegroup1)) {
-  results_agegroup1$iso3 <- substr(results_agegroup1$area_id, 0, 3)
-}
-
-# take only required columns in areas for later joining with results
-areas_join <- areas1 %>%
-    dplyr::select(iso3, area_id, area_name, area_level)
-                  
-# Subsetting results
-if (!is.null(results_area_level)) {
-    results_agegroup1 <- results_agegroup1 %>%
-        filter(area_level == results_area_level)
-} else {
-  results_agegroup1 <- results_agegroup1 %>%
-    group_by(iso3) %>%
-    filter(area_level == max(area_level)) %>%
-    ungroup()
-}
-tmp <- results_agegroup1 %>%
-    filter(
-        area_id != "",
-        year %in%       spec_years,
-        age_group ==    spec_age_group,
-        # area_level <=   results_area_level,
-        model ==        spec_model,
-        type %in%       c("MC coverage", "MMC coverage", "TMC coverage")
-    )
-
-# Create dummy rows of NAs for missing countries - want them grey in map
-missing_iso3 <- unique(
-  areas_join$iso3[!areas_join$iso3 %in% results_agegroup$iso3]
-)
-
-tmp_missing <- tidyr::crossing(
-  "iso3" = missing_iso3, 
-  "age_group" = tmp$age_group, 
-  "year" = tmp$year, 
-  "type" = tmp$type
-) %>% 
-  left_join(areas_join, by = "iso3", relationship = "many-to-many")
-
-# Merge to shapefiles
-tmp <- tmp %>% 
-  select(-matches("area_name")) %>%
-  left_join(areas_join) %>% 
-  bind_rows(tmp_missing)
-
-tmp <- tmp %>% 
-    # filter out areas with missing iso3, which cause errors with below
-    filter(!is.na(iso3)) %>%
-    # take maximum area level for known regions
-    group_by(iso3) %>%
-    filter(area_level == max(area_level, na.rm = TRUE)) %>%
-    ungroup() %>%
-    # Altering labels for the plot
-    dplyr::mutate(
-        type = ifelse(grepl("MMC", type), "Medical",
-                      ifelse(grepl("TMC", type), "Traditional", "Total"))
-    ) %>%
-    # change data to sf object
-    st_as_sf()
-
-# filter overlaying area shapes for specified area level
-areas_plot <- areas1
-if (!is.null(country_area_level)) {
-  areas_plot <- areas_plot %>%
-    filter(area_level == country_area_level)
-}
-
-# repair polygons which may be invalid
-tmp <- st_make_valid(tmp)
-areas_plot <- st_make_valid(areas_plot)
-
-# Add difference, if specified
-tmp$year <- as.factor(tmp$year)
-# if (inc_difference == TRUE) {
-
-# split by country, take spec_years, calculate difference between the two
-diff_df <- tmp %>%
-  arrange(year) %>%
-  group_split(area_id, model, type, age_group)
-  
-diff_df <- lapply(diff_df, function(x) {
-     # take negative difference for TMC (expecting decline)
-     # Now colouring % Change differently to total coverage
-     # if (all(x$type == "Traditional")) x <- x[nrow(x):1, ]
-     x <- x%>% 
-       # don't allow change to be < 0
-       # mutate(across(mean:upper, ~ max(0, diff(.)))) %>% 
-       mutate(across(mean:upper, ~ case_when(
-         type == "Traditional" ~ diff(.), 
-         TRUE                  ~ max(0, diff(.))
-       ))) %>% 
-       # take final line, only this shows difference
-       slice(n())
- }) %>%
-  bind_rows() %>%
-  mutate(
-    year = "% Change"
-    # year = ifelse(type == "Traditional", "-% Change"  ,"% Change")
-  )
-
-levels <- c(spec_years, unique(diff_df$year))
-tmp <- bind_rows(tmp, diff_df) %>%
-    mutate(year = factor(year, levels = levels))
-
-# finally, change 0s for countries with no type info to NAs
-tmp <- tmp %>% 
-  mutate(mean = ifelse(
-    iso3 %in% no_type_iso3 & type != "Total", NA, mean
-  ))
-
-# for testing plot
-spec_results <- tmp
-spec_areas <- areas_plot
-
-rm(results_agegroup1, areas1); gc()
-   
-map_plot <- function(
-    spec_results, spec_areas, lake_vic, colourPalette, colourPalette2
-  ) {
-  
-  spec_results$type <- factor(
-    spec_results$type, 
-    levels = c("Total", "Medical", "Traditional")
-  )
-  
-  spec_results_change <- filter(spec_results, year == "% Change")
-  spec_results_year <- filter(spec_results, year != "% Change")
-  
-  ggplot() +
-    geom_sf(
-      data = spec_results_year,
-      aes(fill = mean), 
-      size = 0.5,
-      colour = NA
-    ) +
-    labs(fill = "") +
-    scale_fill_gradientn(
-      colours = colourPalette,
-      na.value = "grey",
-      breaks = seq(0, 1, by = 0.1),
-      limits = c(0, 1),
-      label = scales::label_percent(accuracy = 1, trim = FALSE), 
-      guide = guide_colourbar(
-        # title = " Percent circumcised, 15–29 years",
-        title = paste0(" Percent circumcised, ", spec_age_group, " years"),
-        direction = "horizontal",
-        label = TRUE,
-        draw.ulim = TRUE,
-        draw.llim = TRUE,
-        frame.colour = "black",
-        ticks = TRUE,
-        barheight = 1,
-        barwidth = 17,
-        title.position = "bottom", 
-        plot.background = element_rect(fill = "white", colour = "white")
-      )
-    ) +
-    ggnewscale::new_scale_fill() +
-    # colour percentage change differently
-    geom_sf(
-      data = spec_results_change,
-      aes(fill = mean),
-      size = 0.5,
-      colour = NA
-    ) +
-    geom_sf(
-      data = spec_areas,
-      colour = "black",
-      size = 0.5,
-      fill = NA
-    ) +
-    geom_sf(
-      data   = lake_vic, 
-      colour = "lightblue", 
-      fill   = "lightblue",
-      size   = 0.5
-    ) + 
-    labs(fill = "") +
-    ## ggtitle("Circumcision coverage 2006-2020, 15-29 year olds") + 
-    scale_fill_gradientn(
-      colours = colourPalette2,
-      na.value = "grey",
-      breaks = seq(-0.2, 0.5, by = 0.1), 
-      limits = c(-0.2, 0.5),
-      label = scales::label_percent(accuracy = 1, trim = TRUE),
-      guide = guide_colourbar(
-        # title = "Absolute change, 2006–2020",
-        title = paste0("Absolute change, ", spec_years[1], "-", spec_years[2]),
-        direction = "horizontal",
-        label = TRUE, 
-        draw.ulim = TRUE,
-        draw.llim = TRUE,
-        frame.colour = "black", 
-        ticks = TRUE, 
-        barheight = 1,
-        # barwidth = 10,
-        barwidth = 10,
-        title.position = "bottom"
-      )
-    ) +
-    facet_grid(type ~ year, switch = "y") + 
-    theme_minimal(base_size = 9) +
-    theme(
-      strip.text    = element_text(size = rel(1.1), face = "bold"), 
-      legend.text   = element_text(size = rel(0.75)),
-      legend.title = element_text(size = rel(1.0), face = "bold", hjust = 0.5),
-      axis.text       = element_blank(),
-      axis.ticks      = element_blank(),
-      legend.position = "bottom",
-      panel.grid      = element_blank(),
-      panel.spacing   = unit(0.01, "lines"), # make plot as "dense" as possible
-      plot.background = element_rect(fill = "white", colour = "white")
-    )
-}
-
-p2final <- map_plot(tmp, areas_plot, lake_vic, colourPalette2, colourPalette)
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
 # p2final
@@ -1014,16 +790,22 @@ map_plot_circ_age <- function(
   levs = c("Total", "Medical", "Traditional")
   levs <- levs[levs %in% spec_results$type]
   
-  stopifnot(n_breaks %in% c(3, 6))
+  stopifnot(n_breaks %in% c(3, 6, 10))
   
   spec_results$type <- factor(spec_results$type, levels = levs)
   
   spec_results$mean_f <- cut(spec_results$mean, n_breaks)
+  # functionalise this
   if (n_breaks == 3) {
     levels(spec_results$mean_f) <- c("0-10", "11-20", "> 20")
-  } else {
+  } else if (n_breaks == 6) {
     levels(spec_results$mean_f) <- c(
       "0-5", "6-10", "11-15", "16-20", "21-25", "> 25"
+    )
+  } else if (n_breaks == 10) {
+    levels(spec_results$mean_f) <- c(
+      "0-3",   "4-6",   "7-10", "11-13", "14-16", 
+      "17-20", "21-23", "24-26", "27-30", "> 30"
     )
   }
   
@@ -1081,17 +863,22 @@ map_plot_circ_age <- function(
     )
 }
 
+n_breaks <- 10
 p5 <- map_plot_circ_age(
   tmp, areas_plot, lake_vic, 
   # rev(RColorBrewer::brewer.pal(n = 3, name = "Dark2")), 
-  rev(wesanderson::wes_palette("Darjeeling1", 3)),
-  3
+  # rev(wesanderson::wes_palette("Darjeeling1", n_breaks)),
+  # rev(wesanderson::wes_palette("Zissou1", n_breaks)),
+  # rev(RColorBrewer::brewer.pal(n = 6, name = "Dark2")), 
+  # RColorBrewer::brewer.pal(n_breaks, "Paired"),
+  rev(viridis::viridis(10)), 
+  n_breaks
 )
 # p5
 
-# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-# p5
-# dev.off()
+dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+p5
+dev.off()
 
 # scatter plot of TMC vs MMC for districts
 p5_scatter <- sf::st_drop_geometry(tmp) %>% 
@@ -1424,6 +1211,8 @@ p6 <- tmp_long %>%
 # dev.new(width = 6.3, height = 6, noRStudioGD = TRUE)
 # p6
 # dev.off()
+# required to re-render plot
+p6$tmp_long_upper <- tmp_long_upper
 
 saveRDS(p6, "paper_poster_plots/paper/plots/06_change_00_20.RDS")
 ggplot2::ggsave(
