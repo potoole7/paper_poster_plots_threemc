@@ -291,6 +291,7 @@ save_loc_3 <- file.path(save_loc_single, "03_map_coverage.pdf")
 save_loc_4 <- file.path(save_loc_single, "04_area_facet_coverage.pdf")
 save_loc_5 <- file.path(save_loc_single, "05_area_facet_coverage_ages.pdf")
 save_loc_6 <- file.path(save_loc_single, "06_ridge_posterior_mean_age.pdf")
+save_loc_7 <- file.path(save_loc_single, "07_population_pyramid.pdf")
 
 ## First plot, of Circumcision Coverage vs Year
 plt_mc_coverage_prevalence(
@@ -563,7 +564,19 @@ plt_circ_age_ridge_multiple_years <- function(
 #   str_save = save_loc_6
 # )
 
-# TODO: Add population pyramid as well!
+## distributions/ridges for mean TMIC and MMC-nT age for different areas
+## Population pyramid for each area id modelled
+a <- pop_pyramid_plt(
+  results_age, 
+  spec_years_triple, 
+  unique(results_age$area_level), 
+  n_plots = 5 # , 
+  # str_save = save_loc_7,
+  # save_width = 6.3, 
+  # save_height = 8
+)
+
+
 
 #### Survey comparison plots ####
 
