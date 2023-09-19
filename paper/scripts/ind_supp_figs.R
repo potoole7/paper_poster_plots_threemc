@@ -25,12 +25,14 @@ source("paper_poster_plots/paper/scripts/00_funs.R")
 
 orderly_root <- here::here()
 
+# save width for plots == width of page on paper
+save_width <- 6.3
+
 save_loc <- "paper_poster_plots/paper/plots/supp_figs/"
 if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 
 cntry <- "ZAF" # temp, run for one country, might loop thereafter
 
-# spec_age_group <- "10-29"
 spec_age_group <- "15-29"
 spec_age_group_double <- c(spec_age_group, "30-49")
 spec_years <- c(2006, 2020) # 2006 = first year of VMMC programmes
@@ -304,11 +306,13 @@ plt_mc_coverage_prevalence(
     spec_age_group = "0+",
     spec_years     = spec_years,
     area_levels    = unique(results_agegroup$area_level), # use all area levels
+    # area_levels    = 0,
     spec_model     = "No program data",
-    main           = "Circumcision Coverage vs Year, ",
+    # main           = "Circumcision coverage vs year, ",
+    main           = NULL,
     str_save       = save_loc_1,
-    save_width     = 16,
-    save_height    = 7.5,
+    save_width     = save_width,
+    save_height    = 6,
     n_plots        = 1
 )
 
@@ -322,7 +326,7 @@ plt_age_coverage_by_type(
     # spec_ages  = c(0, 60),
     main        = "Circumcision Coverage vs Age, ",
     str_save    = save_loc_2,
-    save_width  = 15,
+    save_width  = save_width,
     save_height = 11,
     n_plots     = 1
 )
@@ -378,7 +382,7 @@ plt_area_facet_coverage(
     spec_model     = "No program data",
     province_split = TRUE,
     str_save       = save_loc_4,
-    save_width     = 24,
+    save_width     = save_width,
     save_height    = 21,
     n_plots        = 12
 )
@@ -416,7 +420,7 @@ plt_circ_age_ridge_multiple_years <- function(
         spec_model  = "No program data",
         spec_ages   = 0:30,
         str_save    = NULL,
-        save_width  = 9,
+        save_width  = 6.3,
         save_height = 7,
         n_plots     = 8
 ) {
@@ -573,15 +577,15 @@ plt_circ_age_ridge_multiple_years <- function(
 
 ## distributions/ridges for mean TMIC and MMC-nT age for different areas
 ## Population pyramid for each area id modelled
-a <- pop_pyramid_plt(
+pop_pyramid_plt(
   results_age, 
   spec_years_triple, 
   unique(results_age$area_level), 
   province_split = TRUE,
-  n_plots = 5 # , 
-  # str_save = save_loc_7,
-  # save_width = 6.3, 
-  # save_height = 8
+  n_plots        = 5, 
+  str_save       = save_loc_7,
+  save_width     = save_width, 
+  save_height    = 8
 )
 
 
@@ -634,7 +638,7 @@ lapply(seq_along(types), function(i) {
       "_prevalence_15to49",
       types[[i]][[2]]
     ),
-    save_width        = 16, 
+    save_width        = save_width, 
     save_height       = 12,
     n_plots           = 14
   )
@@ -665,7 +669,7 @@ lapply(seq_along(types), function(i) {
         save_loc_survey, "survey_0", i + 3,
         "_age_prevalence", types[[i]][[2]]
       ),
-      save_width        = 16, 
+      save_width        = save_width, 
       save_height       = 12,
       n_plots           = 14
     )
