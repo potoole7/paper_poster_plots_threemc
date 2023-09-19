@@ -1,5 +1,8 @@
 #### Individual Country Supplementary figures of final results ####
 
+# Must be run inside `threemc_orderly` repo, with this repo in top level of 
+# this directory, and called `paper_poster_plots`
+
 #### Libs ####
 
 library(dplyr)
@@ -25,7 +28,7 @@ orderly_root <- here::here()
 save_loc <- "paper_poster_plots/paper/plots/supp_figs/"
 if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 
-cntry <- "LSO" # temp, run for one country, might loop thereafter
+cntry <- "ZAF" # temp, run for one country, might loop thereafter
 
 # spec_age_group <- "10-29"
 spec_age_group <- "15-29"
@@ -299,29 +302,29 @@ plt_mc_coverage_prevalence(
     areas,
     # spec_age_group = "10+", # why this age group??? change to 0+!
     spec_age_group = "0+",
-    spec_years = spec_years,
-    area_levels = unique(results_agegroup$area_level), # use all area levels
-    spec_model = "No program data",
-    main = "Circumcision Coverage vs Year, ",
-    str_save = save_loc_1,
-    save_width = 16,
-    save_height = 7.5,
-    n_plots = 1
+    spec_years     = spec_years,
+    area_levels    = unique(results_agegroup$area_level), # use all area levels
+    spec_model     = "No program data",
+    main           = "Circumcision Coverage vs Year, ",
+    str_save       = save_loc_1,
+    save_width     = 16,
+    save_height    = 7.5,
+    n_plots        = 1
 )
 
 ## second plot, of circumcision coverage vs age
 plt_age_coverage_by_type(
     results_age,
     areas,
-    spec_years = spec_years_triple,
+    spec_years  = spec_years_triple,
     area_levels = unique(results_age$area_level), # use all area levels
-    spec_model = "No program data",
-    # spec_ages = c(0, 60),
-    main = "Circumcision Coverage vs Age, ",
-    str_save = save_loc_2,
-    save_width = 15,
+    spec_model  = "No program data",
+    # spec_ages  = c(0, 60),
+    main        = "Circumcision Coverage vs Age, ",
+    str_save    = save_loc_2,
+    save_width  = 15,
     save_height = 11,
-    n_plots = 1
+    n_plots     = 1
 )
 
 ## map of country, showing difference in circumcision coverage since 2010 for
@@ -369,49 +372,53 @@ plt_coverage_map_change(
 plt_area_facet_coverage(
     results_agegroup,
     areas,
-    spec_years = spec_years,
+    spec_years     = spec_years,
     spec_age_group = spec_age_group,
-    area_levels = unique(results_agegroup$area_level),
-    spec_model = "No program data",
-    str_save = save_loc_4,
-    save_width = 24,
-    save_height = 21,
-    n_plots = 12
+    area_levels    = unique(results_agegroup$area_level),
+    spec_model     = "No program data",
+    province_split = TRUE,
+    str_save       = save_loc_4,
+    save_width     = 24,
+    save_height    = 21,
+    n_plots        = 12
 )
 
 ## circumcision coverage vs age for multiple years
 plt_age_coverage_multi_years(
     results_age,
     areas,
-    spec_years = spec_years_triple,
-    str_save = save_loc_5,
-    spec_ages = c(0, 60)
+    spec_years     = spec_years_triple, 
+    province_split = TRUE,
+    str_save       = save_loc_5,
+    spec_ages      = c(0, 60), 
+    n_plots        = 9
 )
 
 ## distributions/ridges for mean TMIC and MMC-nT age for different areas
 plt_circ_age_ridge(
     results_age,
     areas,
-    spec_years = spec_years[2],
-    area_levels =  min(2, max(results_age$area_level)),
+    spec_years  = spec_years[2],
+    area_levels = min(2, max(results_age$area_level)),
     # area_levels = 1,
-    spec_ages = 0:30, # no circumcisions over 30, is that right?
-    n_plots = 5,
-    # n_plots = 9,
-    str_save = save_loc_6
+    spec_ages   = 0:30, # no circumcisions over 30, is that right?
+    province_split = TRUE,
+    n_plots     = 5,
+    # n_plots     = 9,
+    str_save    = save_loc_6
 )
 
 plt_circ_age_ridge_multiple_years <- function(
         results_age,
         areas,
-        spec_years = c(2021, 2015, 2010),
+        spec_years  = c(2021, 2015, 2010),
         area_levels = unique(results_age$area_level),
-        spec_model = "No program data",
-        spec_ages = 0:30,
-        str_save = NULL,
-        save_width = 9,
+        spec_model  = "No program data",
+        spec_ages   = 0:30,
+        str_save    = NULL,
+        save_width  = 9,
         save_height = 7,
-        n_plots = 8
+        n_plots     = 8
 ) {
 
     # temp fix
@@ -557,11 +564,11 @@ plt_circ_age_ridge_multiple_years <- function(
 # plt_circ_age_ridge_multiple_years(
 #   results_age,
 #   areas,
-#   spec_years = rev(spec_years_triple),
+#   spec_years  = rev(spec_years_triple),
 #   area_levels = unique(results_age$area_level),
-#   spec_model = "No program data",
-#   spec_ages = 0:30,
-#   str_save = save_loc_6
+#   spec_model  = "No program data",
+#   spec_ages   = 0:30,
+#   str_save    = save_loc_6
 # )
 
 ## distributions/ridges for mean TMIC and MMC-nT age for different areas
@@ -570,6 +577,7 @@ a <- pop_pyramid_plt(
   results_age, 
   spec_years_triple, 
   unique(results_age$area_level), 
+  province_split = TRUE,
   n_plots = 5 # , 
   # str_save = save_loc_7,
   # save_width = 6.3, 
@@ -608,59 +616,65 @@ types <- list("MMC coverage" = c("Medical", "_mmc.pdf"),
 main_title = "Circumcision Coverage (2011-2021) (Black dots denote survey coverage) - "
 
 lapply(seq_along(types), function(i) {
-  plt_MC_modelfit_spec_age(df_results = results_agegroup_comp,
-                        df_results_survey = results_survey,
-                        # mc_type_model = "Total prevalence",
-                        mc_type_model = names(types)[i],
-                        # mc_type_survey = types[[i]][[1]],
-                        mc_type_survey = names(types)[i],
-                        # age_per = c("10-29", "30-49"),
-                        age_per = spec_age_group_double,
-                        years = plt_start_year:2021,
-                        model_type = model_select,
-                        # area_level_select = i,
-                        # province_split = TRUE,
-                        xlab = "Year",
-                        ylab = "Circumcision Coverage",
-                        title = paste(types[[i]][[1]], main_title),
-                        # str_save = paste0("Runs/plots/survey_0", x + 3, "_prevalence_15to49", types[[x]][[2]]),
-                        str_save = paste0(save_loc_survey, "survey_0", i,
-                                          "_prevalence_15to49",
-                                          types[[i]][[2]]),
-                        save_width = 16, save_height = 12,
-                        n_plots = 14)
+  plt_MC_modelfit_spec_age(
+    df_results        = results_agegroup_comp,
+    df_results_survey = results_survey,
+    mc_type_model     = names(types)[i],
+    mc_type_survey    = names(types)[i],
+    age_per           = spec_age_group_double,
+    # spec_years        = plt_start_year:2021,
+    spec_years        = spec_years,
+    model_type        = model_select,
+    province_split    = TRUE,
+    xlab              = "Year",
+    ylab              = "Circumcision Coverage",
+    title             = paste(types[[i]][[1]], main_title),
+    str_save          = paste0(
+      save_loc_survey, "survey_0", i,
+      "_prevalence_15to49",
+      types[[i]][[2]]
+    ),
+    save_width        = 16, 
+    save_height       = 12,
+    n_plots           = 14
+  )
 })
 
 # Coverage vs age(group)
 main_title = "Circumcision Coverage by Age Group (Black dots denote survey coverage) - "
 
 lapply(seq_along(types), function(i) {
-    plt_MC_modelfit(df_results = results_agegroup,
-                    df_results_survey = results_survey,
-                    # mc_type_model = "MMC prevalence",
-                    mc_type_model = names(types)[i],
-                    # mc_type_survey = types[[i]][[1]],
-                    mc_type_survey = names(types)[i],
-                    age_per = c("0-4",   "5-9",   "10-14", "15-19", "20-24", "25-29", "30-34",
-                                "35-39", "40-44", "45-49", "50-54", "54-59", "60-64"),
-                    survey_years =  years[years %in% results_agegroup$year],
-                    model_type = model_select,
-                    # province_split = TRUE,
-                    # area_level_select = i,
-                    facet_year = "colour",
-                    xlab = "Age Group",
-                    ylab = "Circumcision Coverage",
-                    title = paste(types[[i]][[1]], main_title),
-                    # str_save = paste0("~/survey_0", i, "_age_prevalence", types[[i]][[2]]),
-                    str_save = paste0(save_loc_survey, "survey_0", i + 3,
-                                      "_age_prevalence",
-                                      types[[i]][[2]]),
-                    save_width = 16, save_height = 12,
-                    n_plots = 14)
+    plt_MC_modelfit(
+      df_results        = results_agegroup,
+      df_results_survey = results_survey,
+      mc_type_model     = names(types)[i],
+      mc_type_survey    = names(types)[i],
+      age_per           = c(
+        "0-4",   "5-9",   "10-14", "15-19", "20-24", "25-29", "30-34",
+        "35-39", "40-44", "45-49", "50-54", "54-59", "60-64"
+      ),
+      survey_years      =  years[years %in% results_agegroup$year],
+      model_type        = model_select,
+      province_split    = TRUE,
+      # area_level_select = i,
+      facet_year        = "colour",
+      xlab              = "Age Group",
+      ylab              = "Circumcision Coverage",
+      title             = paste(types[[i]][[1]], main_title),
+      str_save          = paste0(
+        save_loc_survey, "survey_0", i + 3,
+        "_age_prevalence", types[[i]][[2]]
+      ),
+      save_width        = 16, 
+      save_height       = 12,
+      n_plots           = 14
+    )
 })
 
 
-#### DMPPT2 comparison plots (commented out, not needed anymore!) ####
+#### DMPPT2 comparison plots ####
+
+# commented out DMPPT2 comparisons, no longer including in paper
 
 # save_loc_dmppt2 <- file.path(save_loc, "03_dmppt2_comps", cntry, "/")
 # if (!dir.exists(save_loc_dmppt2)) create_dirs_r(save_loc_dmppt2)
