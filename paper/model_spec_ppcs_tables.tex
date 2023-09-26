@@ -109,67 +109,125 @@ Time-variant, paed cut-off model: Both
 
 
 %% Model Specification Table 1: Non-VMMC countries %%
+
 \begin{landscape}
 
 {\linespread{1} 
   \begin{table}[H] 
   \centering 
   \footnotesize 
-  \begin{tabular}{>{\bfseries}p{0.75cm} 
-     >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
-     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
-     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \begin{tabular}{>{\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
   \hline  
-  & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
-  \cmidrule(lr){4-15} 
-  & & & \multicolumn{6}{c}{\bf Time invariant} & 
-      \multicolumn{6}{c}{\bf Time variant} \\ 
-  \cmidrule(lr){4-9} 
-  \cmidrule(lr){10-15} 
-  & {\bf MMC Model} & {\bf Type} & 
-      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
-      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
-      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
-      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+  & & & \multicolumn{2}{c}{\bf CRPS} & \multicolumn{2}{c}{\bf MAE} & \multicolumn{2}{c}{\bf RMSE} & \multicolumn{2}{c}{\bf 50\% CI} & \multicolumn{2}{c}{\bf 80\% CI} & \multicolumn{2}{c}{\bf 95\% CI}  \\ 
+  \cmidrule(lr){4-5} 
+  \cmidrule(lr){6-7} 
+  \cmidrule(lr){8-9} 
+  \cmidrule(lr){10-11} 
+  \cmidrule(lr){12-13} 
+  \cmidrule(lr){14-15} 
+  & & & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV}\\ 
   \hline 
-AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
-  &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
-  &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
-  & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
-  &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
-  &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
- RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
-  &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
-  &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
-  & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
-  &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
-  &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
- RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
-  &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
-  &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
-  & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
-  &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
-  &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+    \multicolumn{8}{l}{\textbf{ AR1 }} \\ 
+ & \bf MC & \bf NC &  75.81 &  79.00 &   0.11 &   0.11 &   0.14 & \bf  0.13 &  69.56 & \bf 67.22 & \bf 79.51 &  76.71 &  88.42 &  83.81 & \\ 
+  &  & \bf PC &  74.99 & \bf 74.65 &   0.11 & \bf  0.11 &   0.14 &   0.14 &  70.30 &  68.93 &  80.58 &  80.55 & \bf 88.84 &  88.60 & \\[3pt] 
+  & \bf MMC & \bf NC & \bf123.68 & 133.31 & \bf  0.21 &   0.24 & \bf  0.26 &   0.30 & \bf 50.23 &  59.02 &  71.77 & \bf 78.35 &  85.45 & \bf 89.95 & \\ 
+  &  & \bf PC & 132.86 & 127.44 &   0.23 &   0.21 &   0.28 &   0.26 &  46.35 &  45.78 &  67.48 &  66.67 &  81.95 &  80.84 & \\[3pt] 
+  & \bf TMC & \bf NC & \bf112.09 & 119.62 & \bf  0.20 &   0.22 & \bf  0.25 &   0.28 &  52.20 &  61.76 &  72.50 & \bf 80.30 &  85.49 & \bf 91.37 & \\ 
+  &  & \bf PC & 118.05 & 115.27 &   0.21 &   0.20 &   0.27 &   0.25 & \bf 48.84 &  47.16 &  68.48 &  67.66 &  82.26 &  81.16 & \\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW1 }} \\ 
+ & \bf MC & \bf NC &  77.22 &  77.86 &   0.12 &   0.12 &   0.14 &   0.14 &  68.59 & \bf 66.54 &  78.83 &  75.30 &  87.28 &  82.52 & \\ 
+  &  & \bf PC &  76.06 & \bf 75.66 &   0.12 & \bf  0.11 &   0.14 & \bf  0.14 &  69.44 &  68.76 &  79.79 & \bf 79.83 & \bf 88.14 &  87.33 & \\[3pt] 
+  & \bf MMC & \bf NC & 124.16 & \bf120.06 &   0.21 &   0.22 &   0.27 &   0.28 & \bf 49.28 &  58.79 &  69.78 & \bf 79.64 &  84.24 & \bf 90.66 & \\ 
+  &  & \bf PC & 128.45 & 127.44 &   0.22 & \bf  0.21 &   0.27 & \bf  0.26 &  46.65 &  46.26 &  66.77 &  67.68 &  80.68 &  80.87 & \\[3pt] 
+  & \bf TMC & \bf NC & 112.48 & \bf106.09 &   0.20 &   0.21 &   0.26 &   0.27 & \bf 51.56 &  61.07 &  71.27 & \bf 81.80 &  85.06 & \bf 92.17 & \\ 
+  &  & \bf PC & 115.99 & 114.87 &   0.20 & \bf  0.20 &   0.26 & \bf  0.25 &  48.24 &  47.82 &  67.33 &  68.31 &  81.56 &  81.59 & \\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW2 }} \\ 
+ & \bf MC & \bf NC &  77.22 & \bf 53.68 &   0.12 & \bf  0.11 &   0.15 & \bf  0.13 &  68.77 & \bf 68.00 & \bf 79.77 &  78.64 &  88.08 &  86.79 & \\ 
+  &  & \bf PC &  74.80 &  74.41 &   0.11 &   0.11 &   0.14 &   0.14 &  70.68 &  69.77 &  81.56 &  80.99 & \bf 90.31 &  89.70 & \\[3pt] 
+  & \bf MMC & \bf NC & 124.69 & \bf 96.50 &   0.22 & \bf  0.19 &   0.27 & \bf  0.24 & \bf 48.90 &  52.66 &  69.03 & \bf 76.51 &  83.23 & \bf 89.90 & \\ 
+  &  & \bf PC & 128.19 & 126.95 &   0.21 &   0.21 &   0.26 &   0.26 &  46.48 &  46.22 &  66.46 &  66.78 &  80.77 &  80.57 & \\[3pt] 
+  & \bf TMC & \bf NC & 112.85 & \bf 89.62 &   0.20 & \bf  0.18 &   0.26 & \bf  0.23 & \bf 50.95 &  55.51 &  70.36 & \bf 78.36 &  83.36 & \bf 90.72 & \\ 
+  &  & \bf PC & 115.88 & 115.32 &   0.20 &   0.20 &   0.25 &   0.25 &  48.08 &  47.41 &  67.29 &  67.46 &  80.84 &  81.06 & \\[3pt] 
   \hline 
   \end{tabular} 
-  \caption{Results of the posterior predictive checking in total 
-             male circumcision (MC), medical male circumcision (MMC) and 
-             traditional male circumcision (TMC) from fitting the 12 candidate 
-             models and taking the median value across all Non-VMMC countries. Combinations include 
-             (i) Time invariant or Time variant TMC, 
-             (ii) No cut off vs. Paediatric cut-off in MMC, and 
-             (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
-             Random Walk 2 (RW2) temporal prior. 
-             For all combinations, the within-sample continuous ranked 
-             probability scores (CRPS), mean absolute error (MAE) , 
-             root mean squared error (RMSE), and the proportion of empirical 
-             observations that fell within the 50\%, 80\%, and 95\% 
-             quantiles are shown.} 
-  \label{tab::PPC1Non-VMMC} 
+  \caption{Results of the posterior predictive checking in total male 
+    circumcision (MC), medical male circumcision (MMC) and traditional male 
+    circumcision (TMC) from fitting the 12 candidate models in Non-VMMCcountries. Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, 
+    (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) 
+    Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) 
+    temporal prior. For all combinations, the within-sample continuous ranked 
+    probability scores (CRPS), mean absolute error (MAE), root mean square 
+    error (RMSE), and the proportion of empirical observations that fell within 
+    the 50\%, 80\%, and 95\% quantiles are shown.} 
+  \label{tab::PPC2Non-VMMC} 
 \end{table}} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 \end{landscape}
+
+
+% \begin{landscape}
+% 
+% {\linespread{1} 
+%   \begin{table}[H] 
+%   \centering 
+%   \footnotesize 
+%   \begin{tabular}{>{\bfseries}p{0.75cm} 
+%      >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
+%      C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
+%      C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+%   \hline  
+%   & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
+%   \cmidrule(lr){4-15} 
+%   & & & \multicolumn{6}{c}{\bf Time invariant} & 
+%       \multicolumn{6}{c}{\bf Time variant} \\ 
+%   \cmidrule(lr){4-9} 
+%   \cmidrule(lr){10-15} 
+%   & {\bf MMC Model} & {\bf Type} & 
+%       {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+%       {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
+%       {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+%       {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+%   \hline 
+% AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
+%   &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
+%   &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
+%   & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
+%   &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
+%   &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
+%  RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
+%   &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
+%   &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
+%   & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
+%   &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
+%   &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
+%  RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
+%   &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
+%   &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
+%   & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
+%   &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
+%   &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+%   \hline 
+%   \end{tabular} 
+%   \caption{Results of the posterior predictive checking in total 
+%              male circumcision (MC), medical male circumcision (MMC) and 
+%              traditional male circumcision (TMC) from fitting the 12 candidate 
+%              models and taking the median value across all Non-VMMC countries. Combinations include 
+%              (i) Time invariant or Time variant TMC, 
+%              (ii) No cut off vs. Paediatric cut-off in MMC, and 
+%              (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
+%              Random Walk 2 (RW2) temporal prior. 
+%              For all combinations, the within-sample continuous ranked 
+%              probability scores (CRPS), mean absolute error (MAE) , 
+%              root mean squared error (RMSE), and the proportion of empirical 
+%              observations that fell within the 50\%, 80\%, and 95\% 
+%              quantiles are shown.} 
+%   \label{tab::PPC1Non-VMMC} 
+% \end{table}} 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% \end{landscape}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -207,61 +265,115 @@ AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 &
   \begin{table}[H] 
   \centering 
   \footnotesize 
-  \begin{tabular}{>{\bfseries}p{0.75cm} 
-     >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
-     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
-     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \begin{tabular}{>{\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
   \hline  
-  & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
-  \cmidrule(lr){4-15} 
-  & & & \multicolumn{6}{c}{\bf Time invariant} & 
-      \multicolumn{6}{c}{\bf Time variant} \\ 
-  \cmidrule(lr){4-9} 
-  \cmidrule(lr){10-15} 
-  & {\bf MMC Model} & {\bf Type} & 
-      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
-      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
-      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
-      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+  & & & \multicolumn{2}{c}{\bf CRPS} & \multicolumn{2}{c}{\bf MAE} & \multicolumn{2}{c}{\bf RMSE} & \multicolumn{2}{c}{\bf 50\% CI} & \multicolumn{2}{c}{\bf 80\% CI} & \multicolumn{2}{c}{\bf 95\% CI}  \\ 
+  \cmidrule(lr){4-5} 
+  \cmidrule(lr){6-7} 
+  \cmidrule(lr){8-9} 
+  \cmidrule(lr){10-11} 
+  \cmidrule(lr){12-13} 
+  \cmidrule(lr){14-15} 
+  & & & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV}\\ 
   \hline 
-AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
-  &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
-  &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
-  & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
-  &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
-  &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
- RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
-  &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
-  &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
-  & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
-  &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
-  &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
- RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
-  &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
-  &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
-  & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
-  &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
-  &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+    \multicolumn{8}{l}{\textbf{ AR1 }} \\ 
+ & \bf MC & \bf NC & 220.73 & \bf220.10 &   0.16 &   0.16 &   0.21 &   0.21 &  60.51 & \bf 60.23 & \bf 78.47 &  78.32 &  88.84 &  88.56 & \\ 
+  &  & \bf PC & 220.70 & 220.11 &   0.16 & \bf  0.16 &   0.21 & \bf  0.21 &  60.48 &  60.37 &  78.37 &  78.18 & \bf 88.89 &  88.77 & \\[3pt] 
+  & \bf MMC & \bf NC & 167.43 & \bf163.95 &   0.13 & \bf  0.13 &   0.18 & \bf  0.18 &  68.34 &  69.40 &  84.69 &  85.11 &  93.21 & \bf 93.99 & \\ 
+  &  & \bf PC & 168.45 & 165.81 &   0.13 &   0.13 &   0.18 &   0.18 & \bf 68.13 &  69.12 & \bf 84.40 &  84.71 &  92.89 &  93.64 & \\[3pt] 
+  & \bf TMC & \bf NC & 189.20 & \bf185.47 &   0.14 & \bf  0.14 &   0.19 & \bf  0.19 &  63.74 &  64.23 &  82.30 &  82.45 &  92.02 & \bf 92.25 & \\ 
+  &  & \bf PC & 191.07 & 188.56 &   0.14 &   0.14 &   0.19 &   0.19 & \bf 63.41 &  63.60 &  82.01 & \bf 81.81 &  91.85 &  91.98 & \\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW1 }} \\ 
+ & \bf MC & \bf NC & 220.08 & 240.11 &   0.17 &   0.18 &   0.22 &   0.23 &  60.81 & \bf 58.56 & \bf 78.89 &  77.33 & \bf 89.06 &  88.16 & \\ 
+  &  & \bf PC & 220.29 & \bf218.79 &   0.17 & \bf  0.16 &   0.22 & \bf  0.21 &  60.90 &  60.51 &  78.79 &  78.83 &  89.04 &  88.97 & \\[3pt] 
+  & \bf MMC & \bf NC & 167.60 & 167.02 &   0.13 &   0.13 &   0.18 &   0.19 &  68.34 &  69.26 &  84.54 &  85.35 &  93.22 & \bf 94.08 & \\ 
+  &  & \bf PC & 168.66 & \bf165.65 &   0.13 & \bf  0.13 &   0.18 & \bf  0.18 & \bf 68.24 &  69.42 & \bf 84.39 &  84.80 &  93.19 &  93.83 & \\[3pt] 
+  & \bf TMC & \bf NC & 188.94 & 195.44 &   0.14 &   0.15 &   0.20 &   0.21 &  64.08 &  64.40 &  83.05 &  83.21 &  92.49 & \bf 92.59 & \\ 
+  &  & \bf PC & 190.81 & \bf187.53 &   0.14 & \bf  0.14 &   0.20 & \bf  0.19 & \bf 63.77 &  64.04 &  82.58 & \bf 82.53 &  92.13 &  92.23 & \\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW2 }} \\ 
+ & \bf MC & \bf NC & 220.19 & 219.09 &   0.16 &   0.16 &   0.21 &   0.21 &  60.55 &  60.45 &  78.14 &  78.49 &  88.69 &  88.68 & \\ 
+  &  & \bf PC & 221.05 & \bf218.97 &   0.16 & \bf  0.16 &   0.21 & \bf  0.21 & \bf 60.19 &  60.47 &  78.27 & \bf 78.59 &  88.76 & \bf 88.78 & \\[3pt] 
+  & \bf MMC & \bf NC & 167.84 & \bf164.16 &   0.13 & \bf  0.13 &   0.18 & \bf  0.18 &  68.34 &  69.59 &  84.51 &  85.14 &  93.20 & \bf 94.01 & \\ 
+  &  & \bf PC & 168.58 & 165.97 &   0.13 &   0.13 &   0.18 &   0.18 & \bf 68.33 &  69.13 & \bf 84.33 &  84.60 &  92.93 &  93.63 & \\[3pt] 
+  & \bf TMC & \bf NC & 188.93 & \bf184.27 &   0.14 & \bf  0.14 &   0.19 & \bf  0.19 &  63.64 &  64.73 &  82.42 &  82.86 &  91.99 & \bf 92.25 & \\ 
+  &  & \bf PC & 191.49 & 187.82 &   0.14 &   0.14 &   0.20 &   0.19 & \bf 63.23 &  63.78 & \bf 81.74 &  82.34 &  91.71 &  92.00 & \\[3pt] 
   \hline 
   \end{tabular} 
-  \caption{Results of the posterior predictive checking in total 
-             male circumcision (MC), medical male circumcision (MMC) and 
-             traditional male circumcision (TMC) from fitting the 12 candidate 
-             models and taking the median value across all Non-VMMC countries. Combinations include 
-             (i) Time invariant or Time variant TMC, 
-             (ii) No cut off vs. Paediatric cut-off in MMC, and 
-             (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
-             Random Walk 2 (RW2) temporal prior. 
-             For all combinations, the within-sample continuous ranked 
-             probability scores (CRPS), mean absolute error (MAE) , 
-             root mean squared error (RMSE), and the proportion of empirical 
-             observations that fell within the 50\%, 80\%, and 95\% 
-             quantiles are shown.} 
-  \label{tab::PPC1Non-VMMC} 
-\end{table}}
- 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+  \caption{Results of the posterior predictive checking in total male 
+    circumcision (MC), medical male circumcision (MMC) and traditional male 
+    circumcision (TMC) from fitting the 12 candidate models in VMMCcountries. Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, 
+    (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) 
+    Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) 
+    temporal prior. For all combinations, the within-sample continuous ranked 
+    probability scores (CRPS), mean absolute error (MAE), root mean square 
+    error (RMSE), and the proportion of empirical observations that fell within 
+    the 50\%, 80\%, and 95\% quantiles are shown.} 
+  \label{tab::PPC1VMMC} 
+\end{table}} 
 
 \end{landscape}
+
+% \begin{landscape}
+% 
+% {\linespread{1} 
+%   \begin{table}[H] 
+%   \centering 
+%   \footnotesize 
+%   \begin{tabular}{>{\bfseries}p{0.75cm} 
+%      >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
+%      C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
+%      C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+%   \hline  
+%   & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
+%   \cmidrule(lr){4-15} 
+%   & & & \multicolumn{6}{c}{\bf Time invariant} & 
+%       \multicolumn{6}{c}{\bf Time variant} \\ 
+%   \cmidrule(lr){4-9} 
+%   \cmidrule(lr){10-15} 
+%   & {\bf MMC Model} & {\bf Type} & 
+%       {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+%       {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
+%       {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+%       {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+%   \hline 
+% AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
+%   &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
+%   &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
+%   & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
+%   &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
+%   &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
+%  RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
+%   &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
+%   &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
+%   & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
+%   &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
+%   &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
+%  RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
+%   &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
+%   &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
+%   & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
+%   &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
+%   &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+%   \hline 
+%   \end{tabular} 
+%   \caption{Results of the posterior predictive checking in total 
+%              male circumcision (MC), medical male circumcision (MMC) and 
+%              traditional male circumcision (TMC) from fitting the 12 candidate 
+%              models and taking the median value across all Non-VMMC countries. Combinations include 
+%              (i) Time invariant or Time variant TMC, 
+%              (ii) No cut off vs. Paediatric cut-off in MMC, and 
+%              (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
+%              Random Walk 2 (RW2) temporal prior. 
+%              For all combinations, the within-sample continuous ranked 
+%              probability scores (CRPS), mean absolute error (MAE) , 
+%              root mean squared error (RMSE), and the proportion of empirical 
+%              observations that fell within the 50\%, 80\%, and 95\% 
+%              quantiles are shown.} 
+%   \label{tab::PPC1Non-VMMC} 
+% \end{table}}
+%  
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+% 
+% \end{landscape}
 
 \end{document}
