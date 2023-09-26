@@ -26,7 +26,7 @@ areas <- read_sf("~/Desktop/areas.geojson")
 cntry <- c('AGO', 'RWA', 'ZAF')
 
 # Opening text file
-sink('~/Desktop/PPC_P1_Tables.txt')
+sink('~/Desktop/PPC_P1_Tables.tex')
 
 cat("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \n")
 
@@ -46,11 +46,11 @@ for (i in cntry){
     mutate(rw = case_when(rw_order == 0 ~ "AR1",
                           rw_order == 1 ~ "RW1",
                           rw_order == 2 ~ "RW2"),
-           paed = case_when(paed_age_cutoff == "10" ~ "Paediatric cut-off",
-                            paed_age_cutoff == "Inf" ~ "No cut-off"),
-           type = case_when(type == "MC coverage" ~ "MC",
-                            type == "TMC coverage" ~ "MMC",
-                            type == "MMC coverage" ~ 'TMC'),
+           paed = case_when(paed_age_cutoff == "10" ~ "\\bf PC",
+                            paed_age_cutoff == "Inf" ~ "\\bf NC"),
+           type = case_when(type == "MC coverage" ~ "\\bf MC",
+                            type == "TMC coverage" ~ "\\bf MMC",
+                            type == "MMC coverage" ~ '\\bf TMC'),
            tmc = case_when(inc_time_tmc == TRUE ~ "Time invariant",
                            inc_time_tmc == FALSE ~ 'Time variant')) %>%
     # selecting relevant columns
@@ -81,17 +81,18 @@ for (i in cntry){
     #                        paed = c("Paediatric cut-off"), #, "No cut-off"),
     #                        type = 'XXX')) %>%
     # Sorting dataset
-    arrange(rw, paed, type) 
+    arrange(rw, type, type) %>%
+    dplyr::select(rw, type, paed, contains('crps'), contains('mae'), contains('rmse'), contains('0.5'), contains('0.8'), contains('0.9'))
   
   # Removing dummy data
-  tmp$paed[duplicated(tmp[,c('rw', 'paed')])] <- ""
-  tmp$rw[duplicated(tmp$rw)] <- ""
-  tmp[which(tmp$type == "XXX"),] <- ""
+  tmp$type[duplicated(tmp[,c('rw', 'type')])] <- ""
   
-  # Removing unnecessary columns
-  tmp$`Time invariant rmse` <- NULL
-  tmp$`Time variant rmse` <- NULL
-  
+  # Adding spacing 
+  tmp$num <- 1:nrow(tmp)
+  tmp$nextrow <- ''
+  tmp$nextrow[!((tmp$num %% 2) == 0)] <- '\\\\ \n'
+  tmp$nextrow[(tmp$num %% 2) == 0] <- '\\\\[3pt] \n'
+  tmp$num <- NULL
   
   # Outputting table
   cat("\n")
@@ -99,21 +100,46 @@ for (i in cntry){
   cat("  \\begin{table}[H]", "\n")
   cat("  \\centering", "\n")
   cat("  \\footnotesize", "\n")
-  cat("  \\begin{tabular}{>{\\bfseries}p{0.75cm} >{\\bfseries}p{3cm} p{1cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}}", "\n")
+  cat("  \\begin{tabular}{>{\\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}}", "\n")
   cat("  \\hline ", "\n")
-  cat("  & & & \\multicolumn{10}{c}{\\bf TMC Model} \\\\", "\n")
-  cat("  \\cmidrule(lr){4-13}", "\n")
-  cat("  & & & \\multicolumn{5}{c}{\\bf Time invariant} & \\multicolumn{5}{c}{\\bf Time variant} \\\\", "\n")
-  cat("  \\cmidrule(lr){4-8}", "\n")
-  cat("  \\cmidrule(lr){9-13}", "\n")
-  cat("  & {\\bf MMC Model} & {\\bf Type} & {\\bf CRPS} & {\\bf RMSE} & {\\bf 50\\% CI} & {\\bf 80\\% CI} & {\\bf 95\\% CI} & {\\bf CRPS} & {\\bf RMSE} & {\\bf 50\\% CI} & {\\bf 80\\% CI} & {\\bf 95\\% CI} \\\\", "\n")
+  # cat("  & & & \\multicolumn{12}{c}{\\bf TMC} \\\\", "\n")
+  # cat("  \\cmidrule(lr){4-15}", "\n")
+  cat("  & & & \\multicolumn{2}{c}{\\bf CRPS} & \\multicolumn{2}{c}{\\bf MAE} & \\multicolumn{2}{c}{\\bf RMSE} & \\multicolumn{2}{c}{\\bf 50\\% CI} & \\multicolumn{2}{c}{\\bf 80\\% CI} & \\multicolumn{2}{c}{\\bf 95\\% CI}  \\\\", "\n")
+  cat("  \\cmidrule(lr){4-5}", "\n")
+  cat("  \\cmidrule(lr){6-7}", "\n")
+  cat("  \\cmidrule(lr){8-9}", "\n")
+  cat("  \\cmidrule(lr){10-11}", "\n")
+  cat("  \\cmidrule(lr){12-13}", "\n")
+  cat("  \\cmidrule(lr){14-15}", "\n")
+  cat("  & & & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV}\\\\", "\n")
+  # cat("  & {\\bf MMC} & {\\bf Type} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV} & {\\bf TI} & {\\bf TV}\\\\", "\n")
   cat("  \\hline", "\n")
-  cat(paste(paste(tmp[,1], tmp[,2], tmp[,3], tmp[,4], tmp[,5], tmp[,6], tmp[,7], tmp[,8], tmp[,9], tmp[,10], tmp[,11], tmp[,12], tmp[,13], sep = ' & '), "\\\\ \n"))
+  
+  # Loop for each country 
+  for (j in unique(tmp$rw)){
+    # filtering for country
+    tmp2 <- tmp %>%
+      filter(rw == j) %>%
+      as.data.frame()
+    
+    # Converting to data frame
+    tmp2 <- as.data.frame(tmp2)
+    
+    # Country Name 
+    cat(paste("    \\multicolumn{8}{l}{\\textbf{", j, '}} \\\\', '\n'))
+    # Data Table
+    cat(paste(paste0("", ' & ', 
+                     tmp2[,2],  ' & ', tmp2[,3],  ' & ',  tmp2[,4],  ' & ', tmp2[,5],' & ', 
+                     tmp2[,6],  ' & ', tmp2[,7],  ' & ',  tmp2[,8],  ' & ', tmp2[,9],' & ', 
+                     tmp2[,10], ' & ', tmp2[,11], ' & ',  tmp2[,12], ' & ', tmp2[,13],' & ',
+                     tmp2[,14], ' & ', tmp2[,15],  tmp2[,16])))
+  }
+  
   cat("  \\hline", "\n")
   cat("  \\end{tabular}", "\n")
   cat(paste0("  \\caption{Results of the posterior predictive checking in total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC) from fitting the 12 candidate models in ",
              areas$area_name[which(areas$area_id == i)], 
-             ". Combinations include (i) Time invariant or Time variant TMC, (ii) No cut off vs. Paediatric cut-off in MMC, and (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) temporal prior. For all combinations, the within-sample continuous ranked probability scores (CRPS), mean absolute error (MAE), mean absolute error (MAE), and the proportion of empirical observations that fell within the 50\\%, 80\\%, and 95\\% quantiles are shown.}"), "\n")
+             ". Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) temporal prior. For all combinations, the within-sample continuous ranked probability scores (CRPS), mean absolute error (MAE), root mean square error (RMSE), and the proportion of empirical observations that fell within the 50\\%, 80\\%, and 95\\% quantiles are shown.}"), "\n")
   cat(paste0("  \\label{tab::PPC1", i, "}"), "\n")
   cat("\\end{table}}", "\n")
   cat("\n")

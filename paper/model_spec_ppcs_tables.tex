@@ -1,0 +1,267 @@
+\documentclass{article}
+
+\usepackage[top=3cm, bottom=3cm, left=3cm,right=3cm]{geometry}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{todonotes}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{setspace} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pifont}
+\usepackage[colorlinks=true,citecolor=blue, linkcolor=blue]{hyperref}
+\usepackage{multirow}
+\setlength{\tabcolsep}{5pt}
+%%\setlength{\parindent}{0pt}
+\usepackage[parfill]{parskip}
+\renewcommand{\arraystretch}{1.5}
+
+
+\begin{document}
+
+\section{Model Specification}
+\label{sec:org8802288}
+
+\subsection{non-VMMC countries}
+\label{sec:org09db5e8}
+
+%% Notes on Table
+
+Some very rough notes on results of table below:
+
+Nomenclature:
+Time-invariant, No cut-off model: Neither
+Time-invariant, paed cut-off model: Paed cut-off
+Time-variant, No cut-off model: Time TMC
+Time-variant, paed cut-off model: Both 
+
+
+\textbf{AR1}
+\begin{itemize}
+    \item MC: CPRS lowest for Both, RMSE lowest for Time TMC, 50\% CI closest to 50\% for Time TMC, 80\% CI closest for Neither, and 95\% CI closest for Both.
+    \item MMC: CRPS and RMSE lowest for Neither, 50\% CI closest for Neither, 80\% & 95\% CI closest for time TMC
+    \item TMC: Same as MMC, but 50\% CI best for Paed Cutoff 
+    \item Conclusions:
+    \begin{itemize}
+        \item MC: Fairly inconclusive, but for most summary statistics (except 80\% CI, fairly narrowly) a model which includes a time TMC component is preferred. Choosing between "Both" and "Time TMC", it appears that Time TMC has noticeably worse CRPS, 80\% and 95\% coverage, and only marginally better RMSE and 50\% coverage, so the best model for MC appears to be "Both".
+        \item MMC (\& TMC): "Neither" model seems to be narrowly favoured for MMC and tied for TMC with Time TMC for type-specific circumcision, particularly for mean fit statistics. Strange in that this seems to only be the case for the AR1 temporal prior. Comparing values, mean fit statistics were certainly better for "Neither". While we would like our model to be well calibrated, having the best 95\% CI is probably most important in terms of coverage, and the "Time TMC" model has much better 95\% coverage (85.45 vs 89.95 for MMC, 85.49 vs 91.38 for TMC) (and 80\% covergae, at 71.77 vs 78.35 for MMC and 72.50 vs 80.30 for TMC), so Time TMC is the much better model here in terms of the overall coverage of the model. 
+    \end{itemize}
+    \item Final Choice: As Time TMC is one of or the most favoured model for all circumcision types for the AR1 temporal prior, it appears to be the best choice of model across all types. 
+\end{itemize}
+
+\vspace{\bigskipamount}
+
+\textbf{RW1}
+
+\begin{itemize}
+    \item MC: CRPS and RMSE lowest for Both (but very narrowly better than Time TMC model), 50\% coverage best for Time TMC, 80\% coverage best for Both, 95\% coverage best for Paed cutoff (by quite a bit!)
+    \item MMC \& TMC: CRPS and RMSE lowest for Both (again, narrowly better than Time TMC), 50\% coverage best for Neither, 80\% and 95\% coverage best for Time TMC. 
+    \item Conclusions:
+    \begin{itemize}
+        \item MC: Also inconclusive, mean fit statistics narrowly best and 90\% coverage considerably better for "Both" model than "Time TMC", so best model here is "Both". 
+        \item MMC \& TMC: Similar to AR1 temporal prior, Both model narrowly better for mean fit statistics than Time TMC, but Time TMC has far better coverage (95\% coverage is 90.66 vs 80.87 for MMC and 92.17 vs 81.59 for TMC, so much better), and so Time TMC is the best model here.
+    \end{itemize}
+    \item Final Choice: "Both" is narrowly favoured for MC over Time TMC, while Time TMC is better for MMC and TMC, so best model choice here across all types is "Time TMC". 
+\end{itemize}
+
+\vspace{\bigskipamount}
+  
+\textbf{RW2}
+\begin{itemize}
+    \item MC: CRPS, RMSE, 50\% CI best for Time TMC, 80\% covreage best for Neither (very well calibrated at 79.77), 95\% coverage best for Both (although all models have pretty good coverage here, with the lowest being Time TMC at 86.79). 
+    \item MMC \& TMC: CPRS \& RMSE best for Time TMC (as in MC as well), 50\% coverage best for "Neither", 80\% and 95\% coverage best for Time TMC.
+    \item Conclusions:
+      \begin{itemize}
+          \item MC: Fit statistics best for Time TMC, with CRPS in particular being by far the lowest (53.68 vs the next lowest 74.41 for "Both") (may be a mistake?). Although other models have higher 80\% and 95\% coverage, there is not enough of a difference in coverage to ignore this glaring difference in CRPS, so the "Time TMC" model is probably best here. 
+          \item MMC \& TMC: Time TMC model best for all but 50\% coverage, so Time TMC is clearly the preferred model.
+      \end{itemize}
+    \item Final Choice: Time TMC clearly the best model. Interesting that for the RW2 temporal prior we get the behaviour that perhaps we most expected to get for all models, with the "Time TMC" model giving both better mean fit statistics and also posterior predictive coverage, across all circumcision types. 
+\end{itemize}
+
+\vspace{\bigskipamount}
+    
+\textbf{So seems the best model across all temporal priors and circumcision types is the model which has time-variant TMC and no paediatric cut-off for TMC (i.e. the "Time TMC" model)}
+
+\vspace{\bigskipamount}
+
+\textbf{Other Notes on non-VMMC}:
+\begin{itemize}
+    \item Seems to be a pattern emerging whereby including a peadiatric age cutoff vs not improves mean fit statistics (i.e. CRPS \& RMSE), at the loss of posterior predictive coverage (this is bucked for RW2 temporal prior, however, where we see more "expected" behaviour, with the "Time TMC" model having lower CRPS and RMSE than "Both"). 
+    \item However, the inclusion of a Time TMC component is routinely preferred, in agreement with our qualitative analysis of the different model specifications 
+    \item Again, important to note that we don't have survey data on < 15 year olds, so perhaps the value of including a paediatric age cutoff for MMC isn't identifiable here?
+    \item Wanted to choose these models based mainly on mean fit statistics and not posterior predictive coverage, but the choice of model via CRPS and RMSE, usually "Both", doesn't necessarily agree with our qualitative choice of "Time TMC", while the choice of model via coverage is Time TMC (again, this is for AR1 and RW1, not the RW2 temporal prior). Not sure if I'm being very biased in choosing the model I think makes the most sense qualitatively (and also "looked" the best in graphical comparisons of model fit to survey points) in this supposedly quantitative analysis of the different model specifications!!
+
+\end{itemize}
+
+
+
+%% Model Specification Table 1: Non-VMMC countries %%
+\begin{landscape}
+
+{\linespread{1} 
+  \begin{table}[H] 
+  \centering 
+  \footnotesize 
+  \begin{tabular}{>{\bfseries}p{0.75cm} 
+     >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
+     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
+     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \hline  
+  & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
+  \cmidrule(lr){4-15} 
+  & & & \multicolumn{6}{c}{\bf Time invariant} & 
+      \multicolumn{6}{c}{\bf Time variant} \\ 
+  \cmidrule(lr){4-9} 
+  \cmidrule(lr){10-15} 
+  & {\bf MMC Model} & {\bf Type} & 
+      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
+      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+  \hline 
+AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
+  &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
+  &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
+  & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
+  &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
+  &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
+ RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
+  &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
+  &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
+  & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
+  &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
+  &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
+ RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
+  &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
+  &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
+  & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
+  &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
+  &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+  \hline 
+  \end{tabular} 
+  \caption{Results of the posterior predictive checking in total 
+             male circumcision (MC), medical male circumcision (MMC) and 
+             traditional male circumcision (TMC) from fitting the 12 candidate 
+             models and taking the median value across all Non-VMMC countries. Combinations include 
+             (i) Time invariant or Time variant TMC, 
+             (ii) No cut off vs. Paediatric cut-off in MMC, and 
+             (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
+             Random Walk 2 (RW2) temporal prior. 
+             For all combinations, the within-sample continuous ranked 
+             probability scores (CRPS), mean absolute error (MAE) , 
+             root mean squared error (RMSE), and the proportion of empirical 
+             observations that fell within the 50\%, 80\%, and 95\% 
+             quantiles are shown.} 
+  \label{tab::PPC1Non-VMMC} 
+\end{table}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+\end{landscape}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\subsection{VMMC countries}
+\label{sec:org09db5e8}
+
+%% Notes on Table %% 
+\textbf{AR1}
+
+\begin{itemize}
+    \item MC: CRPS best for Time TMC, but all similar (2202.10 vs highest at 220.73 for Neither), RMSE best for Both (but rounded to two decimal places is 021 for all!), 50\% coverage best for Time TMC, 80\% Coverage narrowly best for Neither (78.47 vs lowest at 78.18 for Both), 95\% coverage best for Paed Cut-off, but similarly very high everywhere (88.89 vs lowest at 88.56 for Time TMC). 
+    \item MMC \& TMC: Very similar to MC (need to expand on this), little difference between models, both in terms of mean fit statistics and posterior predictive coverage.
+    \item Conclusions: 
+    \begin{itemize}
+        \item MC: Models provide very similar fit, with very little difference in both mean fit statistics and coverage between them. Therefore, it is best to go with the model that makes the most sense qualitatively (see below).
+        \item MMC & TMC: Similar Conclusion. 
+    \end{itemize}
+    \item \textbf{Final Choice}: 
+    \begin{itemize}
+      \item Qualitatively, the inclusion of a Time TMC component, while computationally expensive, will not harm model fit (but excluding it may harm VMMC countries with high TMC, like Kenya and Ethiopia).
+      \item Also, it is simplest to have a similar treatment of time TMC for both the VMMC and non-VMMC models, unless we have a good reason not to.
+      \item The inclusion of a paedaitric age cutoff for MMC makes sense as we know that VMMC programmes do not perform paediatric circumcisions on policy
+      \item Therefore, the choice of the "Both" model makes the most sense here, in light of the fact that there is little quantitative difference between model fits. 
+    \end{itemize}
+\end{itemize}
+
+\textbf{RW1 \& RW2}
+- Need to expand on writing for RW1 and RW2 temporal priors, but essentially we're seeing the same thing, in that both mean fit statistics and posterior predictive coverages differ very little between models, so we should revert back to our qualitative choice of using a Time TMC component, and a paediatric age cutoff for MMC (i.e. the "Both" model). 
+
+%% Model Specification Table 1: Non-VMMC countries %%
+
+\begin{landscape}
+
+{\linespread{1} 
+  \begin{table}[H] 
+  \centering 
+  \footnotesize 
+  \begin{tabular}{>{\bfseries}p{0.75cm} 
+     >{\bfseries}p{3cm} p{1cm} C{1.25cm} 
+     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} 
+     C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \hline  
+  & & & \multicolumn{12}{c}{\bf TMC Model} \\ 
+  \cmidrule(lr){4-15} 
+  & & & \multicolumn{6}{c}{\bf Time invariant} & 
+      \multicolumn{6}{c}{\bf Time variant} \\ 
+  \cmidrule(lr){4-9} 
+  \cmidrule(lr){10-15} 
+  & {\bf MMC Model} & {\bf Type} & 
+      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} & 
+      {\bf CRPS} & {\bf MAE} & {\bf RMSE} & 
+      {\bf 50\% CI} & {\bf 80\% CI} & {\bf 95\% CI} \\ 
+  \hline 
+AR1 & No cut-off & MC & 220.73 &   0.16 &   0.21 &  60.51 & \bf 78.47 &  88.84 & \bf220.10 &   0.16 &   0.21 & \bf 60.23 &  78.32 &  88.56 \\ 
+  &  & MMC & 167.43 &   0.13 &   0.18 &  68.34 &  84.69 &  93.21 & \bf163.95 & \bf  0.13 & \bf  0.18 &  69.40 &  85.11 & \bf 93.99 \\ 
+  &  & TMC & 189.20 &   0.14 &   0.19 &  63.74 &  82.30 &  92.02 & \bf185.47 & \bf  0.14 & \bf  0.19 &  64.23 &  82.45 & \bf 92.25 \\ 
+  & Paediatric cut-off & MC & 220.70 &   0.16 &   0.21 &  60.48 &  78.37 & \bf 88.89 & 220.11 & \bf  0.16 & \bf  0.21 &  60.37 &  78.18 &  88.77 \\ 
+  &  & MMC & 168.45 &   0.13 &   0.18 & \bf 68.13 & \bf 84.40 &  92.89 & 165.81 &   0.13 &   0.18 &  69.12 &  84.71 &  93.64 \\ 
+  &  & TMC & 191.07 &   0.14 &   0.19 & \bf 63.41 &  82.01 &  91.85 & 188.56 &   0.14 &   0.19 &  63.60 & \bf 81.81 &  91.98 \\ 
+ RW1 & No cut-off & MC & 220.08 &   0.17 &   0.22 &  60.81 & \bf 78.89 & \bf 89.06 & 240.11 &   0.18 &   0.23 & \bf 58.56 &  77.33 &  88.16 \\ 
+  &  & MMC & 167.60 &   0.13 &   0.18 &  68.34 &  84.54 &  93.22 & 167.02 &   0.13 &   0.19 &  69.26 &  85.35 & \bf 94.08 \\ 
+  &  & TMC & 188.94 &   0.14 &   0.20 &  64.08 &  83.05 &  92.49 & 195.44 &   0.15 &   0.21 &  64.40 &  83.21 & \bf 92.59 \\ 
+  & Paediatric cut-off & MC & 220.29 &   0.17 &   0.22 &  60.90 &  78.79 &  89.04 & \bf218.79 & \bf  0.16 & \bf  0.21 &  60.51 &  78.83 &  88.97 \\ 
+  &  & MMC & 168.66 &   0.13 &   0.18 & \bf 68.24 & \bf 84.39 &  93.19 & \bf165.65 & \bf  0.13 & \bf  0.18 &  69.42 &  84.80 &  93.83 \\ 
+  &  & TMC & 190.81 &   0.14 &   0.20 & \bf 63.77 &  82.58 &  92.13 & \bf187.53 & \bf  0.14 & \bf  0.19 &  64.04 & \bf 82.53 &  92.23 \\ 
+ RW2 & No cut-off & MC & 220.19 &   0.16 &   0.21 &  60.55 &  78.14 &  88.69 & 219.09 &   0.16 &   0.21 &  60.45 &  78.49 &  88.68 \\ 
+  &  & MMC & 167.84 &   0.13 &   0.18 &  68.34 &  84.51 &  93.20 & \bf164.16 & \bf  0.13 & \bf  0.18 &  69.59 &  85.14 & \bf 94.01 \\ 
+  &  & TMC & 188.93 &   0.14 &   0.19 &  63.64 &  82.42 &  91.99 & \bf184.27 & \bf  0.14 & \bf  0.19 &  64.73 &  82.86 & \bf 92.25 \\ 
+  & Paediatric cut-off & MC & 221.05 &   0.16 &   0.21 & \bf 60.19 &  78.27 &  88.76 & \bf218.97 & \bf  0.16 & \bf  0.21 &  60.47 & \bf 78.59 & \bf 88.78 \\ 
+  &  & MMC & 168.58 &   0.13 &   0.18 & \bf 68.33 & \bf 84.33 &  92.93 & 165.97 &   0.13 &   0.18 &  69.13 &  84.60 &  93.63 \\ 
+  &  & TMC & 191.49 &   0.14 &   0.20 & \bf 63.23 & \bf 81.74 &  91.71 & 187.82 &   0.14 &   0.19 &  63.78 &  82.34 &  92.00 \\ 
+  \hline 
+  \end{tabular} 
+  \caption{Results of the posterior predictive checking in total 
+             male circumcision (MC), medical male circumcision (MMC) and 
+             traditional male circumcision (TMC) from fitting the 12 candidate 
+             models and taking the median value across all Non-VMMC countries. Combinations include 
+             (i) Time invariant or Time variant TMC, 
+             (ii) No cut off vs. Paediatric cut-off in MMC, and 
+             (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or 
+             Random Walk 2 (RW2) temporal prior. 
+             For all combinations, the within-sample continuous ranked 
+             probability scores (CRPS), mean absolute error (MAE) , 
+             root mean squared error (RMSE), and the proportion of empirical 
+             observations that fell within the 50\%, 80\%, and 95\% 
+             quantiles are shown.} 
+  \label{tab::PPC1Non-VMMC} 
+\end{table}}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+
+\end{landscape}
+
+\end{document}

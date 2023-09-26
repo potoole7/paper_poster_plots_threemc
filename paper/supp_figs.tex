@@ -76,7 +76,7 @@ Katharine Kripke\textsuperscript{4},
 Rachel Esra\textsuperscript{1},
 Ian Wanyeki\textsuperscript{5},
 Lycias Zembe\textsuperscript{5},
-Jeffrey W. Eaton\textsuperscript{1,6} \\
+Jeffrey W. Imai-Eaton\textsuperscript{1,6} \\
 \smallskip
   
 \textbf{1} MRC Centre for Global Infectious Disease Analysis, School of Public Health, Imperial Colleg  e London, London, United Kingdom\\
@@ -127,87 +127,22 @@ Jeffrey W. Eaton\textsuperscript{1,6} \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The study consisted of 33 sub-Saharan countries, that have conducted surveys that contained information on self-reported circumcision status since 2002: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Democratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, South Africa. 
-We excluded Equitorial Guinea, Guinea-Bissau, the Central African Republic and Botswana because they either had no surveys conducted, or, where surveys were available, there was insufficient information available on age at circumcision.  
-In total, we identified 109 nationally representative household surveys conducted the study region between 2002 and 2019. These included several major survey series, namely the Demographic and Health Surveys (DHS), AIDS Indicator Surveys (AIS) Population-based HIV Impact Assessment (PHIA) surveys, Multiple Indicator Cluster Surveys (MICS), and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{dhs, ais, phia, hsrc2002, hsrc2008, hsrc2012, hsrc2017} \todo{include MICS reference}.
-Data on self-reported circumcision status were available in 104 out of the total 109 surveys. 
-\textbf{[Expand on reasons for exclusions]} \textbf{[Link in your survey figure]} \todo{done, what do you mean by "link in survey figure?"}
-Excluded surveys lacked information on age at circumcision, which made it impossible to make inferences on circumcision under our time-to-event modelling framework. The surveys which were excluded on the basis of this requirement were the 2008 Botswana AIDS Impact Survey (BAIS) and 2013 BAIS surveys, the Central African Republic 2018 MICS survey and the 2014 and 2018 Guinea-Bissau MICS surveys \cite{bais2008, bais2013}.
-For 5 countries, namely Liberia, Senegal, Niger, Guinea, and the DR Congo, information on circumcision type was not available in any surveys. Therefore, only MC could be estimated in these countries, and no inferences about circumcision type, whether MMC or TMC, could be made.
-See figure 1 for a visual representation of the different survey providers for each country, as well as the sample size of each survey and the availability of circumcision type information. 
-See table 1 for the full list of surveys for each country, and the circumcision information included in each survey. 
+We identified 109 nationally representative household surveys across sub-Saharan Africa between 2002 and 2019 that contained information on self-reported circumcision status (see Table 1). These included several major survey series, namely the Demographic and Health Surveys (DHS) \cite{dhs}, AIDS Indicator Surveys (AIS) \cite{ais}, Population-based HIV Impact Assessment (PHIA) surveys \cite{phia}, Multiple Indicator Cluster Surveys (MICS) \cite{mics}, and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{hsrc2002, hsrc2008, hsrc2012, hsrc2017}. {\color{red}We excluded 2008 and 2013 Botswana AIDS Impact Surveys (BAIS) \cite{bais2008, bais2013}, the Central African Republic 2018 MICS survey, and the 2014 and 2018 Guinea-Bissau MICS surveys, as these surveys did not contain the information on age at circumcision required for modelling.}
 
-\begin{figure}[H]
+In total, we extracted data from 104 surveys conducted in 33 sub-Saharan countries: Senegal, Gambia, Guinea, Sierra Leone, Liberia, Mali, Burkina Faso, Côte d’Ivoire, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, Chad, Ethiopia, Gabon, The Republic of the Congo (the Congo), The Democratic Republic of the Congo (DR Congo), Uganda, Kenya, Rwanda, Burundi, Tanzania, Angola, Zambia, Malawi, Mozambique, Zimbabwe, Namibia, Eswatini, Lesotho, and South Africa. {\color{red}Equatorial Guinea, Guinea-Bissau, the Central African Republic and Botswana were not included as they either had no surveys conducted, or, where no surveys were available.} Figure 1 shows all available surveys, by the different survey providers for each country, as well as the sample size of each survey and the availability of circumcision type information. 
+
+We extracted variables such as age, cluster and survey sampling weight from all male respondents in the surveys, alongside information related to circumcision (if available): self-reported circumcision status, age at circumcision, Who performed the circumcision (whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown) and Where did the circumcision take place (whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown). The age of the respondents was calculated using both the century-month-code (CMC) of birth and interview dates. When calculating the residence of the respondents e matched survey data to clusters with accompanying (masked) geo-coordinates in order to assign the primary sub-national unit (PSNU) for modelling purposes. However, geo-cordinates were not available in some surveys and therefore we were unable to allocate their PSNU directly. Instead, we matched survey data to the least granular areal unit declared by the survey (most often level 1 administrative boundaries). Circumcisions were classed as a medical male circumcision (MMC) or traditional male circumcision (TMC) based on how responses to both ‘Who performed the circumcision?’ and ‘Where did the circumcision take place?’. Table 2 shows how the classification of circumcision type follows from these responses. Respondents that did not have any information related to the type of circumcision were classified as having “unknown” male circumcision (MC) type. Survey respondents were excluded if they were missing any demographic information or had a missing circumcision status. Table 1 shows a summary of the circumcision-related information from each surveys, and includes the availability of the circumcision related questions from the survey as well as the sample sizes in each survey. % For 5 countries, namely Liberia, Senegal, Niger, Guinea, and the DR Congo, information on circumcision type was not available in any surveys. Therefore, only MC could be estimated in these countries, and no inferences about circumcision type, whether MMC or TMC, could be made.
+
+\begin{figure}[!hbtp]
     \centering
-    \includegraphics[width=.9\linewidth]{paper/plots/01_survey_table.png}
+    \includegraphics[width=0.8\linewidth]{paper/plots/01_survey_table.png}
     \caption{Household surveys detailing circumcision patterns in sub-Saharan Africa. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.}
     \label{fig:enter-label}
 \end{figure}
 
-Demographic variables such as age, residence and survey sampling weight were extracted from all surveys, alongside information related to circumcision: self-reported circumcision status, age at circumcision, Who performed the circumcision (whether the individual was circumcised by a health worker/professional, traditional practioner, other or unknown) and Where did the circumcision take place (whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown). \textbf{[Write and link in survey table].}
-
-% \begin{landscape}
-{\linespread{1}
-  \footnotesize 
-\begin{longtable}[c]{ll ccc c}
-      %%%%%%%%%%%%%%%%%%%%
-      %%% Table header %%%
-      %%%%%%%%%%%%%%%%%%%%
-      % Upper layer of table header
-      \hline
-      % Lines inside the header
-      \multicolumn{1}{l}{} & &  &  & \multicolumn{2}{c}{\bf Circumcision Type} \\ 
-      \cmidrule(lr){5-6}
-       & & {\bf Circumcision} & {\bf Age at} & {\bf Who performed} & {\bf Where was the}  \\
-       & & {\bf Status} & {\bf Circumcision} & {\bf the circumcision?} & {\bf circumcision performed?} \\[5pt]
-      % Lower lines
-      \hline
-      \vspace{-3pt}
-      \endhead
-      %%%%%%%%%%%%%%%%%%%%
-      %%% Table footer %%%
-      %%%%%%%%%%%%%%%%%%%%
-      \\[-3pt] \hline
-      \endfoot
-      %%%%%%%%%%%%%%%%%%%%%%
-      %%% Table contents %%%
-      %%%%%%%%%%%%%%%%%%%%%%
-      \multicolumn{2}{l}{\textbf{Angola}} \\ 
-& 2015 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[3pt] 
-\multicolumn{2}{l}{\textbf{Benin}} \\ 
-& 2006 (DHS) & \checkmark & \xmark & \xmark & \xmark \\ 
-& 2012 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
-& 2014 (MICS) & \checkmark & \checkmark & \checkmark & \checkmark \\ 
-& 2017 (DHS) & \checkmark & \checkmark & \checkmark & \checkmark \\[3pt] 
-\multicolumn{2}{l}{\textbf{Botswana}} \\ 
-& 2008 (BAIS) & \checkmark & \xmark & \xmark & \checkmark \\ 
-& 2013 (BAIS) & \checkmark & \xmark & \xmark & \checkmark \\[3pt] 
-\end{longtable}
-}
-
-
 \begin{landscape}
 \include{paper/figures/supp_figs/Survey_Table}
 \end{landscape}
-
-
-
-
-
-
-
-
-  
-
-
-
-
-The age of respondents was calculated from the century-month-code (CMC) of birth and interview dates. 
-Survey respondents were located to their districts using masked cluster geocoordinates. 
-Where these coordinates were unavailable (as in several MICS surveys) respondents were located to their level 1 administrative boundaries, most often corresponding to a province.  
-
-Circumcisions were classed as a medical male circumcision (MMC) or traditional male circumcision (TMC) based on how responses to both ‘Who performed the circumcision?’ and ‘Where did the circumcision take place?’ were classified \textbf{[Link to the table]}. 
-Respondents that did not have any information related to the type of circumcision were classified as having “unknown” male circumcision (MC) type.   
 
 {\linespread{1}
 \begin{table}[htbp]
@@ -226,27 +161,6 @@ Respondents that did not have any information related to the type of circumcisio
 	\end{tabular}	
 \end{table}
 }
-
-In total, information was extracted from XXX, XXX respondents from all surveys.
-\textbf{[Participation rates table]}
-\todo{Get Matt to make dummy table for me based on this info for 2-3 countries, then I can fill in}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -289,7 +203,6 @@ Distributed (?) to single-year of age according to ???
 To do:
 \begin{itemize}
     \item Model calibration
-    \item Prior choice
     \item Citations
 \end{itemize}}
 
@@ -583,65 +496,38 @@ where $l$ is TMC, MMC, MC, RC, MMCLC, TMCLC or MCLC which correspond to the outc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the PSNU unit. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the PSNU unit directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In some instances, these areal units represented PSNU unit, however in many cases, these are on higher administrative boundaries (e.g. national/admin-0). \todo{Not entirely convinced that }
+Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the PSNU unit. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the PSNU unit directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In some instances, these areal units represented PSNU unit, however in many cases, these are on higher administrative boundaries (e.g. national/admin-0). \todo{Not entirely convinced that this is true...}
 
 In order to include survey data on district as well as other administrative aggregates levels into the model, we estimate a population-weighted regional estimate of the probabilities of TMC, MMC and/or MC. We define the probability that an individual in region $ R \subset I = \{1, 2, \ldots, N_I\}$ received a circumcision of type $k$ at age $a$ and time step $t$ as 
 \begin{equation*}
 	\lambda^{k}_{Rat} = \frac{\sum_{i\in R}P_{iat}\lambda^{k}_{iat}}{\sum_{i\in R}P_{iat}}
 \end{equation*}
-where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The regional probabilities of TMC, MMC and MC 
-
-
-for surveys not at the 
-
-with regional equivalents in the likelihood above in order to include higher level aggregates. 
+where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The district probabilities of TMC, MMC and MC were replaced with the higher level aggregates in the likelihood above for surveys that did not collect information on the district level. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Final model selection}
+\subsection{Model specification, calibration and choice of temporal priors}
 \label{sec::modelcheck}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The choice of the final model to use in each country was decided in a two stage process. 
+Using a combination of both within-sample and out-of-sample model fit, we considered whether a country should have
+\begin{enumerate}
+    \item a time-invariant or time-variant probability of TMC 
+    \item a paediatric cut-off or no cut-off in the probability of MMC 
+    \item an AR1, RW1 or RW2 as the temporal prior, along with appropriate hyperpriors
+\end{enumerate}
+and was decided in a two stage process. 
 
+The first stage involved choosing the model specification within each country. We performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC (i.e. 1. and 2. above). We only used within-sample model fit here as we were most interested here in which model specification would produce the best model fit in each country, rather than in any relative short-term forecasting ability. For example, in VMMC priority countries, changes in circumcision patterns have largely been driven by the intervention of VMMC programme implementation and it might be more realistic to assume that paediatric MMCs are minimal, in line with UNAIDS VMMC policy and therefore the model may need a paediatric cut-off. Conversely, in non-VMMC priority countries any changes in MMC is likely to be at the cost of TMC, which might be done at the paediatric level and therefore may mot need a paediatric cut-off. 
 
+In each country, we ran a total of 12 model combinations (1., 2. and 3. above) on all available survey data. The choice of temporal prior is done after the model specification (see below), so but regardless we fit for each temporal prior for completeness. For each of the 12 model combinations, we sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. These were used to decide the best performing models (i.e. lowest CRPS/MAE/RMSE) in each country for the final model prediction. 
 
+After the model specification was chosen, the second stage involved model calibration. We performed posterior predictive checking to assess the out-of-sample model fit to decide whether a country used an AR1, RW1, or RW2 temporal prior and appropriate hyperpriors for the corresponding hyperparameters (3. above). We considered out-of-sample model fit here as in some cases, we did not have access to recent survey data and we wanted to select a model that produces the most accurate forecast of circumcision coverage. For example, the most recent survey in Tanzania took place in 2016 (see above). However as Tanzania is an VMMC priority country, it is likely there has been a significant increase in MMC coverage since then that will not be captured and therefore we want to choose the temporal prior that produces the best forecasts in year proceeding the surveys. 
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Model specification}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-In the first stage of selecting the final model, we performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC. 
-
-In each country, 
-
-
-
-For each of the 12 model combinations, we sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. The best performing models 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsubsection{Model calibration}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
+{\color{red} FINAL PARAGRAPH ABOUT HOW WE PERFORM MODEL CALIBRATION...}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -750,9 +636,9 @@ Using the final models from each country, we estimated full posterior distributi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newpage
-\section{Model Selection}
-\label{sec::PPC2}
+% \newpage
+% \section{Model Selection}
+% \label{sec::PPC2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -898,15 +784,42 @@ Using the final models from each country, we estimated full posterior distributi
 % TODO: Finish this write up!
 % TODO: Add results! Also add ternary plot 
 
+\section{Model specification, calibration and choice of temporal priors}
+\label{sec::modelcheck}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Using a combination of both within-sample and out-of-sample model fit, we considered whether a country should have
+\begin{enumerate}
+    \item a time-invariant or time-variant probability of TMC 
+    \item a paediatric cut-off or no cut-off in the probability of MMC 
+    \item an AR1, RW1 or RW2 as the temporal prior, along with appropriate hyperpriors
+\end{enumerate}
+and was decided in a two stage process. 
+
+The first stage involved choosing the model specification within each country. We performed posterior predictive checking to assess the within-sample model fit to decide whether to use the time-invariant or time-variant probability of TMC and whether to use a paediatric cut-off or not in the probability of MMC (i.e. 1. and 2. above). We only used within-sample model fit here as we were most interested here in which model specification would produce the best model fit in each country, rather than in any relative short-term forecasting ability. For example, in VMMC priority countries, changes in circumcision patterns have largely been driven by the intervention of VMMC programme implementation and it might be more realistic to assume that paediatric MMCs are minimal, in line with UNAIDS VMMC policy and therefore the model may need a paediatric cut-off. Conversely, in non-VMMC priority countries any changes in MMC is likely to be at the cost of TMC, which might be done at the paediatric level and therefore may mot need a paediatric cut-off. 
+
+In each country, we ran a total of 12 model combinations (1., 2. and 3. above) on all available survey data. The choice of temporal prior is done after the model specification (see below), so but regardless we fit for each temporal prior for completeness. For each of the 12 model combinations, we sampled each respondents circumcision status 1000 times based on predicted TMC, MMC and MC circumcision coverage in each space-age-time strata. We compared the mean predictions against the empirical survey estimates, aggregated to calculate predictive distributions by five year age groups (from 0-4 through 55-59) to avoid to many zeroes. To measure within-sample model fit we estimated the continuous ranked probability scores (CRPS), the mean absolute error (MAE) and root mean square error (RMSE). We also evaluated the coverage the posterior predictive distributions by calculating the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles of the posterior predictive distribution. These were used to decide the best performing models (i.e. lowest CRPS/MAE/RMSE) in each country for the final model prediction. 
+
+After the model specification was chosen, the second stage involved model calibration. We performed posterior predictive checking to assess the out-of-sample model fit to decide whether a country used an AR1, RW1, or RW2 temporal prior and appropriate hyperpriors for the corresponding hyperparameters (3. above). We considered out-of-sample model fit here as in some cases, we did not have access to recent survey data and we wanted to select a model that produces the most accurate forecast of circumcision coverage. For example, the most recent survey in Tanzania took place in 2016 (see above). However as Tanzania is an VMMC priority country, it is likely there has been a significant increase in MMC coverage since then that will not be captured and therefore we want to choose the temporal prior that produces the best forecasts in year proceeding the surveys. 
+
+{\color{red} FINAL PARAGRAPH ABOUT HOW WE PERFORM MODEL CALIBRATION...}
+
+%%%%%%%%%%%%%%%%%%
+%%% References %%%
+%%%%%%%%%%%%%%%%%%
 
 \todo{Fix links to HSRC surveys, no longer working!}
 \todo{Get reference for MICS surveys!}
 \todo{May have to reference every survey, as in Cork paper!}
 
 \printbibliography
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
