@@ -25,7 +25,7 @@ library(geofacet)
 library(glue)
 library(ggtext)
 source("Shiny/src/functions.R") # plotting functions
-source("paper_poster_plots/paper/scripts/00_funs.R") # shared functions
+source("paper_poster_plots_threemc/paper/scripts/00_funs.R") # shared functions
 
 #### Metadata ####
 
@@ -694,9 +694,9 @@ data_inlines <- c(
 #### Saving ####
 
 # save plot
-saveRDS(p1, "paper_poster_plots/paper/plots/01_survey_table.RDS")
+saveRDS(p1, "paper_poster_plots_threemc/paper/plots/01_survey_table.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/01_survey_table.png", 
+  "paper_poster_plots_threemc/paper/plots/01_survey_table.png", 
   p1, 
   width = 6.3, 
   height = 8,
@@ -704,4 +704,4 @@ ggplot2::ggsave(
 )
 
 # save data for inlines
-saveRDS(data_inlines, "paper_poster_plots/paper/data/01_data_inlines.RDS")
+saveRDS(data_inlines, "paper_poster_plots_threemc/paper/data/01_data_inlines.RDS")

@@ -1,7 +1,7 @@
 #### Individual Country Supplementary figures of final results ####
 
 # Must be run inside `threemc_orderly` repo, with this repo in top level of 
-# this directory, and called `paper_poster_plots`
+# this directory, and called `paper_poster_plots_threemc`
 
 #### Libs ####
 
@@ -18,7 +18,7 @@ library(scales)
 library(ggridges)
 library(threemc)
 source("Shiny/src/functions.R")
-source("paper_poster_plots/paper/scripts/00_funs.R")
+source("paper_poster_plots_threemc/paper/scripts/00_funs.R")
 
 
 #### Metadata ####
@@ -28,10 +28,10 @@ orderly_root <- here::here()
 # save width for plots == width of page on paper
 save_width <- 6.3
 
-save_loc <- "paper_poster_plots/paper/plots/supp_figs/"
+save_loc <- "paper_poster_plots_threemc/paper/plots/supp_figs/"
 if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 
-cntry <- "ZAF" # temp, run for one country, might loop thereafter
+# cntry <- "ZAF" # temp, run for one country, might loop thereafter
 
 spec_age_group <- "15-29"
 spec_age_group_double <- c(spec_age_group, "30-49")
@@ -157,21 +157,25 @@ results_dir <- file.path(
 )
 results_agegroup <- results_reader(type = "age groups", dir_path = results_dir)
 
-# results_age <- load_orderly_data(
-#   task = "02final_aggregations", 
-#   dirs = results_dirs[!is.na(results_dirs)],
-#   filenames = "Results_Age_Prevalence.csv.gz"
-# )$output %>% 
-#   bind_rows() %>% 
-#   # filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")) %>% 
-#   identity()
+results_age <- load_orderly_data(
+  task = "02final_aggregations", 
+  dirs = results_dir[!is.na(results_dir)],
+  filenames = "Results_Age_Prevalence.csv.gz"
+)$output %>% 
+  bind_rows() %>% 
+  filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage")) %>% 
+  identity()
+
 results_age <- results_reader(type = "age", dir_path = results_dir)
+
 gc()
 
-areas <- load_orderly_data("00a2_areas_join", 
-                           query = "latest", 
-                           file = "areas.geojson", 
-                           load_fun  = sf::read_sf)$output[[1]] %>% 
+areas <- load_orderly_data(
+  "00a2_areas_join", 
+  query = "latest", 
+  file = "areas.geojson", 
+  load_fun  = sf::read_sf
+)$output[[1]] %>% 
   filter(iso3 == cntry)
 
 # pull agegroup populations
@@ -206,7 +210,7 @@ results_survey <- survey_points_dmppt2_convert_convention(results_survey)
 
 # order by area hierarchy
 results_agegroup <- order_area_name(results_agegroup, areas = areas)
-results_age <- order_area_name(results_age, areas = areas)
+# results_age <- order_area_name(results_age, areas = areas)
 
 # fixes case where there are areas with no survey data: model uses spatial
 # smoothing to still produce a fit for these regions
@@ -288,9 +292,10 @@ results_survey <- order_area_name(results_survey)
 #### Single Plots ####
 
 # save locs
-save_loc_single <- file.path(save_loc, "01_single_plots", cntry, "/")
+# save_loc_single <- file.path(save_loc, "01_single_plots", cntry, "/")
+save_loc_single <- file.path(save_loc, cntry, "/")
 if (!dir.exists(save_loc_single)) create_dirs_r(save_loc_single)
-save_loc_1 <- file.path(save_loc_single, "01_coverage_prevalence.pdf")
+save_loc_1 <- file.path(save_loc_single, "01_coverage_coverage.pdf")
 save_loc_2 <- file.path(save_loc_single, "02_coverage_probability_ages.pdf")
 save_loc_3 <- file.path(save_loc_single, "03_map_coverage.pdf")
 save_loc_4 <- file.path(save_loc_single, "04_area_facet_coverage.pdf")
@@ -298,8 +303,8 @@ save_loc_5 <- file.path(save_loc_single, "05_area_facet_coverage_ages.pdf")
 save_loc_6 <- file.path(save_loc_single, "06_ridge_posterior_mean_age.pdf")
 save_loc_7 <- file.path(save_loc_single, "07_population_pyramid.pdf")
 
-## First plot, of Circumcision Coverage vs Year
-plt_mc_coverage_prevalence(
+## plot 1, of Circumcision Coverage vs Year
+plt_mc_coverage_coverage(
     results_agegroup,
     areas,
     # spec_age_group = "10+", # why this age group??? change to 0+!
@@ -316,22 +321,24 @@ plt_mc_coverage_prevalence(
     n_plots        = 1
 )
 
-## second plot, of circumcision coverage vs age
+## plot 2, of circumcision coverage vs age
 plt_age_coverage_by_type(
     results_age,
     areas,
     spec_years  = spec_years_triple,
     area_levels = unique(results_age$area_level), # use all area levels
+    # area_levels = 0,
     spec_model  = "No program data",
     # spec_ages  = c(0, 60),
-    main        = "Circumcision Coverage vs Age, ",
+    # main        = "Circumcision Coverage vs Age, ",
+    main        = NULL,
     str_save    = save_loc_2,
     save_width  = save_width,
-    save_height = 11,
+    save_height = 7,
     n_plots     = 1
 )
 
-## map of country, showing difference in circumcision coverage since 2010 for
+## Plot 3, country map, showing diff in circumcision coverage since 2010
 # different types
 # plt_coverage_map(
 #     results_agegroup, 
@@ -357,59 +364,63 @@ plt_coverage_map_change(
     spec_age_group, 
     spec_years, 
     spec_model         = "No program data",
-    # spec_main_title    = main_title,
-    spec_main_title    = paste0(
-      cntry, 
-      " circumcision coverage, ", 
-      paste0(spec_years[1], "-", spec_years[2]), 
-      ", ",
-      spec_age_group, 
-      " year olds"
-    ),
+    # spec_main_title    = paste0(
+    #   cntry, 
+    #   " circumcision coverage, ", 
+    #   paste0(spec_years[1], "-", spec_years[2]), 
+    #   ", ",
+    #   spec_age_group, 
+    #   " year olds"
+    # ),
+    spec_main_title    = cntry,
     country_area_level = 0,
     inc_difference     = TRUE,
-    str_save           = save_loc_3
+    str_save           = save_loc_3, 
+    save_width         = 6.3, 
+    save_height        = 6.5 
 )
  
 
-## circumcision coverage vs year, split by type as ribbon plot
+## Plot 4: circumcision coverage vs year, split by type as ribbon plot
 plt_area_facet_coverage(
     results_agegroup,
     areas,
-    spec_years     = spec_years,
-    spec_age_group = spec_age_group,
-    area_levels    = unique(results_agegroup$area_level),
-    spec_model     = "No program data",
-    province_split = TRUE,
-    str_save       = save_loc_4,
-    save_width     = save_width,
-    save_height    = 21,
-    n_plots        = 12
+    spec_years      = spec_years,
+    spec_age_group  = spec_age_group,
+    # area_levels    = unique(results_agegroup$area_level),
+    area_levels     = c(0, 1),
+    spec_model      = "No program data",
+    spec_title      = NULL,
+    province_split  = TRUE,
+    str_save        = save_loc_4,
+    save_width      = save_width,
+    save_height     = 7,
+    n_plots         = 9
 )
 
-## circumcision coverage vs age for multiple years
+## Plot 5: circumcision coverage vs age for multiple years
 plt_age_coverage_multi_years(
     results_age,
     areas,
     spec_years     = spec_years_triple, 
+    spec_title     = NULL,
     province_split = TRUE,
     str_save       = save_loc_5,
     spec_ages      = c(0, 60), 
     n_plots        = 9
 )
 
-## distributions/ridges for mean TMIC and MMC-nT age for different areas
-plt_circ_age_ridge(
+## Plot 6: distributions/ridges for mean TMC and MMC age for different areas
+p <- plt_circ_age_ridge(
     results_age,
     areas,
-    spec_years  = spec_years[2],
-    area_levels = min(2, max(results_age$area_level)),
-    # area_levels = 1,
-    spec_ages   = 0:30, # no circumcisions over 30, is that right?
+    spec_years     = spec_years[2],
+    area_levels    = 0:2,
+    # area_levels    = c(0, 1),
+    spec_ages      = 0:30, # no circumcisions over 30, is that right?
     province_split = TRUE,
-    n_plots     = 5,
-    # n_plots     = 9,
-    str_save    = save_loc_6
+    n_plots        = 9 # ,
+    # str_save       = save_loc_6
 )
 
 plt_circ_age_ridge_multiple_years <- function(
@@ -575,19 +586,18 @@ plt_circ_age_ridge_multiple_years <- function(
 #   str_save    = save_loc_6
 # )
 
-## distributions/ridges for mean TMIC and MMC-nT age for different areas
-## Population pyramid for each area id modelled
+# Plot 7: Population pyramid for each area id modelled
 pop_pyramid_plt(
   results_age, 
   spec_years_triple, 
   unique(results_age$area_level), 
   province_split = TRUE,
-  n_plots        = 5, 
+  spec_title     = NULL,
+  n_plots        = 4, 
   str_save       = save_loc_7,
   save_width     = save_width, 
-  save_height    = 8
+  save_height    = 6.5
 )
-
 
 
 #### Survey comparison plots ####
@@ -602,7 +612,8 @@ results_agegroup_comp <- results_agegroup %>%
 results_survey <- arrange(results_survey, area_sort_order)
 results_agegroup_comp <- arrange(results_agegroup_comp, area_sort_order)
 
-save_loc_survey <- file.path(save_loc, "02_survey_comps", cntry, "/")
+# save_loc_survey <- file.path(save_loc, "02_survey_comps", cntry, "/")
+save_loc_survey <- file.path(save_loc, cntry, "/")
 if (!dir.exists(save_loc_survey)) create_dirs_r(save_loc_survey)
 
 # Main parameters:
@@ -612,12 +623,23 @@ years <- unique(results_agegroup_comp$year)
 plt_start_year <- max(min(results_agegroup_comp$year), 2000)
 
 # different plot "types", corresponding to different (competing) circ hazards
-types <- list("MMC coverage" = c("Medical", "_mmc.pdf"),
-              "TMC coverage" = c("Traditional", "_tmc.pdf"),
-              "MC coverage" = c("Total", "_all.pdf"))
+types <- list(
+  # "MMC coverage" = c("Medical", "_mmc.pdf"),
+  # "TMC coverage" = c("Traditional", "_tmc.pdf"),
+  # "MC coverage" = c("Total", "_all.pdf")
+  "MMC coverage" = c("M", "_mmc.pdf"),
+  "TMC coverage" = c("T", "_tmc.pdf"),
+  "MC coverage" = c("", "_all.pdf")
+)
 
 # Coverage vs year
-main_title = "Circumcision Coverage (2011-2021) (Black dots denote survey coverage) - "
+# main_title = "Circumcision Coverage (2011-2021) (Black dots denote survey coverage) - "
+# main_title <- paste0(
+#   "Circumcision Coverage, ", 
+#   spec_years[1], "-", spec_years[2], ", "
+# )
+# main_title <- " Circumcision Coverage, "
+main_title <- "MC, "
 
 lapply(seq_along(types), function(i) {
   plt_MC_modelfit_spec_age(
@@ -632,20 +654,23 @@ lapply(seq_along(types), function(i) {
     province_split    = TRUE,
     xlab              = "Year",
     ylab              = "Circumcision Coverage",
-    title             = paste(types[[i]][[1]], main_title),
+    # title             = paste(types[[i]][[1]], main_title),
+    title             = paste0(types[[i]][[1]], main_title),
     str_save          = paste0(
       save_loc_survey, "survey_0", i,
-      "_prevalence_15to49",
+      # "_prevalence_15to49",
+      "_coverage_vs_year",
       types[[i]][[2]]
     ),
     save_width        = save_width, 
-    save_height       = 12,
-    n_plots           = 14
+    save_height       = 6.5,
+    n_plots           = 12
   )
 })
 
 # Coverage vs age(group)
-main_title = "Circumcision Coverage by Age Group (Black dots denote survey coverage) - "
+# main_title = "Circumcision Coverage by Age Group (Black dots denote survey coverage) - "
+main_title <- "MC, "
 
 lapply(seq_along(types), function(i) {
     plt_MC_modelfit(
@@ -664,19 +689,21 @@ lapply(seq_along(types), function(i) {
       facet_year        = "colour",
       xlab              = "Age Group",
       ylab              = "Circumcision Coverage",
-      title             = paste(types[[i]][[1]], main_title),
+      title             = paste0(types[[i]][[1]], main_title),
       str_save          = paste0(
         save_loc_survey, "survey_0", i + 3,
-        "_age_prevalence", types[[i]][[2]]
+        "_coverage_vs_agegroup", types[[i]][[2]]
       ),
       save_width        = save_width, 
-      save_height       = 12,
-      n_plots           = 14
+      save_height       = 7,
+      n_plots           = 9
     )
 })
 
+rm(results_agegroup, results_survey, areas, populations); gc()
 
 #### DMPPT2 comparison plots ####
+
 
 # commented out DMPPT2 comparisons, no longer including in paper
 
@@ -771,3 +798,25 @@ lapply(seq_along(types), function(i) {
 #     save_width = 16,
 #     save_height = 12
 # )
+
+#### Run for all countries ####
+
+# vmmc_iso3 <- c(
+#   "LSO", "MOZ", "NAM", "RWA", "TZA", "UGA", "MWI",
+#   "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF" 
+# )
+# no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
+# iso3 <- c("LSO", "MWI", "MOZ", "NAM", "RWA", "SWZ", "TZA", "UGA", "ZWE",
+#           "ZMB", "COG", "AGO", "BEN", "BFA", "BDI", "CMR", "TCD", "CIV",
+#           "GAB", "GIN", "MLI", "NER", "TGO", "SEN", "SLE", "KEN", "ETH",
+#           "ZAF", "LBR", "GHA", "GMB", "NGA", "COD")
+# # iso3 <- iso3[!iso3 %in% c(vmmc_iso3, no_type_iso3)]
+# iso3 <- iso3[!iso3 %in% c(no_type_iso3)]
+#  
+# iso3_loop <- iso3
+# 
+# for (i in seq_along(iso3_loop)) {
+#   cntry <- iso3_loop[i]
+#   print(cntry)
+#   source("paper_poster_plots_threemc/paper/scripts/ind_supp_figs.R", echo = FALSE)
+# }

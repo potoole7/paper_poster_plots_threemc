@@ -19,9 +19,11 @@ library(ggsci)
 library(geofacet)
 library(glue)
 library(ggtext)
-library(cowplot)
+# library(cowplot)
+library(patchwork)
+library(gridExtra)
 source("Shiny/src/functions.R") # plotting functions
-source("paper_poster_plots/paper/scripts/00_funs.R")
+source("paper_poster_plots_threemc/paper/scripts/00_funs.R")
 
 #### Metadata ####
 
@@ -143,13 +145,33 @@ results_dirs <- load_orderly_data(
     )"
 )$dirs
 
-results_agegroup <- load_orderly_data(
-  task = "02final_aggregations",
-  dirs = results_dirs[!is.na(results_dirs)],
-  filenames = "Results_AgeGroup_Prevalence.csv.gz"
-)$output %>%
-  bind_rows()
-gc()
+# function to add iso3 column to dataframe from area id, if not already present
+add_iso3 <- function(df) {
+  stopifnot("area_id" %in% names(df))
+  if (!"iso3" %in% names(df)) {
+    df$iso3 <- substr(df$area_id, 0, 3)
+    df <- df %>% 
+      relocate(iso3, .before = area_id)
+  }
+  return(df)
+}
+
+# results_agegroup <- load_orderly_data(
+#   task = "02final_aggregations",
+#   dirs = results_dirs[!is.na(results_dirs)],
+#   filenames = "Results_AgeGroup_Prevalence.csv.gz"
+# )$output %>%
+#   bind_rows()
+# gc()
+results_agegroup <- readr::read_csv(
+  "paper_poster_plots_threemc/paper/data/results_agegroup.csv.gz"
+)
+results_agegroup <- add_iso3(results_agegroup)
+# save results for use later
+# readr::write_csv(
+#   results_agegroup, 
+#   "paper_poster_plots_threemc/paper/data/results_agegroup.csv.gz"
+# )
 
 # most recent results for single ages
 # results_age <- load_orderly_data(
@@ -160,34 +182,31 @@ gc()
 #   bind_rows() %>%
 #   filter(type %in% paste(c("MC", "MMC", "TMC"), "coverage"))
 # results_age <- readr::read_csv(
-#   "paper_poster_plots/paper/data/results_age.csv.gz"
+#   "paper_poster_plots_threemc/paper/data/results_age.csv.gz"
+# )
+# results_age <- add_iso3(results_age)
+# readr::write_csv(
+#   results_age, 
+#   "paper_poster_plots_threemc/paper/data/results_age.csv.gz"
 # )
 gc()
 
 # incidence for age specific results
 # results_age_n_performed <- load_orderly_data(
-#   task = "02final_aggregations", 
+#   task = "02final_aggregations",
 #   dirs = results_dirs[!is.na(results_dirs)],
 #   filenames = "Results_Age_Incidence.csv.gz"
-# )$output %>% 
-#   bind_rows() %>% 
+# )$output %>%
+#   bind_rows() %>%
 #   filter(type %in% paste0(c("MC", "MMC", "TMC"), "s performed"))
 # results_age_n_performed <- readr::read_csv(
-#   "paper_poster_plots/paper/data/results_age_n_performed.csv.gz"
+#   "paper_poster_plots_threemc/paper/data/results_age_n_performed.csv.gz"
 # )
-# gc()
-  
-if (!"iso3" %in% names(results_agegroup)) {
-  results_agegroup$iso3 <- substr(results_agegroup$area_id, 0, 3)
-}
-# if (!"iso3" %in% names(results_age)) {
-#   results_age$iso3 <- substr(results_age$area_id, 0, 3)
-# }
-# if (!"iso3" %in% names(results_age_n_performed)) {
-#   results_age_n_performed$iso3 <- substr(
-#     results_age_n_performed$area_id, 0, 3
-#   )
-# }
+# results_age_n_performed <- add_iso3(results_age_n_performed)
+# readr::write_csv(
+#   results_age_n_performed, "paper_poster_plots_threemc/paper/data/results_age_n_performed.csv.gz"
+# )
+gc()
 
 # results_agegroup_n_circ <- readr::read_csv(file.path(
 #   orderly_root, 
@@ -201,15 +220,18 @@ if (!"iso3" %in% names(results_agegroup)) {
 #   dirs = results_dirs[!is.na(results_dirs)],
 #   filenames = "Results_AgeGroup_Incidence.csv.gz"
 # )$output %>%
-#   bind_rows()
-# # filter not working here for some reason??
-# results_agegroup_n_circ <- results_agegroup_n_circ[
-#   results_agegroup_n_circ$type %in% paste0(
+#   bind_rows() %>% 
+#   filter(type %in% paste0(
 #     c("MC", "MMC", "TMC"), "s performed"
-#   ), 
-# ]
-#   # dplyr::filter(type %in% paste0(c("MC", "MMC", "TMC"), "s performed"))
-# gc()
+#   ))
+results_agegroup_n_circ <- readr::read_csv(
+  "paper_poster_plots_threemc/paper/data/results_agegroup_n_circ.csv.gz"
+)
+results_agegroup_n_circ <- add_iso3(results_agegroup_n_circ)
+# readr::write_csv(
+#   results_agegroup_n_circ, "paper_poster_plots_threemc/paper/data/results_agegroup_n_circ.csv.gz"
+# )
+gc()
 
 # results_agegroup_rate <- load_orderly_data(
 #   task = "02final_aggregations",
@@ -247,7 +269,7 @@ populations <- load_orderly_data(
   query = "latest", 
   file = "population_agegroup_aggr.csv.gz"
 )$output[[1]] %>% 
-  filter(iso3 %in% results_agegroup$iso3) %>% 
+  # filter(iso3 %in% results_agegroup$iso3) %>% 
   # filter(iso3 %in% results_age$iso3) %>% 
   # filter(iso3 %in% results_age_n_performed$iso3) %>% 
   # filter(iso3 %in% results_agegroup_rate$iso3) %>% 
@@ -281,7 +303,7 @@ iso_df <- iso_df %>%
   mutate(region = ifelse(region == "", "Other", region))
 
 # areas for SSD (want to add to map plot)
-dat_loc <- "paper_poster_plots/aids_2022_poster/data/"
+dat_loc <- "paper_poster_plots_threemc/aids_2022_poster/data/"
  
 ssn_areas <- sf::read_sf(file.path(
   dat_loc, 
@@ -353,14 +375,14 @@ p2final <- plt_coverage_map_change(
 # save object for org-mode paper draft
 saveRDS(
   p2final,
-  "paper_poster_plots/paper/plots/02_map_plot_facet.RDS"
+  "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.RDS"
 )
 
 # save plots
 ggsave(
 # png(
-  # "paper_poster_plots/paper/plots/02_map_plot_facet.pdf", 
-  "paper_poster_plots/paper/plots/02_map_plot_facet.png", 
+  # "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.pdf", 
+  "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.png", 
   p2final,
   width = 6.3, 
   height = 6.5, 
@@ -526,9 +548,9 @@ p3 <- plt_data %>%
 # p3
 # dev.off()
 
-saveRDS(p3, "paper_poster_plots/paper/plots/03_subnat_plot.RDS")
+saveRDS(p3, "paper_poster_plots_threemc/paper/plots/03_subnat_plot.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/03_subnat_plot.png", 
+  "paper_poster_plots_threemc/paper/plots/03_subnat_plot.png", 
   p3, 
   width = 6.3, 
   height = 8,
@@ -544,11 +566,12 @@ rm(p3); gc()
 # export with width = 800, height = 632
 # can afford to make this taller, have it as width = 830, height = 900
 
-#### Figure 4: Geofaceted plot for single ages ####
+#### Figure 4: Geofaceted plot of coverage vs single ages ####
 
-# results_age <- readr::read_csv(
-#   "paper_poster_plots/paper/data/results_age.csv.gz"
-# )
+results_age <- readr::read_csv(
+  "paper_poster_plots_threemc/paper/data/results_age.csv.gz"
+)
+results_age$iso3 <- substr(results_age$area_id, 0, 3)
 
 # grid for geofaceting, standardise country names
 ssa_grid <- geofacet::africa_countries_grid1 %>%
@@ -637,9 +660,9 @@ p4_geo <- p4 +
 # p4_geo
 # dev.off()
 
-saveRDS(p4_geo, "paper_poster_plots/paper/plots/04_geo_age.RDS")
+saveRDS(p4_geo, "paper_poster_plots_threemc/paper/plots/04_geo_age.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/04_geo_age.png", 
+  "paper_poster_plots_threemc/paper/plots/04_geo_age.png", 
   p4_geo, 
   width = 6.3, 
   height = 8,
@@ -647,7 +670,11 @@ ggplot2::ggsave(
 )
 
 
-#### Figure 5: Geofaceted plot of age at circumcision ####
+#### Figure 5: Map + scatter plot of age at circumcision ####
+
+results_age_n_performed <- readr::read_csv(
+  "paper_poster_plots_threemc/paper/data/results_age_n_performed.csv.gz"
+)
 
 country_area_level <- 0
 results_area_level <- NULL
@@ -731,8 +758,13 @@ tmp <- tmp %>%
     ungroup() %>%
     # Altering labels for the plot
     dplyr::mutate(
-        type = ifelse(grepl("MMC", type), "Medical",
-                      ifelse(grepl("TMC", type), "Traditional", "Total"))
+        # type = ifelse(grepl("MMC", type), "Medical",
+        #               ifelse(grepl("TMC", type), "Traditional", "Total"))
+      type = case_when(
+        grepl("MMC", type) ~ "Medical",
+        grepl("TMC", type) ~ "Traditional",
+        TRUE               ~ "Total"
+      )
     ) %>%
     # change data to sf object
     st_as_sf()
@@ -764,35 +796,56 @@ spec_areas <- areas_plot
 # rm(mean_circ_age, areas1); gc()
    
 map_plot_circ_age <- function(
-    spec_results, spec_areas, lake_vic, colourPalette, n_breaks = 3
+    spec_results, spec_areas, lake_vic, colourPalette, n_breaks = 4
   ) {
   
   levs = c("Total", "Medical", "Traditional")
   levs <- levs[levs %in% spec_results$type]
   
-  stopifnot(n_breaks %in% c(3, 6, 10))
+  stopifnot(n_breaks %in% c(4, 7, 10))
   
   spec_results$type <- factor(spec_results$type, levels = levs)
   
-  spec_results$mean_f <- cut(spec_results$mean, n_breaks)
-  # functionalise this
-  if (n_breaks == 3) {
-    levels(spec_results$mean_f) <- c("0-10", "11-20", "> 20")
-  } else if (n_breaks == 6) {
-    levels(spec_results$mean_f) <- c(
-      "0-5", "6-10", "11-15", "16-20", "21-25", "> 25"
-    )
+  cut_breaks <- c(seq(0, 30, length.out = n_breaks), Inf)
+  # cut_breaks <- cut_breaks + 1
+  if (n_breaks == 4) {
+    cut_breaks <- cut_breaks + 1
+    break_labels <- c("0-10", "11-20", "21-30", "30+")
+  } else if (n_breaks == 7) {
+    
+    # break_labels <- c("0-5", "6-10", "11-15", "16-20", "21-25", "26-30", ">30")
+    break_labels <- c("0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30+")
   } else if (n_breaks == 10) {
-    levels(spec_results$mean_f) <- c(
+    cut_breaks <- cut_breaks + 1
+    break_labels <- c(
       "0-3",   "4-6",   "7-10", "11-13", "14-16", 
-      "17-20", "21-23", "24-26", "27-30", "> 30"
+      "17-20", "21-23", "24-26", "27-30", "30+"
     )
   }
+  
+  # spec_results$mean_f <- cut(spec_results$mean, n_breaks)
+  spec_results$mean_f <- cut(
+    spec_results$mean, breaks = cut_breaks, labels = break_labels
+  )
+  
+  # functionalise this
+  # if (n_breaks == 3) {
+  #   levels(spec_results$mean_f) <- c("0-10", "11-20", "> 20")
+  # } else if (n_breaks == 6) {
+  #   levels(spec_results$mean_f) <- c(
+  #     "0-5", "6-10", "11-15", "16-20", "21-25", "> 25"
+  #   )
+  # } else if (n_breaks == 10) {
+  #   levels(spec_results$mean_f) <- c(
+  #     "0-3",   "4-6",   "7-10", "11-13", "14-16", 
+  #     "17-20", "21-23", "24-26", "27-30", "> 30"
+  #   )
+  # }
   
   if (is.function(colourPalette)) {
     cols <- colourPalette(n_breaks)
   } else cols <- colourPalette
-  names(cols) = levels(spec_results$mean_f)
+  names(cols) = break_labels
   
   ggplot() +
     geom_sf(
@@ -807,7 +860,12 @@ map_plot_circ_age <- function(
     #   discrete = TRUE, na.value = "grey", option = "D"
     # ) + 
     # ggsci::scale_fill_tron() + 
-    scale_fill_manual(values = cols, na.value = "grey")+ 
+    scale_fill_manual(
+      values = cols, 
+      limits = levels(spec_results$mean_f), 
+      labels = break_labels, 
+      na.value = "grey"
+    ) + 
     # fill in country borders in black
     geom_sf(
       data = spec_areas,
@@ -832,40 +890,48 @@ map_plot_circ_age <- function(
       axis.ticks        = element_blank(),
       legend.position   = "bottom",
       panel.grid        = element_blank(),
-      panel.spacing     = unit(0.01, "lines"), # make plot as "dense" as possible
+      # make plot as "dense" as possible
+      panel.spacing     = unit(0.001, "lines"), 
       plot.background   = element_rect(fill = "white", colour = "white"),
       plot.tag          = element_text(size = rel(2), face = "bold"),
-      plot.tag.position = c(0.1, 1),
+      # plot.tag.position = c(0.1, 1),
       # add margin to remove grey spaces in combined plots
-      plot.margin     = unit(c(1.1, 0, 1.1, 0), "cm"),
+      # plot.margin     = unit(c(1.1, 0, 1.1, 0), "cm"),
+      # remove margin to fit plots together easily
+      # plot.margin     = unit(c(1.1, -0.3, 1.1, -0.35), "cm"),
+      plot.margin     = unit(c(0, -0.3, 0, -0.35), "cm"),
       # move legend items closer together
       legend.spacing.x = unit(0.1, "cm")
     )
 }
 
-n_breaks <- 10
+n_breaks <- 7
 p5 <- map_plot_circ_age(
-  tmp, areas_plot, lake_vic, 
+  tmp, 
+  areas_plot, 
+  lake_vic, 
   # rev(RColorBrewer::brewer.pal(n = 3, name = "Dark2")), 
   # rev(wesanderson::wes_palette("Darjeeling1", n_breaks)),
   # rev(wesanderson::wes_palette("Zissou1", n_breaks)),
   # rev(RColorBrewer::brewer.pal(n = 6, name = "Dark2")), 
   # RColorBrewer::brewer.pal(n_breaks, "Paired"),
-  rev(viridis::viridis(10)), 
+  # rev(viridis::viridis(10)), 
+  rev(viridis::viridis(n_breaks)), 
   n_breaks
 )
 # p5
 
-dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
-p5
-dev.off()
+# dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# p5
+# dev.off()
 
 # scatter plot of TMC vs MMC for districts
 p5_scatter <- sf::st_drop_geometry(tmp) %>% 
   select(-c(upper, lower)) %>% 
   tidyr::pivot_wider(names_from = "type", values_from = "mean") %>% 
   mutate(vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "Non-VMMC")) %>% 
-  ggplot(aes(x = Medical, y = Traditional, colour = vmmc)) +
+  # ggplot(aes(x = Medical, y = Traditional, colour = vmmc)) +
+  ggplot(aes(x = Traditional, y = Medical, colour = vmmc)) +
   geom_point() + 
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") + #, colour = "grey") +
   # ggsci::scale_colour_nejm() +
@@ -876,17 +942,20 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
   ) + 
   # scale_colour_tron() + 
   labs(
-    x = "Mean medical circumcision age, 2020",
-    y = "Mean traditional circumcision age", 
+    # x = "Mean medical circumcision age, 2020",
+    # y = "Mean traditional circumcision age", 
+    x = "Mean traditional circumcision age, 2020",
+    y = "Mean medical circumcision age", 
     colour = "", 
     tag = "B"
   ) + 
   # define x and y breaks
   scale_x_continuous(
-    breaks = seq(0, 30, by = 5), limits = c(0, 30), expand = c(0, 0)
+    # breaks = seq(0, 30, by = 5), limits = c(0, 30), expand = c(0, 0)
+    breaks = seq(0, 30, by = 5), limits = c(0, 26), expand = c(0, 0)
   ) + 
   scale_y_continuous(
-    breaks = seq(0, 30, by = 5), limits = c(0, 30), expand = c(0, 0)
+    breaks = seq(0, 30, by = 5), limits = c(0, 26), expand = c(0, 0)
   ) + 
   # increase dot size in legend
   guides(colour = guide_legend(override.aes = list(size = 4))) + 
@@ -897,15 +966,18 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
     axis.text.y       = element_text(size = rel(1.6), colour = "black"), 
     axis.title.y      = element_text(size = rel(1.3), face = "bold"),
     legend.text       = element_text(size = rel(1.5), colour = "black"),
-    legend.position   = c(0.15, 0.8),
+    # legend.position   = c(0.15, 0.8),
+    legend.position   = c(0.85, 0.15),
     # remove white box behind legend
     legend.background = element_rect(colour = NA, fill = NA),
     legend.key        = element_rect(colour = NA, fill = NA),
     # increase tag size
     plot.tag          = element_text(size = rel(2), face = "bold"),
-    plot.tag.position = c(0.12, 0.92),
+    # plot.tag.position = c(0.12, 0.92),
     # add margin so last x break is included
-    plot.margin         = unit(c(0, 0.5, 0, 0.1), "cm")
+    plot.margin         = unit(c(0, 0.5, 0, 0.1), "cm"),
+    # change aspect ration so plot is square when saved
+    aspect.ratio        = 0.7
   )
 
 
@@ -913,38 +985,48 @@ p5_scatter <- sf::st_drop_geometry(tmp) %>%
 # p5_scatter
 # dev.off()
 
-# combine plots
+# # combine plots
 # p5final <- grid.arrange(
-#   grobs = list(p5, p5_scatter), 
-#   ncol = 2, 
+#   grobs = list(p5, p5_scatter),
+#   ncol = 1,
 #   heights = c(2 , 1)
 # )
-# grid.arrange(grobs = list(p5, p5_scatter), ncol = 2)
+# dev.new(width = 6.3, height = 9,  noRStudioGD = TRUE)
+# p5final
+# dev.off()
+
+# grid.arrange(
+#   grobs = list(p5, p5_scatter), 
+#   ncol  = 1, 
+#   # heights = c(2, 1)
+# )
 
 # dev.new(width = 6.3, height = 9,  noRStudioGD = TRUE)
 # cowplot::plot_grid(plotlist = list(p5, p5_scatter), ncol = 1)
 # dev.off()
 
-# save object for org-mode paper draft
+# save object for org-mode paper draft/Windows rerender
 saveRDS(
   p5,
-  "paper_poster_plots/paper/plots/051_map_plot_mean_circ_age_map.RDS"
+  "paper_poster_plots_threemc/paper/plots/051_map_plot_mean_circ_age_map.RDS"
 )
 saveRDS(
   p5_scatter,
-  "paper_poster_plots/paper/plots/052_map_plot_mean_circ_age_scatter.RDS"
+  "paper_poster_plots_threemc/paper/plots/052_map_plot_mean_circ_age_scatter.RDS"
 )
 
 # save plots
+# i <- 1
 ggsave(
-  "paper_poster_plots/paper/plots/05_map_plot_mean_circ_age.png", 
-  # p5,
-  plot_grid(plotlist = list(p5, p5_scatter), ncol = 1, rel_heights = c(1.3, 1)),
+  "paper_poster_plots_threemc/paper/plots/05_map_plot_mean_circ_age.png", 
+  # paste0("Rplots", i, ".png"),
+  p5 / p5_scatter +  plot_layout(heights = c(1, 1.2)),
   width = 6.3, 
   # height = 10, 
   height = 8, 
   units = "in"
 )
+# i <- i + 1
 
 
 #### Figure 6: Change in MC/MMC/TMC from 2000 ####
@@ -1194,9 +1276,9 @@ p6 <- tmp_long %>%
 # required to re-render plot
 p6$tmp_long_upper <- tmp_long_upper
 
-saveRDS(p6, "paper_poster_plots/paper/plots/06_change_00_20.RDS")
+saveRDS(p6, "paper_poster_plots_threemc/paper/plots/06_change_00_20.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots/paper/plots/06_change_00_20.png",
+  "paper_poster_plots_threemc/paper/plots/06_change_00_20.png",
   p6,
   width = 6.3,
   height = 6,
@@ -1283,9 +1365,552 @@ px_geo +
 # ggsave(plot = px_geo, filename = "poster/plots/p3.png", width = 1000, height = 1060, units = "px")
 
 
-#### Statistics for Abstract ####
+#### Statistics for Paper ####
 
-#### Male Circumcision Coverage (MC coverage) ####
+# function for repeated filtering
+filter_fun <- function(
+    dat,
+    spec_area_levels, 
+    spec_age_groups = spec_age_group, 
+    spec_types,
+    years = spec_years
+  ) {
+  
+  dat %>% 
+    filter(
+      area_level %in% spec_area_levels, 
+      age_group  %in% spec_age_groups,
+      type       %in% spec_types,
+      year       %in% years
+    )
+}
+
+# function for simplifying type column 
+simplify_type <- function(dat) {
+  dat %>% 
+    mutate(type = case_when(
+      grepl("MMC", type) ~ "MMC", 
+      grepl("TMC", type) ~ "TMC", 
+      TRUE               ~ "MC"
+    ))
+}
+
+
+# function to calculate differences
+calc_diffs <- function(dat) {
+  dat %>% 
+    mutate(
+      mean  = c(0, diff(mean)),
+      upper = c(0, diff(upper)),
+      lower = c(0, diff(lower)),
+      year  = "difference"
+    )
+}
+
+#### Section 1: Subnat Variation in TMC, MMC & TMC over time ####
+
+# remove large objects
+rm(populations, areas_map); gc()
+
+# circumcised men in 2006 and 2020 for MC, MMC and TMC
+n_circs_fun <- function(dat) {
+  n_circs <- filter_fun(
+    dat, 
+    0, 
+    "0+",
+    spec_types = c(
+      "Number circumcised (MC)",
+      "Number circumcised (MMC)",
+      "Number circumcised (TMC)"
+    )
+  ) %>%
+    simplify_type() %>% 
+    group_by(year, type) %>% 
+    summarise(
+      across(all_of(c("mean", "lower", "upper")), ~ sum(.x, na.rm = TRUE)),
+      .groups = "drop"
+    )
+  
+  # also calculate differences, to calculate # circumcised between the two years
+  n_circs_diffs <- n_circs %>% 
+    arrange(type, year) %>% 
+    group_by(type) %>% 
+    calc_diffs() %>% 
+    slice(2) %>%
+    ungroup()
+  
+  return(list(n_circs, n_circs_diffs))
+}
+n_circs <- n_circs_fun(results_agegroup)
+
+# function to summarise mean, lower and upper
+summarise_mean <- function(dat) {
+  dat %>% 
+    summarise(
+      across(all_of(c("mean", "lower", "upper")), ~ mean(.x, na.rm = TRUE)),
+      .groups = "drop"
+    )
+}
+
+# average coverage in 2006 and 2020, MC, MMC, TMC
+cov_fun <- function(dat) {
+ mean_cov <- filter_fun(
+   dat, 
+    0, 
+    "0+",
+    spec_types = c("MC coverage", "MMC coverage", "TMC coverage")
+  ) %>%
+    simplify_type() %>% 
+    group_by(year, type) %>% 
+    summarise_mean()
+   
+  # difference
+  cov_diff <-  mean_cov %>% 
+    arrange(type, year) %>% 
+    group_by(type) %>% 
+    calc_diffs() %>% 
+    slice(2) %>%
+    ungroup()
+  return(list("mean_cov" = mean_cov, "cov_diff" = cov_diff))
+}
+covs <- cov_fun(results_agegroup)
+
+# lowest and highest coverage 2020, name countries, MC, MMC, TMC
+iso3_lowest_highest_cov <- filter_fun(
+  results_agegroup, 
+  0, 
+  "0+",
+  spec_types = c("MC coverage", "MMC coverage", "TMC coverage"), 
+  years = c(2006, 2020)
+) %>% 
+  filter(mean != 0) %>% # remove unknown types
+  # arrange by mean, then take countries with lowest and highest cov by type
+  arrange(type, desc(mean)) %>% 
+  group_by(type, year) %>% 
+  slice(c(1, n())) %>% 
+  ungroup() %>% 
+  select(iso3, type, year, mean, lower, upper) %>% 
+  arrange(type, year, desc(mean)) %>% 
+  simplify_type()
+
+# largest percentage increase in coverage 2006-2020, name countries, MC, MMC, TMC
+# Perhaps want to find decrease for TMC?
+iso3_cov_diffs <- filter_fun(
+  results_agegroup, 
+  0, 
+  "0+",
+  spec_types = c("MC coverage", "MMC coverage", "TMC coverage")
+) %>% 
+  simplify_type() %>% 
+  # change TMC to have decrease
+  mutate(
+    across(all_of(c("mean", "lower", "upper")), ~ ifelse(type == "TMC", -., .))
+  ) %>% 
+  arrange(iso3, type, year) %>% 
+  group_by(iso3, type) %>% 
+  calc_diffs() %>% 
+  slice(2) %>% 
+  ungroup() %>% 
+  group_by(type) %>% 
+  filter(mean == max(mean)) %>% 
+  ungroup() %>% 
+  select(iso3, type, mean, lower, upper) %>% 
+  arrange(type, desc(mean))
+
+# find 2006 and 2020 coverage for these countries
+iso3_cov_2006_2020 <- filter_fun(
+  results_agegroup, 
+  0, 
+  "0+",
+  spec_types = c("MC coverage", "MMC coverage", "TMC coverage")
+) %>% 
+  simplify_type() %>% 
+  semi_join(iso3_cov_diffs, by = c("iso3", "type")) %>% 
+  arrange(type, year)
+
+# number of annual MCs/MMCs/TMCs in 2006 and 2020 with growth
+non_cum_n_performed <- filter_fun(
+  results_agegroup_n_circ, 
+  0,
+  "0+",
+  spec_types = paste(c("MCs", "MMCs", "TMCs"), "performed")
+) %>% 
+  simplify_type() %>% 
+  arrange(type, iso3, year) %>% 
+  # for each type, calculate differences
+  group_by(type, year) %>% 
+  summarise_mean()
+
+# growth/difference
+non_cum_n_performed_diff <- non_cum_n_performed %>% 
+  group_by(type) %>% 
+  calc_diffs() %>% 
+  slice(2) %>% 
+  ungroup()
+
+# Paragraph 2 under second plot of within country hetergeneity
+# Within country median difference in coverage between districts in 2020
+# for all SSA, and highest and lowest country, MC, MMC, TMC
+distrinct_level_diff_fun <- function(dat) {
+ max_min_district_cov <- filter_fun(
+    dat, 
+    unique(dat$area_level),
+    "0+",
+    spec_types = c("MC coverage", "MMC coverage", "TMC coverage"), 
+    years = spec_years[2] 
+  ) %>% 
+   simplify_type() %>% 
+   # remove MMC and TMC for countries with no type info
+   filter(mean != 0) %>% 
+   # find lowest area level for each country
+   group_by(iso3, type) %>%
+   filter(area_level == max(area_level)) %>% 
+   # for each country, find highest and lowest district-level coverage
+   arrange(mean) %>% 
+   slice(1, n()) %>% 
+   ungroup()
+  
+   # Calculate differences
+   district_cov_diffs <- max_min_district_cov %>% 
+     arrange(iso3, type, year) %>% 
+     group_by(iso3, type) %>% 
+     calc_diffs() %>% 
+     slice(2) %>% 
+     ungroup()
+     
+   # median diff (interesting that these are v similar across different types!)
+   median_cov_diffs <- district_cov_diffs %>% 
+     group_by(type) %>% 
+     summarise(mean = median(mean)) %>% 
+     ungroup()
+   
+   # countries with highest and lowest differences by type (may also want area names?)
+   country_cov_diffs <- district_cov_diffs %>% 
+     group_by(type) %>% 
+     filter(mean %in% c(max(mean), min(mean))) %>% 
+     ungroup() %>% 
+     arrange(type, desc(mean))
+   
+   # for these countries, find highest and lowest coverage by type
+   # TODO: Order the same as country_cov_diffs!!!
+   country_cov_highest_lowest <- max_min_district_cov %>% 
+     semi_join(country_cov_diffs, by = c("iso3", "type")) %>% 
+     arrange(type, iso3, desc(mean))
+   
+   return(list(
+     "median_cov_diffs"           = median_cov_diffs, 
+     "country_cov_diffs"          = country_cov_diffs,
+     "country_cov_highest_lowest" = country_cov_highest_lowest
+   ))
+   # Anything else to add here?
+}
+
+district_diffs <- distrinct_level_diff_fun(results_agegroup)
+
+# Paragraph on difference between VMMC and non-VMMC:
+
+# VMMC countries
+results_agegroup_vmmc <- results_agegroup %>% 
+  filter(iso3 %in% vmmc_iso3)
+
+# non-VMMC countries
+results_agegroup_non_vmmc <- results_agegroup %>% 
+  filter(!iso3 %in% vmmc_iso3)
+
+# n circumcised
+n_circs_vmmc <- n_circs_fun(results_agegroup_vmmc)
+n_circs_non_vmmc <- n_circs_fun(results_agegroup_non_vmmc)
+
+# coverage
+covs_vmmc <- cov_fun(results_agegroup_vmmc)
+covs_non_vmmc <- cov_fun(results_agegroup_non_vmmc)
+
+# median district level difference 
+district_diffs_vmmc <- distrinct_level_diff_fun(results_agegroup_vmmc)
+district_diffs_non_vmmc <- distrinct_level_diff_fun(results_agegroup_non_vmmc)
+
+# function to convert to "millions"
+
+# bring together into one object and save
+section_1_inlines <- list(
+ "n_circs"                  = n_circs,
+ "covs"                     = covs,
+ "iso3_lowest_highest_cov"  = iso3_lowest_highest_cov, 
+ "iso3_cov_diffs"           = iso3_cov_diffs, 
+ "iso3_cov_2006_2020"       = iso3_cov_2006_2020,
+ "non_cum_n_performed"      = non_cum_n_performed, 
+ "non_cum_n_performed_diff" = non_cum_n_performed_diff, 
+ "district_diffs"           = district_diffs, 
+ "n_circs_vmmc"             = n_circs_vmmc, 
+ "n_circs_non_vmmc"         = n_circs_non_vmmc, 
+ "covs_vmmc"                = covs_vmmc, 
+ "covs_non_vmmc"            = covs_non_vmmc,
+ "district_diffs_vmmc"      = district_diffs_vmmc,
+ "district_diffs_non_vmmc " = district_diffs_non_vmmc
+)
+
+saveRDS(
+  section_1_inlines, 
+  "paper_poster_plots_threemc/paper/data/inlines/01_inlines.RDS"
+)
+rm(list = c(names(section_1_inlines), "section_1_inlines")); gc()
+
+
+#### Section 2: Subnat Variation in MC, MMC, TMC Across Different Ages ####
+
+five_year_age_groups <- paste(
+  c(seq(0, 50, 5), 54), c(seq(4, 59, by = 5)), sep = "-"
+)
+
+# function to do calculations for age group coverages
+age_group_cov_fun <- function(dat) {
+  # fyag (and 15-29 + 30-49) average coverages in 2006 and 2020, by type
+  age_group_mean_coverages <- filter_fun(
+    dat, 
+    0, 
+    c(five_year_age_groups, "15-29", "30-49"),
+    spec_types = c("MC coverage", "MMC coverage", "TMC coverage")
+  ) %>% 
+    group_by(age_group, year, type) %>% 
+    summarise_mean() %>% 
+    arrange(type, age_group, year)
+  
+  fyag_mean_coverages <- filter(
+    age_group_mean_coverages, age_group %in% five_year_age_groups
+  )
+  
+  # calculate differences to find age group with greatest/lowest increase
+  diffs <- fyag_mean_coverages %>% 
+    group_by(age_group, type) %>% 
+    calc_diffs() %>% 
+    slice(2) %>% 
+    ungroup() %>% 
+    group_by(type) %>% 
+    filter(mean == max(mean)) %>% 
+    ungroup()
+  
+  # age group with highest circ by type
+  fyag_highest_covs <- fyag_mean_coverages %>% 
+    group_by(year, type) %>% 
+    filter(mean == max(mean)) %>% 
+    ungroup() %>% 
+    arrange(type, desc(year))
+  
+  # mean coverage by type for 15-29 and 30-49 year olds
+  spec_agegroups_mean_cov <- age_group_mean_coverages %>% 
+    filter(age_group %in% c("15-29", "30-49")) %>% 
+    group_by(type, age_group, year) %>% 
+    summarise_mean() %>% 
+    arrange(type, age_group, year)
+
+  return(list(
+    "fyag_highest_covs"       = fyag_highest_covs, 
+    "spec_agegroups_mean_cov" = spec_agegroups_mean_cov
+  ))
+}
+age_group_cov <- age_group_cov_fun(results_agegroup)
+
+# Same for VMMC/non-VMMC, show spatial heterogeneity
+age_group_cov_vmmc <- age_group_cov_fun(results_agegroup_vmmc)
+age_group_cov_non_vmmc <- age_group_cov_fun(results_agegroup_non_vmmc)
+
+# bring together into one object and save
+section_2_inlines <- list(
+ "age_group_cov"          = age_group_cov, 
+ "age_group_cov_vmmc"     = age_group_cov_vmmc,
+ "age_group_cov_non_vmmc" = age_group_cov_non_vmmc
+)
+
+saveRDS(
+  section_2_inlines, 
+  "paper_poster_plots_threemc/paper/data/inlines/02_inlines.RDS"
+)
+rm(list = c(names(section_2_inlines), "section_2_inlines")); gc()
+
+
+#### Section 3: Subnat Variation in Age at MMC & TMC ####
+
+# remove large objects
+rm(results_agegroup_non_vmmc, results_agegroup_vmmc); gc()
+# This section requires results_age_n_performed
+
+# calculate mean age at circumcision by type
+mean_age_at_circ <- calc_circ_age_ridge( 
+    results_age_n_performed,
+    areas,
+    spec_years     = c(2006, 2020),
+    # area_levels    = unique(results_age_n_performed$area_level),
+    area_levels    = 0,
+    spec_model     = "No program data",
+    spec_ages      = 0:60,
+    spec_types     = c("MCs performed", "MMCs performed", "TMCs performed"),
+    n_plots        = 1
+)
+mean_age_at_circ <- mean_age_at_circ$mean_age_at_circ[[1]]
+
+# mean age at circumcision MC, MMC, TMC, 2006, 2020
+aggr_mean_circ_age_fun <- function(dat) {
+ dat %>%  
+    group_by(type, year) %>% 
+    summarise(
+      across(
+        all_of(c("average_age", "average_age_lower", "average_age_upper")),
+        ~ mean(.x, na.rm = TRUE)
+      ), 
+      .groups = "drop"
+    )
+}
+aggr_mean_circ_age <- aggr_mean_circ_age_fun(mean_age_at_circ)
+
+# For VMMC, Non-VMMC
+aggr_mean_circ_age_vmmc <- mean_age_at_circ %>% 
+  filter(iso3 %in% vmmc_iso3) %>% 
+  aggr_mean_circ_age_fun()
+aggr_mean_circ_age_non_vmmc <- mean_age_at_circ %>% 
+  filter(!iso3 %in% vmmc_iso3) %>% 
+  aggr_mean_circ_age_fun()
+
+section_3_inlines <- list(
+ "aggr_mean_circ_age"          = aggr_mean_circ_age, 
+ "aggr_mean_circ_age_vmmc"     = aggr_mean_circ_age_vmmc,
+ "aggr_mean_circ_age_non_vmmc" = aggr_mean_circ_age_non_vmmc
+)
+
+saveRDS(
+  section_3_inlines, 
+  "paper_poster_plots_threemc/paper/data/inlines/03_inlines.RDS"
+)
+rm(list = c(names(section_3_inlines), "section_3_inlines")); gc()
+
+
+#### Section 4: Decrease in TMC in SSA region Over Time
+
+# For the 15-29 age group, TMC coverage was reduced from x\% (x\% to x\%) in 
+# 2006 to x\% (x\% to x\%) in 2020, a drop of x\% (x\% to x\%).
+# In contrast, for the 30-49 age group, TMC coverage was reduced from x\% 
+# (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020, a drop of x\% (x\% to x\%).
+# In VMMC countries, this was reduced from x\% (x\% to x\%) to x\% (x\% to x\%) 
+# from 2006 to 2020, while even in non-VMMC countries this decreased from x\% 
+# (x\% to x\%) to x\% (x\% to x\%). 
+# The largest decrease in TMC coverage from 2006 to 2020 was in x, from 
+# x\% (x\% to x\%) to x\% (x\% to x\%). 
+# [If the above is a VMMC country] The largest decrease in TMC coverage amongst 
+# non-VMMC countries was from x\% (x\% to x\%) to x\% (x\% to x\%) in x. 
+
+# mean TMC in 2006 and 2020, and percentage drop
+mean_tmc_decrease <- function(dat, age_groups = "0+", group_vars = "year") {
+  
+  stopifnot("year" %in% group_vars)
+  
+  mean_tmc_cov <- filter_fun(dat, 0, age_groups, "TMC coverage") %>% 
+    group_by(across(all_of(group_vars))) %>% 
+    summarise_mean()
+    
+  mean_tmc_cov_diff <- mean_tmc_cov %>% 
+    arrange(
+      desc(year),
+      across(all_of(group_vars[!group_vars == "year"])), 
+    ) %>% 
+    # arrange(desc(year)) %>% 
+    group_by(across(all_of(group_vars[!group_vars == "year"]))) %>% 
+    calc_diffs() %>% 
+    slice(2) %>% 
+    ungroup()
+  
+  return(list(
+    "mean_tmc_cov"      = mean_tmc_cov, 
+    "mean_tmc_cov_diff" = mean_tmc_cov_diff
+  ))
+}
+
+tmc_cov_ssa <- mean_tmc_decrease(results_agegroup)
+# Also VMMC and non-VMMC
+tmc_cov_vmmc <- mean_tmc_decrease(
+  filter(results_agegroup, iso3 %in% vmmc_iso3)
+)
+tmc_cov_non_vmmc <- mean_tmc_decrease(
+  filter(results_agegroup, !iso3 %in% vmmc_iso3)
+)
+
+# TMCs performed 2006 and 2020, fall
+# NOTE: Slight bug in this, as TMCs in 2020 had far greater uncertainty
+# Therefore
+
+# tmcs_performed_fun <- function(dat) {
+#   tmcs_performed <- filter_fun(
+#    results_agegroup_n_circ, 0, "0+", "TMCs performed"
+#   ) %>% 
+#     group_by(year) %>% 
+#     summarise_mean()
+#   
+#   tmcs_performed_diff <- tmcs_performed %>% 
+#     arrange(desc(year)) %>% 
+#     calc_diffs() %>% 
+#     slice(2)
+#  
+#   return(list(
+#     "tmcs_performed"      = tmcs_performed, 
+#     "tmcs_performed_diff" = tmcs_performed_diff
+#   ))
+# }
+# # SSA, VMMC, non-VMMC
+# tmcs_performed <- tmcs_performed_fun(results_agegroup_n_circ)
+# tmcs_performed_vmmc <- tmcs_performed_fun(
+#   filter(results_agegroup_n_circ, iso3 %in% vmmc_iso3)
+# )
+# tmcs_performed_non_vmmc <- tmcs_performed_fun(
+#   filter(results_agegroup_n_circ, !iso3 %in% vmmc_iso3)
+# )
+
+# mean TMC % for 15-29 and 30-49 year olds, with differences
+results_agegroup_spec_groups <- results_agegroup %>% 
+  filter(age_group %in% c("15-29", "30-49"))
+
+cov_spec_groups_ssa <- mean_tmc_decrease(
+  results_agegroup_spec_groups, c("15-29", "30-49"), c("year", "age_group")
+)
+# Also VMMC and non-VMMC
+cov_spec_groups_vmmc <- mean_tmc_decrease(
+  results_agegroup_spec_groups %>% 
+    filter(iso3 %in% vmmc_iso3), 
+  c("15-29", "30-49"), 
+  c("year", "age_group")
+)
+cov_spec_groups_non_vmmc <- mean_tmc_decrease(
+  results_agegroup_spec_groups %>% 
+    filter(!iso3 %in% vmmc_iso3), 
+  c("15-29", "30-49"), 
+  c("year", "age_group")
+)
+
+# Country with largest decrease in TMC 
+spec_country_tmc_decrease <- mean_tmc_decrease(
+  results_agegroup, group_vars = c("year", "iso3")
+) 
+# choose country with highest decrease in TMC
+spec_country_tmc_decrease[[2]] <- spec_country_tmc_decrease[[2]] %>% 
+  arrange(desc(mean)) %>% 
+  slice(1)
+spec_country_tmc_decrease[[1]] <- spec_country_tmc_decrease[[1]] %>% 
+  filter(iso3 %in%  spec_country_tmc_decrease[[2]]$iso3)
+
+# for VMMC countries, as GHA is country with biggest drop
+spec_country_tmc_decrease_vmmc <- mean_tmc_decrease(
+  filter(results_agegroup, iso3 %in% vmmc_iso3), group_vars = c("year", "iso3")
+) 
+# choose country with highest decrease in TMC
+spec_country_tmc_decrease_vmmc[[2]] <- spec_country_tmc_decrease_vmmc[[2]] %>% 
+  arrange(desc(mean)) %>% 
+  slice(1)
+spec_country_tmc_decrease_vmmc[[1]] <- spec_country_tmc_decrease_vmmc[[1]] %>% 
+  filter(iso3 %in%  spec_country_tmc_decrease_vmmc[[2]]$iso3)
+
+# TODO: Save as inlines object!
+
+#### Section 5: Progress for VMMC Priority Countries ####
+
+
+#### Statistics for Abstract ####
 
 ## number of circumcisions performed from 2010 to 2020 (with error bounds)
 results_agegroup_n_circ %>%

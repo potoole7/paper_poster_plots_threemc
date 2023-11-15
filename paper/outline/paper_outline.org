@@ -194,7 +194,7 @@ This involved comparing survey estimates of circumcision coverage with the 50%, 
 was regarded as one in which roughly 50% of (training) survey observations fell within the 50% CI range, 85% within the 85% CI range, and 95% within the 95% range.
 
 Two principal components of the model largely determine how the uncertainty of our model predicitions scale up over time: 
-1. *The choice of temporal prior*: threemc uses an AR 1 temporal prior. However, this is easily replaceable with, for example, a random walk (RW) prior. These temporal priors
+1. *The choice of temporal prior*: threemc uses an AR 1 temporal prior. However, this is easily sable with, for example, a random walk (RW) prior. These temporal priors
    differ consireably in how they use previous estimates to inform future predictions, and so we appraised a number of choices for our temporal prior to determine if there
    was a preferable alternative to our default AR 1 temporal prior, with regards to the particular context of increasing year-on-year uncertainty bounds.
    The choice of temporal prior was included in this OOS analysis, rather than in our
@@ -356,7 +356,7 @@ Two choices, include table of comparisons for these models
 - No need for results on each country, we want multi-country results
 - At the end of the background section, we want a list of aims/research questions
 - Move changes in traditional circumcision to separate section/research question, interesting and novel observation
-Can show replacement of TMC by MMC, that's fine. 
+Can show sment of TMC by MMC, that's fine. 
 - Progress towards VMMC targets may be covered 
 - Would be nice to show uncircumcised populations by age ("age pyramid" plot), maybe with VMMC targets
 

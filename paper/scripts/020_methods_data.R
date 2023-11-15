@@ -16,7 +16,7 @@ library(geofacet)
 library(glue)
 library(ggtext)
 # source("Shiny/src/functions.R") # plotting functions
-source("paper_poster_plots/paper/scripts/00_funs.R") # shared functions
+source("paper_poster_plots_threemc/paper/scripts/00_funs.R") # shared functions
 
 ### Metadata ###
 
@@ -183,12 +183,12 @@ for (i in seq_len(nrow(table1))) {
 
 # sink to text file
 sink(
-  "paper_poster_plots/paper/figures/supp_figs/table_1_survey_questions.txt", 
+  "paper_poster_plots_threemc/paper/figures/supp_figs/table_1_survey_questions.txt", 
   append = FALSE
 )
 for (i in seq_along(text)) cat(text[i], "\n")
 sink()
-# TODO: When pasting into TeX table, must search and replace [/] with \
+# TODO: When pasting into TeX table, must search and s [/] with \
 
 
 #### Table 2: Circumcision Type Definitions ####

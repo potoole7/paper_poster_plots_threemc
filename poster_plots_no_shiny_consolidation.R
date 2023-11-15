@@ -164,7 +164,7 @@ last_surveys <- readr::read_csv("global/most_recent_surveys.csv")
 
 # Additional areas from Oli, so map plot can be for all of SSA
 # dat_loc <- "poster/data/"
-dat_loc <- "paper_poster_plots/aids_2022_poster/data/"
+dat_loc <- "paper_poster_plots_threemc/aids_2022_poster/data/"
 non_ssa_afr_areas <- sf::read_sf(
   file.path(
     dat_loc, 

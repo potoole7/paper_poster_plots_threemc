@@ -232,7 +232,7 @@ In countries where suitable survey information was collected on circumcision typ
 		\lambda^{\text{TMC}}_{iat} = \mathbb{P}(\text{TMC} \; \text{in} \; (i,a,t) \; | \; \text{Uncircumcised in} \; (i,a-1, t-1)). 
 	\label{eqn::TMC}
 \end{equation}
-A key assumption of the \cite{thomas2021multilevel} model was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa however an assumption of a constant probability of TMC might not be feasible everywhere. For example, in some countries the level and practices of TMC have changed through time due to demographic shifts. There has also been a replacement of TMCs through MMCs observed, particularly in VMMC priority countries, to ensure HIV prevention efficacy and/or for safety considerations \cite{thomas2021multilevel}. Furthermore, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. Here, we consider two models for $\lambda^{\text{TMC}}_{iat}$ in each country: (i) time invariant (i.e. constant over time) and (ii) time variant (i.e. varying over time). 
+A key assumption of the \cite{thomas2021multilevel} model was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa however an assumption of a constant probability of TMC might not be feasible everywhere. For example, in some countries the level and practices of TMC have changed through time due to demographic shifts. There has also been a sment of TMCs through MMCs observed, particularly in VMMC priority countries, to ensure HIV prevention efficacy and/or for safety considerations \cite{thomas2021multilevel}. Furthermore, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. Here, we consider two models for $\lambda^{\text{TMC}}_{iat}$ in each country: (i) time invariant (i.e. constant over time) and (ii) time variant (i.e. varying over time). 
 
 The {\it time-invariant} probability of TMC was modelled using a piece-wise logit-linear function, 
 \begin{equation*} 
@@ -476,7 +476,7 @@ where $l$ is TMC, MMC, MC, RC, MMCLC, TMCLC or MCLC which correspond to the outc
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\noindent Survey data are collected through a complex two-stage cluster sampling design with unequal sampling probabilities. Performing model inference using a standard likelihood may lead to biased estimates so to account for these survey designs, the probabilities of circumcision were estimated using a weighted pseudo-likelihood in which we replaced the observed counts $\text{N}^l_{iat}$ with weighted counts $\tilde{\text{N}}^l_{iat}$, calculated using survey weights. Each individual $j$ in survey $s$ residing in region $i$ had sampling weight $\omega_{sji}$ which were normalised using the Kish effective sample size, 
+\noindent Survey data are collected through a complex two-stage cluster sampling design with unequal sampling probabilities. Performing model inference using a standard likelihood may lead to biased estimates so to account for these survey designs, the probabilities of circumcision were estimated using a weighted pseudo-likelihood in which we sd the observed counts $\text{N}^l_{iat}$ with weighted counts $\tilde{\text{N}}^l_{iat}$, calculated using survey weights. Each individual $j$ in survey $s$ residing in region $i$ had sampling weight $\omega_{sji}$ which were normalised using the Kish effective sample size, 
 \begin{equation*}
 	\tilde\omega_{sji} = \frac{\omega_{sji}}{\bar{\omega}_{si}}\cdot \frac{M_s}{M^{\text{eff}}_s} 
 \end{equation*}
@@ -502,7 +502,7 @@ In order to include survey data on district as well as other administrative aggr
 \begin{equation*}
 	\lambda^{k}_{Rat} = \frac{\sum_{i\in R}P_{iat}\lambda^{k}_{iat}}{\sum_{i\in R}P_{iat}}
 \end{equation*}
-where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The district probabilities of TMC, MMC and MC were replaced with the higher level aggregates in the likelihood above for surveys that did not collect information on the district level. 
+where $k\in \{\textrm{TMC}, \textrm{MMC}, \textrm{MC}\}$, and $P_{iat}$ is an estimate of the male population at age $a$ and time step $t$ in district $i$. The district probabilities of TMC, MMC and MC were sd with the higher level aggregates in the likelihood above for surveys that did not collect information on the district level. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

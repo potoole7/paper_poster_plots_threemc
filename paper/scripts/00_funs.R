@@ -74,13 +74,26 @@ load_orderly_data <- function(
   dirs <- dirs[!is.na(dirs)]
   # return dirs if filenames unspecified
   if (is.null(filenames)) return(list("dirs" = dirs_return))
-  files <- file.path(
-    "archive", 
-    task,
-    dirs, 
-    "artefacts/", # prob don't need this? I just structure my tasks this way
-    filenames
-  )
+  if (all(grepl("archive", dirs)) && all(grepl("artefacts", dirs))) {
+    files <- file.path(dirs, filenames)
+  # } else if (!grepl("archive", filenames)) {
+  #   files <- file.path(
+  #     "archive", 
+  #     task,
+  #     dirs, 
+  #     # dirname(dirs),
+  #     # "artefacts/", # prob don't need this? I just structure my tasks this way
+  #     filenames
+  #   )
+  } else {
+    files <- file.path(
+      "archive", 
+      task,
+      dirs, 
+      "artefacts/", # prob don't need this? I just structure my tasks this way
+      filenames
+    )
+  }
   # return filenames if load_fun isn't specified
   if (!is.null(load_fun) == FALSE) {
     return(list("dirs"  = dirs_return, "files" = files))

@@ -29,7 +29,7 @@
 
 #+name: setwd
 #+begin_src R :results output :session :exports results
-# set directory to top of git repo (assume paper_poster_plots in threemc-orderly)
+# set directory to top of git repo (assume paper_poster_plots_threemc in threemc-orderly)
 # dir <- dirname(system("git rev-parse --show-toplevel", intern = TRUE))
 dir <- "~/imperial_repos/threemc-orderly/"
 setwd(dir)
@@ -413,7 +413,7 @@ Also for data, could add stuff on:
 
 #+name: survey_inlines
 #+begin_src R :results output :session :exports results
-data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
+data_inlines <- readRDS("paper_poster_plots_threemc/paper/data/01_data_inlines.RDS")
 #+end_src
 
 #+RESULTS: survey_inlines
@@ -448,7 +448,7 @@ Sub-national populations from WorldPop were used to calculate circumcision cover
 
 #+name: survey_inlines
 #+begin_src R :results output :session :exports results
-data_inlines <- readRDS("paper_poster_plots/paper/data/01_data_inlines.RDS")
+data_inlines <- readRDS("paper_poster_plots_threemc/paper/data/01_data_inlines.RDS")
 #+end_src
 
 #+RESULTS: survey_inlines
@@ -493,8 +493,8 @@ Participation rates for each survey can be found in section x of the appendix.
 #+CAPTION: Household surveys detailing circumcision patterns in SSA. The colour and size of points are determined by the provider and sample size of each respective survey. Triangular points have no information on circumcision type.
 #+NAME: fig1
 #+begin_src R :exports results :results file graphics :file plots_org/01_survey_table.png :width 9 :height 10
-# source("paper_poster_plots/scripts/03_results_data.R")
-# p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+# source("paper_poster_plots_threemc/scripts/03_results_data.R")
+# p1 <- readRDS("paper_poster_plots_threemc/paper/plots/01_survey_table.RDS")
 p1 <- readRDS("./plots/01_survey_table.RDS")
 print(p1)
 #+end_src
@@ -899,8 +899,8 @@ More information on individual surveys, including participation rates, can be fo
 
  #+NAME: fig1
  #+begin_src R :exports results :results file graphics :file plots/01_survey_table.pdf :width 9 :height 10
- # source("paper_poster_plots/scripts/03_results_data.R")
- # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+ # source("paper_poster_plots_threemc/scripts/03_results_data.R")
+ # p1 <- readRDS("paper_poster_plots_threemc/paper/plots/01_survey_table.RDS")
 p1 <- readRDS("./plots/01_survey_table.RDS")
 print(p1)
  #+end_src
@@ -925,8 +925,8 @@ Include:
 #+end_comment
 
 # #+begin_src R :exports results :results file graphics :file plots_org/01_survey_table.png :width 9 :height 10
-# # source("paper_poster_plots/scripts/03_results_data.R")
-# # p1 <- readRDS("paper_poster_plots/paper/plots/01_survey_table.RDS")
+# # source("paper_poster_plots_threemc/scripts/03_results_data.R")
+# # p1 <- readRDS("paper_poster_plots_threemc/paper/plots/01_survey_table.RDS")
 # p1 <- readRDS("./plots/01_survey_table.RDS")
 # print(p1)
 # #+end_src
