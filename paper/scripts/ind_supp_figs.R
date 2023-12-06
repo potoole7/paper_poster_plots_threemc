@@ -36,6 +36,11 @@ if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 spec_age_group <- "15-29"
 spec_age_group_double <- c(spec_age_group, "30-49")
 spec_years <- c(2006, 2020) # 2006 = first year of VMMC programmes
+spec_years_survey_comp <- spec_years
+if (cntry == "BWA") {
+  spec_years[2] <- 2021
+  spec_years_survey_comp[2] <- 2022
+}
 # spec_years_triple <- c(2006, 2015, 2020)
 spec_years_triple <- c(
   spec_years[1], 
@@ -81,7 +86,7 @@ target_iso3 <- c(
 # VMMC countries  
 vmmc_iso3 <- c(
   "LSO", "MOZ", "NAM", "RWA", "TZA", "UGA", "MWI",
-  "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF" # LSO, SWZ ran already
+  "SWZ", "ZWE", "ZMB", "ETH", "KEN", "ZAF", "BWA" # LSO, SWZ ran already
 )
 no_type_iso3 <- c("LBR", "SEN", "NER", "GIN", "COD")
 
@@ -649,7 +654,7 @@ lapply(seq_along(types), function(i) {
     mc_type_survey    = names(types)[i],
     age_per           = spec_age_group_double,
     # spec_years        = plt_start_year:2021,
-    spec_years        = spec_years,
+    spec_years        = spec_years_survey_comp,
     model_type        = model_select,
     province_split    = TRUE,
     xlab              = "Year",
