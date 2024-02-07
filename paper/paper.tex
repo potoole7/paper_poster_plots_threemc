@@ -251,7 +251,7 @@ Technical details of the model are in Supplementary Materials.
 % We have also performed a quantitative analysis of the different model specifications available
 % to us. A more detailed treatment of this can be found in section x of the appendix. 
 
-% For each country, we fit a model for each possible model specification for threemc, that is:
+% For each country, we fit a model for each possible model specification for \verb|threemc|, that is:
 % \begin{itemize}
 % \item for each choice of temporal prior, namely AR1, RW1 and RW2,
 % \item a choice of whether or not to include a paediatric age cutoff for MMC of ten, and
@@ -304,22 +304,22 @@ Technical details of the model are in Supplementary Materials.
 % In these circumstances, there may have been a significant increase in MMC coverage due to VMMC programme implementation which was not captured within our survey period.
 % VMMC programme data was an available source of more recent circumcision data.
 % The DMPPT2 model explicitly used this data to estimate MMC. 
-% The results of DMPPT2, as well as those for countries with more recent surveys who have experienced significant MMC scaleups, suggest that VMMC may have scaled up at a rate not anticipated by threemc where only these older surveys are available.
+% The results of DMPPT2, as well as those for countries with more recent surveys who have experienced significant MMC scaleups, suggest that VMMC may have scaled up at a rate not anticipated by \verb|threemc| where only these older surveys are available.
 % This was consistent with out-of-sample (OOS) exploration of model fits to countries like Zimbabwe, where removing access to the most recent (2018 DHS) survey similarly underestimates VMMC scale up.
-% Hence, it was felt that threemc likely underestimates uncertainty with regards to predicting circumcision coverage for progressively later years from our last available surveys, particularly in the case of VMMC priority countries, which have seen rapid increases in historically low circumcision.
+% Hence, it was felt that \verb|threemc| likely underestimates uncertainty with regards to predicting circumcision coverage for progressively later years from our last available surveys, particularly in the case of VMMC priority countries, which have seen rapid increases in historically low circumcision.
 % A more dramatic "fanning" out of our prediction interval as we forecast further from the last available survey data was therefore deemed desirable, consistent with having greater uncertainty in our future forecasts. 
 
-% The two main drivers of uncertainty over time in threemc were:
+% The two main drivers of uncertainty over time in \verb|threemc| were:
 % \begin{itemize}
 % \item The variance hyperparameters relating to time, including the variance hyperparameters for space-time and age-time interactions, and
-% \item The choice of temporal prior, for which threemc supports the use of an AR1, RW1 or RW2 prior.
+% \item The choice of temporal prior, for which \verb|threemc| supports the use of an AR1, RW1 or RW2 prior.
 % \end{itemize}
 % The "unpooled" optimised time-related variance hyperparameters for the model fit for each respective country varied significantly, but in general certain patterns and values for these hyperparameters could be associated with a having larger bounds for successive prediction years.
 
 % Due to computational constraints, we could not model the entire SSA region together as one singular area hierarchy, which, through partial pooling and the neighbourhood correlation structure inherent in the model, would allow the model to borrow information from countries with a large amount of available data to inform predictions in countries with older and/or fewer surveys.
 % One alternative to using a partially-pooled model was to use the uncertainty estimates which produce the best predictions for countries with more recent data to inform our uncertainty estimates in countries with less recent survey data available.
 % To quantitatively explore this hypothesis, we performed an OOS evaluation of the model fit to each country, removing their most recent survey data (or, in the case where there were two surveys in subsequent years, the two most recent surveys) and comparing posterior predictions to the survey-estimated circumcision coverage, as we did with our analysis of different model specifications.
-% A grid search over sensible variance hyperparameter values from the "naive" threemc fits for each country and temporal prior was employed, to determine the optimal values and temporal prior choice. 
+% A grid search over sensible variance hyperparameter values from the "naive" \verb|threemc| fits for each country and temporal prior was employed, to determine the optimal values and temporal prior choice. 
 % For the AR 1 model, the effect of different time correlation parameters on our uncertainty bounds was determined to be minimal, and in the interests of parsimony, these parameters were ignored in our calibration efforts with this model.
 
 % \todo{Finish this write up!}
@@ -345,7 +345,7 @@ These remaining surveys consisted of 711,715 individuals respondents from 108 bi
 There was significant censoring and missing data even in the remaining surveys. 
 Left censoring of circumcision status, analagous to unknown circumcision age, averaged  34.438\% across all surveys, and ranged from 0\% in the Rwanda 2008 DHS survey to 99.408\% in the Niger 2006 DHS survey.
 17 surveys had more than 90\% left censoring of circumcision age, with 42 surveys having less than 10\% left censoring.
-No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that threemc could not be fit to Botswana. 
+No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that \verb|threemc| could not be fit to Botswana. 
 Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged 35.299\% across all surveys, ranging from 0.399\% in the The Gambia 2018 MICS survey to 91.432\% in the Eswatini 2006 DHS survey.
 
 On average across all surveys, 1.788\% of respondents did not respond to either the circumcision location or provider question, and so had unknown circumcision type. 
@@ -354,7 +354,7 @@ This was lowest in the Burundi 2010 DHS survey, at 0\%, and highest in the South
 Amongst these countries, left censoring averaged 98.457\%. 
 However, the mean survey circumcision coverage amongst these same countries was 98.457\%, which may explain the relative lack of circumcision information available in their surveys.
 
-In addition to Botswana, Guinea-Bissau, Equatorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit threemc in these countries either. 
+In addition to Botswana, Guinea-Bissau, Equatorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either. 
 
 More information on individual surveys, including participation rates, can be found in section x of the appendix. 
 
@@ -380,26 +380,59 @@ More information on individual surveys, including participation rates, can be fo
     \caption{\emph{Estimated percentage of men aged 15-29 years who were circumcised sub-nationally in 33 sub-Saharan African countries in 2006 and 2020, as well as the difference in coverage between the two years. Maps show total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC), respectively. Countries with no information on circumcision type are grey in the Medical and Traditional plots, while countries with no circumcision estimate are grey in all.}}
 \end{figure}
 
-Between 2007, the year VMMC programme implementation began, and 2020, an estimated x million men(95\% CI: x - x million) were newly circumcised. 
-Of these, x million (x - x million) were MMCS, along with x million (x - x million) TMCS. 
-This translated to an increase in MC for the SSA region of x\% (x\% - x\%) in 2010 to x\% (x\% - x\%) in  2020. 
-MC in 2020 ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x, while MMC ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x and TMC ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x. 
-The largest percentage increase in MC coverage from 2010 to 2020 was x\% (x\% - x\%) in x, from x\% (x\% - x\%) to x (x\% - x\%), while for MMC it was x\% (x\% - x\%) in x. 
-The number of annual MCs performed increased from x (x to x) in 2006 to x (x to x) in 2020, a growth of x (x to x) annually. 
-Amongst these, x (x to x) were MMCs in 2006, while in 2020 x (x to x) MMCs were performed, representing an increase in x (x to x) in MMCs performed annually. 
-TMC did not increase anywhere,  and actually decreased in several countries from 2010 to 2020. 
-This is the focus of a later section of our results. 
+% Between 2007, the year VMMC programme implementation began, and 2020, an estimated x million men(95\% CI: x - x million) were newly circumcised. 
+% Of these, x million (x - x million) were MMCS, along with x million (x - x million) TMCS. 
+% This translated to an increase in MC for the SSA region of x\% (x\% - x\%) in 2010 to x\% (x\% - x\%) in  2020. 
+% MC in 2020 ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x, while MMC ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x and TMC ranged from x\% (x\% - x\%) in x to x\% (x\% - x\%) in x. 
+% The largest percentage increase in MC coverage from 2010 to 2020 was x\% (x\% - x\%) in x, from x\% (x\% - x\%) to x (x\% - x\%), while for MMC it was x\% (x\% - x\%) in x. 
+% The number of annual MCs performed increased from x (x to x) in 2006 to x (x to x) in 2020, a growth of x (x to x) annually. 
+% Amongst these, x (x to x) were MMCs in 2006, while in 2020 x (x to x) MMCs were performed, representing an increase in x (x to x) in MMCs performed annually. 
+% TMC did not increase anywhere,  and actually decreased in several countries from 2010 to 2020. 
+% This is the focus of a later section of our results. 
+In 2006, the year before VMMC programme implementation began, an estimated 217.236 million men (95\%
+CI: 211.079 - 222.008 million) were circumcised in the 33 countries in SSA for which we have valid circumcision
+data. 
+Of these, 67.021 million (62.554 - 73.259 million) were MMCS, and 102.286 million (95.718 - 106.665
+million) were TMCS. 
+This contrasts with 2020, where an estimated 337.913 million males (316.265 - 362.898
+million) were circumcised in these same countries, of which 125.738 million (106.081 - 157.406 million) were
+performed as MMCS, and 136.555 million (124.189 - 144.146 million) as TMCS. 
+This constituted an increase
+of 120.677 million (105.185 - 140.89 million) newly circumcised males between 2006 and 2020, with 58.717
+million (43.528 - 84.147 million) new MMCs performed, and 34.269 million (28.471 - 37.481 million) new
+TMCs performed. 
+The disparity between the number of MCs performed and the number of MMCs performed
+can be explained by recalling that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic
+Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or
+TMC. 
+This translated to a change in mean MC coverage for the SSA region from 57.62\% (59.13\% - 55.55\%
+) in 2006 to 63.2\% (66.94\% - 59.71\%) in 2020, or an increase of 5.58\% (4.16\% - 7.81\%). 
+MMC coverage increased from 18.75\% (17.75\% - 19.9\%  in 2006 to 26.09\% (23.11\% - 30.04\%) in 2020, an increase of 7.33\%
+(5.36\% - 10.14\%). 
+TMC changed from 24.64\% (23.57\% - 25.58\%) in 2006 to 22.75\% (21.34\% - 24.06\%) in 2020, a decrease of 1.89\% (1.51\% - 2.23\%).
 
-For VMMC countries, MC increased from x\% (x\% - x\%) to x\% (x\% - x\%), largely driven by an increase in MMC from x\% (x\% to x\%)  to x\% (x\% - x\%). 
-In constrast, for the non-VMMC countries, MC increased from x\% (x\% - x\%) to x\% (x\% - x\%), with MMC going from x\% (x\% to x\%)  to x\% (x\% - x\%). 
-TMC in 2020 for VMMC countries averaged x\% (x\% - x\%), compared to x\% (x\% - x\%) in non-VMMC countries. 
+MC coverage in each country in 2006 ranged from 4.97\% (4.78\% - 5.16\%) in Zimbabwe to 95.99\% (86.43\% -
+(99.72\%) in Guinea, while MMC in 2006 ranged from 1.63\% (1.47\% - (1.76\%) in Zimbabwe to 60.05\% (56.56\%
+- (64.15\%) in Congo and TMC ranged from 0.93\% (0.75\% - (1.12\%) in Eswatini to 65.19\% (63.41\% - (66.94\%)
+in Benin. In contrast, in 2020 MC coverage was estimated to have ranged from 13.77\% (10.51\% - 18.87\%) in
+Zimbabwe to 96.95\% (89.74\% - (99.91\%) in Senegal, while MMC ranged from 11.55\% (8.24\% - (16.68\%) in
+Zimbabwe to 64.08\% (61.16\% - (67.11\%) in Sierra Leone and TMC ranged from 0.69\% (0.56\% - (0.84\%) in
+Eswatini to 63.02\% (59.34\% - (66.65\%) in Benin.
 
-Increases in MC coverage from 2010 to 2020 were very heterogeneous, with VMMC programmes generally targeting subnational regions where HIV burden is high and where VMMC as a HIV prevention method is better acknowledged (ref. 42 in Matt's paper)
-In ESA countries, MC in 2010 averaged x\% (x\% - x\%). 
-This increased to x\% (x\% - x\%) in 2020. MMC increased from x\% (x\% - x\%) in 2010 to x\% (x\% - x\%) in 2020. 
-In constant, in WCA MC in 2010 averaged x\% (x\% - x\%), while in 2020 it averaged x\% (x\% - x\%).
-MMC in WCA increased from x\% (x\% - x\%)
-2020 TMC in ESA countries averaged x\% (x\% - x\%), compared to x\% (x\% - x\%) in WCA countries. 
+The largest percentage increase in MC coverage from 2006 to 2020 was in Lesotho at 21.7\% (18.66\% - 25.93\%),
+from 30.06\% (29.53\% - 30.7\%) in 2006 to 51.76\% (48.19\% - 56.63\%) in 2020, while the highest percentage
+increase in MMC was also in Lesotho at 21.49\% (18.14\% - 26.13\%), from 6.37\% (5.93\% - 6.88\%) in 2006 to
+27.86\% (24.08\% - 33.01\%) in 2020. For TMC, the largest percentage decrease between 2006 and 2020 was in
+Ghana at 8.76\% (6.09\% - 9.61\%), from 58.2\% (55.2\% - 60.8\%) in 2006 to 49.44\% (45.58\% - 54.71\%) in 2020.
+
+The number of annual MCs performed increased from 0.29 million (0.23 - 0.38 million) in 2006 to 0.29 million
+(0.23 - 0.38 million) in 2020, a growth of 0.1 million (0.056 - 0.127 million) annually, averaged across all
+interceding years. Amongst these, 0.29 million (0.23 - 0.38 million) were MMCs in 2006, while in 2020 0.391
+million (0.287 - 0.506 million) MMCs were performed, representing an increase in million (0.012 - 0.166
+million) in MMCs performed annually. The number of TMCs performed annually did increase slightly from
+2006, from 0.12 million (0.115 - 0.125 million) to 0.128 million ( 0.085 - 0.159 million) in 2020. However,
+TMC prevalence actually decreased in many countries from 2006 to 2020. This is the focus of a later results
+section.
 
 % Subnational coverage plot
 \begin{figure}[H]
@@ -416,10 +449,10 @@ MMC in WCA increased from x\% (x\% - x\%)
  - Check UNAIDS target for 15-29 year olds, may be 80\%? May want to remove this line altogether?
 }
 
-Within countries, the median difference in MC coverage between the districts with lowest and highest coverage in 2020 was x\% (x\% - x\%).
-For ESA countries, this was x\% (x\% - x\%), in contrast to WCA countries, where it was x\% (x\% - x\%).
-The largest variation overall (and ESA) was in x, from x\% in x to x\% in x, while the largest variation for WCA countries was x, from x\% in x to x\% in x. 
-In total, the mean percentage of districts in each country with greater than 90\% MC coverage amongst those aged 10-29 was x\%. In ESA, this was x\%, while in WCA, this was x\%. 
+% Within countries, the median difference in MC coverage between the districts with lowest and highest coverage in 2020 was x\% (x\% - x\%).
+% For ESA countries, this was x\% (x\% - x\%), in contrast to WCA countries, where it was x\% (x\% - x\%).
+% The largest variation overall (and ESA) was in x, from x\% in x to x\% in x, while the largest variation for WCA countries was x, from x\% in x to x\% in x. 
+% In total, the mean percentage of districts in each country with greater than 90\% MC coverage amongst those aged 10-29 was x\%. In ESA, this was x\%, while in WCA, this was x\%. 
 
 
 \subsection{Subnational Variation in Total, Medical \& Traditional Circumcision Across Different Ages}
@@ -533,25 +566,25 @@ This could possibly be in response to general economic upliftment and developmen
 Significant, but uneven progress has been made towards achieving the UNAIDS target of 90\% 
 MC coverage amongst 10-29 year olds in 14 VMMC priority countries by 2021.  
 However, this has resulted in just x country, x, expected to have realised this goal.
-Granular district and age-stratified estimates for MC, as provided by threemc, provide a key source of information for focusing further programme implementation in these VMMC priority countries, in addition to subnational HIV burden estimates which identify the areas most in need of HIV prevention interventions such as VMMC. 
+Granular district and age-stratified estimates for MC, as provided by \verb|threemc|, provide a key source of information for focusing further programme implementation in these VMMC priority countries, in addition to subnational HIV burden estimates which identify the areas most in need of HIV prevention interventions such as VMMC. 
 
-% In the majority of VMMC countries, the results of threemc and DMPPT2 largely agree. 
-% However, for several countries, namely Tanzania, Zimbabwe and parts of Kenya, we can see that DMPPT2 estimates far exceed empirical survey and threemc estimates, and indeed the population of many districts, suggesting that they may be adversely affected by 
+% In the majority of VMMC countries, the results of \verb|threemc| and DMPPT2 largely agree. 
+% However, for several countries, namely Tanzania, Zimbabwe and parts of Kenya, we can see that DMPPT2 estimates far exceed empirical survey and \verb|threemc| estimates, and indeed the population of many districts, suggesting that they may be adversely affected by 
 % \begin{enumerate}
 % \item people travelling from their home districts to others to avail of VMMC programmes, and
 % \item ii) possible misreporting occurring in programmatic data due to incentives to report higher numbers of circumcisions for VMMC clinics.
 % \end{enumerate}
-% Where it is desired to incorporate VMMC programme data in estimates of MC coverage, threemc may provide a useful "baseline" circumcision estimate for DMPPT2 up until the last household survey was performed, with programme data taking over as the main data source thereafter.  
-% threemc may also complement DMPPT2 in it's inclusion of estimates for TMC, since DMPPT2 and the programme data only concern MMC. 
+% Where it is desired to incorporate VMMC programme data in estimates of MC coverage, \verb|threemc| may provide a useful "baseline" circumcision estimate for DMPPT2 up until the last household survey was performed, with programme data taking over as the main data source thereafter.  
+% \verb|threemc| may also complement DMPPT2 in it's inclusion of estimates for TMC, since DMPPT2 and the programme data only concern MMC. 
 
-There were several limitations inherent in the threemc model, and in this analysis. 
+There were several limitations inherent in the \verb|threemc| model, and in this analysis. 
 TODO: Write these out!
 There is much scope for further developments from this analysis. 
-One obvious, though difficult possibility is the incorporation of programme data within threemc. 
-Efforts to do so in South Africa were successful in the original threemc paper, but further implementation of the model including programme data in Malawi has struggled to ? survey and programme data. 
-In the face of these difficulties, a viable compromise may be to use threemc to provide baseline MC and estimates for TMC to the DMPPT2 tool, as described above. 
+One obvious, though difficult possibility is the incorporation of programme data within \verb|threemc|. 
+Efforts to do so in South Africa were successful in the original \verb|threemc| paper, but further implementation of the model including programme data in Malawi has struggled to ? survey and programme data. 
+In the face of these difficulties, a viable compromise may be to use \verb|threemc| to provide baseline MC and estimates for TMC to the DMPPT2 tool, as described above. 
 The results of this analysis can also provide circumcision coverage covariates to eligible models which seek to estimate and predict HIV incidence and prevalence, such as Naomi. 
-Finally, we hope that threemc can continue to incorporate new household surveys as they become available, which will be useful for both providing new circumcision estimates, and validating current predictions. 
+Finally, we hope that \verb|threemc| can continue to incorporate new household surveys as they become available, which will be useful for both providing new circumcision estimates, and validating current predictions. 
 In particular, a new DHS survey is expected for Botswana in ?, a welcome development which will allow the model to be extended to this VMMC priority country. 
 
 TODO: Good conclusion of one line?
@@ -562,5 +595,5 @@ TODO: Good conclusion of one line?
 \label{sec:org953a659}
 \subsection{Code Availability}
 \label{sec:org2a96da6}
-threemc is implemented in an R package, which can be found on Github at \url{https://github.com/mrc-ide/threemc}. The code used to generate the results of this paper is located at \url{https://github.com/mrc-ide/threemc-orderly}, and makes heavy use of the orderly R package [include reference!].
+\verb|threemc| is implemented in an R package, which can be found on Github at \url{https://github.com/mrc-ide/threemc}. The code used to generate the results of this paper is located at \url{https://github.com/mrc-ide/threemc-orderly}, and makes heavy use of the \verb|orderly| R package [include reference!].
 \end{document}
