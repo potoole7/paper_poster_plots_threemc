@@ -459,3 +459,46 @@ in
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(3) %>% pull(area_name)`.
 <!-- Anything else? --->
 
+## Subnational Variation in Total, Medical \& Traditional Circumcision across different ages
+
+Age at circumcision differed greatly by circumcision type and location. 
+The age group which experienced the greatest increase in MC coverage from 2006, the year before VMMC programme implementation began (reference), to 2020 was x, reflecting VMMC focus on these ages. 
+The age group with the highest MC coverage in 2020 was x, in contrast to 2006, where this age group was x. 
+The age group with the highest MMC coverage in 2020 was x, while for TMC coverage this age group was x. 
+The average age of MC in 2020 in SSA was x, compared to x in 2006. 
+For MMC, the average age at circumcision in 2020 was x, compared to x in 2006, while for TMC the average age was x in 2020, compared to x in 2006. 
+The average age of MC in 2020 for ESA was x, while in WCA it was x. 
+
+## Subnational Heterogeneity in Age at Medical and Traditional Circumcision
+
+Fill in!
+
+## Decrease in TMC in SSA region Over Time
+
+The average TMC coverage in SSA in 2006 was x\% (x\% to x\%). 
+This fell to x\% (x\% to x\%) in 2020, representing a decrease of x\% (x\% to x\%). 
+In ESA, TMC coverage was x\% (x\% to x\%) in 2006, compared to x\% (x\% to x\%) in 2020, a x\% (x\% to x\%) decrease. In constrast, TMC coverage in WCA was x\% (x\% to x\%) versus x\% (x\% to x\%) in 2020, a x\% (x\% to x\%) fall. 
+In 2006, x (x to x) TMCs were performed, while in 2020 this was reduced to x (x to x), representing a x (x to x) decrease in annual TMCs.
+In ESA, the annual number of TMCs performed dropped from x (x to x) in 2006 to x (x to x) in 2020, a x (x to x) drop. 
+In WSA, this number fell from x (x to x) in 2006 to x (x to x) in 2020, a fall of x (x to x).
+For the 10-29 age group, TMC coverage was reduced from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020, a drop of x\% (x\% to x\%).
+In VMMC countries, this was reduced from x\% (x\% to x\%) to x\% (x\% to x\%) from 2006 to 2020, while even in non-VMMC countries this decreased from x\% (x\% to x\%) to x\% (x\% to x\%). 
+The largest decrease in TMC coverage from 2006 to 2020 was in x, from x\% (x\% to x\%) to x\% (x\% to x\%). 
+[If the above is a VMMC country] The largest decrease in TMC coverage amongst non-VMMC countries was from x\% (x\% to x\%) to x\% (x\% to x\%) in x. 
+
+## UNAIDS Goals Progress amongst 10-29 Year Olds in VMMC Target Countries
+
+Amongst the 13 VMMC priority countries modelled, just x countries were projected to have achieved the VMMC target of 90\% MC coverage amongst 10-29 year olds, x and x. 
+MC coverage across these countries increased from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020. 
+X (x to x) circumcisions were performed between 2007 and 2020 in these countries. 
+Of these, x (x to x) were MMCs. 
+No countries were expected to have reached this goal in all districts. 
+The number of annual MCs increased from x (x to x) in 2006 to x (x to x) in 2020. 
+x (x to x) additional circumcisions are required to achieve 90\% MC coverage in all VMMC countries, x (x to x) times the projected number of MCs for 2020. 
+The largest increase in MC coverage amongst VMMC priority countries was in x, from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020, a x\% (x\% to x\%) increase. 
+In contrast, the lowest increase in MC coverage in these countries was in x, from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020, a x\% (x\% to x\%) increase. 
+
+However, these figures belie significant subnational heterogeneity in MC coverage amongst VMMC prioirty countries. 
+x/x districts in these countries were expected to have reached 90\% MC coverage amongst 10-29 year olds in 2020, up from x/x in 2006, before VMMC programmes began. 
+Even in x, where MC was projected to be lowest in 2020, x/x districts were forecasted to have reached 90\% MC coverage for men aged 10-29 years old. 
+MC coverage there increased from x\% (x\% to x\%) in 2006 to x\% (x\% to x\%) in 2020, a x\% (x\% to x\%) increase. 
