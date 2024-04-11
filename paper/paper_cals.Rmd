@@ -62,6 +62,9 @@ simplify_type <- function(dat) {
 
 ## Subnational Variation in Total, Medical \& Traditional Circumcision over time
 
+<!-- What else could we add to this section? Section 2 is very large!!!
+- Could talk about non-VMMC vs VMMC more anyway -->
+
 ```{r, echo = FALSE}
 x1 <- readRDS("data/inlines/01_inlines.RDS")
 for (i in seq_along(x1)) {
@@ -132,7 +135,7 @@ million
 - 
 `r n_circs[[2]] %>% filter(type == "TMC") %>% pull(upper) %>% to_mill()` 
 million) new TMCs performed. 
-The disparity between the number of MCs performed and the number of MMCs performed can be explained by recalling that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC.
+The disparity between the number of MCs performed and the number of MMCs performed can be partly explained by recalling that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC.
 This translated to a change in mean MC coverage for the SSA region from 
 `r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()` 
 (`r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()` 
@@ -870,7 +873,7 @@ to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
-) in 2020, staying relatively stagnant. 
+) in 2020, staying relatively similar. 
 MC coverage in 30-49 year olds also increased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
@@ -916,7 +919,7 @@ to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
 Hence, MMC coverage in non-VMMC countries also saw greater increases amongst 30-49 year olds 
-than in 15-29 year olds, but not much change overall when factoring in our uncertainty. 
+than in 15-29 year olds, but not much change overall when factoring in our uncertainty.
 TMC coverage amongst 15-29 year olds decreased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
@@ -947,11 +950,16 @@ to
 Thus, TMC coverage decreased less in absolute terms amongst 30-49 year olds than amongst 
 15-29 year olds, which is line with the greater focus on performing MMCs amongst this 
 younger age group. 
-
-
+TMC coverage decreased more amongst non-VMMC countries for both age groups, suggesting 
+likely replacement of historical TMC with MMC. 
 
 
 ## Subnational Heterogeneity in Age at Medical and Traditional Circumcision
+
+```{r}
+
+```
+
 
 Fill in! 
 - Talk mainly about average age at which MCs/MMCs/TMCs performed in 2006 and 2020
@@ -959,6 +967,7 @@ Fill in!
 
 The mean age at circumcision for MC in 2006 was 
 x
+
 (
 x
 - 
