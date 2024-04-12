@@ -1,4 +1,4 @@
----
+ub
 title: "Circumcision Paper Text"
 author: "Paddy O'Toole"
 date: "2023-11-06"
@@ -47,7 +47,7 @@ to_cntry_name <- function(x) {
   )
 }
 
-# simplify type
+# simplify type for faster filtering
 simplify_type <- function(dat) {
   dat %>% 
     mutate(type = case_when(
@@ -55,6 +55,16 @@ simplify_type <- function(dat) {
       grepl("TMC", type) ~ "TMC", 
       TRUE               ~ "MC"
     ))
+}
+
+# tidy up aggregated age data
+tidy_age <- function(dat, sig_fig = 2) {
+  dat %>% 
+    mutate(across(contains("average_age"), \(x) round(x, sig_fig))) %>% 
+    rename(
+      mean = average_age, lower = average_age_lower, upper = average_age_upper
+    ) %>% 
+    simplify_type()
 }
 ```
 
@@ -957,264 +967,469 @@ likely replacement of historical TMC with MMC.
 ## Subnational Heterogeneity in Age at Medical and Traditional Circumcision
 
 ```{r}
-
+x3 <- readRDS("data/inlines/03_inlines.RDS")
+for (i in seq_along(x3)) {
+  assign(names(x3)[i], x3[[i]])
+}
+aggr_mean_circ_age <- tidy_age(aggr_mean_circ_age)
+aggr_mean_circ_age_non_vmmc <- tidy_age(aggr_mean_circ_age_non_vmmc)
+aggr_mean_circ_age_vmmc <- tidy_age(aggr_mean_circ_age_vmmc)
 ```
-
 
 Fill in! 
 - Talk mainly about average age at which MCs/MMCs/TMCs performed in 2006 and 2020
 - Also compare VMMC and non-VMMC
 
 The mean age at circumcision for MC in 2006 was 
-x
-
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MC") %>% pull(mean)`
 (
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MC") %>% pull(lower)`
 - 
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MC") %>% pull(upper)`
 ), while in 2020 it was
-x 
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MC") %>% pull(mean)`
 (
-x
--
-x
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MC") %>% pull(upper)`
 ).
+<!-- Therefore, factoring in uncertainty there doesn't seem to have been a 
+significant drop in mean age at MC from 2006 to 2020. -->
 Similarly, the mean age at circumcision for MMC in 2006 was 
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(mean)`
 (
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
 - 
-x
-), while in 2020 it was
-x 
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(upper)`
+), and in 2020 it was
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(mean)`
 (
-x
--
-x
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(upper)`
 ).
+<!-- Therefore, again there wasn't a sizeable change in mean age at MMC. -->
 Finally, the mean age at circumcision in 2006 for TMC was 
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "TMC") %>% pull(mean)`
 (
-x
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
 - 
-x
-), while in 2020 it was
-x 
+`r aggr_mean_circ_age %>% filter(year == 2006, type == "TMC") %>% pull(upper)`
+), and in 2020 it was
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "TMC") %>% pull(mean)`
 (
-x
--
-x
-).
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "TMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age %>% filter(year == 2020, type == "TMC") %>% pull(upper)`.
 So the mean age at circumcision for MC and MMC went up slightly from 2006 to 2020. 
 However, it is important to note that the uncertainty ranges in our credible intervals 
-overlap, so this increase is ?. 
-In constant, the mean age at circumcision for TMC decreased. 
+overlap, so this increase could be seen as "non-significant", in some sense. 
+In contrast, the mean age at circumcision for TMC was seen to decrease, altough again, 
+not in a manor that exceeds our uncertainty bounds. 
 This may suggest that VMMC implementation amongst 15-29 year olds has 
 corresponded to an upward shift of mean age at circumcision for MC and MMC, and 
 replaced some circumcisions which would previously have been performed as TMCs, 
 which may explain the observed decrease in mean age of TMC.
 
-What is the narrative here?
-- For SSA, MC and MMC age goes up, TMC goes down
+As in the previous section, we can also compare how the mean age of circumcision differs 
+amongst VMMC priority countries, versus their non-VMMC prority counterparts in SSA.
+
+For VMMC priority countries, the mean age at circumcision for MC in 2006 was 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MC") %>% pull(upper)`
+), while in 2020 it was
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MC") %>% pull(upper)`
+).
+Similarly, for MMC in 2006 the mean age at circumcision was
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(upper)`
+), while in 2020 it was
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(upper)`
+).
+<!-- Therefore, again there wasn't a sizeable change in mean age at MMC. -->
+Lastly, the mean age at circumcision in 2006 for TMC was 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(upper)`
+), and in 2020 it was
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(upper)`.
+So the mean age at circumcision for all circumcision types is higher in VMMC 
+priority countries than overall in SSA, highlighting the historically low levels of MC and
+TMC in these countries. 
+Like in SSA overall, the mean age at circumcision for MC and MMC went up slightly, albeit not 
+significantly when factoring in uncertainty bounds. 
+Again, mean age at TMC also decreased in VMMC priority countries. 
+
+For non-VMMC priority countries, the mean age at MC in 2006 was 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MC") %>% pull(upper)`
+), while in 2020 it was
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MC") %>% pull(upper)`
+).
+Similarly, the mean age at MMC in 2006 was 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "MMC") %>% pull(upper)`
+), and in 2020 it was
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "MMC") %>% pull(upper)`
+).
+<!-- Therefore, again there wasn't a sizeable change in mean age at MMC. -->
+Finally, the mean age at TMC in 2006 for TMC was 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(upper)`
+), and in 2020 it was
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(mean)`
+(
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(lower)`
+- 
+`r aggr_mean_circ_age_non_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(upper)`.
+In contrast to our VMMC priority countries, these countries have a lower mean at 
+circumcision for all circumcision types, largely driven by high TMC levels historically. 
+It is interesting that the age at circumcision for MC and MMC actually increased for
+non-VMMC priority countries, in contrast to SSA as a whole and the priority countries. 
+Likewise, the mean age at TMC increased. 
+This can perhaps be explained by a possible replacement of TMC with MMC in a 
+traditional setting, so at generally younger ages than MMCs performed as part of 
+VMMC programmes. 
+This caused a natural shift upwards of the mean age at TMC, as younger individuals 
+are now more likely to receive MMCs. 
+
+<!-- What is the narrative here?
+- For SSA, MC and MMC age goes up, TMC goes down (done)
 - For VMMC, average age for all substantially higher, but follows same pattern. 
   Could be argued that this is because people previously receiving TMCs are now receiving MMCs, 
   pushing mean age of TMC down further. 
 - For non-VMMC, ages substantially lower. 
-  MMC age actually decreases, suggesting MMC-nT occuring, replacing TMC!
+  MMC age actually decreases, suggesting MMC-nT occuring, replacing TMC! -->
 
 ## Decrease in TMC in SSA region Over Time
 
+```{r}
+x4 <- readRDS("data/inlines/04_inlines.RDS")
+for (i in seq_along(x4)) {
+  assign(names(x4)[i], x4[[i]])
+}
+
+```
+
+Narrative here:
+<!-- TMC coverage difference 2006 - 2020, SSA, VMMC, non-VMMC
+- Decrease much more pronounced for non-VMMC
+Number of TMCs performed in 2006 vs 2020, VMMC, non-VMMC
+- Number increased more for VMMC countries (?)
+Change for 15-29 vs 30-49
+- Change relatively similar for non-VMMC, but 15-29 sees much greater change for 
+  VMMC countries
+Country with largest drop (CIV and ? in VMMC)
+- Comment on population of CIV (28 mil) (?) -->
+
+
 The average TMC coverage in SSA in 2006 was 
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\% (
-x
-\% to 
-x
-\%). 
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
+). 
 This fell to 
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\% (
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
+) in 2020, a decrease of 
+`r to_percentage(tmc_cov$mean_tmc_cov_diff$mean)`. 
+In non-VMMC priority countries, TMC coverage was 
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\% to 
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
+). 
+This fell to 
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\%) in 2020, representing a decrease of 
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
+) in 2020, representing a decrease of 
+`r to_percentage(tmc_cov_non_vmmc$mean_tmc_cov_diff$mean)`
+.
+In contrast, TMC coverage in VMMC priority countries was 
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\% (
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
+). 
+This fell to 
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+to 
 x
-\% to 
-x
-\%). 
-In ESA, TMC coverage was 
-x
-\% (
-x
-\% to 
-x
-\%) in 2006, compared to 
-x
-\% (
-x
-\% to 
-x
-\%) in 2020, a 
-x
-\% (
-x
-\% to 
-x
-\%) decrease. 
-In constrast, TMC coverage in WCA was 
-x
-\% (
-x
-\% to 
-x
-\%) versus 
-x
-\% (
-x
-\% to 
-x
-\%) in 2020, a 
-x
-\% (
-x
-\% to 
-x
-\%) fall. 
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
+) in 2020, representing a decrease of 
+`r to_percentage(tmc_cov_vmmc$mean_tmc_cov_diff$mean)`.
+Therefore, the decrease in TMC found throughout SSA is much more pronounced for 
+non-VMMC countries.
+
 In 2006, 
-x 
+`r tmcs_performed$tmcs_performed %>% filter(year == 2006) %>% pull(mean) %>% round(0)`
 (
-x 
-to 
-x
-) TMCs were performed, while in 2020 this was reduced to 
-x 
+`r tmcs_performed$tmcs_performed %>% filter(year == 2006) %>% pull(lower) %>% round(0)`
+- 
+`r tmcs_performed$tmcs_performed %>% filter(year == 2006) %>% pull(upper) %>% round(0)`
+) TMCs were performed, while in 2020 this increased to 
+`r tmcs_performed$tmcs_performed %>% filter(year == 2020) %>% pull(mean) %>% round(0)`
 (
-x to 
-x
+`r tmcs_performed$tmcs_performed %>% filter(year == 2020) %>% pull(lower) %>% round(0)`
+-
+`r tmcs_performed$tmcs_performed %>% filter(year == 2020) %>% pull(upper) %>% round(0)`
 ), representing a 
-x (
-x
-to
-x
-) decrease in annual TMCs.
-In ESA, the annual number of TMCs performed dropped from 
-x
+`r round(-tmcs_performed$tmcs_performed_diff$mean, 0)`
+increase in annual TMCs.
+However, this increase must be taken within the context of a large increase
+in population in SSA over this period, from 1.23 billion in 2006 to 1.80 billion in 2020, 
+and as seen in our coverage estimates above, constitutes a decrease in the 
+number of TMCs performed per capita in the region (need to calculate this?!)
+<!-- populations %>% filter(age_group == "0+", year %in% spec_years) %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE)) -->
+<!-- populations %>% filter(age_group == "0+", year %in% spec_years, iso3 %in% vmmc_iso3) %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE)) -->
+<!-- populations %>% filter(age_group == "0+", year %in% spec_years, !(iso3 %in% vmmc_iso3)) %>% group_by(year) %>% summarise(population = sum(population, na.rm = TRUE)) -->
+In non-VMMC priority countries, the annual number of TMCs performed changed from 
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(mean) %>% round(0)`
 (
-x
-to 
-x
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(lower) %>% round(0)`
+- 
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(upper) %>% round(0)`
 ) in 2006 to 
-x
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2020) %>% pull(mean) %>% round(0)`
 (
-x
-to 
-x
-) in 2020, a 
-x 
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2020) %>% pull(lower) %>% round(0)`
+- 
+`r tmcs_performed_non_vmmc$tmcs_performed %>% filter(year == 2020) %>% pull(upper) %>% round(0)`
+) in 2020, or by 
+`r round(-tmcs_performed_non_vmmc$tmcs_performed_diff$mean, 0)`
+.
+This is within the context of the population of non-VMMC priority countries increasing 
+from 749 million to 1.11 billion from 2006 to 2020. 
+In VMMC priority countries, the number of TMCs performed went from 
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(mean) %>% round(0)`
 (
-x
-to 
-x
-) drop. 
-In WSA, this number fell from 
-x 
-(
-x 
-to 
-x
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(lower) %>% round(0)`
+- 
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(upper) %>% round(0)`
 ) in 2006 to 
-x 
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(mean) %>% round(0)`
 (
-x
-to 
-x
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(lower) %>% round(0)`
+- 
+`r tmcs_performed_vmmc$tmcs_performed %>% filter(year == 2006) %>% pull(upper) %>% round(0)`
 ) in 2020, a fall of 
-x
-(
-x
-to 
-x
-).
+`r round(-tmcs_performed_vmmc$tmcs_performed_diff$mean, 0)`.
+In VMMC priority countries, the population increased from 481 million to 694 million. 
+TODO: Comment on this
+
 <!-- TODO: Change to 15-29, right? -->
-For the 10-29 age group, TMC coverage was reduced from 
-x
-\% (
-x
-\% to 
-x
-\%) in 2006 to 
-x
-\% (
-x
-\% to 
-x
-\%) in 2020, a drop of 
-x
-\% 
+We can also compare the differences in TMC coverage change between 15-29 and 
+30-49 year olds, in SSA as a whole and in VMMC and non-VMMC priority countries.
+
+For the 15-29 age group, TMC coverage was reduced from 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-x
-\% to 
-x
-\%).
-In VMMC countries, this was reduced from 
-x
-\% (
-x
-\% to 
-x
-\%) to 
-x
-\% (
-x
-\% to 
-x
-\%) from 2006 to 2020, while even in non-VMMC countries this decreased from 
-x
-\% (
-x
-\% to 
-x
-\%) to 
-x
-\% (
-x
-\% to 
-x
-\%). 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2020, a drop of 
+`r tmc_cov_ssa_15_29_30_49[[2]] %>% filter(age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+.
+This contrasted with the 30-49 age group, where TMC coverage went from 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2020, a drop of 
+`r tmc_cov_ssa_15_29_30_49[[2]] %>% filter(age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+.
+Therefore, in SSA as a whole TMC coverage decreased slightly more amongst 15-29 
+year olds than in 30-49 year olds, likely as a result of VMMC programme focus on 
+this age group. 
+
+For the 15-29 year olds in non-VMMC priority countries, TMC coverage was reduced from 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2020, a drop of 
+`r tmc_cov_non_vmmc_15_29_30_49[[2]] %>% filter(age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+.
+This contrasted with the 30-49 age group, where TMC coverage went from 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2020, a drop of 
+`r tmc_cov_non_vmmc_15_29_30_49[[2]] %>% filter(age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+.
+Therefore in non-VMMC priority countries the decrease in TMC coverage was larger
+for both age groups than in SSA as a whole, but the difference between this decrease
+for 15-29 year olds versus 30-49 year olds is less pronounced. 
+
+For VMMC priority countries, the 15-29 age group, TMC coverage was reduced from 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
+) in 2020, representing a fall of 
+`r tmc_cov_vmmc_15_29_30_49[[2]] %>% filter(age_group == "15-29") %>% pull(mean) %>% to_percentage()`
+.
+In the 30-49 age group, TMC coverage in VMMC priority countries dropped from 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2006 to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+(
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+to 
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
+) in 2020, a drop of 
+`r tmc_cov_vmmc_15_29_30_49[[2]] %>% filter(age_group == "30-49") %>% pull(mean) %>% to_percentage()`
+.
+Therefore, in VMMC priority countries there is a much greater disparity in the 
+drop in TMC coverage between 15-29 and 30-49 year olds. 15-29 year olds saw 
+a much greater drop in TMC coverage, likely resulting from VMMC programme focus on 
+these ages. 
+
 The largest decrease in TMC coverage from 2006 to 2020 was in 
-x
-, from 
-x
-\% (
-x
-\% to 
-x
-\%) to 
-x
-\% (
- x 
-\% to 
- x 
-\%). 
-[If the above is a VMMC country] The largest decrease in TMC coverage amongst non-VMMC countries was from 
-x 
-\% (
-x 
-\% to 
-x 
-\%) to 
-x 
-\% (
-x 
-\% to 
-x 
-\%) in 
-x 
-. 
+`r to_cntry_name(spec_country_tmc_decrease$mean_tmc_cov_diff$iso3)`, where TMC coverage
+fell from 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
+(
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+ to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
+) to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
+(
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+ to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`, a 
+decrease of 
+`r to_percentage(spec_country_tmc_decrease[[2]]$mean)`
+.
+
+The largest decrease in TMC coverage amongst VMMC countries was from 
+`r to_cntry_name(spec_country_tmc_decrease$mean_tmc_cov_diff$iso3)`, where TMC coverage
+fell from 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
+(
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+ to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
+) to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
+(
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+ to 
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`, a 
+decrease of 
+`r to_percentage(spec_country_tmc_decrease[[2]]$mean)`
+.
+
+TODO: Could possibly add smallest decrease here? Would be more interesting for 
+non-VMMC countries, could show where MMC has not begun to replace TMC
+Could also have number of countries in both regions which have experienced a 
+drop in TMC coverage?? Might be interesting for non-VMMC
 
 ## UNAIDS Goals Progress amongst 10-29 Year Olds in VMMC Target Countries
+
+```{r}
+# x5 <- readRDS("data/inlines/05_inlines.RDS")
+# for (i in seq_along(x5)) {
+#   assign(names(x5)[i], x5[[i]])
+# }
+# aggr_mean_circ_age <- tidy_age(aggr_mean_circ_age)
+# aggr_mean_circ_age_non_vmmc <- tidy_age(aggr_mean_circ_age_non_vmmc)
+# aggr_mean_circ_age_vmmc <- tidy_age(aggr_mean_circ_age_vmmc)
+```
 
 Amongst the 13 VMMC priority countries modelled, just 
 x
