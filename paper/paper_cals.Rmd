@@ -1823,11 +1823,11 @@ from
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 ) in 2020, a 
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_mean) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower) %>% to_percentage()`
 -
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_upper) %>% to_percentage()`
 ) increase. 
 In contrast, the lowest increase in MC coverage in these countries was in 
 from 
@@ -1843,11 +1843,11 @@ from
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 ) in 2020, a 
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_mean) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower) %>% to_percentage()`
 -
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_diff) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_upper) %>% to_percentage()`
 ) increase. 
 
 However, these figures belie significant subnational heterogeneity in MC coverage amongst VMMC priority countries. 
