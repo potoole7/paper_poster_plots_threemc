@@ -1,4 +1,4 @@
-ub
+---
 title: "Circumcision Paper Text"
 author: "Paddy O'Toole"
 date: "2023-11-06"
@@ -83,7 +83,64 @@ tidy_age <- function(dat, sig_fig = 2) {
 }
 ```
 
+# Abstract
+## Background}
+In 2016, UNAIDS developed a Fast-Track strategy that targeted 90\% coverage
+male circumcision (MC) among men aged 10-29 years by 2021 in priority countries in sub-Saharan 
+Africa (SSA) to reduce HIV incidence. There is substantial variation across subnational 
+regions within countries in both traditional male circumcision (TMC) practices and progress
+towards implementation of voluntary medical male circumcision (VMMC). Tracking progress and
+remaining gaps towards VMMC HIV prevention targets requires detailed district-level circumcision
+coverage data.
+
+## Methods
+We analysed self-reported data on male circumcision from x nationally representative household surveys conducted in x SSA countries between 2006-2020.
+A spatio-temporal Bayesian competing-risks time-to-event model was used to estimate rates of traditional and medical circumcision by age, location, and time.
+Circumcision coverage in 2020 was projected assuming continuation of estimated age-specific rates, with probabilistic uncertainty.
+
+## Results
+Across 
+x 
+countries, from 2006 to 2020 an estimated 
+x
+million men (x\% CI x-x million)
+were newly circumcised, of whom x million (x-x million) were medically circumcised, and
+x million (x-x million) traditionally circumcised. 
+In 2020, MC coverage among men 10-29 years ranged from x\% (x\%-x\%) in Zimbabwe (?) to x\% (x\%-x\%) in Togo. 
+MMC coverage ranged from x\% (x\%-x\%) in Malawi to x\% (x\%-x\%) in Tanzania, and TMC coverage
+from x\% (x\%-x\%) in Eswatini to x\% (x\%-x\%) in Ethiopia. 
+The largest increase in MMC coverage was in Lesotho from x\% to x\%. 
+Within countries, the median difference in MC coverage between the districts with lowest and highest coverage was x\%, with the smallest variation in Eswatini (x\% to x\%) and largest in Zambia (x\% to x\%). 
+x million men aged 10-29 need to be circumcised to reach 90\% coverage in all countries.
+
+## Conclusions
+VMMC programmes have made substantial, but uneven, progress towards male circumcision targets. Granular district and age-stratified data provide information for focusing further programme implementation.
+
 # Results
+
+Our data consisted of 109 nationally representative household surveys conducted in 33 SSA countries between 2002 and 2019.
+x sub-national areas amongst these coutries were included in these surveys and modelled.
+Of these 109 surveys, 104 contained sufficent information on circumcision, as outlined in the Methods section of this paper. 
+
+These remaining surveys consisted of 711,715 individuals respondents from 108 birth cohorts from 1903 to 2016. The sample size per survey ranged from 21,114 in the South Africa 2017 HSRC survey to 1,459 in the Eswatini 2014 MICS survey.
+
+There was significant censoring and missing data even in the remaining surveys. 
+Left censoring of circumcision status, analagous to unknown circumcision age, averaged  34.438\% across all surveys, and ranged from 0\% in the Rwanda 2008 DHS survey to 99.408\% in the Niger 2006 DHS survey.
+17 surveys had more than 90\% left censoring of circumcision age, with 42 surveys having less than 10\% left censoring.
+\todo{Rewrite now BWA has surveys!}
+No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that \verb|threemc| could not be fit to Botswana. 
+Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged 35.299\% across all surveys, ranging from 0.399\% in the The Gambia 2018 MICS survey to 91.432\% in the Eswatini 2006 DHS survey.
+
+On average across all surveys, 1.788\% of respondents did not respond to either the circumcision location or provider question, and so had unknown circumcision type. 
+This was lowest in the Burundi 2010 DHS survey, at 0\%, and highest in the South Africa 2002 HSRC survey, at 29.545\%.
+5 countries had unknown circumcision type; DR Congo, Guinea, Liberia, Niger and Senegal. 
+Amongst these countries, left censoring averaged 98.457\%. 
+However, the mean survey circumcision coverage amongst these same countries was 98.457\%, which may explain the relative lack of circumcision information available in their surveys.
+
+\todo{Rewrite as BWA now has surveys}
+In addition to Botswana, Guinea-Bissau, Equatorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either. 
+
+More information on individual surveys, including participation rates, can be found in section x of the appendix. 
 
 ## Subnational variation in total, medical \& traditional circumcision over time
 
@@ -979,7 +1036,7 @@ likely replacement of historical TMC with MMC.
 
 ## Subnational heterogeneity in age at medical and traditional circumcision
 
-```{r}
+```{r, echo = FALSE}
 x3 <- readRDS("data/inlines/03_inlines.RDS")
 for (i in seq_along(x3)) {
   assign(names(x3)[i], x3[[i]])
@@ -1154,7 +1211,7 @@ are now more likely to receive MMCs.
 
 ## Decrease in traditional male circumcision in SSA region over time
 
-```{r}
+```{r, echo = FALSE}
 x4 <- readRDS("data/inlines/04_inlines.RDS")
 for (i in seq_along(x4)) {
   assign(names(x4)[i], x4[[i]])
@@ -1410,13 +1467,13 @@ fell from
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
- to 
+
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ) to 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
- to 
+ - 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`, a 
 decrease of 
 `r to_percentage(spec_country_tmc_decrease[[2]]$mean)`
@@ -1429,7 +1486,7 @@ drop in TMC coverage?? Might be interesting for non-VMMC
 
 ## UNAIDS goals progress amongst 10-29 year olds in VMMC target countries
 
-```{r}
+```{r, echo = FALSE}
 x5 <- readRDS("data/inlines/05_inlines.RDS")
 # x5 <- simplify_type_rec(x5)
 
@@ -1542,201 +1599,146 @@ to
 ).
 
 Between 2006 and 2020 in these countries, 
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(mean) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(lower) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(lower) %>% to_mill()` million
 -
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(upper) %>% to_mill()` million
 ) MCs were performed on 10-29 year olds.
 Of these, 
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()` million
 - 
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) were MMCs, and 
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()` million
 - 
-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) were TMCs. 
 Over the same period, 
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(mean) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(lower) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(lower) %>% to_mill()` million
 -
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MC") %>% pull(upper) %>% to_mill()` million
 ) MCs were performed on 15-49 year olds,
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()` million
 - 
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) of which were MMCs, and 
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()` million
 (
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()` million
 - 
-`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r cum_vmmc_circs_performed %>% filter(age_group == "30-49", type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) of which were TMCs. 
 
 The number of annual MCs amongst 10-29 year olds increased from 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(lower) %>% to_mill()` million
+ -  
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MC") %>% pull(upper) %>% to_mill()` million
 ) in 2020. 
 
 The number of annual MMCs amongst 10-29 increased from 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) in 2020, while in constrast, the number of TMCs decreased from 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2006, type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "10-29", year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) in 2020.
 
 For 15-49 year olds, the number of annual MCs increased from 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(lower) %>% to_mill()` million 
+to 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MC") %>% pull(upper) %>% to_mill()` million
 ) in 2020. 
 
 Annual MMCs amongst 15-49 increased from 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "MMC") %>% pull(upper) %>% to_mill()` million
 ) in 2020, while in constrast, the number of TMCs decreased from 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2006, type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) in 2006 to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()` million
  (
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()`
-million
- to 
-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()`
-million
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()` million
+ - 
+`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()` million
 ) in 2020.
 
 `r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean) %>% to_mill()`
  (
 `r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower) %>% to_mill()`
- to 
+ - 
 `r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper) %>% to_mill()`
 ) additional circumcisions are required to achieve 90\% and 80\% MC coverage targets 
 for 10-29 and 15-49 year olds, respectively, across all VMMC priority countries.
 
-This equates to 
-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean_diff)`
+This is equivalent to 
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean_diff) %>% round(1)`
 (
-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff)`
- to 
-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff)`
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff) %>% round(1)`
+ - 
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff) %>% round(1)`
 )
 and 
-`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
+`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff) %>% round(1)`
 (
-`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
+`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff) %>% round(1)`
 to
-`r n_required_vmmc %>% filter(age_group == "15-") %>% pull(mean_diff)`
-)
+`r n_required_vmmc %>% filter(age_group == "15-") %>% pull(mean_diff) %>% round(1)`)
 times the projected number of MCs for 10-29 and 15-49 year olds for 2020. 
 
 MC coverage in 2020 for 10-29 year olds in VMMC priority countries was highest in 
@@ -1892,32 +1894,32 @@ in 2006.
 In 2020, 
 `r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(mean)`
 (
-`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(lower)`
--
 `r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(upper)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(lower)`
 )
 of the 14 VMMC priority countries had no districts which satisfied the 90\% MC coverage target for 10-29
 year olds. This was down from 
 `r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(mean)`
 (
-`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(lower)`
--
 `r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(upper)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(lower)`
 )
 in 2006. 
 Similarly, in 2020, 
 `r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(mean)`
 (
-`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(lower)`
--
 `r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(upper)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(lower)`
 )
 countries had no districts which satisfied the 80\% MC coverage target for 15-49
 year olds. This was down from 
 `r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(mean)`
 (
-`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(lower)`
--
 `r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(upper)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(lower)`
 )
 in 2006. 
