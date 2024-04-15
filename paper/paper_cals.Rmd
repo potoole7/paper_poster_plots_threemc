@@ -85,7 +85,7 @@ tidy_age <- function(dat, sig_fig = 2) {
 
 # Results
 
-## Subnational Variation in Total, Medical \& Traditional Circumcision over time
+## Subnational variation in total, medical \& traditional circumcision over time
 
 <!-- What else could we add to this section? Section 2 is very large!!!
 - Could talk about non-VMMC vs VMMC more anyway -->
@@ -488,7 +488,7 @@ in
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(3) %>% pull(area_name)`.
 <!-- Anything else? --->
 
-## Subnational Variation in total, medical \& traditional circumcision across different ages
+## Subnational variation in total, medical \& traditional circumcision across different ages
 
 ```{r, echo = FALSE}
 x2 <- readRDS("data/inlines/02_inlines.RDS")
@@ -977,7 +977,7 @@ TMC coverage decreased more amongst non-VMMC countries for both age groups, sugg
 likely replacement of historical TMC with MMC. 
 
 
-## Subnational Heterogeneity in Age at Medical and Traditional Circumcision
+## Subnational heterogeneity in age at medical and traditional circumcision
 
 ```{r}
 x3 <- readRDS("data/inlines/03_inlines.RDS")
@@ -1152,7 +1152,7 @@ are now more likely to receive MMCs.
 - For non-VMMC, ages substantially lower. 
   MMC age actually decreases, suggesting MMC-nT occuring, replacing TMC! -->
 
-## Decrease in TMC in SSA region Over Time
+## Decrease in traditional male circumcision in SSA region over time
 
 ```{r}
 x4 <- readRDS("data/inlines/04_inlines.RDS")
@@ -1427,7 +1427,7 @@ non-VMMC countries, could show where MMC has not begun to replace TMC
 Could also have number of countries in both regions which have experienced a 
 drop in TMC coverage?? Might be interesting for non-VMMC
 
-## UNAIDS Goals Progress amongst 10-29 Year Olds in VMMC Target Countries
+## UNAIDS goals progress amongst 10-29 year olds in VMMC target countries
 
 ```{r}
 x5 <- readRDS("data/inlines/05_inlines.RDS")
@@ -1726,95 +1726,198 @@ for 10-29 and 15-49 year olds, respectively, across all VMMC priority countries.
 This equates to 
 `r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean_diff)`
 (
-`n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff)`
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff)`
  to 
-`n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff)`
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff)`
 )
 and 
-`n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
+`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
 (
-`n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
+`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff)`
 to
-`n_required_vmmc %>% filter(age_group == "15-") %>% pull(mean_diff)`
+`r n_required_vmmc %>% filter(age_group == "15-") %>% pull(mean_diff)`
 )
 times the projected number of MCs for 10-29 and 15-49 year olds for 2020. 
-The largest increase in MC coverage amongst VMMC priority countries was in 
-x
-, from 
-x
-\% (
-x
-\% to 
-x
-\%) in 2006 to 
-x
-\% (
-x
-\% to 
-x
-\%) in 2020, a 
-x
-\% (
-x
-\% to 
-x
-\%) increase. 
+
+MC coverage in 2020 for 10-29 year olds in VMMC priority countries was highest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+), and lowest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
+.
+For 15-49 year olds, the highest MC coverage was in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+), and lowest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
+.
+MMC coverage for 10-29 year olds in VMMC priority countries was highest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+), and lowest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
+.
+For 15-49 year olds, the highest MMC coverage was in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+), and lowest in 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(iso3) %>% to_cntry_name()`,
+at 
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
+(
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+-
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
+.
+
+The largest increase from 2006 to 2020 in MC coverage for 10-29 year olds amongst VMMC priority countries was in 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`, 
+from 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2006) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_2006) %>% to_percentage()`
+) in 2006 to 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+) in 2020, a 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_diff) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_diff) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_diff) %>% to_percentage()`
+) increase. 
 In contrast, the lowest increase in MC coverage in these countries was in 
-x
-, from 
-x
-\% (
-x
-\% to 
-x
-\%) in 2006 to 
-x
-\% (
-x
-\% to 
-x
-\%) in 2020, a 
-x
-\% (
-x
-\% to 
-x
-\%) increase. 
+from 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2006) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_2006) %>% to_percentage()`
+) in 2006 to 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+) in 2020, a 
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_diff) %>% to_percentage()`
+(
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_diff) %>% to_percentage()`
+-
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_diff) %>% to_percentage()`
+) increase. 
 
 However, these figures belie significant subnational heterogeneity in MC coverage amongst VMMC priority countries. 
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2020) %>% summarise(sum(mean_indicator)) %>% pull()`
+(
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2020) %>% summarise(sum(lower_indicator)) %>% pull()`
+-
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2020) %>% summarise(sum(upper_indicator)) %>% pull()`
+)
+of
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2020) %>% summarise(sum(n)) %>% pull()`
+districts in these countries were expected to have reached 90\% MC coverage 
+amongst 10-29 year olds in 2020, up from 
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2006) %>% summarise(sum(mean_indicator)) %>% pull()`
+(
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2006) %>% summarise(sum(lower_indicator)) %>% pull()`
+-
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2006) %>% summarise(sum(upper_indicator)) %>% pull()`
+) of
+`r cntry_districts_thresh %>% filter(age_group == "10-29", year == 2006) %>% summarise(sum(n)) %>% pull()`
+in 2006, before VMMC programmes began. 
+Similarly, 
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2020) %>% summarise(sum(mean_indicator)) %>% pull()`
+(
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2020) %>% summarise(sum(lower_indicator)) %>% pull()`
+-
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2020) %>% summarise(sum(upper_indicator)) %>% pull()`
+)
+of
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2020) %>% summarise(sum(n)) %>% pull()`
+districts in these countries were expected to have reached 80\% MC coverage for 
+15-49 year olds in 2020, compared to
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2006) %>% summarise(sum(mean_indicator)) %>% pull()`
+(
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2006) %>% summarise(sum(lower_indicator)) %>% pull()`
+-
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2006) %>% summarise(sum(upper_indicator)) %>% pull()`
+) of
+`r cntry_districts_thresh %>% filter(age_group == "15-49", year == 2006) %>% summarise(sum(n)) %>% pull()`
+in 2006.
 
-x
-/
-x
- districts in these countries were e
-x
-pected to have reached 90\% MC coverage amongst 10-29 year olds in 2020, up from 
-x
-/
-x
- in 2006, before VMMC programmes began. 
-Even in 
-x
-, where MC was projected to be lowest in 2020, 
-x
-/
-x
- districts were forecasted to have reached 90\% MC coverage for men aged 10-29 years old. 
-MC coverage there increased from 
-x
+In 2020, 
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(mean)`
 (
-x
-to 
-x
-) in 2006 to 
-x
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(lower)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "10-29") %>% pull(upper)`
+)
+of the 14 VMMC priority countries had no districts which satisfied the 90\% MC coverage target for 10-29
+year olds. This was down from 
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(mean)`
 (
-x
-to 
-x
-) in 2020, a 
-x
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(lower)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "10-29") %>% pull(upper)`
+)
+in 2006. 
+Similarly, in 2020, 
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(mean)`
 (
-x
-to 
-x) increase. 
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(lower)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2020, age_group == "15-49") %>% pull(upper)`
+)
+countries had no districts which satisfied the 80\% MC coverage target for 15-49
+year olds. This was down from 
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(mean)`
+(
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(lower)`
+-
+`r n_cntries_no_thresh %>% filter(year == 2006, age_group == "15-49") %>% pull(upper)`
+)
+in 2006. 
