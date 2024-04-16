@@ -2073,9 +2073,17 @@ rm(list = c(names(section_4_inlines), "section_4_inlines")); gc()
 results_agegroup_n_circ <- readr::read_csv(
   "paper_poster_plots_threemc/paper/data/results_agegroup_n_circ.csv.gz"
 )
-# results_agegroup <- readr::read_csv(
-#   "paper_poster_plots_threemc/paper/data/results_agegroup.csv.gz"
-# )
+
+results_agegroup <- readr::read_csv(
+  "paper_poster_plots_threemc/paper/data/results_agegroup.csv.gz"
+)
+
+populations <- load_orderly_data(
+  "00c4_pops_aggregate", 
+  query = "latest", 
+  file = "population_agegroup_aggr.csv.gz"
+)$output[[1]]
+
 
 results_agegroup_vmmc <- filter(results_agegroup, iso3 %in% vmmc_iso3)
 results_agegroup_n_circ_vmmc <- filter(results_agegroup_n_circ, iso3 %in% vmmc_iso3)
@@ -2201,6 +2209,25 @@ largest_smallest_vmmc <- results_agegroup_vmmc_spec %>%
   select(iso3, age_group, year, type, mean, lower, upper)
 
 # largest and smallest *increase* in VMMC countries, MC and MMC
+# increase_vmmc <- results_agegroup_vmmc_spec %>%
+#   # calculate differences from 2006 to 2020
+#   tidyr::pivot_wider(names_from = year, values_from = population:upper) %>% 
+#   mutate(
+#     diff_mean = mean_2020 - mean_2006, 
+#     diff_lower = lower_2020 - lower_2006, 
+#     diff_upper = upper_2020 - upper_2006
+#   ) %>% 
+#   tidyr::pivot_longer(population_2006:upper_2020) %>% 
+#   tidyr::separate(col = name, sep = "_", into = c("name", "year")) %>% 
+#   tidyr::pivot_wider(names_from = name) %>% 
+#   filter(year == 2020) %>% 
+#   # take largest and smallest for each type and age group
+#   arrange(type, age_group, desc(diff_mean)) %>% 
+#   group_by(type, age_group) %>% 
+#   slice(c(1, n())) %>% 
+#   ungroup() %>% 
+#   select(iso3, age_group, type, mean, lower, upper, contains("diff"), contains("2020"), contains("2016"))
+
 increase_vmmc <- results_agegroup_vmmc_spec %>%
   # calculate differences from 2006 to 2020
   tidyr::pivot_wider(names_from = year, values_from = population:upper) %>% 
@@ -2209,21 +2236,24 @@ increase_vmmc <- results_agegroup_vmmc_spec %>%
     diff_lower = lower_2020 - lower_2006, 
     diff_upper = upper_2020 - upper_2006
   ) %>% 
-  tidyr::pivot_longer(population_2006:upper_2020) %>% 
-  tidyr::separate(col = name, sep = "_", into = c("name", "year")) %>% 
-  tidyr::pivot_wider(names_from = name) %>% 
-  filter(year == 2020) %>% 
+  # tidyr::pivot_longer(population_2006:upper_2020) %>% 
+  # tidyr::separate(col = name, sep = "_", into = c("name", "year")) %>% 
+  # tidyr::pivot_wider(names_from = name) %>% 
+  # filter(year == 2020) %>% 
   # take largest and smallest for each type and age group
   arrange(type, age_group, desc(diff_mean)) %>% 
   group_by(type, age_group) %>% 
   slice(c(1, n())) %>% 
   ungroup() %>% 
-  select(iso3, age_group, year, type, mean, lower, upper, contains("diff"))
+  select(
+    iso3, age_group, type, contains("diff"), contains("2006"), contains("2020"),
+    -c(matches("sd"), matches("median"), matches("population"))
+  )
 
 # subnational heterogeneity: # districts reaching targets in 2006 & 2020
 cntry_districts_thresh <- results_agegroup_vmmc %>% 
   filter(
-    age_group %in% c("15-29", "15-49"),
+    age_group %in% c("10-29", "15-49"),
     # type %in% paste(c("MC", "MMC", "TMC"), "coverage"),
     type == "MC coverage",
     year %in% c(2006, 2020)
@@ -2234,26 +2264,43 @@ cntry_districts_thresh <- results_agegroup_vmmc %>%
   mutate(across(
     c("mean", "upper", "lower"), 
     \(x) case_when(
-      age_group == "15-29" & x >= 0.9 ~ 1, 
+      age_group == "10-29" & x >= 0.9 ~ 1, 
       age_group == "15-49" & x >= 0.8 ~ 1, 
       TRUE ~ 0
     ),
     .names = "{col}_indicator"
   )) %>% 
-  group_by(iso3, age_group) %>% 
+  group_by(iso3, age_group, year) %>% 
   summarise(
     across(contains("indicator"), \(x) sum(x)), 
     n = n(),
     .groups = "drop"
   ) %>% 
   arrange(desc(mean_indicator)) %>% 
-  mutate(across(contains("indicator"), \(x) x / n, .names = "{col}_percent}"))
+  mutate(across(contains("indicator"), \(x) x / n, .names = "{col}_percent"))
 
 # n countries with no districts above
-n_cntries_no_thresh <- c(
-  "lower" = nrow(filter(cntry_districts_thresh, lower_indicator == 0)),
-  "mean"  = nrow(filter(cntry_districts_thresh, mean_indicator  == 0)),
-  "upper" = nrow(filter(cntry_districts_thresh, upper_indicator == 0))
+find_rows <- function(dat, year, age_group) {
+  data.frame(
+    "lower" = nrow(filter(
+      dat, lower_indicator == 0, year == !!year, age_group == !!age_group
+    )),
+    "mean"  = nrow(filter(
+      dat, mean_indicator == 0, year == !!year, age_group == !!age_group
+    )),
+    "upper" = nrow(filter(
+      dat, upper_indicator == 0, year == !!year, age_group == !!age_group
+    )),
+    "year"  = year,
+    "age_group" = age_group
+  )
+}
+
+n_cntries_no_thresh <- bind_rows(
+  find_rows(cntry_districts_thresh, 2006, "10-29"),
+  find_rows(cntry_districts_thresh, 2020, "10-29"),
+  find_rows(cntry_districts_thresh, 2006, "15-49"),
+  find_rows(cntry_districts_thresh, 2020, "15-49")
 )
 
 # save as inlines object
@@ -2279,49 +2326,27 @@ saveRDS(
   "paper_poster_plots_threemc/paper/data/inlines/05_inlines.RDS"
 )
 
-#### Statistics for Abstract ####
+#### Abstract ####
 
-## number of circumcisions performed from 2010 to 2020 (with error bounds)
-results_agegroup_n_circ %>%
+# n countries
+n_cntries <- length(unique(results_agegroup$iso3))
+
+# number of circumcisions performed from 2006 to 2020 (with error bounds)
+n_circs <- results_agegroup %>%
   filter(
     area_level == 0,
-    age_group == spec_age_group,
-    type %in% c(
-      "Number circumcised (MC)",
-      "Number circumcised (MMC)",
-      "Number circumcised (TMC)"
-    ),
+    # age_group == spec_age_group,
+    age_group == "0+",
+    type %in% paste("Number circumcised", c("(MC)", "(MMC)", "(TMC)")),
+    # type %in% paste(c("MCs", "MMCs", "TMCs"), "performed"),
     year %in% spec_years
   ) %>%
-  arrange(area_id, type, year) %>%
-  group_by(area_name, type) %>%
+  arrange(iso3, type, year) %>%
+  group_by(iso3, type) %>%
   mutate(
     circs = c(0, diff(mean)),
-    upper_circs = c(0, diff(upper)),
-    lower_circs = c(0, diff(lower))
-  ) %>%
-  ungroup() %>% 
-  # group_by(type) %>%
-  group_by(type) %>% 
-  summarise(across(contains("circs"), sum))
-
-results_agegroup_n_circ %>%
-  filter(
-    area_id %in% target_iso3,
-    age_group == spec_age_group,
-    type %in% c(
-      "Number circumcised (MC)",
-      "Number circumcised (MMC)",
-      "Number circumcised (TMC)"
-    ),
-    year %in% spec_years
-  ) %>%
-  arrange(area_id, type, year) %>%
-  group_by(area_name, type) %>%
-  mutate(
-    circs = c(0, diff(mean)),
-    upper_circs = c(0, diff(upper)),
-    lower_circs = c(0, diff(lower))
+    lower_circs = c(0, diff(lower)),
+    upper_circs = c(0, diff(upper))
   ) %>%
   ungroup() %>% 
   # group_by(type) %>%
@@ -2329,7 +2354,7 @@ results_agegroup_n_circ %>%
   summarise(across(contains("circs"), sum))
 
 # largest (and lowest) Coverage in 2020
-results_agegroup %>% 
+max_min_cov <- results_agegroup %>% 
   filter(
     area_level == 0,
     age_group == spec_age_group,
@@ -2342,72 +2367,74 @@ results_agegroup %>%
   slice(c(1, n())) %>% 
   select(iso3, type, mean, lower, upper)
 
-
 # largest (and lowest) increase in Coverage (Percentage)
-(temp <- results_agegroup %>% 
-    filter(
-      area_level == 0,
-      age_group == spec_age_group,
-      type %in% c("MC coverage", "MMC coverage", "TMC coverage"),
-      year %in% spec_years
-    ) %>% 
-    group_by(area_name, type) %>%
-    mutate(
-      mean = c(0, diff(mean)),
-      upper = c(0, diff(upper)),
-      lower = c(0, diff(lower))
-    ) %>%
-    ungroup() %>% 
-    group_by(iso3, type) %>%
-    summarise(across(mean:upper, sum), .groups = "drop") %>% 
-    arrange(type, desc(mean)) %>% 
-    group_by(type) %>% 
-    slice(c(1, n())))
-
-# pull circumcision coverage in both years for country with the highest 
-# increase in coverage
-results_agegroup %>% 
+max_min_increase <- results_agegroup %>%
   filter(
     area_level == 0,
     age_group == spec_age_group,
     type %in% c("MC coverage", "MMC coverage", "TMC coverage"),
     year %in% spec_years
   ) %>% 
-  semi_join(temp, by = c("iso3", "type")) %>% 
-  select(iso3, type, mean, lower, upper) %>% 
-  arrange(iso3, type, desc(mean)) 
-
-# largest increase in Coverage (Absolute)
-results_agegroup_n_circ %>%
-  filter(
-    area_level == 0,
-    age_group == spec_age_group,
-    type %in% c(
-      "Number circumcised (MC)",
-      "Number circumcised (MMC)",
-      "Number circumcised (TMC)"
-    ),
-    year %in% spec_years,
-    mean != 0
-  ) %>%
-  arrange(area_id, type, year) %>%
-  group_by(area_name, type) %>%
+  # calculate differences from 2006 to 2020
+  tidyr::pivot_wider(names_from = year, values_from = population:upper) %>% 
   mutate(
-    circs = c(0, diff(mean)),
-    upper_circs = c(0, diff(upper)),
-    lower_circs = c(0, diff(lower))
-  ) %>%
+    diff_mean = mean_2020 - mean_2006, 
+    diff_lower = lower_2020 - lower_2006, 
+    diff_upper = upper_2020 - upper_2006
+  ) %>% 
+  # take largest and smallest for each type and age group
+  arrange(type, age_group, desc(diff_mean)) %>% 
+  group_by(type, age_group) %>% 
+  slice(c(1, n())) %>% 
   ungroup() %>% 
-  group_by(iso3, type) %>%
-  summarise(across(contains("circs"), sum), .groups = "drop") %>% 
-  arrange(type, desc(circs)) %>% 
-  group_by(type) %>% 
-  slice(c(1, n()))
+  select(
+    iso3, age_group, type, contains("diff"), contains("2006"), contains("2020"),
+    -c(matches("sd"), matches("median"), matches("population"))
+  )
+
+# # pull circumcision coverage in both years for country with the highest 
+# increase in coverage
+# results_agegroup %>% 
+#   filter(
+#     area_level == 0,
+#     age_group == spec_age_group,
+#     type %in% c("MC coverage", "MMC coverage", "TMC coverage"),
+#     year %in% spec_years
+#   ) %>% 
+#   semi_join(temp, by = c("iso3", "type")) %>% 
+#   select(iso3, type, mean, lower, upper) %>% 
+#   arrange(iso3, type, desc(mean)) 
+# 
+# # largest increase in Coverage (Absolute)
+# results_agegroup_n_circ %>%
+#   filter(
+#     area_level == 0,
+#     age_group == spec_age_group,
+#     type %in% c(
+#       "Number circumcised (MC)",
+#       "Number circumcised (MMC)",
+#       "Number circumcised (TMC)"
+#     ),
+#     year %in% spec_years,
+#     mean != 0
+#   ) %>%
+#   arrange(area_id, type, year) %>%
+#   group_by(area_name, type) %>%
+#   mutate(
+#     circs = c(0, diff(mean)),
+#     upper_circs = c(0, diff(upper)),
+#     lower_circs = c(0, diff(lower))
+#   ) %>%
+#   ungroup() %>% 
+#   group_by(iso3, type) %>%
+#   summarise(across(contains("circs"), sum), .groups = "drop") %>% 
+#   arrange(type, desc(circs)) %>% 
+#   group_by(type) %>% 
+#   slice(c(1, n()))
 
 
 # Within country median difference in coverage between districts
 # lowest and highest coverage, smallest and largest 
-
 temp <- results_agegroup %>%
   filter(
     age_group == spec_age_group,
@@ -2423,128 +2450,165 @@ temp1 <- temp %>%
 temp2 <- temp %>%
   filter(mean == max(mean))
 
-temp <- rbind(temp1, temp2) %>%
+within_cntry_diff <- rbind(temp1, temp2) %>%
   ungroup() %>%
   arrange(iso3, mean)
 
 # find difference between highest and lowest coverage for each country
-final <- temp %>%
+cntry_diffs <- within_cntry_diff %>%
   group_by(iso3) %>%
   summarise(mean = diff(mean), .groups = "drop") %>%
   arrange(desc(mean))
 
-# find median
-median(final$mean)
-
 # find range for country with lowest and highest variation
-temp %>%
-  filter(iso3 == !!last(final$iso3))
-temp %>%
-  filter(iso3 == !!first(final$iso3))
+# within_cntry_diff %>%
+#   filter(iso3 == !!last(max_min_within_cntry_diff$iso3))
+# within_cntry_diff %>%
+#   filter(iso3 == !!first(max_min_within_cntry_diff$iso3))
+max_min_within_cntry_diff <- within_cntry_diff %>% 
+  semi_join(slice(max_min_within_cntry_diff, c(1, n())), by = "iso3")
+
+# find median
+# median_district_diff <- median(max_min_within_cntry_diff$mean)
+median_district_diff <- within_cntry_diff %>% 
+  group_by(iso3, type) %>% 
+  mutate(across(
+    c("mean", "lower", "upper"), \(x) c(0, diff(x)), .names = "{col}_diffs"
+  )) %>%
+  slice(2) %>% 
+  ungroup() %>% 
+  group_by(type) %>% 
+  summarise(across(contains("diff"), median))
 
 ## remaining circumcisions required to reach 90% 10-29 in all countries by 2020
 # also do for just 15 priority countries
 
-n_remaining <- function(results_agegroup_n_circ) {
-  results_agegroup_n_circ %>%
-    group_by(iso3) %>% 
-    filter(area_level == max(area_level)) %>% 
-    ungroup() %>% 
+n_remaining <- function(dat, age_group = "10-29", target = 0.9) {
+  dat %>%
+    # group_by(iso3) %>% 
+    # filter(area_level == max(area_level)) %>% 
+    # ungroup() %>% 
     filter(
-      # area_level == 0,
-      age_group == spec_age_group,
+      area_level == 0,
+      age_group == !!age_group,
       # type == "MC coverage",
       type == "Number circumcised (MC)",
       # year == 2020
       year == last(spec_years)
     ) %>%
     # n people required to reach 90% vaccination
-    mutate(diff = 0.9 * (population - mean)) %>%
+    mutate(diff = target * (population - mean)) %>%
     filter(diff >= 0) %>%
     summarise(sum(diff), .groups = "drop") %>%
     pull()
 }
 
-# n circs required to get every country to 90% circ
-n_remaining(filter(results_agegroup_n_circ, area_level == 0))
+# n circs required to get VMMC countries to targets
+n_remain_10_29 <- n_remaining(
+  filter(results_agegroup, iso3 %in% vmmc_iso3, area_level == 0)
+)
+n_remain_15_49 <- n_remaining(
+  filter(results_agegroup, iso3 %in% vmmc_iso3, area_level == 0), 
+  age_group = "15-49", 
+  0.8
+)
+
+# save
+abstract_inlines <- list(
+  "n_cntries"                 = n_cntries, 
+  "n_circs"                   = n_circs, 
+  "max_min_cov"               = max_min_cov, 
+  "max_min_increase"          = max_min_increase, 
+  "cntry_diffs"               = cntry_diffs, 
+  "max_min_within_cntry_diff" = max_min_within_cntry_diff, 
+  "median_district_diff"      = median_district_diff,
+  "n_remain_10_29"            = n_remain_10_29,
+  "n_remain_15_49"            = n_remain_15_49
+)
+
+saveRDS(
+  abstract_inlines, 
+  "paper_poster_plots_threemc/paper/data/inlines/abstract_inlines.RDS"
+)
+
+
 # n circs required to get all priority countries to 90% circ
-results_agegroup_n_circ %>% 
-  filter(
-    area_id %in% target_iso3,
-    area_level == 0
-  ) %>% 
-  n_remaining()
+# results_agegroup_n_circ %>% 
+#   filter(
+#     area_id %in% target_iso3,
+#     area_level == 0
+#   ) %>% 
+#   n_remaining()
 
 # number of circumcisions performed from 2019 to 2020
-n_performed_last_year <- function(results_agegroup_n_circ) {
-  results_agegroup_n_circ %>% 
-    filter(
-      # area_level == 0,
-      age_group == spec_age_group,
-      grepl("Number circumcised", type),
-      year %in% c(last(spec_years) - 1, last(spec_years))
-    ) %>% 
-    # group_by(type, year) %>% 
-    # summarise(across(mean:upper, sum), .groups = "drop") %>%
-    # arrange(type, year) %>% 
-    # group_by(type) %>% 
-    # summarise(across(mean:upper, ~ c(0, diff(.))), .groups = "drop")
-    arrange(area_id, type, year) %>%
-    group_by(area_name, type) %>%
-    mutate(
-      circs = c(0, diff(mean)),
-      upper_circs = c(0, diff(upper)),
-      lower_circs = c(0, diff(lower))
-    ) %>%
-    ungroup() %>% 
-    # group_by(type) %>%
-    group_by(type) %>% 
-    summarise(across(contains("circs"), sum))
-}
-n_performed_last_year(filter(results_agegroup_n_circ, area_level == 0))
-n_performed_last_year(filter(results_agegroup_n_circ, area_id %in% target_iso3))
-
-
-results_agegroup_n_circ %>%
-  filter(
-    area_level == 0,
-    age_group == spec_age_group,
-    type %in% c(
-      "Number circumcised (MC)",
-      "Number circumcised (MMC)",
-      "Number circumcised (TMC)"
-    ),
-    year %in% spec_years
-  ) %>%
-  arrange(area_id, type, year) %>%
-  group_by(area_name, type) %>%
-  mutate(
-    circs = c(0, diff(mean)),
-    upper_circs = c(0, diff(upper)),
-    lower_circs = c(0, diff(lower))
-  ) %>%
-  ungroup() %>% 
-  # group_by(type) %>%
-  group_by(type) %>% 
-  summarise(across(contains("circs"), sum))
-
-# Number of districts in priority countries that have achieved 90% circumcision
-temp <- results_agegroup %>%
-  filter(
-    # area_id %in% target_iso3,
-    age_group == spec_age_group,
-    type == "MC coverage",
-    year == last(spec_years)
-  ) %>%
-  mutate(iso3 = substr(area_id, 1, 3)) %>%
-  filter(iso3 %in% target_iso3) %>% 
-  group_by(iso3) %>%
-  # filter(area_level == min(2, max(.data$area_level))) %>%
-  filter(area_level == max(area_level)) %>% 
-  ungroup()
-
-nrow(temp)
-
-temp %>% filter(lower >= 0.9) %>% nrow()
-temp %>% filter(mean >= 0.9) %>% nrow()
-temp %>% filter(upper >= 0.9) %>% nrow()
+# n_performed_last_year <- function(results_agegroup_n_circ) {
+#   results_agegroup_n_circ %>% 
+#     filter(
+#       # area_level == 0,
+#       age_group == spec_age_group,
+#       grepl("Number circumcised", type),
+#       year %in% c(last(spec_years) - 1, last(spec_years))
+#     ) %>% 
+#     # group_by(type, year) %>% 
+#     # summarise(across(mean:upper, sum), .groups = "drop") %>%
+#     # arrange(type, year) %>% 
+#     # group_by(type) %>% 
+#     # summarise(across(mean:upper, ~ c(0, diff(.))), .groups = "drop")
+#     arrange(area_id, type, year) %>%
+#     group_by(area_name, type) %>%
+#     mutate(
+#       circs = c(0, diff(mean)),
+#       upper_circs = c(0, diff(upper)),
+#       lower_circs = c(0, diff(lower))
+#     ) %>%
+#     ungroup() %>% 
+#     # group_by(type) %>%
+#     group_by(type) %>% 
+#     summarise(across(contains("circs"), sum))
+# }
+# n_performed_last_year(filter(results_agegroup_n_circ, area_level == 0))
+# n_performed_last_year(filter(results_agegroup_n_circ, area_id %in% target_iso3))
+# 
+# results_agegroup_n_circ %>%
+#   filter(
+#     area_level == 0,
+#     age_group == spec_age_group,
+#     type %in% c(
+#       "Number circumcised (MC)",
+#       "Number circumcised (MMC)",
+#       "Number circumcised (TMC)"
+#     ),
+#     year %in% spec_years
+#   ) %>%
+#   arrange(area_id, type, year) %>%
+#   group_by(area_name, type) %>%
+#   mutate(
+#     circs = c(0, diff(mean)),
+#     upper_circs = c(0, diff(upper)),
+#     lower_circs = c(0, diff(lower))
+#   ) %>%
+#   ungroup() %>% 
+#   # group_by(type) %>%
+#   group_by(type) %>% 
+#   summarise(across(contains("circs"), sum))
+# 
+# # Number of districts in priority countries that have achieved 90% circumcision
+# temp <- results_agegroup %>%
+#   filter(
+#     # area_id %in% target_iso3,
+#     age_group == spec_age_group,
+#     type == "MC coverage",
+#     year == last(spec_years)
+#   ) %>%
+#   mutate(iso3 = substr(area_id, 1, 3)) %>%
+#   filter(iso3 %in% target_iso3) %>% 
+#   group_by(iso3) %>%
+#   # filter(area_level == min(2, max(.data$area_level))) %>%
+#   filter(area_level == max(area_level)) %>% 
+#   ungroup()
+# 
+# nrow(temp)
+# 
+# temp %>% filter(lower >= 0.9) %>% nrow()
+# temp %>% filter(mean >= 0.9) %>% nrow()
+# temp %>% filter(upper >= 0.9) %>% nrow()
