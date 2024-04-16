@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 <!-- TODO: Change year from 2020 to 2023 (once preprint is out) -->
-<!-- TODO: Add survey stuff here -->
 <!-- TODO: Add paragraph breaks (although that's not copying over from PDF) -->
 
 ```{r, echo = FALSE}
@@ -81,10 +80,32 @@ tidy_age <- function(dat, sig_fig = 2) {
     ) %>% 
     simplify_type()
 }
+
+# concatonate survey names
+concat_surveys <- function(surveys) {
+  if (length(surveys) == 1) return(surveys)
+  x <- paste(surveys[1:(length(surveys) - 1)], collapse = ", ")
+  return(paste(x, last(surveys), sep = " and "))
+}
 ```
 
 # Abstract
-## Background}
+
+```{r, echo = FALSE}
+abstract <- readRDS("data/inlines/abstract_inlines.RDS")
+# x1 <- simplify_type_rec(x1)
+for (i in seq_along(abstract)) {
+  assign(names(abstract)[i], abstract[[i]])
+}
+n_circs <- simplify_type(n_circs)
+max_min_cov <- simplify_type(max_min_cov)
+max_min_increase <- simplify_type(max_min_increase)
+max_min_within_cntry_diff <- simplify_type(max_min_within_cntry_diff)
+median_district_diff <- simplify_type(median_district_diff)
+```
+
+
+## Background
 In 2016, UNAIDS developed a Fast-Track strategy that targeted 90\% coverage
 male circumcision (MC) among men aged 10-29 years by 2021 in priority countries in sub-Saharan 
 Africa (SSA) to reduce HIV incidence. There is substantial variation across subnational 
@@ -94,51 +115,204 @@ remaining gaps towards VMMC HIV prevention targets requires detailed district-le
 coverage data.
 
 ## Methods
-We analysed self-reported data on male circumcision from x nationally representative household surveys conducted in x SSA countries between 2006-2020.
+We analysed self-reported data on male circumcision from 123 nationally representative household surveys conducted in x SSA countries between 2006 and 2020.
 A spatio-temporal Bayesian competing-risks time-to-event model was used to estimate rates of traditional and medical circumcision by age, location, and time.
 Circumcision coverage in 2020 was projected assuming continuation of estimated age-specific rates, with probabilistic uncertainty.
 
 ## Results
 Across 
-x 
+`r n_cntries`
 countries, from 2006 to 2020 an estimated 
 x
-million men (x\% CI x-x million)
-were newly circumcised, of whom x million (x-x million) were medically circumcised, and
-x million (x-x million) traditionally circumcised. 
-In 2020, MC coverage among men 10-29 years ranged from x\% (x\%-x\%) in Zimbabwe (?) to x\% (x\%-x\%) in Togo. 
-MMC coverage ranged from x\% (x\%-x\%) in Malawi to x\% (x\%-x\%) in Tanzania, and TMC coverage
-from x\% (x\%-x\%) in Eswatini to x\% (x\%-x\%) in Ethiopia. 
-The largest increase in MMC coverage was in Lesotho from x\% to x\%. 
-Within countries, the median difference in MC coverage between the districts with lowest and highest coverage was x\%, with the smallest variation in Eswatini (x\% to x\%) and largest in Zambia (x\% to x\%). 
-x million men aged 10-29 need to be circumcised to reach 90\% coverage in all countries.
+`r n_circs %>% filter(type == "MC") %>% pull(circs) %>% to_mill()`
+million men (95\% CI 
+`r n_circs %>% filter(type == "MC") %>% pull(lower_circs) %>% to_mill()`
+-
+`r n_circs %>% filter(type == "MC") %>% pull(upper_circs) %>% to_mill()`
+million)
+were newly circumcised, of whom 
+`r n_circs %>% filter(type == "MMC") %>% pull(circs) %>% to_mill()`
+million men (
+`r n_circs %>% filter(type == "MMC") %>% pull(lower_circs) %>% to_mill()`
+-
+`r n_circs %>% filter(type == "MMC") %>% pull(upper_circs) %>% to_mill()`
+million) were medically circumcised, and
+`r n_circs %>% filter(type == "TMC") %>% pull(circs) %>% to_mill()`
+million men (
+`r n_circs %>% filter(type == "TMC") %>% pull(lower_circs) %>% to_mill()`
+-
+`r n_circs %>% filter(type == "TMC") %>% pull(upper_circs) %>% to_mill()`
+million) traditionally circumcised. 
+In 2020, MC coverage among men 10-29 years ranged from 
+`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
+to 
+`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`.
+MMC coverage ranged from 
+`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
+to 
+`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`.
+, and TMC coverage
+from 
+`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
+to 
+`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
+(
+`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+-
+`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+) in 
+`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`.
+The largest increase in MMC coverage was in 
+`r max_min_increase %>% filter(type == "MMC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
+Lesotho from 
+`r max_min_increase %>% filter(type == "MMC") %>% slice(1) %>% pull(mean_2006) %>% to_percentage()`
+to 
+`r max_min_increase %>% filter(type == "MMC") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`.
+Within countries, the median difference in MC coverage between the districts with lowest and highest coverage was 
+`r median_district_diff %>% filter(type == "MC") %>% pull(mean_diffs) %>% to_percentage()`
+with the smallest variation in 
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
+(
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()` 
+to 
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(2) %>% pull(mean) %>% to_percentage()` 
+) and largest in 
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(3) %>% pull(iso3) %>% to_cntry_name()`
+(`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(3) %>% pull(mean) %>% to_percentage()` 
+to 
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(4) %>% pull(mean) %>% to_percentage()`).
+In VMMC priority countries, 
+`r to_mill(n_remain_10_29)`
+million men aged 10-29 need to be circumcised to reach 90\% coverage in VMMC priority countries, 
+while 
+`r to_mill(n_remain_15_49)`
+million circumcisions amongst 15-49 year olds are needed to reach 80\% coverage.
 
 ## Conclusions
 VMMC programmes have made substantial, but uneven, progress towards male circumcision targets. Granular district and age-stratified data provide information for focusing further programme implementation.
 
 # Results
 
-Our data consisted of 109 nationally representative household surveys conducted in 33 SSA countries between 2002 and 2019.
-x sub-national areas amongst these coutries were included in these surveys and modelled.
-Of these 109 surveys, 104 contained sufficent information on circumcision, as outlined in the Methods section of this paper. 
+```{r, echo = FALSE}
+x0 <- readRDS("data/inlines/01_data_inlines.RDS")
 
-These remaining surveys consisted of 711,715 individuals respondents from 108 birth cohorts from 1903 to 2016. The sample size per survey ranged from 21,114 in the South Africa 2017 HSRC survey to 1,459 in the Eswatini 2014 MICS survey.
+# surveys with no type older than 2007
+n_old_surveys <- sum(as.numeric(lapply(x0$max_unknown_type_perc$survey, \(x) {
+    y <- stringr::str_split(x, " ")[[1]]
+    if (length(y) == 4) return(y[[3]])
+    return(y[[2]])
+})) < 2007)
+
+```
+
+
+Our data consisted of 
+`r x0$n_surveys_orig`
+nationally representative household surveys conducted in 
+34 
+SSA countries between 2002 and 2019.
+`r x0$n_subnat_areas`
+subnational areas amongst these countries were included in these surveys and modelled.
+Of these 
+`r x0$n_surveys_orig`
+surveys, 
+`r x0$n_surveys`
+contained sufficient information on circumcision, as outlined in the Methods section of this paper. 
+
+These remaining surveys consisted of 
+`r x0$n_respondents`
+individuals respondents from 
+`r x0$n_cohorts`
+birth cohorts from 
+`r x0$min_cohort`
+to 
+`r x0$max_cohort`.
+The sample size per survey ranged from 
+`r x0$min_survey_size$n`
+in the 
+`r x0$min_survey_size$survey` survey
+to 
+`r x0$max_survey_size$n`
+in the 
+`r x0$max_survey_size$survey` survey.
 
 There was significant censoring and missing data even in the remaining surveys. 
-Left censoring of circumcision status, analagous to unknown circumcision age, averaged  34.438\% across all surveys, and ranged from 0\% in the Rwanda 2008 DHS survey to 99.408\% in the Niger 2006 DHS survey.
-17 surveys had more than 90\% left censoring of circumcision age, with 42 surveys having less than 10\% left censoring.
-\todo{Rewrite now BWA has surveys!}
-No information on age at circumcision was present in the 2004 and 2008 Botswana Aids Impact Surveys. This complete left censoring of circumcised individuals meant that \verb|threemc| could not be fit to Botswana. 
-Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged 35.299\% across all surveys, ranging from 0.399\% in the The Gambia 2018 MICS survey to 91.432\% in the Eswatini 2006 DHS survey.
+Left censoring of circumcision status, analagous to unknown circumcision age, averaged 
+`r x0$mean_l_cens`, or `r x0$mean_l_cens_perc`
+across all surveys, and ranged from 
+`r x0$min_l_cens_perc$min`
+in the 
+`r concat_surveys(x0$min_l_cens$survey)`
+surveys
+to 
+`r x0$max_l_cens$max`/`r x0$max_l_cens_perc$max`
+in the 
+`r concat_surveys(x0$max_l_cens$survey)`
+survey.
+`r length(x0$l_cens_surveys$surveys_0.9)`
+surveys had more than 90\% left censoring of circumcision age, with 
+`r length(x0$l_cens_surveys$surveys_0.1)`
+surveys having less than 10\% left censoring.
+Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged 
+`r x0$mean_r_cens`/`r x0$mean_r_cens_perc`
+across all surveys, ranging from 
+`r x0$min_r_cens$min`/`r x0$min_r_cens_perc$min`
+in the 
+`r x0$min_r_cens$survey` survey
+to
+`r x0$max_r_cens$max`/`r x0$max_r_cens_perc$max`
+in the 
+`r x0$max_r_cens$survey` survey.
 
-On average across all surveys, 1.788\% of respondents did not respond to either the circumcision location or provider question, and so had unknown circumcision type. 
-This was lowest in the Burundi 2010 DHS survey, at 0\%, and highest in the South Africa 2002 HSRC survey, at 29.545\%.
+On average across all surveys, 
+`r x0$mean_unknown_type`/`r x0$mean_unknown_type_perc`
+respondents did not respond to either the circumcision location or provider 
+question, and so had unknown circumcision type. 
+This was lowest in absolute terms in the 
+`r x0$min_unknown_type$survey`
+survey, and as a percentage of the total sample size in the
+`r x0$min_unknown_type_perc$survey` survey.
+Unknown type was 100\% in 
+`r length(x0$max_unknown_type_perc$survey)` surveys, of which
+`r n_old_surveys`
+are older than 2007, when VMMC programmes began. 
 5 countries had unknown circumcision type; DR Congo, Guinea, Liberia, Niger and Senegal. 
-Amongst these countries, left censoring averaged 98.457\%. 
-However, the mean survey circumcision coverage amongst these same countries was 98.457\%, which may explain the relative lack of circumcision information available in their surveys.
+Amongst these countries, left censoring averaged 
+`r x0$mean_no_type_cntry_l_cens`.
+However, every left censored individual was also circumcised, which may explain 
+the relative lack of circumcision information available in their surveys.
 
-\todo{Rewrite as BWA now has surveys}
-In addition to Botswana, Guinea-Bissau, Equatorial Guinea and the Central African Republic were additional SSA countries where we did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either. 
+In Guinea-Bissau, Equatorial Guinea and the Central African Republic, did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either. 
 
 More information on individual surveys, including participation rates, can be found in section x of the appendix. 
 
