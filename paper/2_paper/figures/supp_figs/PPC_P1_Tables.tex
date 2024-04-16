@@ -1,0 +1,133 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+{\linespread{1} 
+  \begin{table}[H] 
+  \centering 
+  \footnotesize 
+  \begin{tabular}{>{\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \hline  
+  & & & \multicolumn{2}{c}{\bf CRPS} & \multicolumn{2}{c}{\bf MAE} & \multicolumn{2}{c}{\bf RMSE} & \multicolumn{2}{c}{\bf 50\% CI} & \multicolumn{2}{c}{\bf 80\% CI} & \multicolumn{2}{c}{\bf 95\% CI}  \\ 
+  \cmidrule(lr){4-5} 
+  \cmidrule(lr){6-7} 
+  \cmidrule(lr){8-9} 
+  \cmidrule(lr){10-11} 
+  \cmidrule(lr){12-13} 
+  \cmidrule(lr){14-15} 
+  & & & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV}\\ 
+  \hline 
+    \multicolumn{8}{l}{\textbf{ AR1 }} \\ 
+ & \bf MC & \bf NC &  2.57 &  2.59 &  0.03 &  0.03 &  0.04 &  0.04 & 70.14 & 68.75 & 84.72 & 86.11 & 95.14 & 93.75\\ 
+  &  & \bf PC &  2.60 & \bf 2.50 &  0.03 & \bf 0.03 & \bf 0.04 &  0.04 & 70.14 & \bf72.92 & \bf87.50 & 86.11 & \bf95.83 & 95.14\\[3pt] 
+  & \bf MMC & \bf NC & \bf 8.80 & 10.87 & \bf 0.12 &  0.14 & \bf 0.15 &  0.16 & \bf52.08 & 50.00 & \bf79.17 & 72.92 & \bf93.75 & 86.11\\ 
+  &  & \bf PC & 11.63 & 11.13 &  0.14 &  0.14 &  0.17 &  0.16 & 45.14 & 49.31 & 68.75 & 68.06 & 84.03 & 85.42\\[3pt] 
+  & \bf TMC & \bf NC & \bf 9.16 & 11.45 & \bf 0.13 &  0.14 & \bf 0.15 &  0.17 & 45.14 & \bf45.83 & \bf76.39 & 67.36 & \bf92.36 & 84.03\\ 
+  &  & \bf PC & 12.43 & 11.65 &  0.15 &  0.14 &  0.17 &  0.17 & 36.81 & 43.75 & 65.28 & 67.36 & 81.25 & 82.64\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW1 }} \\ 
+ & \bf MC & \bf NC &  2.57 &  2.58 &  0.03 &  0.03 &  0.04 &  0.04 & 69.44 & 69.44 & 85.42 & \bf86.81 & \bf96.53 & 95.14\\ 
+  &  & \bf PC &  2.57 & \bf 2.52 & \bf 0.03 &  0.03 & \bf 0.04 &  0.04 & 70.83 & \bf71.53 & 85.42 & \bf86.81 & 94.44 & 95.14\\[3pt] 
+  & \bf MMC & \bf NC & \bf 8.43 & 10.84 & \bf 0.12 &  0.14 & \bf 0.15 &  0.16 & \bf50.69 & \bf50.69 & \bf83.33 & 70.83 & \bf95.14 & 86.11\\ 
+  &  & \bf PC &  9.66 & 11.14 &  0.13 &  0.14 &  0.15 &  0.16 & 50.00 & 46.53 & 75.69 & 68.75 & 89.58 & 84.03\\[3pt] 
+  & \bf TMC & \bf NC & \bf 8.77 & 11.40 & \bf 0.12 &  0.14 & \bf 0.15 &  0.17 & \bf47.92 & \bf47.92 & \bf81.94 & 68.06 & \bf94.44 & 84.72\\ 
+  &  & \bf PC & 10.16 & 11.69 &  0.13 &  0.14 &  0.16 &  0.17 & 44.44 & 42.36 & 75.00 & 65.28 & 86.81 & 81.94\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW2 }} \\ 
+ & \bf MC & \bf NC &  2.58 &  2.61 &  0.03 &  0.03 &  0.04 &  0.04 & 68.06 & 69.44 & \bf86.11 & \bf86.11 & \bf95.83 & 94.44\\ 
+  &  & \bf PC &  2.55 & \bf 2.54 & \bf 0.03 &  0.03 & \bf 0.04 &  0.04 & 70.14 & \bf72.22 & 84.03 & \bf86.11 & \bf95.83 & 95.14\\[3pt] 
+  & \bf MMC & \bf NC & \bf 8.44 & 11.03 & \bf 0.12 &  0.14 & \bf 0.15 &  0.17 & \bf50.69 & 49.31 & \bf81.94 & 70.14 & \bf94.44 & 86.81\\ 
+  &  & \bf PC &  9.55 & 11.16 &  0.13 &  0.14 &  0.15 &  0.16 & \bf50.69 & 47.92 & 77.08 & 68.75 & 90.28 & 84.72\\[3pt] 
+  & \bf TMC & \bf NC & \bf 8.74 & 11.64 & \bf 0.12 &  0.14 & \bf 0.15 &  0.17 & \bf49.31 & 46.53 & \bf79.17 & 69.44 & \bf93.75 & 82.64\\ 
+  &  & \bf PC &  9.99 & 11.66 &  0.13 &  0.14 &  0.15 &  0.17 & 45.14 & 44.44 & 75.69 & 67.36 & 88.89 & 82.64\\[3pt] 
+  \hline 
+  \end{tabular} 
+  \caption{Results of the posterior predictive checking in total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC) from fitting the 12 candidate models in Angola. Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) temporal prior. For all combinations, the within-sample continuous ranked probability scores (CRPS), mean absolute error (MAE), root mean square error (RMSE), and the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles are shown.} 
+  \label{tab::PPC1AGO} 
+\end{table}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+{\linespread{1} 
+  \begin{table}[H] 
+  \centering 
+  \footnotesize 
+  \begin{tabular}{>{\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \hline  
+  & & & \multicolumn{2}{c}{\bf CRPS} & \multicolumn{2}{c}{\bf MAE} & \multicolumn{2}{c}{\bf RMSE} & \multicolumn{2}{c}{\bf 50\% CI} & \multicolumn{2}{c}{\bf 80\% CI} & \multicolumn{2}{c}{\bf 95\% CI}  \\ 
+  \cmidrule(lr){4-5} 
+  \cmidrule(lr){6-7} 
+  \cmidrule(lr){8-9} 
+  \cmidrule(lr){10-11} 
+  \cmidrule(lr){12-13} 
+  \cmidrule(lr){14-15} 
+  & & & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV}\\ 
+  \hline 
+    \multicolumn{8}{l}{\textbf{ AR1 }} \\ 
+ & \bf MC & \bf NC & 103.32 & 107.35 &   0.11 &   0.12 &   0.14 &   0.14 & \bf 49.35 &  48.67 &  73.93 & \bf 74.98 &  87.83 & \bf 88.63\\ 
+  &  & \bf PC & \bf102.95 & 108.18 & \bf  0.11 &   0.12 & \bf  0.14 &   0.14 &  49.23 &  48.12 &  73.93 &  74.12 &  88.14 &  88.33\\[3pt] 
+  & \bf MMC & \bf NC &  19.22 &  21.41 & \bf  0.02 &   0.03 & \bf  0.04 &   0.04 &  82.58 & \bf 82.71 &  90.92 &  90.74 & \bf 96.73 &  96.42\\ 
+  &  & \bf PC & \bf 19.17 &  21.38 &   0.02 &   0.03 &   0.04 &   0.04 &  82.52 & \bf 82.71 & \bf 90.98 &  90.61 &  96.66 &  96.48\\[3pt] 
+  & \bf TMC & \bf NC &  93.68 &  93.94 &   0.10 &   0.10 &   0.13 &   0.13 & \bf 52.25 &  51.76 &  75.66 &  75.79 &  89.75 & \bf 90.24\\ 
+  &  & \bf PC & \bf 93.12 &  94.77 & \bf  0.10 &   0.11 & \bf  0.13 &   0.13 &  52.07 &  51.51 &  75.73 & \bf 76.03 &  89.87 & \bf 90.24\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW1 }} \\ 
+ & \bf MC & \bf NC & 103.16 & 107.12 &   0.11 &   0.11 &   0.14 &   0.14 & \bf 49.35 &  48.86 &  74.00 &  74.31 &  88.26 &  88.39\\ 
+  &  & \bf PC & \bf102.58 & 108.10 & \bf  0.11 &   0.12 & \bf  0.14 &   0.14 &  49.10 &  48.49 & \bf 74.74 &  74.24 & \bf 88.45 &  88.20\\[3pt] 
+  & \bf MMC & \bf NC &  19.19 &  21.42 & \bf  0.02 &   0.03 & \bf  0.04 &   0.04 &  82.64 &  82.46 & \bf 91.17 &  90.61 &  96.48 &  96.05\\ 
+  &  & \bf PC & \bf 19.17 &  21.30 &   0.02 &   0.03 &   0.04 &   0.04 &  82.64 & \bf 82.71 & \bf 91.17 &  90.55 & \bf 96.54 &  96.36\\[3pt] 
+  & \bf TMC & \bf NC &  93.67 &  93.67 &   0.10 &   0.10 &   0.13 &   0.13 &  52.50 &  52.38 &  75.73 & \bf 76.53 &  89.50 & \bf 90.55\\ 
+  &  & \bf PC & \bf 92.88 &  94.65 & \bf  0.10 &   0.11 & \bf  0.13 &   0.13 & \bf 52.63 &  51.95 &  76.03 &  76.22 &  90.12 &  90.43\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW2 }} \\ 
+ & \bf MC & \bf NC & 102.75 & 108.16 & \bf  0.11 &   0.12 & \bf  0.14 &   0.14 &  49.60 &  48.73 &  73.50 &  73.19 &  87.96 &  87.83\\ 
+  &  & \bf PC & \bf102.52 & 109.14 &   0.11 &   0.12 &   0.14 &   0.14 & \bf 49.97 &  47.93 & \bf 73.69 &  73.13 & \bf 88.14 &  87.71\\[3pt] 
+  & \bf MMC & \bf NC &  19.14 &  21.29 & \bf  0.02 &   0.03 & \bf  0.04 &   0.04 &  82.71 &  82.33 &  90.74 &  90.61 &  96.48 & \bf 96.85\\ 
+  &  & \bf PC & \bf 19.07 &  21.22 &   0.02 &   0.03 &   0.04 &   0.04 &  82.58 & \bf 82.89 & \bf 91.17 &  90.61 &  96.54 &  96.48\\[3pt] 
+  & \bf TMC & \bf NC &  93.46 &  94.72 &   0.10 &   0.10 & \bf  0.13 &   0.13 & \bf 52.69 &  52.01 &  75.11 & \bf 75.73 & \bf 89.56 & \bf 89.56\\ 
+  &  & \bf PC & \bf 93.03 &  95.62 & \bf  0.10 &   0.11 &   0.13 &   0.13 &  52.32 &  51.95 &  75.23 &  75.48 &  89.38 &  89.38\\[3pt] 
+  \hline 
+  \end{tabular} 
+  \caption{Results of the posterior predictive checking in total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC) from fitting the 12 candidate models in Rwanda. Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) temporal prior. For all combinations, the within-sample continuous ranked probability scores (CRPS), mean absolute error (MAE), root mean square error (RMSE), and the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles are shown.} 
+  \label{tab::PPC1RWA} 
+\end{table}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+{\linespread{1} 
+  \begin{table}[H] 
+  \centering 
+  \footnotesize 
+  \begin{tabular}{>{\bfseries}p{0.05cm} p{0.85cm} p{0.75cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm} C{1.25cm}} 
+  \hline  
+  & & & \multicolumn{2}{c}{\bf CRPS} & \multicolumn{2}{c}{\bf MAE} & \multicolumn{2}{c}{\bf RMSE} & \multicolumn{2}{c}{\bf 50\% CI} & \multicolumn{2}{c}{\bf 80\% CI} & \multicolumn{2}{c}{\bf 95\% CI}  \\ 
+  \cmidrule(lr){4-5} 
+  \cmidrule(lr){6-7} 
+  \cmidrule(lr){8-9} 
+  \cmidrule(lr){10-11} 
+  \cmidrule(lr){12-13} 
+  \cmidrule(lr){14-15} 
+  & & & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV} & {\bf TI} & {\bf TV}\\ 
+  \hline 
+    \multicolumn{8}{l}{\textbf{ AR1 }} \\ 
+ & \bf MC & \bf NC & 269.89 & 269.82 &   0.20 &   0.20 &   0.26 &   0.26 &  60.49 &  60.34 & \bf 84.32 & \bf 84.32 &  95.22 &  95.41\\ 
+  &  & \bf PC & 269.87 & \bf269.35 & \bf  0.20 &   0.20 &   0.26 & \bf  0.26 & \bf 61.46 &  60.75 &  84.02 &  83.91 &  95.33 & \bf 95.44\\[3pt] 
+  & \bf MMC & \bf NC & \bf207.28 & 208.34 & \bf  0.15 &   0.15 & \bf  0.21 &   0.21 &  68.37 & \bf 68.75 & \bf 86.82 &  86.52 & \bf 96.12 &  95.86\\ 
+  &  & \bf PC & 208.05 & 208.27 &   0.15 &   0.15 &   0.21 &   0.21 &  68.67 &  68.63 & \bf 86.82 &  86.56 &  96.08 &  95.86\\[3pt] 
+  & \bf TMC & \bf NC & \bf192.53 & 193.70 &   0.15 &   0.15 &   0.21 &   0.21 &  66.73 & \bf 66.77 &  87.42 & \bf 87.68 &  96.38 &  96.15\\ 
+  &  & \bf PC & 195.03 & 195.04 & \bf  0.15 &   0.15 & \bf  0.21 &   0.21 &  65.57 & \bf 66.77 &  86.37 &  86.82 &  95.93 & \bf 96.45\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW1 }} \\ 
+ & \bf MC & \bf NC & 268.77 & \bf268.14 &   0.20 &   0.20 &   0.26 &   0.26 &  60.60 &  60.38 &  84.84 & \bf 84.91 &  95.29 & \bf 95.86\\ 
+  &  & \bf PC & 268.70 & 268.53 & \bf  0.20 &   0.20 & \bf  0.26 &   0.26 & \bf 61.20 &  60.72 &  84.06 &  84.54 &  95.37 &  95.71\\[3pt] 
+  & \bf MMC & \bf NC & \bf206.15 & 207.60 & \bf  0.15 &   0.15 & \bf  0.21 &   0.21 &  68.89 &  68.60 & \bf 86.97 &  86.63 &  96.19 &  96.23\\ 
+  &  & \bf PC & 206.97 & 207.50 &   0.15 &   0.15 &   0.21 &   0.21 &  68.26 & \bf 68.97 &  86.86 &  86.74 & \bf 96.27 &  96.04\\[3pt] 
+  & \bf TMC & \bf NC & \bf187.90 & 189.39 & \bf  0.15 &   0.15 &   0.21 &   0.21 & \bf 68.19 &  67.74 &  88.65 & \bf 88.69 & \bf 97.12 &  97.01\\ 
+  &  & \bf PC & 190.79 & 192.05 &   0.15 &   0.15 & \bf  0.21 &   0.21 &  67.18 &  67.36 &  87.79 &  88.01 &  96.90 &  96.83\\[3pt] 
+    \multicolumn{8}{l}{\textbf{ RW2 }} \\ 
+ & \bf MC & \bf NC & 269.67 & 269.03 &   0.20 &   0.20 &   0.26 &   0.26 &  60.60 &  60.53 &  84.24 & \bf 84.76 &  95.22 & \bf 95.71\\ 
+  &  & \bf PC & 269.22 & \bf268.89 & \bf  0.20 &   0.20 & \bf  0.26 &   0.26 & \bf 61.09 &  60.60 &  83.94 &  84.35 &  95.44 &  95.63\\[3pt] 
+  & \bf MMC & \bf NC & \bf206.24 & 207.68 & \bf  0.15 &   0.15 & \bf  0.21 &   0.21 &  68.71 & \bf 68.93 & \bf 86.97 &  86.56 &  96.23 & \bf 96.27\\ 
+  &  & \bf PC & 207.47 & 208.20 &   0.15 &   0.15 &   0.21 &   0.21 &  68.19 &  68.45 &  86.78 &  86.67 &  96.19 &  96.23\\[3pt] 
+  & \bf TMC & \bf NC & \bf188.42 & 190.27 & \bf  0.15 &   0.15 & \bf  0.21 &   0.21 &  67.70 & \bf 68.00 & \bf 88.27 &  88.13 & \bf 96.90 &  96.68\\ 
+  &  & \bf PC & 191.18 & 192.74 &   0.15 &   0.15 &   0.21 &   0.21 &  66.69 &  66.95 &  87.49 &  87.90 &  96.79 &  96.60\\[3pt] 
+  \hline 
+  \end{tabular} 
+  \caption{Results of the posterior predictive checking in total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC) from fitting the 12 candidate models in South Africa. Combinations include (i) Time invariant (TI) or Time variant (TV) TMC, (ii) No cut off (NC) vs. Paediatric cut-off (PC) in MMC, and (iii) Autoregressive order 1 (AR1), Random Walk 1 (RW1) or Random Walk 2 (RW2) temporal prior. For all combinations, the within-sample continuous ranked probability scores (CRPS), mean absolute error (MAE), root mean square error (RMSE), and the proportion of empirical observations that fell within the 50\%, 80\%, and 95\% quantiles are shown.} 
+  \label{tab::PPC1ZAF} 
+\end{table}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
