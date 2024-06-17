@@ -115,7 +115,7 @@ remaining gaps towards VMMC HIV prevention targets requires detailed district-le
 coverage data.
 
 ## Methods
-We analysed self-reported data on male circumcision from 123 nationally representative household surveys conducted in x SSA countries between 2006 and 2020.
+We analysed self-reported data on male circumcision from 123 nationally representative household surveys conducted in 34 SSA countries between 2006 and 2020.
 A spatio-temporal Bayesian competing-risks time-to-event model was used to estimate rates of traditional and medical circumcision by age, location, and time.
 Circumcision coverage in 2020 was projected assuming continuation of estimated age-specific rates, with probabilistic uncertainty.
 
@@ -146,7 +146,7 @@ million) traditionally circumcised.
 In 2020, MC coverage among men 10-29 years ranged from 
 `r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "MC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -154,7 +154,7 @@ In 2020, MC coverage among men 10-29 years ranged from
 to 
 `r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "MC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -162,7 +162,7 @@ to
 MMC coverage ranged from 
 `r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "MMC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -170,7 +170,7 @@ MMC coverage ranged from
 to 
 `r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "MMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -179,7 +179,7 @@ to
 from 
 `r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "TMC") %>% slice(2) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -187,7 +187,7 @@ from
 to 
 `r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(lower)`
 -
 `r max_min_cov %>% filter(type == "TMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ) in 
@@ -203,13 +203,13 @@ Within countries, the median difference in MC coverage between the districts wit
 with the smallest variation in 
 `r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 (
-`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()` 
-to 
+`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(1) %>% pull(mean)` 
+-
 `r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(2) %>% pull(mean) %>% to_percentage()` 
 ) and largest in 
 `r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(3) %>% pull(iso3) %>% to_cntry_name()`
-(`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(3) %>% pull(mean) %>% to_percentage()` 
-to 
+(`r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(3) %>% pull(mean)` 
+-
 `r max_min_within_cntry_diff %>% filter(type == "MC") %>% slice(4) %>% pull(mean) %>% to_percentage()`).
 In VMMC priority countries, 
 `r to_mill(n_remain_10_29)`
@@ -236,18 +236,19 @@ n_old_surveys <- sum(as.numeric(lapply(x0$max_unknown_type_perc$survey, \(x) {
 ```
 
 
-Our data consisted of 
+The data consisted of 
 `r x0$n_surveys_orig`
 nationally representative household surveys conducted in 
 34 
 SSA countries between 2002 and 2019.
 `r x0$n_subnat_areas`
-subnational areas amongst these countries were included in these surveys and modelled.
+subnational areas amongst these countries were included in these surveys.
 Of these 
 `r x0$n_surveys_orig`
 surveys, 
 `r x0$n_surveys`
-contained sufficient information on circumcision, as outlined in the Methods section of this paper. 
+contained sufficient information on circumcision, as outlined in section 
+\ref{sec:org020fc8c}.
 
 These remaining surveys consisted of 
 `r x0$n_respondents`
@@ -312,9 +313,10 @@ Amongst these countries, left censoring averaged
 However, every left censored individual was also circumcised, which may explain 
 the relative lack of circumcision information available in their surveys.
 
-In Guinea-Bissau, Equatorial Guinea and the Central African Republic, did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either. 
+Guinea-Bissau, Equatorial Guinea and the Central African Republic did not have any surveys containing adequate circumcision information, and we were not included in this analysis.
 
 More information on individual surveys, including participation rates, can be found in section x of the appendix. 
+
 
 ## Subnational variation in total, medical \& traditional circumcision over time
 
@@ -392,45 +394,45 @@ million
 - 
 `r n_circs[[2]] %>% filter(type == "TMC") %>% pull(upper) %>% to_mill()` 
 million) new TMCs performed. 
-The disparity between the number of MCs performed and the number of MMCs performed can be partly explained by recalling that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC.
+The disparity between the number of MCs performed and the number of MMCs performed can be partially attributed to the fact that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC.
 This translated to a change in mean MC coverage for the SSA region from 
 `r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(upper)` 
 - 
-`r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()` ) 
+`r covs[[1]] %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()`) 
 in 2006 to 
 `r covs[[1]] %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2020, type == "MC") %>% pull(upper) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2020, type == "MC") %>% pull(upper)` 
 - 
 `r covs[[1]] %>% filter(year == 2020, type == "MC") %>% pull(lower) %>% to_percentage()`)
 in 2020, or an increase of
 `r covs[[2]] %>% filter(type == "MC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[2]] %>% filter(type == "MC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[2]] %>% filter(type == "MC") %>% pull(lower)` 
 - 
 `r covs[[2]] %>% filter(type == "MC") %>% pull(upper) %>% to_percentage()`).
 MMC coverage increased from 
 `r covs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(lower))` 
 - 
-`r covs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()` ) 
+`r covs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()`) 
 in 2006 to 
 `r covs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(lower)` 
 - 
 `r covs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_percentage()`) 
 in 2020, an increase of 
 `r covs[[2]] %>% filter(type == "MMC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[2]] %>% filter(type == "MMC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[2]] %>% filter(type == "MMC") %>% pull(lower)` 
 - 
 `r covs[[2]] %>% filter(type == "MMC") %>% pull(upper) %>% to_percentage()`).
 while TMC changed from 
 `r covs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(lower)` 
 - 
 `r covs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_percentage()`)
 in 2006 to 
 `r covs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(mean) %>% to_percentage()` 
-(`r covs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(lower) %>% to_percentage()` 
+(`r covs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(lower)` 
 - 
 `r covs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(upper) %>% to_percentage()`)
 in 2020, a decrease of
@@ -442,84 +444,84 @@ in 2020, a decrease of
 <!-- TODO: Need to change this to be filtered by year as well!! -->
 MC coverage in each country in 2006 ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(lower)`
 - 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(lower)`
 - 
-(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
+`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`, 
 while MMC in 2006 ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(2) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 and TMC ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(1) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`.
 In contrast, in 2020 MC coverage was estimated to have ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(2) %>% pull(lower)`
 - 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(1) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2020) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`, 
 while MMC ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(2) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to
-`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(mean) %>% to_percentage()`
+`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(mean)`
 (`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(lower) %>% to_percentage()`
 - 
-(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
+(`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(upper)`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2020) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 and TMC ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(2) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(2) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(2) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(2) %>% pull(upper) %>% to_percentage()`)
 in 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(2) %>% pull(iso3) %>% to_cntry_name()`
 to 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(1) %>% pull(lower)`
 - 
 (`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2020) %>% slice(1) %>% pull(upper) %>% to_percentage()`)
 in 
@@ -531,17 +533,17 @@ in
 `r iso3_cov_diffs %>% filter(type == "MC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 at
 `r iso3_cov_diffs %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_diffs %>% filter(type == "MC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_diffs %>% filter(type == "MC") %>% slice(1) %>% pull(lower)`
 -
 `r iso3_cov_diffs %>% filter(type == "MC") %>% slice(1) %>% pull(upper) %>% to_percentage()`),
 from 
 `r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2006) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2006) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2006) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2006) %>% pull(upper) %>% to_percentage()`)
 in 2006 to 
 `r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2020) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2020) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2020) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "MC", year == 2020) %>% pull(upper) %>% to_percentage()`)
 in 2020,
@@ -549,17 +551,17 @@ while the highest percentage increase in MMC was also in
 `r iso3_cov_diffs %>% filter(type == "MMC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 at
 `r iso3_cov_diffs %>% filter(type == "MMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_diffs %>% filter(type == "MMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_diffs %>% filter(type == "MMC") %>% slice(1) %>% pull(lower)`
 -
 `r iso3_cov_diffs %>% filter(type == "MMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`),
 from 
 `r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2006) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2006) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2006) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2006) %>% pull(upper) %>% to_percentage()`)
 in 2006 to 
 `r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2020) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2020) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2020) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "MMC", year == 2020) %>% pull(upper) %>% to_percentage()`)
 in 2020. 
@@ -567,17 +569,17 @@ For TMC, the largest percentage decrease between 2006 and 2020 was in
 `r iso3_cov_diffs %>% filter(type == "TMC") %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
 at
 `r iso3_cov_diffs %>% filter(type == "TMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_diffs %>% filter(type == "TMC") %>% slice(1) %>% pull(upper) %>% to_percentage()`
+(`r iso3_cov_diffs %>% filter(type == "TMC") %>% slice(1) %>% pull(upper)`
 -
 `r iso3_cov_diffs %>% filter(type == "TMC") %>% slice(1) %>% pull(lower) %>% to_percentage()`),
 from 
 `r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2006) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2006) %>% pull(lower) %>% to_percentage()`
+(`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2006) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2006) %>% pull(upper) %>% to_percentage()`)
 in 2006 to 
-`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2020) %>% pull(mean) %>% to_percentage()`
-(`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2020) %>% pull(mean)`
+(`r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2020) %>% pull(lower)`
 -
 `r iso3_cov_2006_2020 %>% filter(type == "TMC", year == 2020) %>% pull(upper) %>% to_percentage()`)
 in 2020.
@@ -645,12 +647,10 @@ The smallest variation was in
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "MC") %>% pull(iso3) %>% last() %>% to_cntry_name()`, 
 at 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(2) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(1) %>% pull(area_name)`
 ,
@@ -658,12 +658,10 @@ while the largest variation was in
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "MC") %>% pull(iso3) %>% first() %>% to_cntry_name()`, 
 at 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(4) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(4) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(3) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MC") %>% slice(3) %>% pull(area_name)`.
 The median difference within countries in MMC coverage between districts with lowest and highest coverage in 2020 was `r district_diffs_vmmc$median_cov_diffs %>% filter(type == "MMC") %>% pull(mean) %>% to_percentage()`
@@ -671,24 +669,20 @@ The smallest variation was in
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "MMC") %>% pull(iso3) %>% last() %>% to_cntry_name()`, 
 at
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
-\%
 in
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(2) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(1) %>% pull(area_name)`,
 while the largest variation was in 
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "MMC") %>% pull(iso3) %>% first() %>% to_cntry_name()`, 
 at 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(4) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(4) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(3) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "MMC") %>% slice(3) %>% pull(area_name)`.
 For TMC coverage, the median difference between districts in 2020 was 
@@ -697,24 +691,20 @@ The smallest variation was in
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "TMC") %>% pull(iso3) %>% last() %>% to_cntry_name()`, 
 at
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(2) %>% pull(mean) %>% to_percentage()`
-\%
 in
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(2) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(1) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(1) %>% pull(area_name)`,
 while the largest variation was in 
 `r district_diffs_vmmc$country_cov_diffs %>% filter(type == "TMC") %>% pull(iso3) %>% first() %>% to_cntry_name()`, 
 at 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(4) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(4) %>% pull(area_name)`
 to
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(3) %>% pull(mean) %>% to_percentage()`
-\%
 in 
 `r district_diffs_vmmc$country_cov_highest_lowest %>% filter(type == "TMC") %>% slice(3) %>% pull(area_name)`.
 <!-- Anything else? --->
@@ -747,7 +737,7 @@ which had the highest MC coverage across the SSA region was
 at 
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2006) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2006) %>% pull(upper) %>% to_percentage()`
 )
@@ -757,7 +747,7 @@ In contrast, the age group with the highest MC coverage in 2020 was
 at
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2020) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MC", year == 2020) %>% pull(upper) %>% to_percentage()`
 ).
@@ -766,7 +756,7 @@ The five-year age group in 2006 which had the highest MMC coverage was
 at 
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2006) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2006) %>% pull(upper) %>% to_percentage()`
 )
@@ -776,7 +766,7 @@ The age group with the highest MMC coverage in 2020 was also
 , now at
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2020) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "MMC", year == 2020) %>% pull(upper) %>% to_percentage()`
 ).
@@ -785,7 +775,7 @@ The five-year age group in 2006 which had the highest TMC coverage was
 at 
 `r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2006) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2006) %>% pull(upper) %>% to_percentage()`
 )
@@ -795,7 +785,7 @@ The age group with the highest TMC coverage in 2020 was
 ,
 `r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2020) %>% pull(lower)`
 -
 `r age_group_cov$fyag_highest_covs %>% filter(type == "TMC", year == 2020) %>% pull(upper) %>% to_percentage()`
 ).
@@ -815,28 +805,28 @@ are a particular focus for VMMC implementation, and 30-49 year olds, which are n
 MC coverage amongst 15-29 year olds increased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
 In contrast, MC coverage amongst 30-49 year olds only increased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -845,27 +835,27 @@ with VMMC programme age focus.
 Similarly, MMC coverage amongst 15-29 year olds increased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while MMC coverage amongst 30-49 year olds increased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -875,27 +865,27 @@ The changes seen in TMC, however, contrast to these larger increases in MC and M
 TMC coverage amongst 15-29 year olds decreased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while TMC coverage amongst 30-49 year olds decreased from 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -913,7 +903,7 @@ For VMMC priority countries, five-year age group MC coverage 2006 was highest am
 year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()`
 ), but in 2020 was highest amongst
@@ -921,7 +911,7 @@ year olds, at
 year olds, at
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(upper) %>% to_percentage()`
 ), respectively. 
@@ -933,7 +923,7 @@ In 2006 MMC coverage was highest amongst
  year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ). 
@@ -942,7 +932,7 @@ This contrasts with 2020, where MMC coverage was highest amongst
  year olds, at
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ).
@@ -953,7 +943,7 @@ In 2006, TMC coverage was greatest in
 year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_percentage()`
 ). while in 2020 it was most prevalent in
@@ -961,7 +951,7 @@ year olds, at
 year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
  - 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_percentage()`.
 This perhaps highlights that VMMC implementation has been focused on areas where 
@@ -974,13 +964,13 @@ The five-year age group MC coverage in both 2006 and 2020 was highest amongst
 year olds, at 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()`
 ) and 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MC") %>% pull(upper) %>% to_percentage()`
 ), respectively. 
@@ -990,7 +980,7 @@ However, in 2006 MMC coverage was highest amongst
  year olds, at 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ). 
@@ -999,7 +989,7 @@ This contrasts with 2020, where MMC coverage was highest amongst
  year olds, at
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ), showing an interesting shift upwards in age for MMCs in non-VMMC priority countries, as a result of VMMC focus on young adults, as well as a general increase in MMC coverage in these countries. 
@@ -1008,7 +998,7 @@ In 2006, TMC coverage was greatest in
 year olds, at 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_percentage()`
 ). while in 2020 it was most prevalent in
@@ -1016,7 +1006,7 @@ year olds, at
 year olds, at 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_percentage()`
  (
-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
  - 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_percentage()`, highlighting a shift upwards in TMCs in VMMC priority countries, 
 likely resulting from previously TMCs being performed as TMCs. 
@@ -1027,28 +1017,28 @@ in both VMMC and non-VMMC countries, respectively.
 In VMMC priority countries, MC coverage amongst 15-29 year olds increased from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
 In contrast, MC coverage in 30-49 year olds went from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -1056,27 +1046,27 @@ Therefore, MC coverage in VMMC priority countries increased amongst 15-29 year o
 Similarly, MMC coverage amongst 15-29 year olds increased from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while MMC coverage amongst 30-49 year olds increased from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -1086,27 +1076,27 @@ Again, TMC coverage amongst both fifteen year age groups contrast to these incre
 TMC coverage amongst 15-29 year olds decreased from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while TMC coverage amongst 30-49 year olds decreased from 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -1117,28 +1107,28 @@ younger age group.
 In contrast, for non-VMMC priority countries, MC coverage in 15-29 year olds increased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, staying relatively similar. 
 MC coverage in 30-49 year olds also increased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(lower)` 
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, so again, when taking our credible intervals into account, there was little 
@@ -1148,27 +1138,27 @@ than amongst 15-29, defying the trend amongst VMMC priority countries and SSA as
 MMC coverage amongst 15-29 year olds increased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while MMC coverage amongst 30-49 year olds increased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "MMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -1177,27 +1167,27 @@ than in 15-29 year olds, but not much change overall when factoring in our uncer
 TMC coverage amongst 15-29 year olds decreased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "15-29", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, while TMC coverage amongst 30-49 year olds decreased from 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2006) %>% pull(upper) %>% to_percentage()`
 ) in 2006
 to
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_percentage()`
+`r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower)`
 - 
 `r age_group_cov_non_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020. 
@@ -1408,14 +1398,14 @@ Country with largest drop (CIV and ? in VMMC)
 The average TMC coverage in SSA in 2006 was 
 `r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower)`
 to 
 `r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ). 
 This fell to 
 `r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower)`
 to 
 `r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, a decrease of 
@@ -1423,14 +1413,14 @@ to
 In non-VMMC priority countries, TMC coverage was 
 `r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ). 
 This fell to 
 `r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, representing a decrease of 
@@ -1439,14 +1429,14 @@ to
 In contrast, TMC coverage in VMMC priority countries was 
 `r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower)`
 to 
 `r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ). 
 This fell to 
 `r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower)`
 to 
 `r tmc_cov_vmmc$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`
 ) in 2020, representing a decrease of 
@@ -1517,13 +1507,13 @@ We can also compare the differences in TMC coverage change between 15-29 and
 For the 15-29 age group, TMC coverage was reduced from 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2020, a drop of 
@@ -1532,13 +1522,13 @@ to
 This contrasted with the 30-49 age group, where TMC coverage went from 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_ssa_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2020, a drop of 
@@ -1551,13 +1541,13 @@ this age group.
 For the 15-29 year olds in non-VMMC priority countries, TMC coverage was reduced from 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2020, a drop of 
@@ -1566,13 +1556,13 @@ to
 This contrasted with the 30-49 age group, where TMC coverage went from 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_non_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2020, a drop of 
@@ -1585,13 +1575,13 @@ for 15-29 year olds versus 30-49 year olds is less pronounced.
 For VMMC priority countries, the 15-29 age group, TMC coverage was reduced from 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(lower)`
 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "15-29") %>% pull(upper) %>% to_percentage()`
 ) in 2020, representing a fall of 
@@ -1600,13 +1590,13 @@ to
 In the 30-49 age group, TMC coverage in VMMC priority countries dropped from 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2006, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(mean) %>% to_percentage()`
 (
-`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower) %>% to_percentage()`
+`r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(lower)`
 to 
 `r tmc_cov_vmmc_15_29_30_49[[1]] %>% filter(year == 2020, age_group == "30-49") %>% pull(upper) %>% to_percentage()`
 ) in 2020, a drop of 
@@ -1622,13 +1612,13 @@ The largest decrease in TMC coverage from 2006 to 2020 was in
 fell from 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower)`
  to 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ) to 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower)`
  to 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`, a 
 decrease of 
@@ -1640,13 +1630,13 @@ The largest decrease in TMC coverage amongst VMMC countries was from
 fell from 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(mean) %>% to_percentage()`
 (
-`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower) %>% to_percentage()`
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(lower)`
 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2006) %>% pull(upper) %>% to_percentage()`
 ) to 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_percentage()`
 (
-`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_percentage()`
+`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower)`
  - 
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_percentage()`, a 
 decrease of 
@@ -1696,78 +1686,78 @@ No countries were expected to have reached these goals in all districts.
 MC coverage amongst 10-29 year olds across VMMC priority countries increased from 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(upper) %>% to_percentage()`
 ) in 2020, 
 an increase of 
 `r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MC") %>% pull(lower)`
 - 
 `r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MC") %>% pull(upper) %>% to_percentage()`
 ).
 MMC coverage amongst 10-29 year olds across VMMC priority countries increased from 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_percentage()`
-to 
+`r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
+- 
 `r vmmc_cov_diff_10_29$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ) in 2020, an increase of 
 `r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MMC") %>% pull(lower)`
 - 
 `r vmmc_cov_diff_10_29$cov_diff %>% filter(type == "MMC") %>% pull(upper) %>% to_percentage()`
 ).
 MC coverage amongst 15-49 year olds across VMMC priority countries increased from 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MC") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MC") %>% pull(upper) %>% to_percentage()`
 ) in 2020, 
 an increase of 
 `r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MC") %>% pull(lower)`
 - 
 `r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MC") %>% pull(upper) %>% to_percentage()`
 ).
 MMC coverage amongst 15-49 year olds across VMMC priority countries increased from 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ) in 2006 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
 to 
 `r vmmc_cov_diff_15_49$mean_cov %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_percentage()`
 ) in 2020, an increase of 
 `r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(mean) %>% to_percentage()`
 (
-`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(lower) %>% to_percentage()`
+`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(lower)`
 - 
 `r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(upper) %>% to_percentage()`
 ).
@@ -1920,7 +1910,7 @@ MC coverage in 2020 for 10-29 year olds in VMMC priority countries was highest i
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ), and lowest in 
@@ -1928,7 +1918,7 @@ at
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
 .
@@ -1937,7 +1927,7 @@ For 15-49 year olds, the highest MC coverage was in
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ), and lowest in 
@@ -1945,7 +1935,7 @@ at
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
 .
@@ -1954,7 +1944,7 @@ MMC coverage for 10-29 year olds in VMMC priority countries was highest in
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ), and lowest in 
@@ -1962,7 +1952,7 @@ at
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
 .
@@ -1971,7 +1961,7 @@ For 15-49 year olds, the highest MMC coverage was in
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(1) %>% pull(upper) %>% to_percentage()`
 ), and lowest in 
@@ -1979,7 +1969,7 @@ at
 at 
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(mean) %>% to_percentage()`
 (
-`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower) %>% to_percentage()`
+`r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(lower)`
 -
 `r largest_smallest_vmmc %>% filter(year == 2020, type == "MMC", age_group == "10-29") %>% slice(n()) %>% pull(upper) %>% to_percentage()`
 .
@@ -1989,19 +1979,19 @@ The largest increase from 2006 to 2020 in MC coverage for 10-29 year olds amongs
 from 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2006) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006)`
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_2006) %>% to_percentage()`
 ) in 2006 to 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020)` 
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 ) in 2020, a 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_mean) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower)`
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_upper) %>% to_percentage()`
 ) increase. 
@@ -2009,19 +1999,19 @@ In contrast, the lowest increase in MC coverage in these countries was in
 from 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2006) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(lower_2006)`
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(upper_2006) %>% to_percentage()`
 ) in 2006 to 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020)`
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(mean_2020) %>% to_percentage()`
 ) in 2020, a 
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_mean) %>% to_percentage()`
 (
-`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower) %>% to_percentage()`
+`r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_lower)`
 -
 `r increase_vmmc %>% filter(type == "MC", age_group == "10-29") %>% slice(1) %>% pull(diff_upper) %>% to_percentage()`
 ) increase. 
