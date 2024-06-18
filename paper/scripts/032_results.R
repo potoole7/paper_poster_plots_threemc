@@ -609,7 +609,7 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
   mutate(
     code = ifelse(code == "NAM", "NA", code),
     # add area_id from iso2 codes
-    area_id = countrycode::countrycode(
+    code = countrycode::countrycode(
       code, origin = 'iso2c', destination = 'iso3c'
     ),
     # standardise names to match elsewhere in paper
@@ -626,8 +626,7 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
   ) %>%
   filter(
     name %in% c(ssa_countries, "Gin. Bissau", "Eq. Guinea", "Cent. Af. Rep.")
-  ) %>% 
-  select(-code)
+  )
 
 # fill in Liberia
 results_mc_lbr <- results_age %>% 
@@ -681,9 +680,7 @@ if (min_col > 1) {
     mutate(col = col - (min_col - 1))
 }
 
-# ensure only row, col and area_name area included in ssa_grid
-# ssa_grid <- select(ssa_grid, name, col, row)
-ssa_grid <- rename(ssa_grid, code = area_id)
+# ssa_grid <- rename(ssa_grid, code = area_id)
 
 p4_geo <- p4 +
   # geofacet based on SSA shape
