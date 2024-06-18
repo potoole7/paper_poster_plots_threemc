@@ -22,7 +22,10 @@ library(glue)
 library(ggtext)
 # library(cowplot)
 library(patchwork)
+library(ggpattern)
 library(gridExtra)
+library(nngeo)
+library(ggnewscale)
 source("Shiny/src/functions.R") # plotting functions
 source("paper_poster_plots_threemc/paper/scripts/00_funs.R")
 
@@ -390,20 +393,23 @@ p2final <- plt_coverage_map_change(
 )
 
 # dev.new(width = 6.3, height = 6.5,  noRStudioGD = TRUE)
+# pdf(file = "test.png", width = 6.3, height = 6.5)
 # p2final
 # dev.off()
 
+
+
 # save object for org-mode paper draft
-saveRDS(
-  p2final,
-  "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.RDS"
-)
+# saveRDS(
+#   p2final,
+#   "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.RDS"
+# )
 
 # save plots
 ggsave(
 # png(
-  # "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.pdf", 
-  "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.png", 
+  # "paper_poster_plots_threemc/paper/plots/02_map_plot_facet.png", 
+  "test.png", 
   p2final,
   width = 6.3, 
   height = 6.5, 
@@ -597,10 +603,16 @@ results_age <- readr::read_csv(
 )
 results_age$iso3 <- substr(results_age$area_id, 0, 3)
 
-# grid for geofaceting, standardise country names
+# grid for geofaceting
 ssa_grid <- geofacet::africa_countries_grid1 %>%
   as_tibble() %>% 
   mutate(
+    code = ifelse(code == "NAM", "NA", code),
+    # add area_id from iso2 codes
+    area_id = countrycode::countrycode(
+      code, origin = 'iso2c', destination = 'iso3c'
+    ),
+    # standardise names to match elsewhere in paper
     name = case_when(
       grepl("Ivoire", name)                      ~ "Cote d'Ivoire",
       name == "Gambia"                           ~ "The Gambia",
@@ -614,7 +626,8 @@ ssa_grid <- geofacet::africa_countries_grid1 %>%
   ) %>%
   filter(
     name %in% c(ssa_countries, "Gin. Bissau", "Eq. Guinea", "Cent. Af. Rep.")
-  )
+  ) %>% 
+  select(-code)
 
 # fill in Liberia
 results_mc_lbr <- results_age %>% 
@@ -668,6 +681,10 @@ if (min_col > 1) {
     mutate(col = col - (min_col - 1))
 }
 
+# ensure only row, col and area_name area included in ssa_grid
+# ssa_grid <- select(ssa_grid, name, col, row)
+ssa_grid <- rename(ssa_grid, code = area_id)
+
 p4_geo <- p4 +
   # geofacet based on SSA shape
   geofacet::facet_geo(~ area_name, grid = ssa_grid) +
@@ -681,22 +698,31 @@ p4_geo <- p4 +
   # remove x-axis
   # labs(y = "") +  
   labs(
-    x = "Age, 2020",
+    x = "Age (Years), 2020",
     y = "Circumcision Coverage (%)"
   ) + 
   # labs(title = "",
   #   y = "Circumcision coverage by age, 2020"
   # ) + 
+  # annotate(
+  #   "text", x = -Inf, y = Inf, label = "Y Axis Label", hjust = 0, vjust = 1
+  # ) + 
+  # annotation_custom(
+  #   grob = grid::textGrob("Y Axis Label", rot = 90, gp = grid::gpar(fontsize = 12)), 
+  #   xmin = -Inf, xmax = -Inf, ymin = Inf, ymax = Inf
+  # ) + 
   theme(
     axis.text.x     = element_text(size = rel(1.1)),
-    # axis.title.x    = element_text(size = rel(1.5)),
-    axis.title.x    = element_text(size = rel(1.2)),
+    # axis.title.x    = element_text(size = rel(1.2)),
+    axis.title.x    = element_text(size = 12),
     axis.text.y     = element_text(size = rel(1.1)),
-    axis.title.y    = element_text(size = rel(1.2)),
+    axis.title.y    = element_text(size = rel(1.2), hjust = 0.97),
+    # axis.title.y    = element_blank(),
+    # axis.title.y = element_text(vjust = 1, hjust = 0.5, angle = 90, margin = margin(t = 20)),
     legend.text     = element_text(size = rel(1.2)),
     legend.direction = "vertical",
-    # legend.position = "bottom",
-    legend.position = c(0.15, 0.2),
+    # legend.position = c(0.15, 0.2),
+    legend.position = c(0.15, 0.12),
     # legend.justification = "left",
     # strip.text      = element_text(size = 7.5), # , hjust = -0.1),
     strip.text      = element_text(size = 6.8, face = "bold"), # , hjust = -0.1),
@@ -708,13 +734,14 @@ p4_geo <- p4 +
     panel.grid.major.y = element_blank()
   )
 
-dev.new(width = 6.3, height = 8,  noRStudioGD = TRUE)
-p4_geo
-dev.off()
+# dev.new(width = 6.3, height = 8,  noRStudioGD = TRUE)
+# p4_geo
+# dev.off()
 
-saveRDS(p4_geo, "paper_poster_plots_threemc/paper/plots/04_geo_age.RDS")
+# saveRDS(p4_geo, "paper_poster_plots_threemc/paper/plots/04_geo_age.RDS")
 ggplot2::ggsave(
-  "paper_poster_plots_threemc/paper/plots/04_geo_age.png", 
+  # "paper_poster_plots_threemc/paper/plots/04_geo_age.png", 
+  "test.png", 
   p4_geo, 
   width = 6.3, 
   height = 8,
@@ -2132,10 +2159,11 @@ vmmc_cov_diff_15_49 <- cov_fun(results_agegroup_vmmc_spec, age_group = "15-49")
 cum_vmmc_circs_performed <- filter_fun(
   results_agegroup_n_circ_vmmc,
   0, 
-  c("10-29", "15-49"),
-  paste(c("MCs", "MMCs", "TMCs"), "performed")
+  # c("10-29", "15-49"),
+  c("10-29", "15-49", "30-49"),
+  paste(c("MCs", "MMCs", "TMCs"), "performed"),
+  c(2006, 2020)
 ) %>% 
-  filter(year >= 2006, year <= 2020) %>% 
   group_by(type, age_group) %>% 
   summarise(across(c("mean", "lower", "upper"), sum), .groups = "drop")
 
@@ -2143,10 +2171,12 @@ cum_vmmc_circs_performed <- filter_fun(
 vmmc_circs_performed <- filter_fun(
   results_agegroup_n_circ_vmmc,
   0, 
-  c("10-29", "15-49"),
-  paste(c("MCs", "MMCs", "TMCs"), "performed"),
+  # c("10-29", "15-49"),
+  c("10-29", "15-49", "30-49"),
+  paste(c("MCs", "MMCs", "TMCs"), "performed"), 
   c(2006, 2020)
 ) %>% 
+  filter(year >= 2006, year <= 2020) %>% 
   group_by(year, type, age_group) %>% 
   summarise(
     across(c("mean", "upper", "lower"), \(x) sum(x, na.rm = TRUE)), 
