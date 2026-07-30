@@ -1,0 +1,277 @@
+\documentclass{article}
+
+\usepackage[top=3cm, bottom=3cm, left=3cm,right=3cm]{geometry}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{todonotes}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{pdfpages}
+\usepackage{setspace} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage[colorlinks=true,citecolor=blue, linkcolor=blue]{hyperref}
+\usepackage{multirow}
+\usepackage{todonotes}
+\setlength{\tabcolsep}{5pt}
+%%\setlength{\parindent}{0pt}
+\usepackage[parfill]{parskip}
+\renewcommand{\arraystretch}{1.5}
+
+\renewcommand\Affilfont{\itshape\footnotesize}
+\def\ci{\perp\!\!\!\perp}
+
+\renewcommand\Affilfont{\itshape\footnotesize}
+\linespread{1.5}
+
+% \usepackage{lineno}
+% \linenumbers
+
+% Nature Bibliography style
+\usepackage[backend=biber,style=nature]{biblatex}
+\addbibresource{library.bib} 
+
+%%%%%%%%%%%%%
+%%% Title %%%
+%%%%%%%%%%%%%
+\title{District-level male medical and traditional circumcision coverage and unmet need in sub-Saharan Africa}
+
+\author{}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+\vspace{-1cm}
+
+Patrick O'Toole\textsuperscript{1,2},
+Matthew L. Thomas\textsuperscript{1,3,4},
+Oliver Stevens\textsuperscript{1},
+Kevin Lam\textsuperscript{1,5},
+Katharine Kripke\textsuperscript{6},
+Rachel Esra\textsuperscript{1},
+Ian Wanyeki\textsuperscript{7},
+Lycias Zembe\textsuperscript{7},
+Jeffrey W. Imai-Eaton\textsuperscript{1,8} \\
+\smallskip
+
+\textbf{1} MRC Centre for Global Infectious Disease Analysis, School of Public Health, Imperial College London, London, United Kingdom\\
+\textbf{2} Department of Mathematical Sciences, University of Bath, Bath, United Kingdom\\
+\textbf{3} Department of Earth and Environmental Sciences, University of Manchester, Manchester, United Kingdom\\
+\textbf{4} National Centre for Atmospheric Sciences, University of Manchester, Manchester, United Kingdom\\
+\textbf{5} Department of Statistics, University of British Columbia, Vancouver, Canada\\
+\textbf{6} Avenir Health, Washington, District of Columbia, United States of America\\
+\textbf{7} Joint United Nations Programme on HIV/AIDS (UNAIDS), Geneva, Switzerland\\
+\textbf{8} Center for Communicable Disease Dynamics, Department of Epidemiology, Harvard T.H. Chan School of Public Health, Boston, Massachusetts, United States of America\\
+
+\smallskip
+
+* Corresponding Author Email
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+  \noindent \textbf{Background} \\
+
+  \noindent \textbf{Methods} \\
+
+  \noindent \textbf{Results} \\
+
+  \noindent \textbf{Conclusions} \\
+
+\end{abstract}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The HIV epidemic continues to be a public health priority, with the Joint United Nations Programme on HIV/AIDS (UNAIDS) estimating that over 25 million people live with HIV across sub-Saharan Africa in 2022, with over 650,000 new infections that year \cite{UNAIDSStats}. To achieve the the global community's ambitious goals of ending the AIDS public health crisis by 2030, more work will need to be done \cite{UNAIDSStrategy}. Among the numerous interventions available, voluntary medical male circumcision (VMMC) has emerged as a powerful and cost-effective intervention to reduce HIV incidence \cite{bansi2023cost} with it estimated to reduce male-to-female transition of HIV by 60\% \cite{gray2007male, bailey2007male, auvert2005randomized, gray2012effectiveness, grund2017association}. Furthermore, other research has shown that VMMC can decrease the risk of male-to-male transmission of HIV \cite{pintye2019benefits}, and reduce the transmission of other sexually transmitted infections \cite{tobian2009male}. 
+
+In 2007, the World Health Organization (WHO) and UNAIDS recommended a scale-up in male circumcision coverage for HIV prevention in fifteen countries across Central and Western Africa with a high HIV incidence and low circumcision coverage: Botswana, Eswatini, Ethiopia, Kenya, Lesotho, Malawi, Mozambique, Namibia, Rwanda, South Africa, South Sudan Tanzania, Uganda, Zambia, and Zimbabwe \cite{UNAIDSJoint, davis2018progress, WHOVoluntary2}. UNAIDS' aim was to reach 90\% circumcision coverage among adolescent boys and young men aged 10--29 years by 2021 \cite{WHOFramework}. Since the decision to scale-up in 2007, over 27 million VMMCs have been conducted in these priority countries with the support of national governments as well as international organisations such as US President’s Emergency Plan for AIDS Relief (PEPFAR) \cite{WHOHIVProg}.
+
+There is a need to provide comprehensive and accurate estimates of male circumcision coverage across all ages, over time, across sub-Saharan Africa to (i) aid VMMC programmes planning, delivery, target setting and checking target attainment and (ii) to evaluate the impacts of VMMC campaigns on HIV incidence. However, this is complex task, as despite the upscaling in medical male circumcision (MMC) being a recent phenomenon, it has been long been practised as part of traditional male initiation ceremonies in many African countries. The coverage and provision of traditional male circumcision (TMC) can vary considerably and is mainly influenced by community, religious, ethnic and cultural led values. For example, in South Africa, TMC coverage ranged from 5.3\% in KwaZulu-Natal to 48.9\% in Eastern Cape among 15-49 year olds, with the average age of circumcision varying from 12.2 years in Limpopo to 20.4 in Western Cape \cite{thomas2024substantial}. TMCs conducted during male initiation ceremonies are often performed using non-medical methods non-clinical settings by a traditional practitioner with no formal medical training \cite{drain2006male, wilcken2010traditional, weiss2000male}. The evidence that TMC provides the same HIV prevention benefits as MMC is mixed, as TMC may not involve a complete circumcision in some populations \cite{WHOTraditional, shaffer2007protective, bailey2008male}.  
+
+There have been a number of recent approaches to estimate coverage of circumcision in sub-Saharan Africa \cite{cork2020mapping, kripke2016age, kripke2016cost, thomas2024substantial}. Cork {\it et al.} \cite{cork2020mapping} developed a Bayesian geo-statistical model, utilizing survey data, to produce annual estimates of total male circumcision coverage sub-nationally in sub-Saharan Africa between 2000 and 2017. This approach is limited cannot provide a full picture of the coverage and provisions of circumcision alone as it only produced estimates for 15–49 year olds, does not distinguish between circumcision type, and does not track the structured dynamics of circumcision by type within cohorts. Kripke {\it et al.} \cite{kripke2016age, kripke2016cost} developed The Decision Makers’ Program Planning Toolkit, Version 2 (DMPPT2), a compartmental model that combines estimates of circumcision coverage from survey data (prior to the VMMC scale-up) with information on the reported numbers of VMMCs, to estimate sub-national circumcision coverage and unmet need across sub-Saharan Africa, in 5-year age groups over time. This approach is also limited as the model does not incorporate data from more recent household surveys (since intervention implementation), does not estimate any uncertainty associated with the circumcision coverage estimates and also does not distinguish by circumcision type. 
+
+Thomas {\it et al.} \cite{thomas2024substantial} aimed to address the issues of both models by producing a model to generate region-age-time-type specific probabilities and coverage of male circumcision. The model extended a competing risks time-to-event model which enabled the synthesising of both survey data and programmatic data from VMMC providers. However, this study focused only on South Africa and the model was developed with many local dynamics in the provision to synthesise both data sources. Here, we take a similar approach to Thomas {\it et al.} and develop a discrete-time competing risks time-to-event model only using survey data in order to estimate the probabilities and coverage of male circumcision by type, sub-national area, single-year age, and time along with probabilistic uncertainty. We applied the model to estimate annual probabilities and coverage of circumcision by district in 34 countries across sub-Saharan Africa between 2008 and 2023 in order to quantify gaps in attainment of VMMC targets within priority age groups. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Methods}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Data}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Study Region}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The study consisted of 34 sub-Saharan Africa countries that have conducted surveys that contain information on self-reported circumcision status since 2002: Angola, Benin, Botswana, Burkina Faso, Burundi, Cameroon, Chad, Côte d’Ivoire, The Democratic Republic of the Congo (DR Congo), Eswatini, Ethiopia, Gabon, Gambia, Ghana, Guinea, Kenya, Lesotho, Liberia, Malawi, Mali, Mozambique, Namibia, Niger, Nigeria, The Republic of the Congo (the Congo), Rwanda, Senegal, Sierra Leone, South Africa, Tanzania, Togo, Uganda, Zambia, and Zimbabwe. We did not include Central African Republic, Equatorial Guinea, Guinea-Bissau, and South Sudan in the study as they either had no surveys conducted, or, had no surveys conducted that collected sufficient data on circumcision status for this analysis (see below). 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Household surveys}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In total, we identified 120 nationally representative household surveys across sub-Saharan Africa between 2002 and 2023 that contained information on self-reported circumcision status. These included several major survey series, namely the Demographic and Health Surveys (DHS) \cite{dhs}, AIDS Indicator Surveys (AIS) \cite{ais}, Population-based HIV Impact Assessment (PHIA) surveys \cite{phia}, Multiple Indicator Cluster Surveys (MICS) \cite{mics}, and, in the case of South Africa, Human Sciences Research Council (HSRC) surveys \cite{hsrc}. We excluded five surveys as they did not contain the information on age at circumcision required for modelling: 2008 and 2013 Botswana AIDS Impact Surveys (BAIS), the Central African Republic 2018 MICS survey, and the 2014 and 2018 Guinea-Bissau MICS surveys. Figure S1 in the Supplementary Material shows all available surveys, by the different survey providers for each country, as well as the sample size of each survey and the availability of circumcision type information. 
+
+We extracted the age (at survey), cluster and survey sampling weight from all male respondents in the surveys, alongside information related to circumcision (if available): (i) self-reported circumcision status, (ii) age at circumcision, (iii) who performed the circumcision (whether the individual was circumcised by a health worker/professional, traditional practitioner, other or unknown) and (iv) where did the circumcision take place (whether the individual was circumcised at a health facility, in the home of a health worker/professional, at home, at a ritual site, other or unknown). When calculating the residence of the respondents, we matched survey data to clusters with accompanying (masked) geo-coordinates in order to assign the primary sub-national unit (PSNU; hereafter referred to as the district level) for modelling purposes. However, geo-cordinates were not available in some surveys and therefore we were unable to allocate their district directly. Instead, we matched survey data to the least granular areal unit declared by the survey (most often level 1 administrative boundaries). Survey respondents were excluded if they were missing any demographic information or had a missing circumcision status. Supplementary Table 1 contains a summary of the circumcision-related information from each surveys, the availability of the circumcision related questions and the sample sizes in each survey.
+
+Circumcisions were classed as a medical male circumcision (MMC), traditional male circumcision (TMC) or “unknown” male circumcision (MC) based on the responses to both ‘Who performed the circumcision?’ and ‘Where did the circumcision take place?’ using the criteria described in Supplementary Table 2. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Administrative boundaries }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A list of districts, the geographic boundaries, and the nesting in higher level administrative areas were obtained from the Combined Geographic Health Boundaries through the UNAIDS AIDS Data Repository \cite{UNAIDSADR}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Population data}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We obtained estimates for the male population size in 5-year age group between 2008 through 2023 through WorldPop \cite{worldpop}. The unconstrained individual country datasets at a 100m resolution were overlaid and aggregated using the UNAIDS administrative boundaries \cite{UNAIDSADR}, and scaled to align with the UN Population Division World Population Prospects 2019 \cite{wpp}. Estimates were then distributed to single-year age using Beers ordinary formula \cite{beersmethod, beers}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Following a similar approach to \cite{thomas2024substantial}, we developed a Bayesian competing risk discrete time-to-event model \cite{putter2006tutorial}, that utilizes survey data to estimate the probabilities and coverage of circumcision stratified by district, age, time, and type. We modelled each country independently rather than a model by sub-region or for the whole of sub-Saharan due to computational constraints.
+
+In countries where suitable survey information was collected on circumcision type, we consider the following types of circumcision: (1) circumcisions that occurred in traditional male initiation ceremonies or for other religious or cultural reasons (TMC), (2) circumcisions for non-traditional reasons and/or HIV prevention that take place in a clinical setting using medical methods (MMC) and (3) circumcisions of any or (unknown) type (MC). Some countries did not have any surveys that collected information on the type of circumcision, so we were unable to conduct an analysis of the probabilities of circumcision by type. For these countries, we consider estimating the probability and coverage of circumcision of any or (unknown) type (MC) only. A full list of the models applied to each of the countries can be seen in Supplementary Table 3. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Probabilities of circumcision (by type)}
+\label{sec::bytype}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In countries where suitable survey information was collected on circumcision type, we used survey data to model the probabilities of receiving a TMC, MMC or MC by district, age and time.  
+
+For the probablility of TMC, a key assumption of Thomas {\it et al.} \cite{thomas2024substantial} was that TMC was constant over time, due to traditional male initiation ceremonies amongst tribal, cultural and religious groups remained stable over time in South Africa however an assumption of a constant probability of TMC might not be feasible across sub-Saharan Africa. Firstly, in some countries the level and practices of TMC may have changed through time due to demographic shifts. Secondly, there has also been a recent push, particularly in VMMC priority countries, to replace TMCs with using medical methods (i.e. MMCs) to ensure men obtain the full HIV prevention efficacy and/or for safety considerations \cite{thomas2024substantial}. Finally, there may also be cases where TMC remains stable and allowing a constant probability of TMC in the competing risks framework will cause a reduction in TMC coverage overall in places where VMMC uptake is high. The probability of TMC was therefore modelled by a logit-linear function with random effects for age, district, time, as well as age-district and age-time interaction, to allow for different patterns in the age at circumcision across space and time. We did not include a district-time interaction into due to computational constraints. 
+
+The provision of MMC is highly heterogeneous in sub-Saharan Africa and has changed substantially since 2007. In priority countries, VMMC programmes provide MMCs for HIV prevention to those aged 10 and over, while infant and paediatric medical circumcision often occurs through cultural or religious practices and are unrelated to scale-up of VMMC. Due to this, Thomas {\it et al.} \cite{thomas2024substantial} separated the probability of MMC into two processes: (i) paediatric circumcision (for those aged 0--9) and (ii) adolescent and adult circumcision (for those aged 10 and over). This ensured that any increase in MMC for those aged 10 and over did not bias the probability of MMC in those under 10 in South Africa. However, this may not be appropriate everywhere, particularly in countries without programmes to upscale MMC coverage. Therefore, we consider two models for the probability of MMC in each country: (i) paediatric cut-off for VMMC priority countries and (ii) no paediatric cut off for non-priority countries. For the probability of MMC with {\it a paediatric cut-off}, the probability of paediatric MMC was modelled using a logit-linear function with random effects for age, district, an age-district interaction, to allow for different practices of paediatric circumcision observed across districts. We assumed that the probability of paediatric MMC was constant over time. The probability of adolescent and adult MMC was also modelled using logit-linear function with random effects for age, time, and district, as well as all the associated two-way interactions to allow for inter-district/time/age variation in circumcision rates. We modelled probability of MMC with {\it no paediatric cut-off} was modelled using logit-linear function with random effects for age, time, and district, and interactions for district-time, age-time, and age-district, to allow for inter-district/time/age variation in circumcision rates.  To ensure the probability of MC (i.e. the sum of the probabilities of MMC and TMC) was not larger than one, we applied the probability of TMC before MMC in each time step.
+
+We model the probability of circumcision of any (or unknown) type by taking the sum of having either a TMC or MMC in each district, age, time stratum.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Probabilities of circumcision (typeless)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In countries that did not have a survey that containing information on the type of circumcision, we used survey data to model the probabilities of receiving MC  by district, age and time. We modelled probability of MC using logit-linear function with random effects for age, time, and district, as well as the associated two-way interactions to allow for inter-district/time/age variation in MC rates. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Circumcision coverage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We calculated the estimated circumcision coverage by type (MMC, TMC, or MC) within each cohort using the cumulative incidence function, which defines the marginal probability (or proportion/coverage of) individuals who were received an MMC, TMC, or MC by district, age and time, whilst accounting for the competing risk of other circumcision type.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Model priors}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Prior distributions were specified on all model parameters and were specified to allow areas, with little to no data, to borrow district-age-time information on circumcision. Furthermore, we wanted to ensure any correlation in circumcision practices across district, age and time was modelled. We assigned intrinsic conditional autoregressive (ICAR) priors to the district random effects \cite{besag1995conditional}, and penalised B-spline functions on the age random effects \cite{wood2017generalized}, and a an autoregressive process of order 1 (AR1) on the temporal random effects \cite{shumway2000time}. The age-district, age-time, and district-time interaction terms were modelled as Type IV interactions as defined by Knorr-Held and Leonard, where precision matrices were constructed through Kronecker products \cite{knorr2000bayesian}. Vague Gaussian priors were assigned to each of the intercepts, and Gaussian priors were specified for all correlation parameters on the logit scale, such that a priori there was 95\% probability that the autocorrelation parameters on AR1 processes were between 0.48 and 0.99 on the real scale. We assigned exponential priors on standard deviations parameters, with the same hyperparameters for the age, district and age-district random effects. For the time, age-time and space-time random effects, the hyperparameters on the exponential priors were decided during model calibration. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Likelihood}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The extracted survey data consisted of individual observations of self-reported age at circumcision, date of birth, and circumcision type (MMC, TMC, or MC) from male survey respondents. Surveyed individuals were followed from their year of birth to either their year of circumcision or their year of censoring. For circumcised individuals, the year of circumcision was calculated as the year of birth plus the age at circumcision. It was assumed that no circumcisions occurred after age 59  uncircumcised individuals were right censored in either the survey year or when they were 59. Individuals who self-reported they were circumcised but did not report an age at circumcision were left censored. 
+
+Survey data are collected through a complex two-stage cluster sampling design with unequal sampling probabilities therefore using a standard likelihood may lead to biased estimates of the probabilities of circumcision and the associated coverage. To account for these survey designs, we used a weighted pseudo-likelihood in which we replaced the observed counts of each event with weighted counts, calculated using survey weights \cite{thomas2024substantial}. Individuals sampling weight were standardised using the Kish effective sample size to ensure comparison across surveys \cite{kish1965survey}.
+
+Wherever possible, we matched survey data to clusters with accompanying geo-coordinates in order to assign the district. However, geo-cordinates were not available in some surveys (e.g. MICS, see above) and therefore we were unable to allocate the district directly. In this case, we matched survey data to the least granular areal unit declared by the survey. In most instances, these areal units represented a higher administrative boundaries (e.g. national/admin-0) than the district. For surveys that did not collect information on the district level, we replaced district probabilities of TMC, MMC and MC with a population-weighted regional estimate in the likelihood to include survey data on higher administrative levels into the model. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection*{Inference}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+All models were implemented and fitted in R \cite{rcore} using Template Model Builder (TMB) \cite{kristensen2016tmb}. TMB is a software package that performs approximate Bayesian inference by uses automatic differentiation and Laplace approximations to estimate posterior distributions for model parameters. Models were optimised using the quasi-newton L-BFGS-B optimisation method \cite{byrd1995limited}.
+
+Using the final models from each country, we estimated full posterior distributions of the annual probabilities of becoming circumcised and the corresponding circumcision coverage between 2000 and 2023, by circumcision type, single-year age group, and the district level. Posterior predictive distributions for aggregates were obtained using Monte Carlo sampling with samples drawn from the joint posterior distributions, conditional on the optimised hyper-parameters \cite{eaton2021naomi}. Joint samples of the annual probabilities of becoming circumcised and the corresponding circumcision coverage in each region-age-time-type stratum were aggregated to produce samples from the posterior distribution of any quantity of interest. For each aggregate, the posterior mean, median, standard deviation, and quantile-based 95\% credible intervals (CI) were computed from the corresponding posterior distribution. Samples were aggregated: (1) from district level to coarser administrative boundaries (e.g. province, national) and (2) from single-year age groups to five-year age group (0--4, 5--9, etc.) and coarser priority age groups (15--49, 15--29, etc.). A full list of model outputs can be found in Supplementary Table 4. 
+
+Further technical details on the model used can be found in the Supplementary Materials. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage 
+\printbibliography
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

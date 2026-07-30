@@ -1,0 +1,287 @@
+\documentclass{article}
+
+\usepackage[top=3cm, bottom=3cm, left=3cm,right=3cm]{geometry}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{todonotes}
+\usepackage{pdflscape}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{pdfpages}
+\usepackage{setspace} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage[colorlinks=true,citecolor=blue, linkcolor=blue]{hyperref}
+\usepackage{multirow}
+\usepackage{todonotes}
+\setlength{\tabcolsep}{5pt}
+%%\setlength{\parindent}{0pt}
+\usepackage[parfill]{parskip}
+\renewcommand{\arraystretch}{1.5}
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{55}}
+
+\begin{document}
+
+\section{Model Specification}
+\label{sec:org8802288}
+
+\subsection{non-VMMC countries}
+\label{sec:org09db5e8}
+
+Table 1 contains the results of our within-sample posterior predictive analysis of each possible model specification for all non-VMMC countries. We have calculated the CRPS, ELPD and RMSE of our posterior predictions versus our survey estimates, and totaled the number of countries for which each model is deemed "best" by each of these metrics. This was done for all possible temporal prior choices, not to choose a best temporal prior (a task better left to out-of-sample posterior checks, as in our model calibration section below), but rather to determine whether there is an interaction between temporal prior choice and model specification.
+\todo{Add section about how averages are messed up by outliers? Need to investigate!}
+
+\vspace{10 mm}
+
+% Table of PPCs for model specification
+% Need two tables; one for VMMC, one for non-VMMC
+% Columns: Temporal Prior, Circumcision Type (with total as well), Metric, and then column for each model type, which will have another header saying something like "# of times model spec best"
+% Caption? 
+
+{\linespread{1}
+  \footnotesize 
+% \begin{longtable}[c]{ll ccc c}
+\begin{longtable}[c]{llllllll}
+        \hline
+        & & & & \multicolumn{3}{c}{\bf Number of countries where model specification is best}\\
+        \cmidrule{5-8} \\
+        & {\bf Temporal Prior} & {\bf Circumcision Type} & {\bf Metric}  & {\bf Neither} & {\bf Time TMC} & {\bf Paediatric Cutoff} & {\bf Both} \\[5pt]
+        % & {\bf Prior} & {\bf Type} \\[5pt]
+        \midrule
+        & AR1 & MC & CRPS & 1 & 2 & \bf{6} & \bf{6} \\ 
+        & AR1 & MC & ELPD & 3 & \bf{6} & 4 & 2 \\ 
+        & AR1 & MC & RMSE & 1 & \bf{7} & 3 & 4 \\ 
+        \hline 
+        & AR1 & MC & Total & 5 & \bf{15} & 13 & 12 \\ 
+        \hline \\ 
+        & AR1 & MMC & CRPS & 4 & \bf{8} & 1 & 2 \\ 
+        & AR1 & MMC & ELPD & 2 & 2 & 4 & \bf{7} \\ 
+        & AR1 & MMC & RMSE & 0 & \bf{9} & 4 & 2 \\ 
+        \hline 
+        & AR1 & MMC & Total & 6 & \bf{19} & 9 & 11 \\ 
+        \hline \\ 
+        & AR1 & TMC & CRPS & 5 & \bf{7} & 2 & 1 \\ 
+        & AR1 & TMC & ELPD & 1 & \bf{9} & 4 & 1 \\ 
+        & AR1 & TMC & RMSE & 1 & \bf{7} & 4 & 3 \\ 
+        \hline 
+        & AR1 & TMC & Total & 7 & \bf{23} & 10 & 5 \\ 
+        \hline \\ 
+        & RW1 & MC & CRPS & 3 & 2 & 4 & \bf{6} \\ 
+        & RW1 & MC & ELPD & 2 & \bf{9} & 2 & 2 \\ 
+        & RW1 & MC & RMSE & 3 & 5 & 1 & \bf{6} \\ 
+        \hline 
+        & RW1 & MC & Total & 8 & \bf{16} & 7 & 14 \\ 
+        \hline \\ 
+        & RW1 & MMC & CRPS & 2 & \bf{10} & 1 & 2 \\ 
+        & RW1 & MMC & ELPD & 4 & 2 & 4 & \bf{5} \\ 
+        & RW1 & MMC & RMSE & 1 & \bf{10} & 2 & 2 \\ 
+        \hline 
+        & RW1 & MMC & Total & 7 & \bf{22} & 7 & 9 \\ 
+        \hline \\ 
+        & RW1 & TMC & CRPS & 2 & \bf{9} & 2 & 2 \\ 
+        & RW1 & TMC & ELPD & 2 & \bf{8} & 4 & 1 \\ 
+        & RW1 & TMC & RMSE & 2 & \bf{8} & 2 & 3 \\ 
+        \hline 
+        & RW1 & TMC & Total & 6 & \bf{25} & 8 & 6 \\ 
+        \hline \\ 
+        & RW2 & MC & CRPS & 1 & 1 & \bf{7} & 6 \\ 
+        & RW2 & MC & ELPD & \bf{5} & 4 & 2 & 4 \\ 
+        & RW2 & MC & RMSE & 0 & \bf{6} & 3 & \bf{6} \\ 
+        \hline 
+        & RW2 & MC & Total & 6 & 11 & 12 & \bf{16} \\ 
+        \hline \\ 
+        & RW2 & MMC & CRPS & 3 & \bf{12} & 0 & 0 \\ 
+        & RW2 & MMC & ELPD & 5 & 1 & 3 & \bf{6} \\ 
+        & RW2 & MMC & RMSE & 1 & \bf{9} & 3 & 2 \\ 
+        \hline 
+        & RW2 & MMC & Total & 9 & \bf{22} & 6 & 8 \\ 
+        \hline \\ 
+        & RW2 & TMC & CRPS & 2 & \bf{9} & 1 & 3 \\ 
+        & RW2 & TMC & ELPD & 2 & \bf{11} & 2 & 0 \\ 
+        & RW2 & TMC & RMSE & 1 & \bf{9} & 2 & 3 \\ 
+        \hline 
+        & RW2 & TMC & Total & 5 & \bf{29} & 5 & 6 \\ 
+        \bottomrule
+    % \end{tabular}
+    \caption{Table of Posterior Predictive Check results for model specification analysis of non-VMMC countries. 
+    % For each temporal prior and circumcision type
+    Each numeric column shows the number of times a given model specification is deemed "best" according to the metric in question, for each temporal prior and circumcision type. The four model specifications are: \textbf{"Neither"}: Neither a time effect for TMC, nor a peadiatric age cutoff for MMC are incorporated, \textbf{"Time TMC"}: a time effect for TMC is included in the model, \textbf{"Paediatric Cutoff"}: a peadiatric age cutoff for MMC is included in the model and \textbf{"Both"}: both a time effect for TMC and a paediatric age cutoff for MMC are included in the model. MC = Male circumcision, MMC = Medical male circumcision, TMC = traditional male circumcision.
+    }
+% \end{table}
+\end{longtable}
+}
+
+\todo{come up with better names for model specs}
+
+\vspace{10 mm}
+
+% non-VMMC, rw_order 0
+For the AR1 temporal prior and MC, the best model for both ELPD and RMSE was "Time TMC", while for CRPS, "Both" and "Paediatric Cutoff" tied as best.
+Totalling across all metrics, the best model was "Time TMC", although it was only marginally favoured over "Paediatric Cutoff" and "Both" (in 15 countries vs 13 and 12, respectively).  
+For MMC, "Time TMC" is deemed to be the best for CRPS and RMSE, while "Both" is chosen by the ELPD. Totalling across metrics, "Time TMC" was by far the favoured model. 
+For TMC, "Time TMC" was again determined to be the best model, this time by all metrics. This is unsurprising, particularly for non-VMMC countries, as the alternative model specifications include a very strong assumption of constant TMC. 
+
+Therefore, "Time TMC" was the most chosen model specification here across all circumcision types, as the model that produces the "best" fit for the most countries, by consensus of our three metrics.
+% It was interesting that this contrasts with our analysis of the mean fit  statistics across all countries, perhaps suggesting that there are several outlier countries that skew our mean values. 
+% \todo{Investigate these outliers!}
+It was interesting to note that there was some disagreement between our three metrics for MC and MMC, while for TMC all agreed.
+
+% non-VMMC, rw_order 1: 
+For the RW1 temporal prior and MC, the best model for ELPD was "Time TMC", while for CRPS and RMSE it was "Both". However, totalling across metrics, the best model overall, albeit narrowly (16 vs 14 for both) was "Time TMC".
+For MMC, "Time TMC" was the best for CRPS and RMSE, while "Both" was the best for ELPD. Totalling all metrics, "Time TMC" was by far the favoured model. 
+For TMC, "Time TMC" was determined to be the best model for all model fits. 
+Here, in contrast to the AR1 temporal prior, another model specification, "Both", was determined to be the best model for MC for two of our three metrics. 
+However, it was important to note here that in almost all non-VMMC countries, MC coverage was very high, often over 90\%, and had been that way for many years, due to high historical TMC. Therefore, each model specification gave similar and very accurate estimates of MC, meaning we decided to prioritise the more difficult task of more accurately predicting MMC and TMC coverage, and how that has changed over time. 
+In light of this, the model which performed best for MMC and TMC was chosen, meaning "Time TMC" was also deemed the best model specification for the RW1 temporal prior. 
+
+% non-VMMC, rw_order 2:
+For the RW2 temporal prior and MC, it was interesting to note that "Time TMC" was not the sole choice of model for any of  our three metrics, tying for the best RMSE with "Both". 
+Totalled across all metrics, "Both" was selected as the model which produced the best fit in the most countries. 
+For MMC, in contrast to MC, CRPS and RMSE determined "Time TMC" to be the best  model, while ELPD chose "Both" as the best model. 
+Totalling across metrics, "Time TMC" was by far chosen as the best model in the most countries. 
+Again for TMC, all metrics were in agreement in selecting "Time TMC" as the best model. 
+
+In conclusion, for non-VMMC coutries "Time TMC" was determined to be the best model for all temporal priors, and seven out of nine temporal prior - circumcision type combinations, of which the two not in agreement were for MC, which was less of a priority than accurately estimating MMC and TMC. 
+% It was interesting that the results here (i.e. when looking at the number of  times a model performs "best" in each country) for AR1 was in contrast to when we looked at mean fit statistics across all countries, perhaps suggesting there were some outliers for "Time TMC" model results which should be explored. 
+
+\subsection{non-VMMC countries}
+\label{sec:org09db5e8}
+
+The results of the same analysis performed on VMMC countries are shown in Table 2.
+
+\vspace{10 mm}
+
+% Table 2: Same but for VMMC countries
+{\linespread{1}
+  \footnotesize 
+% \begin{longtable}[c]{ll ccc c}
+\begin{longtable}[c]{llllllll}
+        \hline
+        & & & & \multicolumn{3}{c}{\bf Number of countries where model specification is best}\\
+        \cmidrule{5-8} \\
+        & {\bf Temporal Prior} & {\bf Circumcision Type} & {\bf Metric}  & {\bf Neither} & {\bf Time TMC} & {\bf Paediatric Cutoff} & {\bf Both} \\[5pt]
+        % & {\bf Prior} & {\bf Type} \\[5pt]
+        \midrule
+        & AR1 & MC & CRPS & 3 & 1 & \bf{6} & 3 \\ 
+        & AR1 & MC & ELPD & \bf{4} & \bf{4} & 2 & 3 \\ 
+        & AR1 & MC & RMSE & 3 & 2 & \bf{5} & 3 \\ 
+        \hline 
+        & AR1 & MC & Total & 10 & 7 & \bf{13} & 9 \\ 
+        \hline \\ 
+        & AR1 & MMC & CRPS & 1 & \bf{6} & 2 & 4 \\ 
+        & AR1 & MMC & ELPD & 5 & 2 & \bf{6} & 0 \\ 
+        & AR1 & MMC & RMSE & 0 & \bf{7} & 1 & 5 \\ 
+        \hline 
+        & AR1 & MMC & Total & 6 & \bf{15} & 9 & 9 \\ 
+        \hline \\ 
+        & AR1 & TMC & CRPS & 1 & \bf{7} & 2 & 3 \\ 
+        & AR1 & TMC & ELPD & 2 & \bf{7} & 1 & 3 \\ 
+        & AR1 & TMC & RMSE & 0 & \bf{6} & 4 & 3 \\ 
+        \hline 
+        & AR1 & TMC & Total & 3 & \bf{20} & 7 & 9 \\ 
+        \hline \\ 
+        & RW1 & MC & CRPS & \bf{5} & 1 & 2 & \bf{5} \\ 
+        & RW1 & MC & ELPD & 3 & \bf{5} & 3 & 2 \\ 
+        & RW1 & MC & RMSE & 4 & 1 & 2 & \bf{6} \\ 
+        \hline 
+        & RW1 & MC & Total & 12 & 7 & 7 & \bf{13} \\ 
+        \hline \\ 
+        & RW1 & MMC & CRPS & 1 & \bf{7} & 2 & 3 \\ 
+        & RW1 & MMC & ELPD & 2 & 3 & \bf{6} & 2 \\ 
+        & RW1 & MMC & RMSE & 2 & \bf{6} & 1 & 4 \\ 
+        \hline 
+        & RW1 & MMC & Total & 5 & \bf{16} & 9 & 9 \\ 
+        \hline \\ 
+        & RW1 & TMC & CRPS & 1 & \bf{7} & 2 & 3 \\ 
+        & RW1 & TMC & ELPD & 3 & \bf{7} & 1 & 2 \\ 
+        & RW1 & TMC & RMSE & 1 & \bf{6} & 3 & 3 \\ 
+        \hline 
+        & RW1 & TMC & Total & 5 & \bf{20} & 6 & 8 \\ 
+        \hline \\ 
+        & RW2 & MC & CRPS & 3 & 1 & 3 & \bf{6} \\ 
+        & RW2 & MC & ELPD & 2 & 4 & \bf{7} & 0 \\ 
+        & RW2 & MC & RMSE & 4 & 4 & 0 & \bf{5} \\ 
+        \hline 
+        & RW2 & MC & Total & 9 & 9 & 10 & \bf{11} \\ 
+        \hline \\ 
+        & RW2 & MMC & CRPS & 2 & \bf{7} & 1 & 3 \\ 
+        & RW2 & MMC & ELPD & 3 & 1 & \bf{7} & 2 \\ 
+        & RW2 & MMC & RMSE & 1 & \bf{9} & 1 & 2 \\ 
+        \hline 
+        & RW2 & MMC & Total & 6 & \bf{17} & 9 & 7 \\ 
+        \hline \\ 
+        & RW2 & TMC & CRPS & 3 & \bf{5} & 2 & 3 \\ 
+        & RW2 & TMC & ELPD & 2 & \bf{7} & 1 & 3 \\ 
+        & RW2 & TMC & RMSE & 2 & \bf{5} & 3 & 3 \\ 
+        \hline 
+        & RW2 & TMC & Total & 7 & \bf{17} & 6 & 9 \\ 
+        % \hline \\ 
+        \bottomrule
+    % \end{tabular}
+    \caption{Table of Posterior Predictive Check results for model specification analysis of VMMC countries. 
+    % For each temporal prior and circumcision type
+    Each numeric column shows the number of times a given model specification is deemed "best" according to the metric in question, for each temporal prior and circumcision type. The four model specifications are: \textbf{"Neither"}: Neither a time effect for TMC, nor a peadiatric age cutoff for MMC are incorporated, \textbf{"Time TMC"}: a time effect for TMC is included in the model, \textbf{"Paediatric Cutoff"}: a peadiatric age cutoff for MMC is included in the model and \textbf{"Both"}: both a time effect for TMC and a paediatric age cutoff for MMC are included in the model. MC = Male circumcision, MMC = Medical male circumcision, TMC = traditional male circumcision.
+    }
+% \end{table}
+\end{longtable}
+}
+
+% VMMC, rw_order 0: 
+For MC, CRPS and RMSE determined "Paed Cutoff" to be the best model, while 
+ELPD chose the "Neither" model. 
+Totalling across metrics, "Paed Cutoff" was chosen as the best model. However, all four models perform reasonably well. 
+For MMC the best model according to CRPS and RMSE was "Time TMC", while for ELPD it was Paed Cutoff. 
+Over all metrics, "Time TMC" was by far the best model. 
+For TMC, as was the case for non-VMMC countries, "Time TMC" was chosen as the best model by all three metrics. 
+
+There were several interesting observations to make from these results. 
+There was an even greater contrast for VMMC countries between what model performs best in the most countries when estimating MC ("Paed Cutoff"), and for MMC and TMC, i.e. type specific estimates ("Time TMC"). 
+Here, however, the decision to favour accuracy in predicting MC over MMC and TMC, or vice versa, was less clear. 
+MC coverage varied considerably both between and within VMMC countries, and if we decide that estimates of total rather than type-specific circumcision are to be prioritised, then accurate MC estimation could be considered more important than accurate predictions of MMC and TMC patterns. 
+This constrasted with non-VMMC countries, where MC was almost universally high and homogeneous, and so estimates of MC were similar for all model specifications. 
+
+However, it was interesting to note that, totalling across each circumcision type and metric, "Time TMC" was by far the most favoured model (57 vs the next best mode, "Paed Cutoff", which had 32 "votes"), so perhaps in a consensus between all circumcision types and metrics, "Time TMC" was the best model for VMMC countries, for the AR1 temporal prior. 
+Another important observation was that the "Both" model, which combines both the time effect for TMC and the paediatric age cutoff for MMC seen in the "Time TMC" and "Paed Cutoff" models, did not appear to perform better than either of these. 
+However, it was only narrowly chosen less than "Paed Cutoff" (27 vs 29). 
+
+It was also very important to take into consideration that these fit metrics were based on comparisons to survey estimates for 15-29 year olds, as those younger than 15 were not surveyed. 
+Therefore, we were unable to determine whether the "Paed Cutoff" and/or "Both" models performed better for these younger ages in VMMC countries, where it could be argued that they would, since we have knowledge of the fact that VMMC programme policy prohibits performing MMCs on those younger than 10. This fact further obscures our quantitative choice of the best model specification for VMMC countries based on these metrics. 
+Finally, model choice across all types was less clear than for Non-VMMC  countries, highlighting lesser differences between model specifications for VMMC countries, perhaps not so suprising given low TMC in these areas, and the lack of survey estimates for those aged under 15 to properly evaluate models with a peadiatric age cutoff for MMC. 
+\todo{May also be a good idea to remove KEN and ETH, both high circumcising VMMC countries, to determine if they were influential here in model choice.}
+\todo{Also for ETH look into Gambella province.}
+
+% VMMC, rw_order 1: 
+For the RW1 temporal prior and MC, the "Neither" and "Both" models tied as the best model as chosen by CRPS, while for ELPD "Time TMC" was the best model, and for RMSE "Both" was preferred. 
+Totalling across metrics, the "Both" model was narrowly best. 
+It was interesting to see a lot of disagreement between metrics here, and a less clear choice of the best model specification when totalling across metrics. 
+For MMC, the "Time TMC" model was favoured by CRPS and RMSE, while for ELPD the "Paed Age Cutoff model was the best. 
+Again, for TMC the "Time TMC" model was chosen as best by all three metrics.
+
+In conclusion, we can again see a difference in the best model for total circumcision/MC and for type-specific circumcision (MMC and TMC). 
+The "Time TMC" model was the best when totalling across all metrics and types, but this distinction was much less clear than for non-VMMC countries. 
+
+% VMMC, rw_order 2:
+For the RW2 temporal prior and MC, the "Both" model was best for CRPS and RMSE, while the "Paed Cutoff" was best for ELPD.
+Totalling across metrics, all models performed similarly well, ranging from 9 to 11, with the "Both" model narrowly favoured over the "Paed Cutoff" model. 
+FOr MMC, "Time TMC" was best for CRPS and RMSE, while the "Paed Cutoff" model was best for ELPD. 
+The "Time TMC" was deemed the best when totalling across all metrics. 
+Finally, once more for TMC, the "Time TMC" model was best across all metrics. 
+
+In conclusion for VMMC countries, the "Time TMC" model was chosen as best for 6 out of  9 temporal prior-curcumcision type combinations. 
+However, this choice was much less "clear cut" than for non-VMMC countries, and there was a stark constrast between the best model for MC and for MMC and TMC, as detailed in our conclusions from the results for the AR1 temporal prior above. 
+The models with a paediatric age cutoff for MMC performed reasonably well here, even including the caveat that their perform was evaluated through comparisons to survey estimates of the 15-29 age group, rather than an unavailable younger/wider age group of, say, 10-29, where it could be argued that their performance and the relative effect of model selection on fit could be better ascertained. 
+Indeed, as we have prior knowledge that that VMMC programmes do not perform paediatric MMCs, we could prioritise our qualitative investigation and knowledge of MMC and VMMC practises in VMMC prioirity countries to decide 
+to go with the "Both" model. 
+\todo{Discuss with Matt and Jeff the best model to use here!!}
+
+
+\end{document}
