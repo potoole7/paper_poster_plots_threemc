@@ -6,7 +6,6 @@
 # interest in the appendix
 
 # TODO: Check number of surveys, seems very low
-# TODO: Remove BWA from plot
 
 # stopifnot(dirname(getwd()) == "threemc-orderly")
 while(basename(getwd()) != "threemc-orderly") setwd("../.")
@@ -33,7 +32,7 @@ source("paper_poster_plots_threemc/paper/scripts/00_funs.R") # shared functions
 orderly_root <- getwd()
 
 spec_age_group <- "10-29" # change? 
-spec_years <- c(2010, 2020)
+spec_years <- c(2010, 2022)
 
 # for tabulating surveys: 
 rm_missing_type <- FALSE # remove circumcisions with missing type?
@@ -59,7 +58,8 @@ vmmc_iso3 <- c(
 vmmc_cntries <- countrycode::countrycode(vmmc_iso3, "iso3c", "country.name")
 
 # countries for which we have no results
-no_mod_iso3 <- c("BWA", "CAF", "GNB")
+# no_mod_iso3 <- c("BWA", "CAF", "GNB")
+no_mod_iso3 <- c("CAF", "GNB")
 
 ssa_countries <- countrycode::countrycode(ssa_iso3, "iso3c", "country.name")
 country_name_convention <- function(x) {
@@ -101,11 +101,23 @@ areas <- load_archive(
 )
 
 # pull surveys
-survey_circumcision_orig <- survey_circumcision <- load_archive(
+survey_circumcision <- load_archive(
   "00b3_survey_join", 
   orderly_root, 
   "survey_circumcision.csv.gz", 
   query = "latest(parameter:is_paper == TRUE)"
+)
+
+survey_circumcision_no_paper <- load_archive(
+  "00b3_survey_join", 
+  orderly_root, 
+  "survey_circumcision.csv.gz", 
+  query = "latest(parameter:is_paper == FALSE)"
+) %>% 
+  filter(survey_id %in% c("UGA2020PHIA"))
+
+survey_circumcision_orig <- survey_circumcision <- bind_rows(
+  survey_circumcision, survey_circumcision_no_paper
 )
 
 survey_circumcision <- survey_circumcision %>% 
@@ -164,7 +176,7 @@ provider_key <- tibble::tribble(
   "DHS",     "Demographic and Health Survey",
   "PHIA",    "Population-Based HIV Impact Assessment",
   "HSRC",    "Human Sciences Research Council",
-  # "BAIS",    "Botswana Aids Impact Survey",
+  "BAIS",    "Botswana Aids Impact Survey",
   "MICS",    "Multiple Indicator Cluster Survey",
   "SBS",     "Sexual Behavior Survey"
 )
@@ -224,11 +236,14 @@ missing_tbl <- tribble(
   "KEN", "KEN2013AIS",  2013,   "AIS",
   "LSO", "LSO2014DHS",  2014,   "DHS",
   "NGA", "NGA2006",     2006,   "Core Welfare Indicators Questionnaire Survey",
+  # TODO: Pull through stats etc from this!!
+  "MOZ", "MOZ2021DHS",  2021, "DHS",
   # "NGA", "NGA2017MICS", 2017,   "MICS",
   # "SWZ", "SWZ2010MICS", 2010,   "MICS",
   # "SWZ", "SWZ2014MICS", 2014,   "MICS",
   "TZA", "TZA2017AIS",  2017,   "AIS",
   "UGA", "UGA2005AIS",  2005,   "AIS",
+  # "UGA", "UGA2020PHIA", 2020,   "PHIA", 
   "ZMB", "ZMB2000SBS",  2000,   "SBS",
   "ZMB", "ZMB2003SBS",  2003,   "SBS",
   "ZMB", "ZMB2005SBS",  2005,   "SBS",
@@ -322,7 +337,7 @@ fig1data <- plot_surveys %>%
       !is.na(`MMC, TMC, MC`), "Present", "Unavailable"
     ),
     # label country with VMMC status
-    vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "None-VMMC")
+    vmmc = ifelse(iso3 %in% vmmc_iso3, "VMMC", "Non-VMMC")
   ) %>%
   # get N again, as it is used for point sizes
   mutate(N = ifelse(is.na(`MMC, TMC, MC`), MC, `MMC, TMC, MC`))
@@ -338,6 +353,14 @@ fig1data <- plot_surveys %>%
 #   summarise(max(country_idx)) %>%
 #   pull()
 # country_positions <- country_positions + 1
+
+# add 
+fig1data <- fig1data %>% 
+  mutate(
+    released = ifelse(
+      survey_id %in% c("TZA2016PHIA", "UGA2020PHIA"), FALSE, TRUE
+    )
+  )
 
 p1 <- fig1data %>%
   # specify aesthetic variables
@@ -388,10 +411,10 @@ p1 <- fig1data %>%
     "Survey Year", 
     # may break if not 2000, 2020
     # breaks = seq(min(fig1data$year) - 2, max(fig1data$year) + 1, by = 2), 
-    breaks = seq(2000, 2020, by = 2),
+    breaks = seq(2000, max(spec_years), by = 2),
     # minor_breaks = NULL
     # minor_breaks = waiver(), 
-    limits = c(1999, 2020),
+    limits = c(1999, max(spec_years) + 1),
     expand = c(0, 0)
   ) +
   scale_y_continuous(
@@ -452,6 +475,12 @@ p1 <- fig1data %>%
 data_inlines <- list(
   # n surveys, n countries, years
   "n_surveys_orig" = length(unique(survey_circumcision_orig$survey_id)) , 
+  "n_subnat_areas" = areas %>% 
+    filter(iso3 %in% survey_circumcision$iso3) %>% 
+    group_by(iso3) %>% 
+    filter(area_level == max(area_level)) %>% 
+    ungroup %>% 
+    nrow(),
   "n_surveys"      = length(unique(survey_circumcision$survey_id)) , 
   "n_iso3"         = length(unique(survey_circumcision$iso3)), 
   "min_year"       = min(survey_circumcision$year), 
@@ -525,19 +554,24 @@ check_cens <- function(survey_circumcision,
     abs_vals <- abs_vals %>% 
     summarise(sum(is.na(.data[[test_col]])), .groups = "drop")
   }
-   
-  max_val <- list(
-    "max"       = max(abs_vals[, 2, drop = TRUE]),
-    "survey" = survey_id_to_name(
-      abs_vals[, 1][which.max(abs_vals[, 2, drop = TRUE]), ]
+  
+  # function to summarise 
+  summary_fun <- function(abs_vals, fun, colname) {
+    fun_abs <- fun(abs_vals[, 2, drop = TRUE])
+    x <- list(
+      "col"       = fun(abs_vals[, 2, drop = TRUE]),
+      "survey"    = vapply(
+        unlist(abs_vals[, 1][which(abs_vals[, 2, drop = TRUE] == fun_abs), ]), 
+        survey_id_to_name, 
+        character(1)
+      )
     )
-  )
-  min_val <- list(
-    "min"       = min(abs_vals[, 2, drop = TRUE]),
-    "survey" = survey_id_to_name(
-      abs_vals[, 1][which.min(abs_vals[, 2, drop = TRUE]), ]
-    )
-  )
+   names(x)[1] <- colname
+   return(x)
+  }
+  
+  max_val <- summary_fun(abs_vals, max, "max")
+  min_val <- summary_fun(abs_vals, min, "min")
   
   # as percentage
   perc <- survey_circumcision %>% 
@@ -552,18 +586,8 @@ check_cens <- function(survey_circumcision,
     summarise(sum(is.na(.data[[test_col]])) / n(), .groups = "drop")
   }
   
-  max_perc <- list(
-    "max"       = max(perc[, 2, drop = TRUE]),
-    "survey" = survey_id_to_name(
-      abs_vals[, 1][which.max(perc[, 2, drop = TRUE]), ]
-    )
-  )
-  min_perc <- list(
-    "min"       = min(perc[, 2, drop = TRUE]),
-    "survey" = survey_id_to_name(
-      abs_vals[, 1][which.min(perc[, 2, drop = TRUE]), ]
-    )
-  )
+  max_perc <- summary_fun(perc, max, "max")
+  min_perc <- summary_fun(perc, min, "min")
   
   n <- length(data_inlines)
   data_inlines <- c(
@@ -614,14 +638,29 @@ check_cens <- function(survey_circumcision,
 data_inlines <- check_cens(
   survey_circumcision, "event", 2, "l_cens", data_inlines
 )
+
 # right censoring
 data_inlines <- check_cens(
   survey_circumcision, "event", 0, "r_cens", data_inlines
 )
+
 # no censoring
 data_inlines <- check_cens(
   survey_circumcision, "event", 0, "r_cens", data_inlines
 )
+
+# circumcision type unknown
+data_inlines <- check_cens(
+  survey_circumcision_orig %>% 
+    filter(survey_id %in% survey_circumcision$survey_id) %>% 
+    find_circ_type() %>% 
+    mutate(type = ifelse(type == "Missing", NA, type)),
+  "type", 
+  NA,
+  "unknown_type", 
+  data_inlines
+)
+
 # circumcision status unknown
 data_inlines <- check_cens(
   filter(survey_circumcision_orig, 
@@ -631,6 +670,7 @@ data_inlines <- check_cens(
   "unknown_status", 
   data_inlines
 )
+
 # circ age unknown
 data_inlines <- check_cens(
   filter(survey_circumcision_orig, 
@@ -704,4 +744,9 @@ ggplot2::ggsave(
 )
 
 # save data for inlines
-saveRDS(data_inlines, "paper_poster_plots_threemc/paper/data/01_data_inlines.RDS")
+saveRDS(data_inlines, "paper_poster_plots_threemc/paper/data/inlines/01_data_inlines.RDS")
+
+# for sending a list of plots to Avenir 
+sendover <- p1$data
+sendover <- sendover %>% select(-c(`NA`, country_idx))
+readr::write_csv(x = sendover, file = "surveys.csv")
