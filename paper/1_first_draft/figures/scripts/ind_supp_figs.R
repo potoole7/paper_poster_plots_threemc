@@ -32,10 +32,11 @@ save_loc <- "paper_poster_plots_threemc/paper/plots/supp_figs/"
 if (!dir.exists(save_loc)) create_dirs_r(save_loc)
 
 # cntry <- "ZAF" # temp, run for one country, might loop thereafter
+cntry <- "SWZ"
 
 spec_age_group <- "15-29"
 spec_age_group_double <- c(spec_age_group, "30-49")
-spec_years <- c(2006, 2020) # 2006 = first year of VMMC programmes
+spec_years <- c(2006, 2023) # 2006 = first year of VMMC programmes
 spec_years_survey_comp <- spec_years
 if (cntry == "BWA") {
   spec_years[2] <- 2021

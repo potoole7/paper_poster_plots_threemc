@@ -2,7 +2,9 @@
 title: "Circumcision Paper Text"
 author: "Paddy O'Toole"
 date: "2023-11-06"
-output: pdf_document
+output: 
+  pdf_document: 
+    keep_tex: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 <!--TODO: Change year from 2020 to 2023 (once preprint is out) -->
-<!--TODO: Add paragraph breaks (although that's not copying over from PDF) -->
 
 ```{r, echo = FALSE}
 # libraries
@@ -318,11 +319,11 @@ Of these,
 `r n_circs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(mean) %>% to_mill()` 
 million 
 (`r n_circs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(lower) %>% to_mill()`-`r n_circs[[1]] %>% filter(year == 2006, type == "MMC") %>% pull(upper) %>% to_mill()` 
-million) were MMCS, and 
+million) were MMCs, and 
 `r n_circs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_mill()` 
 million 
 (`r n_circs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_mill()`-`r n_circs[[1]] %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_mill()` 
-million) were TMCS. 
+million) were TMCs. 
 This contrasts with 2020, where an estimated 
 `r n_circs[[1]] %>% filter(year == 2020, type == "MC") %>% pull(mean) %>% to_mill()` 
 million males 
@@ -331,11 +332,12 @@ million) were circumcised in these same countries, of which
 `r n_circs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_mill()` 
 million 
 (`r n_circs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_mill()`-`r n_circs[[1]] %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_mill()` 
-million) were performed as MMCS, and 
+million) were performed as MMCs, and 
 `r n_circs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()` 
 million 
 (`r n_circs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()`-`r n_circs[[1]] %>% filter(year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()` 
-million) as TMCS. 
+million) as TMCs. 
+<!-- TODO: I believe this value is cumulative, not for each discrete year! May need to reword} -->
 This constituted an increase of 
 `r n_circs[[2]] %>% filter(type == "MC") %>% pull(mean) %>% to_mill()` 
 million 
@@ -378,7 +380,6 @@ in 2020, a decrease of
 `r covs[[2]] %>% filter(type == "TMC") %>% mutate(mean = mean *-1) %>% pull(mean) %>% to_perc()` 
 (`r covs[[2]] %>% filter(type == "TMC") %>% mutate(upper = upper * -1) %>% pull(upper) %>% to_perc(perc = FALSE)`-`r covs[[2]] %>% filter(type == "TMC") %>%  mutate(lower = lower * -1) %>%  pull(lower) %>% to_perc()`).
 
-<!--TODO: Need to change this to be filtered by year as well!! -->
 MC coverage in each country in 2006 ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(mean) %>% to_perc()`
 (`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r iso3_lowest_highest_cov %>% filter(type == "MC", year == 2006) %>% slice(2) %>% pull(upper) %>% to_perc()`)
@@ -398,7 +399,7 @@ to
 `r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(mean) %>% to_perc()`
 (`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(upper) %>% to_perc()`)
 in 
-`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()`
+`r iso3_lowest_highest_cov %>% filter(type == "MMC", year == 2006) %>% slice(1) %>% pull(iso3) %>% to_cntry_name()` <!-- TODO: Fix country name here, change to Republic of the Congo (and elsewhere)-->
 and TMC ranged from 
 `r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(mean) %>% to_perc()`
 (`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r iso3_lowest_highest_cov %>% filter(type == "TMC", year == 2006) %>% slice(2) %>% pull(upper) %>% to_perc()`)
@@ -482,7 +483,7 @@ in 2020.
 The number of annual MCs performed increased from 
 `r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(mean) %>% to_mill()` 
 million
-(`r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(lower) %>% to_mill()` -`r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(upper) %>% to_mill()` 
+(`r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(lower) %>% to_mill()`-`r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(upper) %>% to_mill()` 
 million) in 2006 to 
 `r non_cum_n_performed %>% filter(type == "MC", year == 2006) %>% pull(mean) %>% to_mill()` 
 million 
@@ -499,7 +500,8 @@ million) were MMCs in 2006, while in 2020
 `r non_cum_n_performed %>% filter(type == "MC", year == 2020) %>% pull(mean) %>% to_mill()` 
 million
 (`r non_cum_n_performed %>% filter(type == "MC", year == 2020) %>% pull(lower) %>% to_mill()`-`r non_cum_n_performed %>% filter(type == "MC", year == 2020) %>% pull(upper) %>% to_mill()` 
-million) MMCs were performed, representing an increase in 
+million) MMCs were performed, representing an increase of 
+`r non_cum_n_performed_diff %>% filter(type == "MMC") %>% pull(mean) %>% to_mill()`
 million 
 (`r non_cum_n_performed_diff %>% filter(type == "MMC") %>% pull(lower) %>% to_mill()`-`r non_cum_n_performed_diff %>% filter(type == "MMC") %>% pull(upper) %>% to_mill()` 
 million) in MMCs performed annually. 
@@ -511,8 +513,7 @@ million) to
 `r non_cum_n_performed %>% filter(type == "TMC", year == 2020) %>% pull(mean) %>% to_mill()`
 million
 (`r non_cum_n_performed %>% filter(type == "TMC", year == 2020) %>% pull(lower) %>% to_mill()`-`r non_cum_n_performed %>% filter(type == "TMC", year == 2020) %>% pull(upper) %>% to_mill()`
-million) in 2020. However, 
-TMC coverage actually decreased in many countries from 2006 to 2020. 
+million) in 2020. However, the population of SSA increased significantly from 2006, at 1.23 billion, to 2020, at 1.80 billion, and TMC coverage actually decreased in many countries from 2006 to 2020. 
 <!--Should I give a number here? -->
 This is the focus of section \\ref{sec:org5fb5e18}.
 
@@ -603,8 +604,6 @@ age_group_cov_vmmc <- sapply(
   age_group_cov_vmmc, simplify_type, simplify = FALSE, USE.NAMES = TRUE
 )
 ```
-
-<!--TODO: Replace WCA/ECA with VMMC/Non-VMMC -->
 
 Age at circumcision differed greatly by circumcision type and location. 
 The five-year age group in 2006, the year before VMMC programme implementation began, 
@@ -730,7 +729,7 @@ In 2006, TMC coverage was greatest in
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(age_group)`
 year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_perc()`
- (`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_perc()`). while in 2020 it was most prevalent in
+ (`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_perc()`), while in 2020 it was most prevalent in
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(age_group)`
 year olds, at 
 `r age_group_cov_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_perc()`
@@ -757,7 +756,7 @@ This contrasts with 2020, where MMC coverage was highest amongst
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(age_group)`
  year olds, at
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(mean) %>% to_perc()`
- (`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_perc()`), showing an interesting shift upwards in age for MMCs in non-VMMC priority countries, as a result of VMMC focus on young adults, as well as a general increase in MMC coverage in these countries. 
+ (`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2020, type == "MMC") %>% pull(upper) %>% to_perc()`), showing an interesting shift upward in age for MMCs in non-VMMC priority countries, as a result of VMMC focus on young adults, as well as a general increase in MMC coverage in these countries. 
 In 2006, TMC coverage was greatest in 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(age_group)`
 year olds, at 
@@ -766,7 +765,7 @@ year olds, at
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(age_group)`
 year olds, at 
 `r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(mean) %>% to_perc()`
- (`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_perc()`), highlighting a shift upwards in TMCs in VMMC priority countries, 
+ (`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_non_vmmc$fyag_highest_covs %>% filter(year == 2006, type == "TMC") %>% pull(upper) %>% to_perc()`), highlighting a upward shift in TMCs in VMMC priority countries, 
 likely resulting from previously TMCs being performed as TMCs. 
 
 Similarly, we can compare the 2006 and 2020 circumcision levels amongst 15-29 and 30-49 year olds
@@ -810,7 +809,7 @@ to
 `r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(mean) %>% to_perc()`
 (`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r age_group_cov_vmmc$spec_agegroups_mean_cov %>% filter(type == "TMC", age_group == "30-49", year == 2020) %>% pull(upper) %>% to_perc()`) in 2020. 
 This decrease in TMC coverage can partly be attributed to a combination of increased population in non-TMC practising areas, but TMC coverage also decreased less in absolute terms amongst 30-49 year olds than amongst 
-15-29 year olds, which is line with the greater focus on performing MMCs, and hence replacing TMCs, amongst this 
+15-29 year olds, which was in line with the greater focus on performing MMCs, and hence replacing TMCs, amongst this 
 younger age group. 
 
 In contrast, for non-VMMC priority countries, MC coverage in 15-29 year olds increased from 
@@ -882,15 +881,11 @@ The mean age at circumcision for MC in 2006 was
 (`r aggr_mean_circ_age %>% filter(year == 2020, type == "MC") %>% pull(lower)`-`r aggr_mean_circ_age %>% filter(year == 2020, type == "MC") %>% pull(upper)`).
 <!--Therefore, factoring in uncertainty there doesn't seem to have been a 
 significant drop in mean age at MC from 2006 to 2020. -->
-  Similarly, the mean age at circumcision for MMC in 2006 was 
+Similarly, the mean age at circumcision for MMC in 2006 was 
 `r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(mean)`
-(  `r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(lower)`
- -
-    `r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(upper)`), and in 2020 it was
+(`r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(lower)`-`r aggr_mean_circ_age %>% filter(year == 2006, type == "MMC") %>% pull(upper)`), and in 2020 it was
 `r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(mean)`
-(  `r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(lower)`
- -
-    `r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(upper)`).
+(`r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(lower)`-`r aggr_mean_circ_age %>% filter(year == 2020, type == "MMC") %>% pull(upper)`).
 <!--Therefore, again there wasn't a sizeable change in mean age at MMC. -->
 Finally, the mean age at circumcision in 2006 for TMC was 
 `r aggr_mean_circ_age %>% filter(year == 2006, type == "TMC") %>% pull(mean)`
@@ -921,9 +916,7 @@ Similarly, for MMC in 2006 the mean age at circumcision was
 <!--Therefore, again there wasn't a sizeable change in mean age at MMC. -->
   Lastly, the mean age at circumcision in 2006 for TMC was 
 `r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(mean)`
-(  `r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(lower)`
- -
-    `r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(upper)`), and in 2020 it was
+(`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(lower)`-`r aggr_mean_circ_age_vmmc %>% filter(year == 2006, type == "TMC") %>% pull(upper)`), and in 2020 it was
 `r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(mean)`
 (`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(lower)`-`r aggr_mean_circ_age_vmmc %>% filter(year == 2020, type == "TMC") %>% pull(upper)`).
 So the mean age at circumcision for all circumcision types is higher in VMMC 
@@ -958,7 +951,7 @@ Likewise, the mean age at TMC increased.
 This was perhaps explained by the possible replacement of TMC with MMC in a 
 traditional setting, at generally younger ages than MMCs performed as part of 
 VMMC programmes. 
-This caused a natural shift upwards of the mean age at TMC, as younger individuals 
+This caused a natural upward shift of the mean age at TMC, as younger individuals 
 were now more likely to receive MMCs. 
 
 <!--What is the narrative here?
@@ -996,8 +989,7 @@ The average TMC coverage in SSA in 2006 was
 (`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r tmc_cov$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_perc()`). 
 This fell to 
 `r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(mean) %>% to_perc()`
-(`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_perc()`) in 2020, a decrease of 
-`r to_perc(tmc_cov$mean_tmc_cov_diff$mean)`. 
+(`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r tmc_cov$mean_tmc_cov %>% filter(year == 2020) %>% pull(upper) %>% to_perc()`) in 2020, a decrease of `r to_perc(tmc_cov$mean_tmc_cov_diff$mean)`. 
 In non-VMMC priority countries, TMC coverage was 
 `r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(mean) %>% to_perc()`
 (`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r tmc_cov_non_vmmc$mean_tmc_cov %>% filter(year == 2006) %>% pull(upper) %>% to_perc()`). 
@@ -1122,8 +1114,7 @@ fell from
 `r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(mean) %>% to_perc()`
 (`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(lower) %>% to_perc(perc = FALSE)`-`r spec_country_tmc_decrease[[1]] %>% filter(year == 2020) %>% pull(upper) %>% to_perc()`), a 
 decrease of 
-`r to_perc(spec_country_tmc_decrease[[2]]$mean)`
-.
+`r to_perc(spec_country_tmc_decrease[[2]]$mean)`.
 
 <!--TODO: Could possibly add smallest decrease here? Would be more interesting for non-VMMC countries, could show where MMC has not begun to replace TMC. Could also have number of countries in both regions which have experienced a drop in TMC coverage?? Might be interesting for non-VMMC -->
 
@@ -1138,11 +1129,12 @@ for (i in seq_along(x5)) {
 }
 
 # aggr_mean_circ_age_vmmc <- tidy_age(aggr_mean_circ_age_vmmc)
-n_required_vmmc       <- simplify_type(n_required_vmmc)
-largest_smallest_vmmc <- simplify_type(largest_smallest_vmmc)
-increase_vmmc         <- simplify_type(increase_vmmc)
+# n_required_vmmc          <- simplify_type(n_required_vmmc)
+# mult_required_vmmc       <- simplify_type(mult_required_vmmc)
+largest_smallest_vmmc    <- simplify_type(largest_smallest_vmmc)
+increase_vmmc            <- simplify_type(increase_vmmc)
 cum_vmmc_circs_performed <- simplify_type(cum_vmmc_circs_performed)
-vmmc_circs_performed <- simplify_type(vmmc_circs_performed)
+vmmc_circs_performed     <- simplify_type(vmmc_circs_performed)
 
 # countries above threshold
 cntries_thresh <- to_cntry_name(cntry_abv_thresh$iso3[cntry_abv_thresh$age_group == "15-49"])
@@ -1157,9 +1149,11 @@ in VMMC priority countries by 2021.
 Amongst the 14 VMMC priority countries modelled, 
 `r cntry_abv_thresh %>% filter(age_group == "15-49") %>% nrow()`
 countries were projected to have achieved the VMMC target of 
-80\% MC coverage amongst 15-49 year olds by 2020, 
+80\% MC coverage amongst 15-49 year olds by 2020;
 `r paste(paste(cntries_thresh[-length(cntries_thresh)], collapse = ", "), last(cntries_thresh), sep = " and ")`.
 None were expected to reach the 90\% target for 10-29 year olds. 
+No additional countries reach either of these targets even when taking their 
+upper uncertainty bound for MC coverage. 
 No countries were expected to have reached these goals in all districts. 
 
 MC coverage amongst 10-29 year olds across VMMC priority countries increased from 
@@ -1193,7 +1187,7 @@ MMC coverage amongst 15-49 year olds across VMMC priority countries increased fr
 `r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(mean) %>% to_perc()`
 (`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(lower) %>% to_perc(perc = FALSE)`-`r vmmc_cov_diff_15_49$cov_diff %>% filter(type == "MMC") %>% pull(upper) %>% to_perc()`).
 
-Between 2006 and 2020 in these countries, 
+Between 2006 and 2020 in these VMMC priority countries, 
 `r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(mean) %>% to_mill()` million
 (`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(lower) %>% to_mill()`-`r cum_vmmc_circs_performed %>% filter(age_group == "10-29", type == "MC") %>% pull(upper) %>% to_mill()` million) MCs were performed on 10-29 year olds.
 Of these, 
@@ -1238,17 +1232,16 @@ Annual MMCs amongst 15-49 increased from
 `r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(mean) %>% to_mill()` million
  (`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(lower) %>% to_mill()`-`r vmmc_circs_performed %>% filter(age_group == "15-49", year == 2020, type == "TMC") %>% pull(upper) %>% to_mill()` million) in 2020.
 
-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean) %>% to_mill()`
- (`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower) %>% to_mill()`-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper) %>% to_mill()`) additional circumcisions are required to achieve 90\% and 80\% MC coverage targets 
+`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean) %>% to_mill()` million
+ (`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower) %>% to_mill()`-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper) %>% to_mill()` million)
+additional circumcisions are required to achieve 90\% and 80\% MC coverage targets 
 for 10-29 and 15-49 year olds, respectively, across all VMMC priority countries.
 This is equivalent to 
-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean_diff) %>% round(1)`
-(`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff) %>% round(1)`-`r n_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff) %>% round(1)`)
+`r mult_required_vmmc %>% filter(age_group == "10-29") %>% pull(mean_diff) %>% round(1)` million
+(`r mult_required_vmmc %>% filter(age_group == "10-29") %>% pull(lower_diff) %>% round(1)`-`r mult_required_vmmc %>% filter(age_group == "10-29") %>% pull(upper_diff) %>% round(1)`)
 and 
-`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff) %>% round(1)`
-(`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(lower_diff) %>% round(1)`
-to
-`r n_required_vmmc %>% filter(age_group == "15-49") %>% pull(upper_diff) %>% round(1)`)
+`r mult_required_vmmc %>% filter(age_group == "15-49") %>% pull(mean_diff) %>% round(1)`
+(`r mult_required_vmmc %>% filter(age_group == "15-49") %>% pull(lower_diff) %>% round(1)`-`r mult_required_vmmc %>% filter(age_group == "15-49") %>% pull(upper_diff) %>% round(1)`)
 times the projected number of MCs for 10-29 and 15-49 year olds for 2020. 
 
 MC coverage in 2020 for 10-29 year olds in VMMC priority countries was highest in 
