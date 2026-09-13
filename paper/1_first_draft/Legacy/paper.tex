@@ -90,27 +90,21 @@ Jeffrey W. Imai-Eaton\textsuperscript{1,8} \\
 
 \begin{abstract}
   \noindent \textbf{Background} \\
-  \noindent In 2016, UNAIDS developed a Fast-Track strategy that targeted 90\% coverage
-  male circumcision (MC) among men aged 10-29 years by 2021 in priority countries in sub-Saharan 
-  Africa (SSA) to reduce HIV incidence. There is substantial variation across subnational 
-  regions within countries in both traditional male circumcision (TMC) practices and progress
-  towards implementation of voluntary medical male circumcision (VMMC). Tracking progress and
-  remaining gaps towards VMMC HIV prevention targets requires detailed district-level circumcision
-  coverage data.
+  \noindent In 2016, UNAIDS developed a Fast-Track strategy that targeted 90\% coverage male circumcision (MC) among men aged 10-29 years by 2021 in priority countries in sub-Saharan Africa (SSA) to reduce HIV incidence.
+  There is substantial variation across subnational regions within countries in both traditional male circumcision (TMC) practices and progress towards implementation of voluntary medical male circumcision (VMMC). 
+  Tracking progress and remaining gaps towards VMMC HIV prevention targets requires detailed district-level circumcision coverage data.
 
   \noindent \textbf{Methods} \\
-  \noindent We analysed self-reported data on male circumcision from 
-  123
-  nationally representative household surveys conducted in 34 SSA countries between 2006 and 2020.
-  A spatio-temporal Bayesian competing-risks time-to-event model was used to estimate rates of traditional and medical circumcision by age, location, and time.
-  Circumcision coverage in 2020 was projected assuming the continuation of estimated age-specific rates, with probabilistic uncertainty.
+  \noindent We analysed self-reported data on male circumcision from 123 nationally representative household surveys conducted in 34 SSA countries between 2006 and 2020. 
+  A spatio-temporal Bayesian competing-risks time-to-event model was used to estimate rates of traditional and medical circumcision by age, location, and time. 
+  Circumcision coverage in 2020 was projected assuming continuation of estimated age-specific rates, with probabilistic uncertainty.
 
   \noindent \textbf{Results} \\
-  \noindent Across 34 countries, from 2006 to 2020 an estimated 121.943 million men (95\% CI 107.021 - 141.729 million) were newly circumcised, of whom 60.732 million men (45.779 - 85.927 million) were medically circumcised, and 33.519 million men (27.143 - 37.422 million) traditionally circumcised. In 2020, MC coverage among men 10-29 years ranged from 34.31\% (32.39\% - 36.98\%) in Zimbabwe to 100\% (100\% - 100\%) in Niger.
-  MMC coverage ranged from 20.55\% (17.62\% - 24.99\%) in Benin to 79.63\% (77.9\% - 81.38\%) in Sierra Leone, and TMC coverage from 0.63\% (0.5\% - 0.78\%) in Eswatini to 75.46\% (71.71\% - 78.64\%) in Benin.
-  The largest increase in MMC coverage was in Lesotho Lesotho from 11.53\% to 66.9\%. 
-  Within countries, the median difference in MC coverage between the districts with the lowest and highest coverage was 31.78\% with the smallest variation in Niger (99.99\% to 100\%) and largest in Zambia (9.2\% to 99.94\%). 
-  In VMMC priority countries, 25.474 million men aged 10-29 need to be circumcised to reach 90\% coverage in VMMC priority countries, while 22.282 million circumcisions amongst 15-49 year olds are needed to reach 80\% coverage.
+  \noindent Across 34 countries, from 2006 to 2020 an estimated 121.943 million men (95\% CI 107.021-141.729 million) were newly circumcised, of whom 60.732 million men (45.779-85.927 million) were medically circumcised, and 33.519 million men (27.143-37.422 million) traditionally circumcised. 
+  In 2020, MC coverage among men 10-29 years ranged from 34.31\% (32.39-36.98\%) in Zimbabwe to 100\% in Niger. 
+  MMC coverage ranged from 20.55\% (17.62- 24.99\%) in Benin to 79.63\% ( 77.9-81.38\%) in Sierra Leone, and TMC coverage from 0.63\% (0.5-0.78\%) in Eswatini to 75.46\% (71.71-78.64\%) in Benin. The largest increase in MMC coverage was in Lesotho from 11.53\% to 66.9\%. 
+  Within countries, the median difference in MC coverage between the districts with lowest and highest coverage was 31.78\% with the smallest variation in Niger (99.99-100\%) and largest in Zambia (9.2-99.94\%). In VMMC priority countries, 28.305
+  million men aged 10-29 need to be circumcised to reach 90\% coverage in VMMC priority countries, while 27.852 million circumcisions amongst 15-49 year olds are needed to reach 80\% coverage.
   
   \noindent \textbf{Conclusions} \\
   \noindent VMMC programmes have made substantial, but uneven, progress towards male circumcision targets. Granular district and age-stratified data provide information for focusing further programme implementation.
@@ -331,30 +325,28 @@ Sub-national populations from WorldPop were used to calculate circumcision cover
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The data consisted of 123 nationally representative household surveys conducted in 34 SSA countries between
-2002 and 2019. 5,290 subnational areas among these countries were included in these surveys.
-Of these 123 surveys, 120 contained sufficient information on circumcision, as outlined in section \ref{sec:org020fc8c}.
+Our data consisted of 123 nationally representative household surveys
+conducted in 34 SSA countries between 2002 and 2019. 5,290 subnational
+areas among these countries were included in these surveys and modelled.
+Of these 123 surveys, 120 contained sufficient information on
+circumcision, as outlined in section
+\textbackslash ref\{sec:orga131cc6\}.
 
+These remaining surveys consisted of 835,463 individual respondents from 108 birth cohorts from 1903 to 2016. The sample size per survey ranged from 1,459 in the Eswatini 2014 MICS survey to 21,114 in the South Africa 2017 HSRC survey.
 
-These remaining surveys consisted of 835,463 individual respondents from 108 birth cohorts from 1903 to
-2016. The sample size per survey ranged from 1,459 in the Eswatini 2014 MICS survey to 21,114 in the South
-Africa 2017 HSRC survey.
-There was significant censoring and missing data even in the remaining surveys. Left censoring of circumcision
-status, analogous to unknown circumcision age, averaged 1,821, or 31.02\% across all surveys, and ranged from
-0\% in the Botswana 2021 PHIA, Mozambique 2021 PHIA and Rwanda 2008 DHS surveys to 15,178/99.408\%
-in the Nigeria 2008 DHS survey. 17 surveys had more than 90\% left censoring of circumcision age, with
-53 surveys having less than 10\% left censoring. Right censoring of circumcision status, indicating as of yet
-uncircumcised individuals, averaged 2,561/35.776\% across all surveys, ranging from 18/0.399\% in The
-Gambia 2018 MICS survey to 13,747/91.432\% in the South Africa 2017 HSRC survey.
+There was significant censoring and missing data even in the remaining surveys. Left censoring of circumcision status, analogous to unknown circumcision age, averaged 1,821, or 31.02\% across all surveys, and ranged from 0\% in the Botswana 2021 PHIA, Mozambique 2021 PHIA and Rwanda 2008 DHS surveys to 15,178/99.408\% in the Nigeria 2008 DHS
+survey. 
+17 surveys had more than 90\% left censoring of circumcision
+age, with 53 surveys having less than 10\% left censoring. 
+Right censoring of circumcision status, indicating as of yet uncircumcised individuals, averaged 2,561/35.776\% across all surveys, ranging from 18/0.399\% in the The Gambia 2018 MICS survey to 13,747/91.432\% in the South Africa 2017 HSRC survey.
 
-On average across all surveys, 3,810/57.445\% respondents did not respond to either the circumcision location
-or provider question, and so had unknown circumcision type. This was lowest in absolute terms in the Mali 2012 DHS survey, and as a percentage of the total sample size in the Gabon 2019 DHS survey. 
-Unknown type was 100\% in 30 surveys, of which 19 are older than 2007, when VMMC programmes began. 
-5 countries had unknown circumcision type; DR Congo, Guinea, Liberia, Niger and Senegal. Amongst these countries,
-left censoring averaged 98.457\%. However, every left censored individual was also circumcised, which may
-explain the relative lack of circumcision information available in their surveys.
+On average across all surveys, 3,810/57.445\% respondents did not
+respond to either the circumcision location or provider question, and so had unknown circumcision type. 
+This was lowest in absolute terms in the Mali 2012 DHS survey, and as a percentage of the total sample size in the Gabon 2019 DHS survey. Unknown type was 100\% in 30 surveys, of which 19 are older than 2007, when VMMC programmes began. 5 countries had unknown circumcision type; DR Congo, Guinea, Liberia, Niger and Senegal. 
+Amongst these countries, left censoring averaged 98.457\%.
+However, every left censored individual was also circumcised, which may explain the relative lack of circumcision information available in their surveys.
 
-Guinea-Bissau, Equatorial Guinea and the Central African Republic did not have any surveys containing adequate circumcision information, and we were not included in this analysis.
+In Guinea-Bissau, Equatorial Guinea and the Central African Republic, did not have any surveys containing circumcision information, and so we were unable to fit \verb|threemc| in these countries either.
 
 More information on individual surveys, including participation rates, can be found in section x of the appendix. \todo{fill in}
 
@@ -380,45 +372,23 @@ More information on individual surveys, including participation rates, can be fo
 % Amongst these, x (x to x) were MMCs in 2006, while in 2020 x (x to x) MMCs were performed, representing an increase in x (x to x) in MMCs performed annually. 
 % TMC did not increase anywhere,  and actually decreased in several countries from 2010 to 2020. 
 % This is the focus of a later section of our results. 
-In 2006, the year before VMMC programme implementation began, an estimated 217.236 million men (95\%
-CI: 211.079-222.008 million) were circumcised in the 33 countries in SSA for which we have valid circumcision
-data. 
-Of these, 67.021 million (62.554-73.259 million) were MMCS, and 102.286 million (95.718-106.665
-million) were TMCS. 
-This contrasts with 2020, where an estimated 337.913 million males (316.265-362.898
-million) were circumcised in these same countries, of which 125.738 million (106.081-157.406 million) were
-performed as MMCS, and 136.555 million (124.189-144.146 million) as TMCS. 
-\todo{I believe this value is cumulative, not for each discrete year! May need to reword}
-% \todo{Can use n_circs_fun function for this\!}
-This constituted an increase
-of 120.677 million (105.185-140.89 million) newly circumcised males between 2006 and 2020, with 58.717
-million (43.528-84.147 million) new MMCs performed, and 34.269 million (28.471-37.481 million) new TMCs performed. 
-The disparity between the number of MCs performed and the number of MMCs performed may be partially attributed to the fact that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC. 
-This translated to a change in mean MC coverage for the SSA region from 57.62\% (59.13\%-55.55\%
-) in 2006 to 63.2\% (66.94\%-59.71\%) in 2020, or an increase of 5.58\% (4.16\%-7.81\%). 
-MMC coverage increased from 18.75\% (17.75\%-19.9\%  in 2006 to 26.09\% (23.11\%-30.04\%) in 2020, an increase of 7.33\%
-(5.36\%-10.14\%). 
-TMC changed from 24.64\% (23.57\%-25.58\%) in 2006 to 22.75\% (21.34\%-24.06\%) in 2020, a decrease of 1.89\% (1.51\%-2.23\%).
+In 2006, the year before VMMC programme implementation began, an
+estimated 217.236 million men (95\% CI: 211.079-222.008 million) were circumcised in the 33 countries in SSA for which we have valid circumcision data. 
+Of these, 67.021 million (62.554-73.259 million) were MMCs, and 102.286 million (95.718-106.665 million) were TMCs. This contrasts with 2020, where an estimated 337.913 million males (316.265-362.898 million) were circumcised in these same countries, of which 125.738 million (106.081-157.406 million) were performed as MMCs, and 136.555 million (124.189-144.146 million) as TMCs. 
+This constituted an increase of 120.677 million (105.185-140.89 million) newly circumcised males between 2006 and 2020, with 58.717 million (43.528-84.147 million) new MMCs performed, and 34.269 million (28.471-37.481 million) new TMCs performed. 
+The disparity between the number of MCs performed and the number of MMCs performed can be partly explained by recalling that for five countries, Liberia, Senegal, Niger, Guinea and the Democratic Republic of the Congo, we have no circumcision type information, and so can only estimate MC, not MMC or TMC. This translated to a change in mean MC coverage for the SSA region from 57.62\% (59.13-55.55\% ) in 2006 to 63.2\% (66.94-59.71\%) in 2020, or an increase of 5.58\% (4.16-7.81\%). 
+MMC coverage increased from 18.75\% (17.75-19.9\%) in 2006 to 26.09\% (23.11-30.04\%) in 2020, an increase of 7.33\% (5.36-10.14\%). while TMC changed from 24.64\% (23.57-25.58\%) in 2006 to 22.75\% (21.34-24.06\%) in 2020, a decrease of 1.89\% (1.51-2.23\%).
 
-MC coverage in each country in 2006 ranged from 4.97\% (4.78-5.16\%) in Zimbabwe to 95.99\% (86.43 - 99.72\%) in Guinea, while MMC in 2006 ranged from 1.63\% (1.47-1.76\%) in Zimbabwe to 60.05\% (56.56\%-64.15\%) in Congo and TMC ranged from 0.93\% (0.75\%-1.12\%) in Eswatini to 65.19\% (63.41\%-6.94\%)
-in Benin. In contrast, in 2020 MC coverage was estimated to have ranged from 13.77\% (10.51\%-18.87\%) in
-Zimbabwe to 96.95\% (89.74\%-99.91\%) in Senegal, while MMC ranged from 11.55\% (8.24\%-16.68\%) in
-Zimbabwe to 64.08\% (61.16\%-67.11\%) in Sierra Leone and TMC ranged from 0.69\% (0.56\%-0.84\%) in
-Eswatini to 63.02\% (59.34\%-66.65\%) in Benin.
+MC coverage in each country in 2006 ranged from 4.97\% (4.78-5.16\%) in Zimbabwe to 95.99\% (86.43-99.72\%) in Guinea, while MMC in 2006 ranged from 1.63\% (1.47-1.76\%) in Zimbabwe to 60.05\% (56.56-64.15\%) in The Republic of the Congo and TMC ranged from 0.93\% (0.75-1.12\%) in Eswatini to 65.19\% (63.41-66.94\%) in Benin. In contrast, in 2020 MC coverage was estimated to have ranged from 13.77\% (10.51-18.87\%) in Zimbabwe to 96.95\% (89.74-99.91\%) in Senegal, while MMC ranged from 11.55\% (8.24-16.68\%) in Zimbabwe to 64.08\% (61.16-67.11\%) in Sierra Leone and TMC ranged from 0.69\% (0.56-0.84\%) in Eswatini to 63.02\% (59.34-66.65\%) in Benin.
 
-The largest percentage increase in MC coverage from 2006 to 2020 was in Lesotho at 21.7\% (18.66\%-25.93\%),
-from 30.06\% (29.53\%-30.7\%) in 2006 to 51.76\% (48.19\%-56.63\%) in 2020, while the highest percentage
-increase in MMC was also in Lesotho at 21.49\% (18.14\%-26.13\%), from 6.37\% (5.93\%-6.88\%) in 2006 to
-27.86\% (24.08\%-33.01\%) in 2020. For TMC, the largest percentage decrease between 2006 and 2020 was in
-Ghana at 8.76\% (6.09\%-9.61\%), from 58.2\% (55.2\%-60.8\%) in 2006 to 49.44\% (45.58\%-54.71\%) in 2020.
+The largest percentage increase in MC coverage from 2006 to 2020 was in Lesotho at 21.7\% (18.66-25.93\%), from 30.06\% (29.53-30.7\%) in 2006 to 51.76\% (48.19-56.63\%) in 2020, while the highest percentage increase in MMC was also in Lesotho at 21.49\% (18.14-26.13\%), from 6.37\% (5.93-6.88\%) in 2006 to 27.86\% (24.08-33.01\%) in 2020. 
+For TMC, the largest percentage decrease between 2006 and 2020 was in Ghana at 8.76\% (6.09-9.61\%), from 58.2\% (55.2-60.8\%) in 2006 to 49.44\% (45.58-54.71\%) in 2020.
 
-The number of annual MCs performed increased from 0.29 million (0.23-0.38 million) in 2006 to 0.29 million
-(0.23-0.38 million) in 2020, a growth of 0.1 million (0.056-0.127 million) annually, averaged across all
-interceding years. Amongst these, 0.29 million (0.23-0.38 million) were MMCs in 2006, while in 2020 0.391
-million (0.287-0.506 million) MMCs were performed, representing an increase in million (0.012-0.166
-million) in MMCs performed annually. The number of TMCs performed annually did increase slightly from
-2006, from 0.12 million (0.115-0.125 million) to 0.128 million (0.085-0.159 million) in 2020. However,
-TMC coverage in fact decreased in many countries from 2006 to 2020. This is the focus of section \ref{sec:org5fb5e18}.
+The number of annual MCs performed increased from 0.29 million
+(0.23-0.38 million) in 2006 to 0.29 million (0.23-0.38 million) in 2020, a growth of 0.1 million (0.056-0.127 million) annually, averaged across all interceding years. 
+Amongst these, 0.29 million (0.23-0.38 million) were MMCs in 2006, while in 2020 0.391 million (0.287-0.506 million) MMCs were performed, representing an increase of 0.076 million (0.012-0.166 million) in MMCs performed annually. 
+The number of TMCs performed annually did increase slightly from 2006, from 0.12 million (0.115-0.125 million) to 0.128 million (0.085-0.159 million) in 2020.
+However, the population of SSA increased significantly from 2006, at 1.23 billion, to 2020, at 1.80 billion, and TMC coverage actually decreased in many countries from 2006 to 2020. This is the focus of section \textbackslash ref\{sec:org5fb5e18\}.
 
 % Subnational coverage plot
 \begin{figure}[H]
@@ -431,22 +401,9 @@ TMC coverage in fact decreased in many countries from 2006 to 2020. This is the 
     A vertical dotted line signifies the UNAIDS target of 90\% national male circumcision amongst 15-29 year olds. The countries below the horizontal black line are VMMC priority countries. VMMC = Voluntary Medical Male Circumcision.}}
 \end{figure}
 
-Within countries, the median difference in MC coverage between districts with the lowest and highest coverage in 2020 was 56.01\% The smallest variation was in Lesotho, at 48.97\% in Qacha’s Nek to 55.26\% in Berea, while the largest variation was in Mozambique, at 5.35\% in Chifunde to 77.9\% in Homoíne. 
-The median difference within countries in MMC coverage between districts with lowest and highest coverage in 2020 was 38.69\% The smallest variation was in Eswatini, at 16.94\% \% in Shiselweni to 24.69\% \% in Manzini, while the largest variation was in Tanzania, at 7.81\% \% in Tandahimba DC to 74.87\% \% in Iringa MC. 
-For TMC coverage, the median difference between districts in 2020 was 55.54\% The smallest variation was in Eswatini, at 0.97\% in Eenhana to 79.51\% in Okakarara, while the largest variation was in Namibia, at 0.45\% in Lubombo to 100\% in Manzin. 
+Within countries, the median difference in MC coverage between districts with the lowest and highest coverage in 2020 was 56.01\% The smallest variation was in Lesotho, at 48.97\% in Qacha's Nek to 55.26\% in Berea, while the largest variation was in Mozambique, at 5.35\% in Chifunde to 77.9\% in Homoíne. The median difference within countries in MMC coverage between districts with lowest and highest coverage in 2020 was 38.69\% The smallest variation was in Eswatini, at 16.94\% in Shiselweni to 24.69\% in Manzini, while the largest variation was in Tanzania, at 7.81\% in Tandahimba DC to 74.87\% in Iringa MC. For TMC coverage, the median difference between districts in 2020 was 55.54\% The smallest variation was in Eswatini, at 0.97\% in Eenhana to 79.51\% in Okakarara, while the largest variation was in Namibia, at 0.45\% in Lubombo to 1\% in Manzini.
 
-\todo{Include comparisons of VMMC vs non-VMMC priority countries, as in below sections}
-\todo{Include more comments on results, as below}
-
-\todo{
--Check UNAIDS target for 15-29 year olds, may be 80\%? May want to remove this line altogether?
-}
-
-% Within countries, the median difference in MC coverage between the districts with lowest and highest coverage in 2020 was x\% (x\%-x\%).
-% For ESA countries, this was x\% (x\%-x\%), in contrast to WCA countries, where it was x\% (x\%-x\%).
-% The largest variation overall (and ESA) was in x, from x\% in x to x\% in x, while the largest variation for WCA countries was x, from x\% in x to x\% in x. 
-% In total, the mean percentage of districts in each country with greater than 90\% MC coverage amongst those aged 10-29 was x\%. In ESA, this was x\%, while in WCA, this was x\%. 
-
+\todo{Compare VMMC and non-VMMC countries here?}
 
 \subsection{Subnational variation in total, medical \& traditional circumcision across different ages}
 
@@ -458,89 +415,95 @@ For TMC coverage, the median difference between districts in 2020 was 55.54\% Th
     \caption{\emph{Projected percentage of men from 0 to 60 years old who were medically circumcised and traditionally circumcised by 2020. The horizontal grey dashed line indicates the 90\% circumcision coverage by 2021 target established by the UNAIDS Fast Track strategy. Purple areas represent countries where circumcision type could not be ascertained from surveys, and so shows total male circumcision. Cent. Af. Rep. = Central African Republic, Eq. Guinea = Equatorial Guinea.}}
 \end{figure}
 
-Age at circumcision differed greatly by circumcision type and location. The five-year age group in 2006, the year before VMMC programme implementation began, which had the highest MC coverage across the SSA region was 25-29, at 74.1\% (73.13\%-74.73\%). 
-In contrast, the age group with the highest MC coverage in 2020 was 20-24, at 84.04\% (82.23\%-86.18\%). The five-year age group in 2006 which had the highest MMC coverage was 20-24, at 25.33\% (23.84\%-26.87\%). 
-The age group with the highest MMC coverage in 2020 was also 20-24, at 40.28\% (37.29\%-43.71\%). The five-year age group in 2006 which had the highest
-TMC coverage was 45-49, at 40.29\% (36.7\%-43.09\%). The age group with the highest TMC coverage in
-2020 was 54-59, 38.55\% (36.19\%-40.5\%). This decrease in the five-year age group with the highest MC coverage, increase in the age group for TMC with the highest coverage (as well as a decrease in coverage for
-the highest five-year age group), and increase in overall MMC coverage across the SSA region is indicative of
+Age at circumcision differed greatly by circumcision type and location.
+The five-year age group in 2006, the year before VMMC programme
+implementation began, which had the highest MC coverage across the SSA region was 25-29, at 74.1\% (73.13-74.73\%) . In contrast, the age group with the highest MC coverage in 2020 was 20-24, at 84.04\% (82.23-86.18\%). The five-year age group in 2006 which had the highest MMC coverage was 20-24, at 25.33\% (23.84-26.87\%) . The age group with
+the highest MMC coverage in 2020 was also 20-24 , now at 40.28\%
+(37.29-43.71\%). The five-year age group in 2006 which had the highest
+TMC coverage was 45-49, at 40.29\% (36.7-43.09\%) . The age group with
+the highest TMC coverage in 2020 was 54-59 , 38.55\% (36.19-40.5\%).
+This decrease in the five-year age group with the highest MC coverage,
+increase in the age group for TMC with the highest coverage (as well as
+a decrease in coverage for the highest five-year age group), and
+increase in overall MMC coverage across the SSA region is indicative of
 the effect of VMMC programme implementation on the region.
 
-We may compare changes in circumcision amongst two age groups; 15-29 year olds, which are a particular focus for VMMC implementation, and 30-49 year olds, which are not. MC coverage amongst 15-29 year olds increased from 71.91\% (70.81\%-72.47\%) in 2006 to 82.44\% (80.19\%-85.11\%) in 2020. In contrast, MC
-coverage amongst 30-49 year olds only increased from 73.62\% (72.66\%-74.39\%) in 2006 to 78.84\% (77.97\%
-- 79.91\%) in 2020. Therefore, MC coverage across SSA saw greater increases in this younger age group
-than in this older one, in line with VMMC programme age focus. Similarly, MMC coverage amongst 15-29
-year olds increased from 24.84\% (23.49\%-26.22\%) in 2006 to 39.05\% (35.63\%-43.08\%) in 2020, while
-MMC coverage amongst 30-49 year olds increased from 22.74\% (21\%-24.74\%) in 2006 to 31.25\% (29.4\% -
-33.38\%) in 2020. Therefore, MMC coverage across SSA also saw greater increases amongst 15-29 year olds
-than amongst 30-49 year olds. The changes seen in TMC, however, contrast to these larger increases in MC
-and MMC coverage for 15-29 year olds. TMC coverage amongst 15-29 year olds decreased from 32.01\% (
-30.68\%-33.33\%) in 2006 to 28.25\% (26.57\%-29.88\%) in 2020, while TMC coverage amongst 30-49 year
-olds decreased from 38.42\% (36.58\%-40.09\%) in 2006 to 35.1\% (33.64\%-36.58\%) in 2020. Thus, TMC
-coverage decreased less in absolute terms amongst 30-49 year olds than amongst 15-29 year olds, which is line
-with the greater focus on performing MMCs amongst this younger age group.
+We may compare changes in circumcision amongst two age groups; 15-29
+year olds, which are a particular focus for VMMC implementation, and
+30-49 year olds, which are not. MC coverage amongst 15-29 year olds
+increased from 71.91\% (70.81-72.47\%) in 2006 to 82.44\%
+(80.19-85.11\%) in 2020. In contrast, MC coverage amongst 30-49 year
+olds only increased from 73.62\% (72.66-74.39\%) in 2006 to 78.84\%
+(77.97-79.91\%) in 2020. Therefore, MC coverage across SSA saw greater
+increases in this younger age group than in this older one, in line with
+VMMC programme age focus. Similarly, MMC coverage amongst 15-29 year
+olds increased from 24.84\% (23.49-26.22\%) in 2006 to 39.05\%
+(35.63-43.08\%) in 2020, while MMC coverage amongst 30-49 year olds
+increased from 22.74\% (21-24.74\%) in 2006 to 31.25\% (29.4-33.38\%) in
+2020. Therefore, MMC coverage across SSA also saw greater increases
+amongst 15-29 year olds than amongst 30-49 year olds. The changes seen
+in TMC, however, contrast to these larger increases in MC and MMC
+coverage for 15-29 year olds. TMC coverage amongst 15-29 year olds
+decreased from 32.01\% (30.68-33.33\%) in 2006 to 28.25\%
+(26.57-29.88\%) in 2020, while TMC coverage amongst 30-49 year olds
+decreased from 38.42\% (36.58-40.09\%) in 2006 to 35.1\% (33.64-36.58\%)
+in 2020. Thus, TMC coverage decreased less in absolute terms amongst
+30-49 year olds than amongst 15-29 year olds, in line with the greater
+focus on performing MMCs amongst this younger age group.
 
-Finally, we can contrast patterns in circumcision pattern for different age groups amongst VMMC and
-non-VMMC priority countries, where differences in 2006 and 2020 levels and patterns of circumcision seem to
+Finally, we can contrast patterns in circumcision pattern for different
+age groups amongst VMMC and non-VMMC priority countries, where
+differences in 2006 and 2020 levels and patterns of circumcision seem to
 be more pronounced.
-For VMMC priority countries, five-year age group MC coverage 2006 was highest amongst 35-39 year olds, at
-44.21\% (43.31\%-45.14\%), but in 2020 was highest amongst 20-24 year olds, at 66.08\% (62.71\%-70.35\%
-), respectively. This highlights both the increased prevalence of MC in VMMC priority countries and the
-downward shift in age profile of those who are circumcised, since VMMC programme implementation began.
-In 2006 MMC coverage was highest amongst 30-34 year olds, at 18.48\% (17.48\%-19.52\%). This contrasts
-with 2020, where MMC coverage was highest amongst 20-24 year olds, at 46.71\% (x 43.1\%-x 51.26\%).
-This shows that much of the downward shift in the age profile of circumcised individuals since 2006 has been
-“driven” by an increase in the number of MMCs performed amongst younger individuals. In 2006, TMC
-coverage was greatest in 54-59 year olds, at 27.82\% (26.6\%-29.09\%). while in 2020 it was most prevalent
-in 54-59 year olds, at 27.82\% (26.6\%-29.09\%, highlighting that VMMC implementation has been focused on areas where TMC has not historically been widely prevalent, and so seems to have had little effect on patterns of TMC in VMMC priority countries, both in terms of its age profile and prevalence.
 
-We can contrast this with the non-VMMC priority countries in SSA. The five-year age group MC coverage in
-both 2006 and 2020 was highest amongst 25-29 year olds, at 94.72\% (93.64\%-95.25\%) and 96.15\% (95.67\%
-- 96.59\%), respectively. This indicates that MC has increased slightly in non-VMMC priority countries,
-but the age profile (in terms of the five-year age group with the highest coverage) has not noticeably changed.
-However, in 2006 MMC coverage was highest amongst 15-19 year olds, at 31.13\% (29.27\%-33.01\%). This
-contrasts with 2020, where MMC coverage was highest amongst 20-24 year olds, at 36.11\% (x 33.52\%-38.81\%), showing an interesting shift upwards in age for MMCs in non-VMMC priority countries, as a result
-of VMMC focus on young adults, as well as a general increase in MMC coverage in these countries. 
-In 2006, TMC coverage was greatest in 45-49 year olds, at 49.27\% (43.79\%-53.39\%). while in 2020 it was most
-prevalent in 45-49 year olds, at 49.27\% (43.79\%-53.39\%, highlighting a shift upwards in TMCs in VMMC
-priority countries, likely resulting from previously TMCs being performed as TMCs.
-Similarly, we can compare the 2006 and 2020 circumcision levels amongst 15-29 and 30-49 year olds in both
-VMMC and non-VMMC countries, respectively.
+For VMMC priority countries, five-year age group MC coverage 2006 was
+highest amongst 35-39 year olds, at 44.21\% (43.31-45.14\%), but in 2020
+was highest amongst 20-24 year olds, at 66.08\% (62.71-70.35\%),
+respectively. This highlights both the increased prevalence of MC in
+VMMC priority countries and the downward shift in the age profile of
+those who are circumcised, since VMMC programme implementation began. In
+2006 MMC coverage was highest amongst 30-34 year olds, at 18.48\%
+(17.48-19.52\%). This contrasts with 2020, where MMC coverage was
+highest amongst 20-24 year olds, at 46.71\% (43.1-51.26\%). Hence, much
+of the downward shift in age profile of circumcised individuals since
+2006 has been ``driven'' by an increase in the number of MMCs performed
+amongst younger individuals. In 2006, TMC coverage was greatest in 54-59
+year olds, at 27.82\% (26.6-29.09\%). while in 2020 it was most
+prevalent in 54-59 year olds, at 27.82\% (26.6-29.09\%). This perhaps
+highlights that VMMC implementation has been focused on areas where TMC
+has not historically been widely prevalent, and so seems to have had
+little effect on patterns of TMC in VMMC priority countries, both in
+terms of its age profile and prevalence.
 
-In VMMC priority countries, MC coverage amongst 15-29 year olds increased from 37.96\% (37.34\%-38.59\%
-) in 2006 to 63.22\% (58.98\%-68.58\%) in 2020. In contrast, MC coverage in 30-49 year olds went from
-43.88\% (43.14\%-44.67\%) in 2006 to 54.52\% (53.04\%-56.52\%) in 2020. Therefore, MC coverage in VMMC
-priority countries increased amongst 15-29 year olds at a higher rate than amongst 30-49 year olds, and
-indeed greater than in SSA as a whole, highlighting the effects of VMMC implementation in these countries
-since 2006. Similarly, MMC coverage amongst 15-29 year olds increased from 16.18\% (15.5\%-16.89\%) in
-2006 to 44.44\% (39.95\%-50.07\%) in 2020, while MMC coverage amongst 30-49 year olds increased from
-17.89\% (17.01\%-18.78\%) in 2006 to 29.9\% (28.28\%-32.11\%) in 2020. Therefore, MMC coverage in
-VMMC priority countries also saw greater increases amongst 15-29 year olds than amongst 30-49 year olds,
-and greater increases than for SSA as a whole. Again, TMC coverage amongst both fifteen year age groups
-contrast to these increases for MC and MMC. TMC coverage amongst 15-29 year olds decreased from 21.78\%
-(21.15\%-22.37\%) in 2006 to 18.78\% (18.08\%-19.42\%) in 2020, while TMC coverage amongst 30-49 year
-olds decreased from 25.99\% (25.24\%-26.74\%) in 2006 to 24.62\% (23.89\%-25.32\%) in 2020. This decrease
-in TMC coverage can partly be attributed to a combination of increased population in non-TMC practising
-areas, but TMC coverage also decreased less in absolute terms amongst 30-49 year olds than amongst 15-29
-year olds, which is line with the greater focus on performing MMCs, and hence replacing TMCs, amongst
-this younger age group.
+We can contrast this for the non-VMMC priority countries in SSA. The
+five-year age group MC coverage in both 2006 and 2020 was highest
+amongst 25-29 year olds, at 94.72\% (93.64-95.25\%) and 96.15\%
+(95.67-96.59\%), respectively. This indicates that MC has increased
+slightly in non-VMMC priority countries, but the age profile (in terms
+of the five-year age group with the highest coverage) has not noticeably
+changed. However, in 2006 MMC coverage was highest amongst 15-19 year
+olds, at 31.13\% (29.27-33.01\%). This contrasts with 2020, where MMC
+coverage was highest amongst 20-24 year olds, at 36.11\%
+(33.52-38.81\%), showing an interesting upward shift in age for MMCs in non-VMMC priority countries, as a result of VMMC focus on young adults, as well as a general increase in MMC coverage in these countries. In 2006, TMC coverage was greatest in 45-49 year olds, at 49.27\% (43.79-53.39\%), while in 2020 it was most prevalent in 45-49 year olds, at 49.27\% (43.79-53.39\%), highlighting an upward shift in TMCs in VMMC
+priority countries, likely resulting from previous TMCs being
+performed as TMCs.
 
-For non-VMMC priority countries, MC coverage in 15-29 year olds increased from 93.98\% (
-92.57\%-94.49\%) in 2006 to 94.94\% (93.98\%-95.85\%) in 2020, staying relatively similar. MC coverage in
-30-49 year olds also increased from 93.97\% (92.85\%-94.72\%) in 2006 to 95.48\% (95.03\%-95.92\%) in 2020,
-so again, when taking our credible intervals into account, there was little increase amongst this age group in
-non-VMMC priority countries. Interestingly, MC seems to have increased more amongst 30-49 year
-olds than amongst 15-29, defying the trend amongst VMMC priority countries and SSA as a whole. MMC
-coverage amongst 15-29 year olds increased from 30.48\% (28.69\%-32.28\%) in 2006 to 35.55\% (32.82\% -
-38.54\%) in 2020, while MMC coverage amongst 30-49 year olds increased from 26.06\% (23.72\%-28.81\%) in
-2006 to 32.17\% (30.17\%-34.24\%) in 2020. Hence, MMC coverage in non-VMMC countries also saw greater
-increases amongst 30-49 year olds than in 15-29 year olds, but not much change overall when factoring in our
-uncertainty. TMC coverage amongst 15-29 year olds decreased from 38.67\% (36.88\%-40.45\%) in 2006 to
-34.41\% (32.09\%-36.68\%) in 2020, while TMC coverage amongst 30-49 year olds decreased from 46.93\%
-(44.34\%-49.23\%) in 2006 to 42.26\% (40.3\%-44.29\%) in 2020. Thus, TMC coverage decreased less in
-absolute terms amongst 30-49 year olds than amongst 15-29 year olds, which is line with the greater focus on
-performing MMCs amongst this younger age group. TMC coverage decreased more amongst non-VMMC
-countries for both age groups, suggesting a likely replacement of historical TMC with MMC.
+Similarly, we can compare the 2006 and 2020 circumcision levels amongst 15-29 and 30-49 year olds in both VMMC and non-VMMC countries,
+respectively. 
+In VMMC priority countries, MC coverage amongst 15-29 year olds increased from 37.96\% (37.34-38.59\%) in 2006 to 63.22\% (58.98-68.58\%) in 2020. In contrast, MC coverage in 30-49 year olds went from 43.88\% (43.14-44.67\%) in 2006 to 54.52\% (53.04-56.52\%) in 2020. 
+Therefore, MC coverage in VMMC priority countries increased
+amongst 15-29 year olds at a higher rate than amongst 30-49 year olds, and indeed greater than in SSA as a whole, highlighting the effects of VMMC implementation in these countries since 2006. 
+Similarly, MMC coverage amongst 15-29 year olds increased from 16.18\% (15.5-16.89\%) in 2006 to 44.44\% (39.95-50.07\%) in 2020, while MMC coverage amongst 30-49 year olds increased from 17.89\% (17.01-18.78\%) in 2006 to 29.9\% (28.28-32.11\%) in 2020. Therefore, MMC coverage in VMMC priority countries also saw greater increases amongst 15-29 year olds than amongst 30-49 year olds, and greater increases than for SSA as a whole.
+Again, TMC coverage amongst both fifteen year age groups contrast to these increases for MC and MMC. TMC coverage amongst 15-29 year olds decreased from 21.78\% (21.15-22.37\%) in 2006 to 18.78\% (18.08-19.42\%) in 2020, while TMC coverage amongst 30-49 year olds decreased from 25.99\% (25.24-26.74\%) in 2006 to 24.62\% (23.89-25.32\%) in 2020. This decrease in TMC coverage can partly be attributed to a combination of increased population in non-TMC practising areas, but TMC coverage also decreased less in absolute terms amongst 30-49 year olds than amongst 15-29 year olds, which is line with the greater focus on performing MMCs, and hence replacing TMCs, amongst this younger age group.
+
+In contrast, for non-VMMC priority countries, MC coverage in 15-29 year olds increased from 93.98\% (92.57-94.49\%) in 2006 to 94.94\% (93.98-95.85\%) in 2020, staying relatively similar. 
+MC coverage in 30-49 year olds also increased from 93.97\% (92.85-94.72\%) in 2006 to 95.48\% (95.03-95.92\%) in 2020, so again, when taking our credible intervals into account, there was little increase amongst this age group in non-VMMC priority countries. 
+Interestingly, MC seems to have increased more amongst 30-49 year olds than amongst 15-29, defying the trend amongst VMMC priority countries and SSA as a whole. 
+MMC coverage amongst 15-29 year olds increased from 30.48\% (28.69-32.28\%) in 2006 to 35.55\% (32.82-38.54\%) in 2020, while MMC coverage amongst 30-49 year olds increased from 26.06\% (23.72-28.81\%) in 2006 to 32.17\% (30.17-34.24\%) in 2020. 
+Hence, MMC coverage in non-VMMC countries also saw greater increases amongst 30-49 year olds than in 15-29 year olds, but not much change overall when factoring in our uncertainty.  
+TMC coverage amongst 15-29 year olds decreased from 38.67\% (36.88-40.45\%) in 2006 to 34.41\% (32.09-36.68\%) in 2020, while TMC coverage amongst 30-49 year olds decreased from 46.93\% (44.34-49.23\%) in 2006 to 42.26\% (40.3-44.29\%) in 2020. 
+Thus, TMC coverage decreased less in absolute terms amongst 30-49 year olds than amongst 15-29 year olds, which was in line with the greater focus on performing MMCs amongst this younger age group. 
+TMC coverage decreased more amongst non-VMMC countries for both age groups, suggesting a likely replacement of historical TMC with MMC.
 
 \subsection{Subnational heterogeneity in age at medical and traditional circumcision}
 
@@ -549,43 +512,57 @@ countries for both age groups, suggesting a likely replacement of historical TMC
     \centering
     \includegraphics[width=.9\linewidth]
     {figures/paper/04_map_plot_mean_circ_age.png}
-    \caption{\emph{(A) Estimated distinct-level age at circumcision in 2020 in 33 sub-Saharan African countries. Maps show mean medical male circumcision (MMC) and mean traditional male circumcision (TMC) age. Countries without estimates are in grey. Mean circumcision ages are binned into five-year age groups and over 30s. (B) Scatterplot of district-level mean traditional male circumcision age versus mean medical male circumcision age. A diagonal dashed line passes through the origin and (25, 25). Points representing each district are coloured by whether their country is a Voluntary Male Medical Circumcision (VMMC) priority country.}}
+    \caption{\emph{(A) Estimated distinct-level age at circumcision in 2020 in 33 sub-Saharan African countries. Maps show mean medical male circumcision (MMC) and mean traditional male circumcision (TMC) age. Countries without estimates are in grey. Countries with no information on circumcision type have male circumcision (MC) displayed in the TMC plot, and are coloured in grey in the MMC plot. Mean circumcision ages are binned into five-year age groups and over 30s. (B) Scatterplot of district-level mean traditional male circumcision age versus mean medical male circumcision age. A diagonal dashed line passes through the origin and (25, 25). Points representing each district are coloured by whether their country is a Voluntary Male Medical Circumcision (VMMC) priority country.}}
 \end{figure}
 
-The mean age at circumcision for MC in 2006 was 8.88 (8.53-9.62), while in 2020 it was 9.26 (8.76-9.78
-). Similarly, the mean age at circumcision for MMC in 2006 was 10.59 (10.19-11.38), and in 2020 it was
-10.8 (10.35-11.24). Finally, the mean age at circumcision in 2006 for TMC was 9.66 (9.36-10.32), and in
-2020 it was 9.35 (8.64-10.08). 
-Therefore, the mean age at circumcision for MC and MMC went up slightly from
-2006 to 2020. However, it is important to note that the uncertainty ranges in our credible intervals overlap,
-so this increase could be seen as “non-significant”, in some sense. In contrast, the mean age at circumcision
-for TMC was seen to decrease, although again, not in a manner that exceeds our uncertainty bounds. This may
-suggest that VMMC implementation amongst 15-29 year olds has corresponded to an upward shift of mean
-age at circumcision for MC and MMC, and replaced some circumcisions which would previously have been
-performed as TMCs, which may explain the observed decrease in mean age of TMC.
+The mean age at circumcision for MC in 2006 was 8.88 years of age
+(8.53-9.62), while in 2020 it was 9.26 (8.76-9.78). Similarly, the mean
+age at circumcision for MMC in 2006 was 10.59 (10.19-11.38), and in 2020
+it was 10.8 (10.35-11.24). Finally, the mean age at circumcision in 2006
+for TMC was 9.66 (9.36-10.32), and in 2020 it was 9.35 (8.64-10.08).
+Therefore, the mean age at circumcision for MC and MMC went up slightly
+from 2006 to 2020, albeit not significantly when taking uncertainty
+ranges into account. In contrast, the mean age at circumcision for TMC
+was seen to decrease, although again, not in a manner that exceeds our
+uncertainty bounds. This may suggest that VMMC implementation amongst
+15-29 year olds has corresponded to an upward shift of mean age at
+circumcision for MC and MMC, and replaced some circumcisions which would
+previously have been performed as TMCs, which may explain the observed
+decrease in mean age of TMC.
 
-As in the previous section, we can also compare how the mean age of circumcision differs amongst VMMC
-priority countries, versus their non-VMMC priority counterparts in SSA.
+As in the previous section, we can also compare how the mean age of
+circumcision differs amongst VMMC priority countries, versus their
+non-VMMC priority counterparts in SSA.
 
-For VMMC priority countries, the mean age at circumcision for MC in 2006 was 14.05 (13.57-14.68), while
-in 2020 it was 15.45 (14.24-16.36). Similarly, for MMC in 2006 the mean age at circumcision was 15.82 (
-15.24-16.48), while in 2020 it was 16.41 (15.43-17.13). Lastly, the mean age at circumcision in 2006 for
-TMC was 12.29 (11.88-13.04), and in 2020 it was 11.46 (10.84-12.43. So the mean age at circumcision for
-all circumcision types is higher in VMMC priority countries than overall in SSA, highlighting the historically
-low levels of MC and TMC in these countries. Like in SSA overall, the mean age at circumcision for MC and
-MMC went up slightly, albeit not significantly when factoring in uncertainty bounds. Again, the mean age at
-TMC also decreased in VMMC priority countries.
+For VMMC priority countries, the mean age at circumcision for MC in 2006
+was 14.05 (13.57-14.68), while in 2020 it was 15.45 (14.24-16.36).
+Similarly, for MMC in 2006 the mean age at circumcision was 15.82
+(15.24-16.48), while in 2020 it was 16.41 (15.43-17.13). Lastly, the
+mean age at circumcision in 2006 for TMC was 12.29 (11.88-13.04), and in
+2020 it was 11.46 (10.84-12.43). So the mean age at circumcision for all
+circumcision types is higher in VMMC priority countries than overall in
+SSA, highlighting the historically low levels of MC and TMC in these
+countries. Like in SSA overall, the mean age at circumcision for MC and
+MMC went up slightly, albeit not significantly when factoring in
+uncertainty bounds. Again, the mean age at TMC also decreased in VMMC
+priority countries.
 
-For non-VMMC priority countries, the mean age at MC in 2006 was 5.51 (5.08-6.33), while in 2020 it was
-5.24 (5.01-5.5). Similarly, the mean age at MMC in 2006 was 6.07 (5.82-6.95), and in 2020 it was 5.93 (
-5.94-6.13). Finally, the mean age at TMC in 2006 for TMC was 7.38 (7.18-7.96), and in 2020 it was 7.52
-(6.73-8.06. In contrast to our VMMC priority countries, these countries have a lower mean at circumcision
-for all circumcision types, largely driven by high TMC levels historically. It is interesting that the age at
-circumcision for MC and MMC actually increased for non-VMMC priority countries, in contrast to SSA as a
-whole and the priority countries. Likewise, the mean age at TMC increased. This can be explained
-by a possible replacement of TMC with MMC in a traditional setting, so at generally younger ages than
-MMCs performed as part of VMMC programmes. This caused a natural shift upwards of the mean age at
-TMC, as younger individuals are now more likely to receive MMCs.
+For non-VMMC priority countries, the mean age at MC in 2006 was 5.51
+(5.08-6.33), while in 2020 it was 5.24 (5.01-5.5). Similarly, the mean
+age at MMC in 2006 was 6.07 (5.82-6.95), and in 2020 it was 5.93
+(5.94-6.13).
+
+Finally, the mean age at TMC in 2006 for TMC was 7.38 (7.18-7.96), and
+in 2020 it was 7.52 (6.73-8.06). In contrast to our VMMC priority
+countries, these countries have a lower mean at circumcision for all
+circumcision types, largely driven by high TMC levels historically. It
+was interesting that the age at circumcision for MC and MMC actually
+increased for non-VMMC priority countries, in contrast to SSA as a whole
+and the priority countries. Likewise, the mean age at TMC increased.
+This was perhaps explained by the possible replacement of TMC with MMC
+in a traditional setting, at generally younger ages than MMCs performed
+as part of VMMC programmes. This caused a natural shift upwards of the
+mean age at TMC, as younger individuals were now more likely to receive MMCs.
 
 % estimated percentage of men aged 15-29 years who were circumcised sub-nationally in 33 sub-Saharan African countries in 2006 and 2020, as well as the difference in coverage between the two years. Maps show total male circumcision (MC), medical male circumcision (MMC) and traditional male circumcision (TMC), respectively. Countries with no information on circumcision type are grey in the Medical and Traditional figures/paper, while countries with no circumcision estimate are grey in all
 
@@ -602,22 +579,67 @@ TMC, as younger individuals are now more likely to receive MMCs.
     \caption{\emph{Circumcision coverage in 2000 and 2020 amongst 15-29 year olds in all 34 sub-Saharan African countries, split by circumcision type. The countries below the horizontal black line are VMMC priority countries.}}
 \end{figure}
 
-The average TMC coverage in SSA in 2006 was 24.3\% (23.19\% to 25.27\%). This fell to 21.88\% (20.35\% to 23.33\%) in 2020, a decrease of 2.42\%. In non-VMMC priority countries, TMC coverage was 31.26\% (29.71\% to 32.59\%). This fell to 27.66\% (25.4\% to 29.8\%) in 2020, representing a decrease of 3.59\%. In contrast, TMC coverage in VMMC priority countries was 14.36\% (13.88\% to 14.8\%). This fell to 13.63\% (13.13\% to 14.08\%) in 2020, representing a decrease of 0.74\%. Therefore, the decrease in TMC found throughout SSA is much more pronounced for non-VMMC countries.
+The average TMC coverage in SSA in 2006 was 24.3\% (23.19-25.27\%). This
+fell to 21.88\% (20.35-23.33\%) in 2020, a decrease of 2.42\%. In
+non-VMMC priority countries, TMC coverage was 31.26\% (29.71-32.59\%).
+This fell to 27.66\% (25.4-29.8\%) in 2020, representing a decrease of
+3.59\% . In contrast, TMC coverage in VMMC priority countries was
+14.36\% (13.88-14.8\%). This fell to 13.63\% (13.13-14.08\%) in 2020,
+representing a decrease of 0.74\%. Therefore, the decrease in TMC found
+throughout SSA was more pronounced for non-VMMC countries.
 
-\todo{Add thousand/million/billion suffix here (or at least commas), rather than the whole number!}
-In 2006, 98009 (94028-102330) TMCs were performed, while in 2020 this increased to 102827 (63457-129829), representing a 4818 increase in annual TMCs. However, this increase must be taken within the context of a large increase in population in SSA over this period, from 1.23 billion in 2006 to 1.80 billion in 2020, and as seen in our coverage estimates above, constitutes a decrease in the number of TMCs performed per capita in the region (need to calculate this?!) In non-VMMC priority countries, the annual number of TMCs performed changed from 114700 (109648-120604) in 2006 to 117525 (54128-160432) in 2020, or by 2825. This is within the context of the population of non-VMMC priority countries increasing from 749 million to 1.11 billion from 2006 to 2020. In VMMC priority countries, the number of TMCs performed went from 74165 (71715-76224) in 2006 to 74165 (71715-76224) in 2020, a fall of 7665. In VMMC priority countries, the population increased from 481 million to 694 million. \todo{Comment on this}
+In 2006, 98,009 (94,028-102,330) TMCs were performed, while in 2020 this
+increased to 102,827 (63,457-129,829), representing a 4,818 increase in
+annual TMCs. This increase occurred within the context of a large
+increase in population in SSA over this period, from 1.23 billion in
+2006 to 1.80 billion in 2020, and as seen in coverage estimates above,
+constitutes a decrease in the number of TMCs performed per capita in the
+region. In non-VMMC priority countries, the annual number of TMCs
+performed changed from 114700 (109648-120604) in 2006 to 117525
+(54128-160432) in 2020, or by 2825 . This is within the context of the
+population of non-VMMC priority countries increasing from 749 million to
+1.11 billion from 2006 to 2020. In VMMC priority countries, the number
+of TMCs performed went from 74165 (71715-76224) in 2006 to 74165
+(71715-76224) in 2020, a fall of 7665. In VMMC priority countries, the
+population increased from 481 million to 694 million.
 
-We can also compare the differences in TMC coverage change between 15-29 and 30-49 year olds, in SSA as a whole and in VMMC and non-VMMC priority countries.
+We can also compare the differences in TMC coverage change between 15-29
+and 30-49 year olds, in SSA as a whole and in VMMC and non-VMMC priority
+countries. For the 15-29 age group, TMC coverage was reduced from 31.1\%
+(29.78-32.41\%) in 2006 to 26.69\% (25.05-28.31\%) in 2020, a drop of
+4.41\% . This contrasted with the 30-49 age group, where TMC coverage
+went from 37.45\% (35.52-39.18\%) in 2006 to 34.02\% (32.58-35.48\%) in
+2020, a drop of 3.42\% . Therefore, in SSA as a whole TMC coverage
+decreased slightly more amongst 15-29 year olds than in 30-49 year olds,
+likely as a result of VMMC programme focus on this age group.
 
-For the 15-29 age group, TMC coverage was reduced from 31.1\% (29.78\% to 32.41\%) in 2006 to 26.69\% (25.05\% to 28.31\%) in 2020, a drop of 4.41\%. This contrasted with the 30-49 age group, where TMC coverage went from 37.45\% (35.52\% to 39.18\%) in 2006 to 34.02\% (32.58\% to 35.48\%) in 2020, a drop of 3.42\%. Therefore, in SSA as a whole TMC coverage decreased slightly more amongst 15-29 year olds than in 30-49 year olds, likely as a result of VMMC programme focus on this age group.
+For the 15-29 year olds in non-VMMC priority countries, TMC coverage was
+reduced from 31.1\% (29.78-32.41\%) in 2006 to 26.69\% (25.05-28.31\%)
+in 2020, a drop of 4.41\% . This contrasted with the 30-49 age group,
+where TMC coverage went from 37.45\% (35.52-39.18\%) in 2006 to 34.02\%
+(32.58-35.48\%) in 2020, a drop of 3.42\% . Therefore in non-VMMC
+priority countries the decrease in TMC coverage was larger for both age
+groups than in SSA as a whole, but the difference between this decrease
+for 15-29 year olds versus 30-49 year olds was less pronounced.
 
-For the 15-29 year olds in non-VMMC priority countries, TMC coverage was reduced from 31.1\% (29.78\% to 32.41\%) in 2006 to 26.69\% (25.05\% to 28.31\%) in 2020, a drop of 4.41\%. This contrasted with the 30-49 age group, where TMC coverage went from 37.45\% (35.52\% to 39.18\%) in 2006 to 34.02\% (32.58\% to 35.48\%) in 2020, a drop of 3.42\%. Therefore in non-VMMC priority countries the decrease in TMC coverage was larger for both age groups than in SSA as a whole, but the difference between this decrease for 15-29 year olds versus 30-49 year olds is less pronounced.
+For VMMC priority countries, the 15-29 age group, TMC coverage was
+reduced from 31.1\% (29.78-32.41\%) in 2006 to 26.69\% (25.05-28.31\%)
+in 2020, representing a fall of 4.41\% . In the 30-49 age group, TMC
+coverage in VMMC priority countries dropped from 37.45\% (35.52-39.18\%)
+in 2006 to 34.02\% (32.58-35.48\%) in 2020, a drop of 3.42\% .
+Therefore, in VMMC priority countries there is a much greater disparity
+in the drop in TMC coverage between 15-29 and 30-49 year olds. 15-29
+year olds saw a much greater drop in TMC coverage, likely resulting from
+VMMC programme focus on these ages.
 
-For VMMC priority countries, the 15-29 age group, TMC coverage was reduced from 31.1\% (29.78\% to 32.41\%) in 2006 to 26.69\% (25.05\% to 28.31\%) in 2020, representing a fall of 4.41\%. In the 30-49 age group, TMC coverage in VMMC priority countries dropped from 37.45\% (35.52\% to 39.18\%) in 2006 to 34.02\% (32.58\% to 35.48\%) in 2020, a drop of 3.42\%. Therefore, in VMMC priority countries there is a much greater disparity in the drop in TMC coverage between 15-29 and 30-49 year olds. 15-29 year olds saw a much greater drop in TMC coverage, likely resulting from VMMC programme focus on these ages.
+The largest decrease in TMC coverage from 2006 to 2020 was in Côte
+d'Ivoire, where TMC coverage fell from 58.45\% (57.07-59.5\%) to 48.85\%
+(46.87-50.49\%), a decrease of 9.6\%. The largest decrease in TMC
+coverage amongst VMMC countries was from Côte d'Ivoire, where TMC
+coverage fell from 58.45\% (57.07-59.5\%) to 48.85\% (46.87-50.49\%), a
+decrease of 9.6\% .
 
-The largest decrease in TMC coverage from 2006 to 2020 was in Côte d’Ivoire, where TMC coverage fell from 58.45\% (57.07\% to 59.5\%) to 48.85\% (46.87\% to 50.49\%, a decrease of 9.6\%.
-
-The largest decrease in TMC coverage amongst VMMC countries was from Côte d’Ivoire, where TMC coverage fell from 58.45\% (57.07\% to 59.5\%) to 48.85\% (46.87\% to 50.49\%, a decrease of 9.6\%.
+% \todo{Add thousand/million/billion suffix here (or at least commas), rather than the whole number!}
 
 \todo{add smallest decrease here? Would be more interesting for non-VMMC countries, could show where MMC has not begun to replace TMC}
 \todo{add \# of countries in both regions which have experienced a drop in TMC coverage?? Might be interesting for non-VMMC}
@@ -625,59 +647,89 @@ The largest decrease in TMC coverage amongst VMMC countries was from Côte d’I
 \subsection{UNAIDS goals progress amongst 10-29 year olds in Voluntary Male Medical Circumcision target countries}
 \label{sec:orgf9204d9}
 
-As a reminder, in 2010 the WHO and UNAIDS set a 80\% MC target for 15-49 year olds in the VMMC
-priority countries by 2018. This target was expanded in 2016 to the new target of 90\% MC amongst 10-29
-year olds in VMMC priority countries by 2021.
-Amongst the 14 VMMC priority countries modelled, 3 countries were projected to have achieved the VMMC
-target of 80\% MC coverage amongst 15-49 year olds by 2020, Tanzania, Ethiopia and Kenya. None were
-expected to reach the 90\% target for 10-29 year olds. No countries were expected to have reached these goals
-in all districts.
-MC coverage amongst 10-29 year olds across VMMC priority countries increased from 30.94\% (30.4\% to
-31.53\%) in 2006 to 54.09\% (50.78\% to 58.36\%) in 2020, an increase of 23.15\% (20.38\%-26.83\%). MMC
-coverage amongst 10-29 year olds across VMMC priority countries increased from 13.68\% (13.07\% to 14.31\%
-) in 2006 to 39.24\% (35.76\% to 43.66\%) in 2020, an increase of 25.56\% (22.69\%-29.35\%). MC coverage
-amongst 15-49 year olds across VMMC priority countries increased from 38.29\% (37.71\%-38.88\%) in
-2006 to 58.7\% (56.58\% to 61.44\%) in 2020, an increase of 20.41\% (18.87\%-22.55\%). MMC coverage
-amongst 15-49 year olds across VMMC priority countries increased from 16.87\% (16.22\% to 17.58\%) in
-2006 to 39.57\% (37.31\% to 42.48\%) in 2020, an increase of 22.7\% (21.1\%-24.91\%).
-Between 2006 and 2020 in these countries, 2.396 million (2.066 million-2.81 million) MCs were performed
-on 10-29 year olds. Of these, 2.285 million (2.285 million-2.285 million) were MMCs, and 0.573 million
-(0.573 million-0.573 million) were TMCs. Over the same period, million (million-million) MCs were
-performed on 15-49 year olds, million (million-million) of which were MMCs, and million (million-million) of which were TMCs.
+As a reminder, in 2010 the WHO and UNAIDS set a 80\% MC target for 15-49
+year olds in the VMMC priority countries by 2018. This target was
+expanded in 2016 to the new target of 90\% MC amongst 10-29 year olds in
+VMMC priority countries by 2021.
 
-The number of annual MCs amongst 10-29 year olds increased from 0.702 million (0.648 million to 0.757
-million) in 2006 to 1.694 million (1.418 million to 2.053 million) in 2020.
-The number of annual MMCs amongst 10-29 increased from 0.431 million (0.383 million to 0.485 million
-) in 2006 to 1.441 million (1.16 million to 1.8 million) in 2020, while in constrast, the number of TMCs
-decreased from 0.271 million (0.254 million to 0.29 million) in 2006 to 0.252 million (0.222 million to 0.283
-million) in 2020.
-For 15-49 year olds, the number of annual MCs increased from 0.335 million (0.305 million to 0.367 million)
-in 2006 to 0.727 million (0.578 million to 0.919 million) in 2020.
-Annual MMCs amongst 15-49 increased from 0.225 million (0.198 million to 0.253 million) in 2006 to 0.648
-million (0.498 million to 0.84 million) in 2020, while in constrast, the number of TMCs decreased from 0.11
-million (0.101 million to 0.122 million) in 2006 to 0.079 million (0.067 million to 0.092 million) in 2020.
-1.694 (1.418 to 2.053) additional circumcisions are required to achieve 90\% and 80\% MC coverage targets
-for 10-29 and 15-49 year olds, respectively, across all VMMC priority countries.
-This is equivalent to 16.7 (21.3 to 12.6) and 38.3 (38.3 to) times the projected number of MCs for 10-29
-and 15-49 year olds for 2020.
-MC coverage in 2020 for 10-29 year olds in VMMC priority countries was highest in Ethiopia, at 84.9\% (
-82.95\%-87.3\%), and lowest in Zimbabwe, at 29.51\% (27.21\%-32.77\% . For 15-49 year olds, the highest
-MC coverage was in Ethiopia, at 84.9\% (82.95\%-87.3\%), and lowest in Zimbabwe, at 29.51\% (27.21\% -
-32.77\% . MMC coverage for 10-29 year olds in VMMC priority countries was highest in Lesotho, at 58.11\% (
-55.3\%-62.45\%), and lowest in Malawi, at 22.57\% (21.23\%-24.54\% . For 15-49 year olds, the highest MMC
-coverage was in Lesotho, at 58.11\% (55.3\%-62.45\%), and lowest in Malawi, at 22.57\% (21.23\%-24.54\% .
-The largest increase from 2006 to 2020 in MC coverage for 10-29 year olds amongst VMMC priority countries
-was in Botswana, from 9.39\% (8.74\%-10.22\%) in 2006 to 52.52\% (52.52\%-52.52\%) in 2020, a 43.12\% (
-40.45\%-44.77\%) increase. In contrast, the lowest increase in MC coverage in these countries was in from
-9.39\% (8.74\%-10.22\%) in 2006 to 52.52\% (52.52\%-52.52\%) in 2020, a 43.12\% (40.45\%-44.77\%)
-increase.
-However, these figures belie significant subnational heterogeneity in MC coverage amongst VMMC priority
-countries. 213 (124-301) of 1072 districts in these countries were expected to have reached 90\% MC
-coverage amongst 10-29 year olds in 2020, up from 125 (60-203) of 1072 in 2006, before VMMC programmes
-began. Similarly, 422 (367-506) of 1072 districts in these countries were expected to have reached 80\% MC
-coverage for 15-49 year olds in 2020, compared to 344 (296-392) of 1072 in 2006.
-In 2020, 7 (5-8) of the 14 VMMC priority countries had no districts which satisfied the 90\% MC coverage
-target for 10-29 year olds. This was down from 10 (8-11) in 2006. Similarly, in 2020, 3 (3-4) countries had no districts which satisfied the 80\% MC coverage target for 15-49 year olds. This was down from 5 (5-5) in 2006.
+Amongst the 14 VMMC priority countries modelled, 3 countries were
+projected to have achieved the VMMC target of 80\% MC coverage amongst
+15-49 year olds by 2020; Tanzania, Ethiopia and Kenya. None were
+expected to reach the 90\% target for 10-29 year olds. No additional
+countries reach either of these targets even when taking their upper
+uncertainty bound for MC coverage. No countries were expected to have
+reached these goals in all districts.
+
+MC coverage amongst 10-29 year olds across VMMC priority countries
+increased from 30.94\% (30.4-31.53\%) in 2006 to 54.09\% (50.78-58.36\%)
+in 2020, an increase of 23.15\% (20.38-26.83\%). MMC coverage amongst
+10-29 year olds across VMMC priority countries increased from 13.68\%
+(13.07-14.31\%) in 2006 to 39.24\% (35.76-43.66\%) in 2020, an increase
+of 25.56\% (22.69-29.35\%). MC coverage amongst 15-49 year olds across
+VMMC priority countries increased from 38.29\% (37.71-38.88\%) in 2006
+to 58.7\% (56.58-61.44\%) in 2020, an increase of 20.41\%
+(18.87-22.55\%). MMC coverage amongst 15-49 year olds across VMMC
+priority countries increased from 16.87\% (16.22-17.58\%) in 2006 to
+39.57\% (37.31-42.48\%) in 2020, an increase of 22.7\% (21.1-24.91\%).
+
+Between 2006 and 2020 in these VMMC priority countries, 2.396 million
+(2.066-2.81 million) MCs were performed on 10-29 year olds. Of these,
+2.285 million (2.285-2.285 million) were MMCs, and 0.573 million
+(0.573-0.573 million) were TMCs. Over the same period, 0.095 million
+(0.063-0.148 million) MCs were performed on 15-49 year olds, 0.09
+million (0.06-0.133 million) of which were MMCs, and 0.005 million
+(0.002-0.024 million) of which were TMCs. The number of annual MCs
+amongst 10-29 year olds increased from 0.702 million (0.648-0.757
+million) in 2006 to 1.694 million (1.418-2.053 million) in 2020. The
+number of annual MMCs amongst 10-29 increased from 0.431 million
+(0.383-0.485 million) in 2006 to 1.441 million (1.16-1.8 million) in
+2020, while in contrast, the number of TMCs decreased from 0.271 million
+(0.254-0.29 million) in 2006 to 0.252 million (0.222-0.283 million) in
+2020.
+
+For 15-49 year olds, the number of annual MCs increased from 0.335
+million (0.305-0.367 million) in 2006 to 0.727 million (0.578-0.919
+million) in 2020. Annual MMCs amongst 15-49 increased from 0.225 million
+(0.198-0.253 million) in 2006 to 0.648 million (0.498-0.84 million) in
+2020, while in contrast, the number of TMCs decreased from 0.11 million
+(0.101-0.122 million) in 2006 to 0.079 million (0.067-0.092 million) in
+2020.
+
+54.862 million (52.926-57.311 million) additional circumcisions are
+required to achieve 90\% and 80\% MC coverage targets for 10-29 and
+15-49 year olds, respectively, across all VMMC priority countries. This
+is equivalent to 16.7 million (21.3-12.6) and 38.3 (50.8-28.4) times the
+projected number of MCs for 10-29 and 15-49 year olds for 2020.
+
+MC coverage in 2020 for 10-29 year olds in VMMC priority countries was
+highest in Ethiopia, at 84.9\% (82.95-87.3\%), and lowest in Zimbabwe,
+at 29.51\% (27.21-32.77\% . For 15-49 year olds, the highest MC coverage
+was in Ethiopia, at 84.9\% (82.95-87.3\%), and lowest in Zimbabwe, at
+29.51\% (27.21-32.77\%). MMC coverage for 10-29 year olds in VMMC
+priority countries was highest in Lesotho, at 58.11\% (55.3-62.45\%),
+and lowest in Malawi, at 22.57\% (21.23-24.54\%). For 15-49 year olds,
+the highest MMC coverage was in Lesotho, at 58.11\% (55.3-62.45\%), and
+lowest in Malawi, at 22.57\% (21.23-24.54\% .
+
+The largest increase from 2006 to 2020 in MC coverage for 10-29 year
+olds amongst VMMC priority countries was in Botswana, from 9.39\%
+(8.74-10.22\%) in 2006 to 52.52\% (52.52-52.52\%) in 2020, a 43.12\%
+(40.45-44.77\%) increase. In contrast, the lowest increase in MC
+coverage in these countries was in from 9.39\% (8.74-10.22\%) in 2006 to
+52.52\% (52.52-52.52\%) in 2020, a 43.12\% (40.45-44.77\%) increase.
+
+However, these figures belie significant subnational heterogeneity in MC
+coverage amongst VMMC priority countries. 213 (124-301) of 1072
+districts in these countries were expected to have reached 90\% MC
+coverage amongst 10-29 year olds in 2020, up from 125 (60-203) of 1072
+in 2006, before VMMC programmes began. Similarly, 422 (367-506) of 1072
+districts in these countries were expected to have reached 80\% MC
+coverage for 15-49 year olds in 2020, compared to 344 (296-392) of 1072
+in 2006. In 2020, 7 (5-8) of the 14 VMMC priority countries had no
+districts which satisfied the 90\% MC coverage target for 10-29 year
+olds. This was down from 10 (8-11) in 2006. Similarly, in 2020, 3 (3-4)
+countries had no districts which satisfied the 80\% MC coverage target
+for 15-49 year olds. This was down from 5 (5-5) in 2006.
 
 \todo{Add table here?}
 
